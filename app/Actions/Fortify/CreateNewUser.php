@@ -30,6 +30,10 @@ class CreateNewUser implements CreatesNewUsers
             return $this->createCandidat($input);
         }
 
+        if ($input['role'] === 'recruteur') {
+            return $this->createRecruteur($input);
+        }
+
         abort(400, 'Invalid module');
     }
 
@@ -156,6 +160,46 @@ class CreateNewUser implements CreatesNewUsers
                 }
                 $candidat->formations()->createMany($formationsData);
             }
+
+            return $user;
+        });
+    }
+
+    protected function createRecruteur(array $input): User
+    {
+        Validator::make($input, [
+            // User rules
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => $this->passwordRules(),
+            'telephone' => ['nullable', 'string', 'max:20'],
+
+            // Recruteur rules
+            'nom_entreprise' => ['required', 'string', 'max:255'],
+            'type_organisation' => ['required', 'string', 'max:255'],
+            'taille_entreprise' => ['required', 'string', 'max:255'],
+            'ville' => ['required', 'string', 'max:255'],
+            'site_web' => ['nullable', 'string', 'max:255', 'url'],
+            'poste' => ['nullable', 'string', 'max:255'],
+        ])->validate();
+
+        return DB::transaction(function () use ($input) {
+            $user = User::create([
+                'telephone' => $input['telephone'] ?? null,
+                'email' => $input['email'],
+                'password' => Hash::make($input['password']),
+                'role' => 'recruteur',
+                'is_active' => true,
+                'is_archived' => false,
+            ]);
+
+            $user->recruteur()->create([
+                'nom_entreprise' => $input['nom_entreprise'],
+                'type_organisation' => $input['type_organisation'],
+                'taille_entreprise' => $input['taille_entreprise'],
+                'ville' => $input['ville'],
+                'site_web' => $input['site_web'] ?? null,
+                'poste' => $input['poste'] ?? null,
+            ]);
 
             return $user;
         });

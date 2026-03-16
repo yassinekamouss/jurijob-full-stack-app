@@ -49,98 +49,103 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
     const updateExperience = (id: string, field: keyof Experience, value: any) =>
         onFieldChange('experiences', experiences.map((e) => (e.id === id ? { ...e, [field]: value } : e)));
 
+    const inputClasses = "w-full p-2.5 bg-white border border-slate-200 rounded-xl text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all text-sm placeholder:text-slate-400";
+    const labelClasses = "text-xs font-bold text-slate-700 flex items-center gap-2 uppercase tracking-tight";
+
     return (
-        <div className={`max-w-4xl mx-auto p-2 space-y-12 pb-10 ${className}`}>
-            <div className="text-center space-y-2 mb-8">
-                <h3 className="text-lg font-semibold">Détails du parcours</h3>
-                <p className="text-sm text-muted-foreground">Détaillez vos formations et expériences.</p>
+        <div className={`space-y-12 pb-10 ${className}`}>
+            <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Détails du parcours</h3>
+                <p className="text-sm text-slate-500">Renseignez vos formations et expériences marquantes</p>
             </div>
 
             {/* FORMATIONS */}
             <section className="space-y-6">
-                <div className="flex items-center justify-between border-b border-border pb-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><GraduationCap size={20} /></div>
-                        <h4 className="text-xl font-semibold">Formations</h4>
+                        <div className="p-2 bg-slate-900 text-white rounded-lg shadow-sm"><GraduationCap size={20} /></div>
+                        <h4 className="text-lg font-bold text-slate-900">Formations</h4>
                     </div>
-                    <button type="button" onClick={addFormation} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-all hover:scale-105 shadow-sm">
+                    <button type="button" onClick={addFormation} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95">
                         <Plus size={16} /> Ajouter
                     </button>
                 </div>
 
-                {errors.formations && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">{errors.formations}</div>}
+                {errors.formations && <div className="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-lg border border-red-100">{errors.formations}</div>}
 
-                <div className="grid gap-6">
+                <div className="space-y-4">
                     <AnimatePresence>
                         {formations.map((formation) => (
-                            <motion.div key={formation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="relative p-5 bg-card border border-border rounded-2xl shadow-sm">
-                                <div className="flex items-center justify-between pb-3 border-b border-border mb-3">
+                            <motion.div key={formation.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="relative p-6 bg-white border border-slate-200 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
+                                <div className="flex items-center justify-between pb-4 border-b border-slate-50 mb-4">
                                     <div className="flex items-center gap-3">
-                                        <button type="button" onClick={() => toggleFormation(formation.id)} className="text-muted-foreground hover:text-foreground transition">
+                                        <button type="button" onClick={() => toggleFormation(formation.id)} className="text-slate-400 hover:text-slate-900 transition-colors">
                                             {expandedFormations[formation.id] !== false ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                         </button>
-                                        <h5 className="font-medium">{formation.domaine || formation.ecole ? `${formation.domaine} – ${formation.ecole}` : 'Nouvelle Formation'}</h5>
+                                        <h5 className="font-bold text-slate-900 truncate max-w-[200px] sm:max-w-md">
+                                            {formation.domaine || formation.ecole ? `${formation.domaine} – ${formation.ecole}` : 'Nouvelle Formation'}
+                                        </h5>
                                     </div>
-                                    <button type="button" onClick={() => removeFormation(formation.id)} className="p-2 text-muted-foreground hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                                    <button type="button" onClick={() => removeFormation(formation.id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
                                 </div>
 
                                 {expandedFormations[formation.id] !== false && (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-                                        <div className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                                        <div className="space-y-5">
                                             <div className="space-y-1.5">
-                                                <label className="text-sm font-medium flex items-center gap-2"><Building2 size={14} className="text-muted-foreground" /> École / Université</label>
-                                                <select value={formation.ecole} onChange={(e) => updateFormation(formation.id, 'ecole', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary focus:bg-card outline-none text-sm">
+                                                <label className={labelClasses}><Building2 size={14} className="text-slate-400" /> École / Université</label>
+                                                <select value={formation.ecole} onChange={(e) => updateFormation(formation.id, 'ecole', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner une institution</option>
                                                     {ecolesMaroc.map((e) => <option key={e} value={e}>{e}</option>)}
                                                 </select>
                                             </div>
                                             <div className="space-y-1.5">
-                                                <label className="text-sm font-medium flex items-center gap-2"><BookOpen size={14} className="text-muted-foreground" /> Niveau d'études</label>
-                                                <select value={formation.niveau} onChange={(e) => updateFormation(formation.id, 'niveau', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary focus:bg-card outline-none text-sm">
+                                                <label className={labelClasses}><BookOpen size={14} className="text-slate-400" /> Niveau d'études</label>
+                                                <select value={formation.niveau} onChange={(e) => updateFormation(formation.id, 'niveau', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un niveau</option>
                                                     {formationsJuridiques.map((n) => <option key={n} value={n}>{n}</option>)}
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4">
+                                        <div className="space-y-5">
                                             <div className="space-y-1.5">
-                                                <label className="text-sm font-medium flex items-center gap-2"><FileText size={14} className="text-muted-foreground" /> Domaine d'études</label>
-                                                <select value={formation.domaine} onChange={(e) => updateFormation(formation.id, 'domaine', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary focus:bg-card outline-none text-sm">
+                                                <label className={labelClasses}><FileText size={14} className="text-slate-400" /> Domaine d'études</label>
+                                                <select value={formation.domaine} onChange={(e) => updateFormation(formation.id, 'domaine', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un domaine</option>
                                                     {specialisations.map((d) => <option key={d} value={d}>{d}</option>)}
                                                 </select>
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-1.5">
-                                                    <label className="text-sm font-medium flex items-center gap-2"><Calendar size={14} className="text-muted-foreground" /> Année Début</label>
-                                                    <input type="number" min="1980" max="2030" placeholder="Année" value={formation.anneeDebut} onChange={(e) => updateFormation(formation.id, 'anneeDebut', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm" />
+                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Début</label>
+                                                    <input type="number" min="1980" max="2030" placeholder="YYYY" value={formation.anneeDebut} onChange={(e) => updateFormation(formation.id, 'anneeDebut', e.target.value)} className={inputClasses} />
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                    <label className="text-sm font-medium flex items-center gap-2"><Calendar size={14} className="text-muted-foreground" /> Année Fin</label>
-                                                    <input type="number" min="1980" max="2035" placeholder="Année" value={formation.anneeFin} onChange={(e) => updateFormation(formation.id, 'anneeFin', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm" />
+                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Fin</label>
+                                                    <input type="number" min="1980" max="2035" placeholder="YYYY" value={formation.anneeFin} onChange={(e) => updateFormation(formation.id, 'anneeFin', e.target.value)} className={inputClasses} />
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div className="md:col-span-2">
-                                            <label className="text-sm font-medium">Diplôme (Format PDF)</label>
-                                            <div className={`relative border-2 border-dashed rounded-xl p-3 mt-1.5 transition-all ${formation.diplomaFile ? 'border-green-400 bg-green-50' : 'border-border bg-muted hover:border-muted-foreground'}`}>
+                                            <label className="text-xs font-bold text-slate-700 uppercase tracking-tight mb-2 block">Diplôme (Format PDF)</label>
+                                            <div className={`relative border-2 border-dashed rounded-2xl p-4 transition-all duration-300 ${formation.diplomaFile ? 'border-slate-900 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-400'}`}>
                                                 <input type="file" accept=".pdf" onChange={(e) => handleFileUpload(formation.id, e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                                                <div className="flex items-center justify-center gap-3">
+                                                <div className="flex items-center justify-center gap-4">
                                                     {formation.diplomaFile ? (
                                                         <>
-                                                            <div className="p-1.5 bg-green-100 text-green-600 rounded-lg"><FileText size={18} /></div>
+                                                            <div className="p-2 bg-slate-900 text-white rounded-lg"><FileText size={20} /></div>
                                                             <div className="flex-1 min-w-0">
-                                                                <p className="text-xs font-medium text-green-800 truncate">{formation.diplomaFile.name}</p>
-                                                                <p className="text-[10px] text-green-600">{(formation.diplomaFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                                                                <p className="text-sm font-bold text-slate-900 truncate">{formation.diplomaFile.name}</p>
+                                                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{(formation.diplomaFile.size / 1024 / 1024).toFixed(2)} MB</p>
                                                             </div>
-                                                            <button type="button" onClick={(e) => { e.preventDefault(); updateFormation(formation.id, 'diplomaFile', null); }} className="relative z-20 p-1 hover:bg-green-100 rounded-full text-green-700"><X size={14} /></button>
+                                                            <button type="button" onClick={(e) => { e.preventDefault(); updateFormation(formation.id, 'diplomaFile', null); }} className="relative z-20 p-2 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"><X size={16} /></button>
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <Upload size={18} className="text-muted-foreground" />
-                                                            <span className="text-xs text-muted-foreground font-medium">Glissez votre diplôme ou cliquez</span>
+                                                            <div className="p-2 bg-slate-50 text-slate-400 rounded-lg"><Upload size={20} /></div>
+                                                            <span className="text-sm text-slate-500 font-bold">Téléverser le diplôme (PDF)</span>
                                                         </>
                                                     )}
                                                 </div>
@@ -152,8 +157,9 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                         ))}
                     </AnimatePresence>
                     {formations.length === 0 && (
-                        <div className="text-center py-6 border-2 border-dashed rounded-2xl border-border">
-                            <p className="text-sm text-muted-foreground">Aucune formation ajoutée</p>
+                        <div className="text-center py-10 border-2 border-dashed rounded-[24px] border-slate-100 bg-slate-50/50">
+                            <Icon name="GraduationCap" size={32} className="mx-auto text-slate-200 mb-3" />
+                            <p className="text-sm text-slate-400 font-bold">Aucune formation ajoutée</p>
                         </div>
                     )}
                 </div>
@@ -161,63 +167,65 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
 
             {/* EXPERIENCES */}
             <section className="space-y-6">
-                <div className="flex items-center justify-between border-b border-border pb-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><Briefcase size={20} /></div>
-                        <h4 className="text-xl font-semibold">Expériences</h4>
+                        <div className="p-2 bg-slate-900 text-white rounded-lg shadow-sm"><Briefcase size={20} /></div>
+                        <h4 className="text-lg font-bold text-slate-900">Expériences</h4>
                     </div>
-                    <button type="button" onClick={addExperience} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-full text-sm font-medium hover:bg-gray-800 transition-all hover:scale-105 shadow-sm">
+                    <button type="button" onClick={addExperience} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95">
                         <Plus size={16} /> Ajouter
                     </button>
                 </div>
 
-                {errors.experiences && <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">{errors.experiences}</div>}
+                {errors.experiences && <div className="p-3 bg-red-50 text-red-600 text-xs font-bold rounded-lg border border-red-100">{errors.experiences}</div>}
 
-                <div className="grid gap-6">
+                <div className="space-y-4">
                     <AnimatePresence>
                         {experiences.map((exp) => (
-                            <motion.div key={exp.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="relative p-5 bg-card border border-border rounded-2xl shadow-sm">
-                                <div className="flex items-center justify-between pb-3 border-b border-border mb-3">
+                            <motion.div key={exp.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="relative p-6 bg-white border border-slate-200 rounded-[24px] shadow-sm hover:shadow-md transition-shadow">
+                                <div className="flex items-center justify-between pb-4 border-b border-slate-50 mb-4">
                                     <div className="flex items-center gap-3">
-                                        <button type="button" onClick={() => toggleExperience(exp.id)} className="text-muted-foreground hover:text-foreground transition">
+                                        <button type="button" onClick={() => toggleExperience(exp.id)} className="text-slate-400 hover:text-slate-900 transition-colors">
                                             {expandedExperiences[exp.id] !== false ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                         </button>
-                                        <h5 className="font-medium">{exp.poste || exp.entreprise ? `${exp.poste} chez ${exp.entreprise}` : 'Nouvelle Expérience'}</h5>
+                                        <h5 className="font-bold text-slate-900 truncate max-w-[200px] sm:max-w-md">
+                                            {exp.poste || exp.entreprise ? `${exp.poste} @ ${exp.entreprise}` : 'Nouvelle Expérience'}
+                                        </h5>
                                     </div>
-                                    <button type="button" onClick={() => removeExperience(exp.id)} className="p-2 text-muted-foreground hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                                    <button type="button" onClick={() => removeExperience(exp.id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
                                 </div>
 
                                 {expandedExperiences[exp.id] !== false && (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
-                                        <div className="space-y-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                                        <div className="space-y-5">
                                             <div className="space-y-1.5">
-                                                <label className="text-sm font-medium flex items-center gap-2"><Building2 size={14} className="text-muted-foreground" /> Entreprise</label>
-                                                <input type="text" placeholder="Ex: Cabinet Benjelloun" value={exp.entreprise} onChange={(e) => updateExperience(exp.id, 'entreprise', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm" />
+                                                <label className={labelClasses}><Building2 size={14} className="text-slate-400" /> Entreprise</label>
+                                                <input type="text" placeholder="Ex: Cabinet Benjelloun" value={exp.entreprise} onChange={(e) => updateExperience(exp.id, 'entreprise', e.target.value)} className={inputClasses} />
                                             </div>
                                             <div className="space-y-1.5">
-                                                <label className="text-sm font-medium flex items-center gap-2"><FileText size={14} className="text-muted-foreground" /> Type d'expérience</label>
-                                                <select value={exp.type} onChange={(e) => updateExperience(exp.id, 'type', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm">
+                                                <label className={labelClasses}><FileText size={14} className="text-slate-400" /> Type d'expérience</label>
+                                                <select value={exp.type} onChange={(e) => updateExperience(exp.id, 'type', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un type</option>
                                                     {typesExperience.map((t) => <option key={t} value={t}>{t}</option>)}
                                                 </select>
                                             </div>
                                         </div>
-                                        <div className="space-y-4">
+                                        <div className="space-y-5">
                                             <div className="space-y-1.5">
-                                                <label className="text-sm font-medium flex items-center gap-2"><Briefcase size={14} className="text-muted-foreground" /> Poste</label>
-                                                <select value={exp.poste} onChange={(e) => updateExperience(exp.id, 'poste', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm">
+                                                <label className={labelClasses}><Briefcase size={14} className="text-slate-400" /> Poste</label>
+                                                <select value={exp.poste} onChange={(e) => updateExperience(exp.id, 'poste', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un poste</option>
                                                     {postes.map((p) => <option key={p} value={p}>{p}</option>)}
                                                 </select>
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-1.5">
-                                                    <label className="text-sm font-medium flex items-center gap-2"><Calendar size={14} className="text-muted-foreground" /> Début</label>
-                                                    <input type="month" value={exp.debut} onChange={(e) => updateExperience(exp.id, 'debut', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm" />
+                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Début</label>
+                                                    <input type="month" value={exp.debut} onChange={(e) => updateExperience(exp.id, 'debut', e.target.value)} className={inputClasses} />
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                    <label className="text-sm font-medium flex items-center gap-2"><Calendar size={14} className="text-muted-foreground" /> Fin</label>
-                                                    <input type="month" value={exp.fin} onChange={(e) => updateExperience(exp.id, 'fin', e.target.value)} className="w-full p-2.5 bg-muted border border-border rounded-xl focus:ring-2 focus:ring-primary outline-none text-sm" />
+                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Fin</label>
+                                                    <input type="month" value={exp.fin} onChange={(e) => updateExperience(exp.id, 'fin', e.target.value)} className={inputClasses} />
                                                 </div>
                                             </div>
                                         </div>
@@ -227,14 +235,29 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                         ))}
                     </AnimatePresence>
                     {experiences.length === 0 && (
-                        <div className="text-center py-6 border-2 border-dashed rounded-2xl border-border">
-                            <p className="text-sm text-muted-foreground">Aucune expérience ajoutée</p>
+                        <div className="text-center py-10 border-2 border-dashed rounded-[24px] border-slate-100 bg-slate-50/50">
+                            <Icon name="Briefcase" size={32} className="mx-auto text-slate-200 mb-3" />
+                            <p className="text-sm text-slate-400 font-bold">Aucune expérience ajoutée</p>
                         </div>
                     )}
                 </div>
             </section>
         </div>
     );
+};
+
+interface IconProps {
+    name: string;
+    size?: number;
+    className?: string;
+}
+
+const Icon: React.FC<IconProps> = ({ name, size = 16, className = '' }) => {
+    switch (name) {
+        case 'GraduationCap': return <GraduationCap size={size} className={className} />;
+        case 'Briefcase': return <Briefcase size={size} className={className} />;
+        default: return null;
+    }
 };
 
 export default CandidatDetails;

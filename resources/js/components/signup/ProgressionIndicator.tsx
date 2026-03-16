@@ -3,15 +3,10 @@ import Icon from '@/components/signup/FormularIcons';
 
 interface ProgressIndicatorProps {
     currentStep: number;
+    steps: { id: number; label: string; icon: string }[];
 }
 
-const ProgressIndicator = ({ currentStep }: ProgressIndicatorProps) => {
-    const steps = [
-        { id: 1, label: 'Informations', icon: 'FileText' },
-        { id: 2, label: 'Profil', icon: 'Settings' },
-        { id: 3, label: 'Détails', icon: 'GraduationCap' },
-        { id: 4, label: 'Confirmation', icon: 'ClipboardCheck' },
-    ];
+const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
 
     const totalSteps = steps.length;
 
@@ -24,71 +19,74 @@ const ProgressIndicator = ({ currentStep }: ProgressIndicatorProps) => {
     const getStepClasses = (status: string) => {
         switch (status) {
             case 'completed':
-                return 'bg-green-500 text-white border-green-500';
+                return 'bg-slate-900 text-white border-slate-900';
             case 'current':
-                return 'bg-primary text-primary-foreground border-primary';
+                return 'bg-white text-slate-900 border-slate-900 ring-4 ring-slate-50';
             case 'upcoming':
-                return 'bg-muted text-muted-foreground border-border';
+                return 'bg-white text-slate-300 border-slate-100';
             default:
-                return 'bg-muted text-muted-foreground border-border';
+                return 'bg-white text-slate-300 border-slate-100';
         }
     };
 
     const getConnectorClasses = (stepId: number) => {
-        if (stepId < currentStep) return 'bg-black h-1';
-        return 'bg-gray-200 h-1';
+        if (stepId < currentStep) return 'bg-slate-900 h-1';
+        return 'bg-slate-100 h-1';
     };
 
     return (
-        <div className="w-full max-w-2xl mx-auto my-8 px-4">
+        <div className="w-full max-w-2xl mx-auto my-12 px-4">
             <div className="flex items-center justify-center">
                 {steps.map((step, index) => {
                     const status = getStepStatus(step.id);
                     const isLast = index === totalSteps - 1;
 
                     return (
-                        <div key={step.id} className="flex items-center flex-1">
-                            <div className="flex flex-col items-center justify-center">
+                        <React.Fragment key={step.id}>
+                            <div className="relative flex flex-col items-center">
                                 <div
-                                    className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${getStepClasses(status)}`}
+                                    className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 shadow-sm ${getStepClasses(status)}`}
                                 >
                                     {status === 'completed' ? (
-                                        <Icon name="Check" size={22} />
+                                        <Icon name="Check" size={20} />
                                     ) : (
-                                        <Icon name={step.icon as any} size={22} />
+                                        <Icon name={step.icon as any} size={20} />
                                     )}
                                 </div>
-                                <span
-                                    className={`text-xs font-medium mt-2 text-center transition-colors duration-300 ${
-                                        status === 'current'
-                                            ? 'text-primary'
-                                            : status === 'completed'
-                                              ? 'text-green-600'
-                                              : 'text-muted-foreground'
-                                    }`}
-                                >
-                                    {step.label}
-                                </span>
+                                <div className="absolute top-14 w-32 flex justify-center">
+                                    <span
+                                        className={`text-[10px] font-black uppercase tracking-widest transition-colors duration-500 text-center ${
+                                            status === 'current'
+                                                ? 'text-slate-900'
+                                                : status === 'completed'
+                                                  ? 'text-slate-700'
+                                                  : 'text-slate-300'
+                                        }`}
+                                    >
+                                        {step.label}
+                                    </span>
+                                </div>
                             </div>
 
                             {!isLast && (
-                                <div className="flex-1 mx-3 mb-5">
-                                    <div className={`transition-all duration-300 rounded-full ${getConnectorClasses(step.id)}`} />
+                                <div className="flex-1 mx-4">
+                                    <div className={`transition-all duration-700 rounded-full ${getConnectorClasses(step.id)}`} />
                                 </div>
                             )}
-                        </div>
+                        </React.Fragment>
                     );
                 })}
             </div>
 
-            <div className="mt-4">
-                <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                    <span>Progression</span>
-                    <span>{Math.round((currentStep / totalSteps) * 100)}%</span>
+            {/* Progress bar and percentage */}
+            <div className="mt-20 px-8">
+                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">
+                    <span>Avancement</span>
+                    <span className="text-slate-900">{Math.round((currentStep / totalSteps) * 100)}%</span>
                 </div>
-                <div className="w-full bg-muted rounded-full h-1.5">
+                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                     <div
-                        className="bg-primary h-1.5 rounded-full transition-all duration-300"
+                        className="bg-slate-900 h-1.5 rounded-full transition-all duration-700 ease-out"
                         style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                     />
                 </div>

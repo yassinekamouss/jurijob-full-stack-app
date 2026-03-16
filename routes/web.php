@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Candidat Registration Routes
 Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat'))->name('register.candidat.form');
+Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur'))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
 
 // Private File Download Route securely inside auth

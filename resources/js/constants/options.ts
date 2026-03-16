@@ -140,3 +140,20 @@ export const typesExperience = [
   "Alternance",
   "Service Militaire / Autre",
 ];
+
+export const typeOrganisation = [
+  "Cabinet d'avocats",
+  "Entreprise (Direction Juridique)",
+  "Études Notariale",
+  "Études d'Huissier",
+  "Administration publique",
+  "Autre",
+];
+
+export const tailleEntreprise = [
+  "1-5 employés",
+  "6-20 employés",
+  "21-100 employés",
+  "101-500 employés",
+  "500+ employés",
+];

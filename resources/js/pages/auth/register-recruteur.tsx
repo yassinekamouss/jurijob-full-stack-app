@@ -3,24 +3,22 @@ import { router } from '@inertiajs/react';
 import { Toaster, toast } from 'react-hot-toast';
 import FormNavigator from '@/components/signup/FormNavigator';
 import FormCommunFields, { UserFormData } from '@/components/signup/FormCommunFields';
-import FormCandidat, { CandidatFormData, Formation, Experience } from '@/components/signup/FormCandidat';
-import CandidatDetails from '@/components/signup/CandidatDetails';
+import FormRecruiter, { RecruiterFormData } from '@/components/signup/FormRecruiter';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import Icon from '@/components/signup/FormularIcons';
 
 interface FullFormData {
     user: UserFormData;
-    candidat: CandidatFormData;
+    recruiter: RecruiterFormData;
 }
 
-const candidatSteps = [
+const recruiterSteps = [
     { id: 1, label: 'Informations', icon: 'FileText' },
     { id: 2, label: 'Profil', icon: 'Settings' },
-    { id: 3, label: 'Détails', icon: 'GraduationCap' },
-    { id: 4, label: 'Confirmation', icon: 'ClipboardCheck' },
+    { id: 3, label: 'Confirmation', icon: 'ClipboardCheck' },
 ];
 
-export default function RegisterCandidat() {
+export default function RegisterRecruteur() {
     const [formData, setFormData] = useState<FullFormData>({
         user: {
             nom: '',
@@ -31,100 +29,44 @@ export default function RegisterCandidat() {
             password: '',
             confirmPassword: '',
         },
-        candidat: {
-            niveauExperience: '',
-            formationJuridique: '',
-            specialisations: [],
-            langues: [],
-            domainExperiences: [],
-            typeTravailRecherche: [],
-            villesTravailRecherche: [],
-            modeTravailRecherche: [],
-            PosteRecherche: '',
-            formations: [
-                {
-                    id: Math.random().toString(36).substr(2, 9),
-                    anneeDebut: '',
-                    anneeFin: '',
-                    niveau: '',
-                    domaine: '',
-                    ecole: '',
-                    diplomaFile: null,
-                },
-            ],
-            experiences: [
-                {
-                    id: Math.random().toString(36).substr(2, 9),
-                    debut: '',
-                    fin: '',
-                    type: '',
-                    entreprise: '',
-                    poste: '',
-                },
-            ],
+        recruiter: {
+            nomEntreprise: '',
+            typeOrganisation: '',
+            tailleEntreprise: '',
+            siteWeb: '',
+            ville: '',
+            poste: '',
         },
     });
 
     type UserErrors = Partial<Record<keyof UserFormData, string>>;
-    type CandidatErrors = Partial<Record<keyof CandidatFormData, string>>;
+    type RecruiterErrors = Partial<Record<keyof RecruiterFormData, string>>;
 
-    const [errors, setErrors] = useState<{ user?: UserErrors; candidat?: CandidatErrors }>({});
+    const [errors, setErrors] = useState<{ user?: UserErrors; recruiter?: RecruiterErrors }>({});
 
-    const onFieldChange = (section: 'user' | 'candidat', field: string, value: any) => {
+    const onFieldChange = (section: 'user' | 'recruiter', field: string, value: any) => {
         setFormData((prev) => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
         setErrors((prev) => ({ ...prev, [section]: { ...(prev[section] as any), [field]: '' } }));
     };
 
     const buildFormPayload = (): FormData => {
         const payload = new FormData();
-        const { user, candidat } = formData;
+        const { user, recruiter } = formData;
 
         // --- User fields ---
-        payload.append('prenom', user.prenom);
-        payload.append('nom', user.nom);
         payload.append('email', user.email);
         payload.append('telephone', user.telephone || '');
         payload.append('password', user.password);
         payload.append('password_confirmation', user.confirmPassword);
-        payload.append('role', 'candidat');
-        if (user.imageFile) {
-            payload.append('image_file', user.imageFile);
-        }
+        payload.append('role', 'recruteur');
 
-        // --- Candidat fields ---
-        payload.append('poste_recherche', candidat.PosteRecherche);
-        payload.append('niveau_experience', candidat.niveauExperience);
-        payload.append('formation_juridique', candidat.formationJuridique);
-
-        candidat.specialisations.forEach((s: string, i: number) => payload.append(`specialisations[${i}][specialisation]`, s));
-        candidat.domainExperiences.forEach((d: string, i: number) => payload.append(`domain_experiences[${i}][domain_experience]`, d));
-        candidat.typeTravailRecherche.forEach((t: string, i: number) => payload.append(`type_travails[${i}][type_travail]`, t));
-        candidat.villesTravailRecherche.forEach((v: string, i: number) => payload.append(`ville_travails[${i}][ville]`, v));
-        candidat.modeTravailRecherche.forEach((m: string, i: number) => payload.append(`mode_travails[${i}][mode_travail]`, m));
-
-        candidat.langues.forEach((lang: { nom: string; niveau: string }, i: number) => {
-            payload.append(`langues[${i}][nom]`, lang.nom);
-            payload.append(`langues[${i}][niveau]`, lang.niveau);
-        });
-
-        candidat.formations.forEach((f: Formation, i: number) => {
-            payload.append(`formations[${i}][annee_debut]`, f.anneeDebut);
-            payload.append(`formations[${i}][annee_fin]`, f.anneeFin);
-            payload.append(`formations[${i}][niveau]`, f.niveau);
-            payload.append(`formations[${i}][domaine]`, f.domaine);
-            payload.append(`formations[${i}][ecole]`, f.ecole);
-            if (f.diplomaFile) {
-                payload.append(`formations[${i}][diploma_file]`, f.diplomaFile);
-            }
-        });
-
-        candidat.experiences.forEach((e: Experience, i: number) => {
-            payload.append(`experiences[${i}][debut]`, e.debut);
-            payload.append(`experiences[${i}][fin]`, e.fin);
-            payload.append(`experiences[${i}][type]`, e.type);
-            payload.append(`experiences[${i}][entreprise]`, e.entreprise);
-            payload.append(`experiences[${i}][poste]`, e.poste);
-        });
+        // --- Recruiter fields ---
+        payload.append('nom_entreprise', recruiter.nomEntreprise);
+        payload.append('type_organisation', recruiter.typeOrganisation);
+        payload.append('taille_entreprise', recruiter.tailleEntreprise);
+        payload.append('site_web', recruiter.siteWeb || '');
+        payload.append('ville', recruiter.ville);
+        payload.append('poste', recruiter.poste || '');
 
         return payload;
     };
@@ -136,23 +78,40 @@ export default function RegisterCandidat() {
             router.post('/register', payload, {
                 forceFormData: true,
                 onSuccess: () => {
-                    toast.success('Compte créé avec succès !');
+                    toast.success('Compte recruteur créé avec succès !');
                     resolve();
                 },
                 onError: (errs) => {
-                    const userKeys: (keyof UserFormData)[] = ['nom', 'prenom', 'email', 'telephone', 'password'];
                     const userErrors: UserErrors = {};
-                    const candidatErrors: CandidatErrors = {};
+                    const recruiterErrors: RecruiterErrors = {};
+
+                    // Map backend field names to frontend paths
+                    const fieldMapping: Record<string, {section: 'user' | 'recruiter', key: string}> = {
+                        'email': {section: 'user', key: 'email'},
+                        'telephone': {section: 'user', key: 'telephone'},
+                        'password': {section: 'user', key: 'password'},
+                        'nom_entreprise': {section: 'recruiter', key: 'nomEntreprise'},
+                        'type_organisation': {section: 'recruiter', key: 'typeOrganisation'},
+                        'taille_entreprise': {section: 'recruiter', key: 'tailleEntreprise'},
+                        'site_web': {section: 'recruiter', key: 'siteWeb'},
+                        'ville': {section: 'recruiter', key: 'ville'},
+                        'poste': {section: 'recruiter', key: 'poste'},
+                    };
 
                     Object.entries(errs).forEach(([key, msg]) => {
-                        if (userKeys.includes(key as any)) {
-                            (userErrors as any)[key] = msg;
+                        const mapping = fieldMapping[key];
+                        if (mapping) {
+                            if (mapping.section === 'user') {
+                                (userErrors as any)[mapping.key] = msg;
+                            } else {
+                                (recruiterErrors as any)[mapping.key] = msg;
+                            }
                         } else {
-                            (candidatErrors as any)[key] = msg;
+                            (recruiterErrors as any)[key] = msg;
                         }
                     });
 
-                    setErrors({ user: userErrors, candidat: candidatErrors });
+                    setErrors({ user: userErrors, recruiter: recruiterErrors });
 
                     const firstError = Object.values(errs)[0];
                     if (firstError) toast.error(firstError as string);
@@ -166,11 +125,11 @@ export default function RegisterCandidat() {
     const handleNextStepValidation = async (step: number): Promise<boolean> => {
         const newErrors: Record<string, string> = {};
         let valid = true;
-        let section: 'user' | 'candidat' = 'user';
+        let section: 'user' | 'recruiter' = 'user';
 
         if (step === 1) {
             section = 'user';
-            const requiredFields: (keyof UserFormData)[] = ['nom', 'prenom', 'email', 'password', 'confirmPassword'];
+            const requiredFields: (keyof UserFormData)[] = ['email', 'password', 'confirmPassword'];
             requiredFields.forEach((field) => {
                 const value = formData.user[field];
                 if (!value || (typeof value === 'string' && value.trim() === '')) {
@@ -211,34 +170,15 @@ export default function RegisterCandidat() {
                 }
             }
         } else if (step === 2) {
-            section = 'candidat';
-            const requiredFields: (keyof CandidatFormData)[] = ['niveauExperience', 'formationJuridique', 'specialisations', 'langues', 'domainExperiences', 'PosteRecherche', 'typeTravailRecherche', 'villesTravailRecherche', 'modeTravailRecherche'];
+            section = 'recruiter';
+            const requiredFields: (keyof RecruiterFormData)[] = ['nomEntreprise', 'typeOrganisation', 'tailleEntreprise', 'ville'];
             requiredFields.forEach((field) => {
-                const value = formData.candidat[field];
-                if (value === undefined || value === null || (typeof value === 'string' && value.trim() === '') || (Array.isArray(value) && value.length === 0)) {
-                    (newErrors as any)[field] = 'Ce champ est obligatoire';
+                const value = formData.recruiter[field];
+                if (!value || (typeof value === 'string' && value.trim() === '')) {
+                    newErrors[field] = 'Ce champ est obligatoire';
                     valid = false;
                 }
             });
-        } else if (step === 3) {
-            section = 'candidat';
-            const { formations = [], experiences = [] } = formData.candidat;
-
-            if (formations.length === 0) {
-                newErrors.formations = 'Veuillez ajouter au moins une formation.';
-                valid = false;
-            } else if (formations.some((f: Formation) => !f.anneeDebut || !f.anneeFin || !f.niveau || !f.domaine || !f.ecole || !f.diplomaFile)) {
-                newErrors.formations = 'Veuillez remplir tous les champs de chaque formation, y compris le diplôme PDF.';
-                valid = false;
-            }
-
-            if (experiences.length === 0) {
-                newErrors.experiences = 'Veuillez ajouter au moins une expérience.';
-                valid = false;
-            } else if (experiences.some((e: Experience) => !e.debut || !e.fin || !e.type || !e.entreprise || !e.poste)) {
-                newErrors.experiences = 'Veuillez remplir tous les champs de chaque expérience.';
-                valid = false;
-            }
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -255,25 +195,18 @@ export default function RegisterCandidat() {
                         formData={formData.user}
                         onFieldChange={(field, value) => onFieldChange('user', field as string, value)}
                         errors={errors.user || {}}
+                        isRecruiter={true}
                     />
                 );
             case 2:
                 return (
-                    <FormCandidat
-                        formData={formData.candidat}
-                        onFieldChange={(field, value) => onFieldChange('candidat', field as string, value)}
-                        errors={errors.candidat || {}}
+                    <FormRecruiter
+                        formData={formData.recruiter}
+                        onFieldChange={(field, value) => onFieldChange('recruiter', field as string, value)}
+                        errors={errors.recruiter || {}}
                     />
                 );
             case 3:
-                return (
-                    <CandidatDetails
-                        formData={formData.candidat}
-                        onFieldChange={(field, value) => onFieldChange('candidat', field as string, value)}
-                        errors={errors.candidat || {}}
-                    />
-                );
-            case 4:
                 return <FormConfirmation formData={formData} onSubmit={handleSubmit} />;
             default:
                 return null;
@@ -294,20 +227,20 @@ export default function RegisterCandidat() {
                                 <div>
                                     <span className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-1.5 text-xs font-bold text-slate-900 uppercase tracking-widest shadow-sm">
                                         <Icon name="Sparkles" size={14} className="text-slate-900" />
-                                        Inscription candidat
+                                        Inscription recruteur
                                     </span>
 
                                     <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
-                                        Créez votre compte et trouvez le poste idéal
+                                        Recrutez les meilleurs talents juridiques
                                     </h1>
 
                                     <p className="mt-4 text-lg text-slate-600 font-medium">
-                                        Un processus simple, une présentation professionnelle et des correspondances intelligentes.
+                                        Accédez à un vivier qualifié de juristes et avocats prêts à rejoindre votre organisation.
                                     </p>
                                 </div>
 
                                 <ul className="space-y-4">
-                                    {['Profil clair et structuré', 'Mise en avant de vos spécialités', 'Matching avec les meilleures opportunités'].map((text) => (
+                                    {['Diffusion d\'offres ciblées', 'Matching intelligent', 'Gestion simplifiée des candidatures'].map((text) => (
                                         <li key={text} className="flex items-center gap-3">
                                             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm">
                                                 <Icon name="Check" size={14} />
@@ -319,12 +252,12 @@ export default function RegisterCandidat() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                        <div className="flex items-center gap-2 font-bold text-slate-900 mb-2"><Icon name="Shield" size={18} /> Sécurisé</div>
-                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Vos données restent privées et protégées.</p>
+                                        <div className="flex items-center gap-2 font-bold text-slate-900 mb-2"><Icon name="Shield" size={18} /> Professionnel</div>
+                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Votre profil entreprise est valorisé.</p>
                                     </div>
                                     <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                        <div className="flex items-center gap-2 font-bold text-slate-900 mb-2"><Icon name="Clock" size={18} /> Rapide</div>
-                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Inscription en moins de 3 minutes.</p>
+                                        <div className="flex items-center gap-2 font-bold text-slate-900 mb-2"><Icon name="Clock" size={18} /> Efficace</div>
+                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Trouvez le bon profil rapidement.</p>
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +266,7 @@ export default function RegisterCandidat() {
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
                             <div className="mx-auto w-full max-w-2xl rounded-[32px] border border-slate-200 bg-white p-6 sm:p-10 shadow-xl shadow-slate-200/50">
-                                <FormNavigator onNextStep={handleNextStepValidation} steps={candidatSteps}>
+                                <FormNavigator onNextStep={handleNextStepValidation} steps={recruiterSteps}>
                                     {renderStep}
                                 </FormNavigator>
 

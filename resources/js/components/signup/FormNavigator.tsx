@@ -1,18 +1,28 @@
 import { useState, ReactNode } from 'react';
 import ProgressIndicator from '@/components/signup/ProgressionIndicator';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface NavigatorFormProps {
     children: (currentStep: number) => ReactNode;
     onNextStep: (currentStep: number) => Promise<boolean> | boolean;
+    steps: { id: number; label: string; icon: string }[];
 }
 
-export default function FormNavigator({ children, onNextStep }: NavigatorFormProps) {
+export default function FormNavigator({ children, onNextStep, steps }: NavigatorFormProps) {
     const [currentStep, setCurrentStep] = useState(1);
+    const [isNavigating, setIsNavigating] = useState(false);
+
+    const totalSteps = steps.length;
 
     const nextStep = async () => {
-        const canGoNext = await onNextStep(currentStep);
-        if (!canGoNext) return;
-        if (currentStep < 4) setCurrentStep(currentStep + 1);
+        setIsNavigating(true);
+        try {
+            const canGoNext = await onNextStep(currentStep);
+            if (!canGoNext) return;
+            if (currentStep < totalSteps) setCurrentStep(currentStep + 1);
+        } finally {
+            setIsNavigating(false);
+        }
     };
 
     const prevStep = () => {
@@ -21,36 +31,34 @@ export default function FormNavigator({ children, onNextStep }: NavigatorFormPro
 
     return (
         <div className="flex flex-col items-center w-full">
-            <ProgressIndicator currentStep={currentStep} />
+            <ProgressIndicator currentStep={currentStep} steps={steps} />
 
-            <div className="w-full">{children(currentStep)}</div>
+            <div className="w-full mt-4">{children(currentStep)}</div>
 
-            <div className="flex justify-between w-full mt-6">
+            <div className="flex items-center justify-between w-full mt-10 pt-8 border-t border-slate-50">
                 <button
                     type="button"
                     onClick={prevStep}
-                    disabled={currentStep === 1}
-                    className={`px-5 py-2 rounded-lg transition-all text-sm font-medium ${
+                    disabled={currentStep === 1 || isNavigating}
+                    className={`inline-flex items-center gap-2 px-6 py-3 rounded-full transition-all text-xs font-bold uppercase tracking-widest ${
                         currentStep === 1
-                            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                            : 'bg-secondary text-secondary-foreground hover:opacity-90'
+                            ? 'text-slate-200 cursor-not-allowed'
+                            : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                 >
-                    Précédent
+                    <ChevronLeft size={16} /> Précédent
                 </button>
 
-                <button
-                    type="button"
-                    onClick={nextStep}
-                    disabled={currentStep === 4}
-                    className={`px-5 py-2 rounded-lg transition-all text-sm font-medium ${
-                        currentStep === 4
-                            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                            : 'bg-primary text-primary-foreground hover:opacity-90'
-                    }`}
-                >
-                    Suivant
-                </button>
+                {currentStep < totalSteps && (
+                    <button
+                        type="button"
+                        onClick={nextStep}
+                        disabled={isNavigating}
+                        className="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-wait"
+                    >
+                        {isNavigating ? 'Validation...' : <>Suivant <ChevronRight size={16} /></>}
+                    </button>
+                )}
             </div>
         </div>
     );
