@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { router } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
+import { router, Head } from '@inertiajs/react';
 import { Toaster, toast } from 'react-hot-toast';
+import Header from '@/components/home/Header';
 import FormNavigator from '@/components/signup/FormNavigator';
 import FormCommunFields, { UserFormData } from '@/components/signup/FormCommunFields';
 import FormRecruiter, { RecruiterFormData } from '@/components/signup/FormRecruiter';
@@ -19,6 +20,15 @@ const recruiterSteps = [
 ];
 
 export default function RegisterRecruteur() {
+    useEffect(() => {
+        // Preload Outfit Font if not already
+        const link = document.createElement('link');
+        link.href =
+            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap';
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }, []);
+
     const [formData, setFormData] = useState<FullFormData>({
         user: {
             nom: '',
@@ -161,12 +171,23 @@ export default function RegisterRecruteur() {
                         },
                         body: JSON.stringify({ email: formData.user.email }),
                     });
-                    if (res.status === 409) {
-                        newErrors.email = 'Cet email est déjà utilisé';
-                        toast.error('Cet email est déjà associé à un compte.');
+                    
+                    if (!res.ok) {
                         valid = false;
+                        if (res.status === 409) {
+                            newErrors.email = 'Cet email est déjà utilisé';
+                            toast.error('Cet email est déjà associé à un compte.');
+                        } else if (res.status === 422) {
+                            const data = await res.json();
+                            newErrors.email = data.message || 'Email invalide';
+                            toast.error(data.message || 'Veuillez vérifier votre email.');
+                        } else {
+                            toast.error('Une erreur est survenue lors de la vérification de l\'email.');
+                        }
                     }
-                } catch {
+                } catch (error) {
+                    valid = false;
+                    toast.error('Erreur de connexion. Veuillez réessayer.');
                 }
             }
         } else if (step === 2) {
@@ -214,27 +235,43 @@ export default function RegisterRecruteur() {
     };
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div 
+            className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
+            style={{ fontFamily: "'Outfit', sans-serif" }}
+        >
+            <Head title="Inscription Recruteur" />
             <Toaster position="top-right" />
 
-            <main className="relative">
+            {/* Soft Organic Grain Texture */}
+            <div
+                className="pointer-events-none fixed inset-0 z-[100] opacity-[0.4] mix-blend-multiply"
+                style={{
+                    backgroundImage:
+                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
+                }}
+            ></div>
+
+            <Header />
+
+            <main className="relative flex-1 py-12">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
                     <div className="grid lg:grid-cols-3 gap-10 lg:gap-16 items-start">
 
                         {/* Left sidebar */}
                         <aside className="hidden lg:block lg:col-span-1">
-                            <div className="sticky top-10 space-y-8">
+                            <div className="sticky top-28 space-y-8">
                                 <div>
-                                    <span className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-1.5 text-xs font-bold text-slate-900 uppercase tracking-widest shadow-sm">
-                                        <Icon name="Sparkles" size={14} className="text-slate-900" />
+                                    <span className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm px-4 py-1.5 text-xs font-bold text-[#1a1f1e] uppercase tracking-widest shadow-sm">
+                                        <Icon name="Sparkles" size={14} className="text-[#C06041]" />
                                         Inscription recruteur
                                     </span>
 
-                                    <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
+                                    <h1 className="mt-8 text-4xl font-bold tracking-tight text-[#1a1f1e] leading-[1.1]"
+                                        style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                                         Recrutez les meilleurs talents juridiques
                                     </h1>
 
-                                    <p className="mt-4 text-lg text-slate-600 font-medium">
+                                    <p className="mt-4 text-lg text-[#1a1f1e]/70 font-medium">
                                         Accédez à un vivier qualifié de juristes et avocats prêts à rejoindre votre organisation.
                                     </p>
                                 </div>
@@ -242,22 +279,26 @@ export default function RegisterRecruteur() {
                                 <ul className="space-y-4">
                                     {['Diffusion d\'offres ciblées', 'Matching intelligent', 'Gestion simplifiée des candidatures'].map((text) => (
                                         <li key={text} className="flex items-center gap-3">
-                                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-white shadow-sm">
+                                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1a1f1e] text-[#FDFCF8] shadow-sm">
                                                 <Icon name="Check" size={14} />
                                             </div>
-                                            <span className="text-sm font-bold text-slate-700">{text}</span>
+                                            <span className="text-sm font-bold text-[#1a1f1e]">{text}</span>
                                         </li>
                                     ))}
                                 </ul>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                        <div className="flex items-center gap-2 font-bold text-slate-900 mb-2"><Icon name="Shield" size={18} /> Professionnel</div>
-                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Votre profil entreprise est valorisé.</p>
+                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm p-5 shadow-sm">
+                                        <div className="flex items-center gap-2 font-bold text-[#1a1f1e] mb-2">
+                                            <Icon name="Shield" size={18} className="text-[#C06041]" /> Professionnel
+                                        </div>
+                                        <p className="text-xs text-[#1a1f1e]/60 font-medium leading-relaxed">Votre profil entreprise est valorisé.</p>
                                     </div>
-                                    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                                        <div className="flex items-center gap-2 font-bold text-slate-900 mb-2"><Icon name="Clock" size={18} /> Efficace</div>
-                                        <p className="text-xs text-slate-500 font-medium leading-relaxed">Trouvez le bon profil rapidement.</p>
+                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm p-5 shadow-sm">
+                                        <div className="flex items-center gap-2 font-bold text-[#1a1f1e] mb-2">
+                                            <Icon name="Clock" size={18} className="text-[#C06041]" /> Efficace
+                                        </div>
+                                        <p className="text-xs text-[#1a1f1e]/60 font-medium leading-relaxed">Trouvez le bon profil rapidement.</p>
                                     </div>
                                 </div>
                             </div>
@@ -265,14 +306,16 @@ export default function RegisterRecruteur() {
 
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
-                            <div className="mx-auto w-full max-w-2xl rounded-[32px] border border-slate-200 bg-white p-6 sm:p-10 shadow-xl shadow-slate-200/50">
+                            <div className="mx-auto w-full max-w-2xl rounded-[40px] border border-[#1a1f1e]/10 bg-white p-6 sm:p-10 shadow-2xl shadow-[#1a1f1e]/5 relative z-10">
                                 <FormNavigator onNextStep={handleNextStepValidation} steps={recruiterSteps}>
                                     {renderStep}
                                 </FormNavigator>
 
-                                <div className="mt-10 pt-8 border-t border-slate-100 flex items-center justify-center gap-2">
-                                    <p className="text-sm text-slate-500 font-medium">Déjà un compte ?</p>
-                                    <a href="/login" className="text-sm font-bold text-slate-900 hover:underline underline-offset-4">Se connecter</a>
+                                <div className="mt-10 pt-8 border-t border-[#1a1f1e]/5 flex items-center justify-center gap-2">
+                                    <p className="text-sm text-[#1a1f1e]/50 font-medium">Déjà un compte ?</p>
+                                    <a href="/login" className="text-sm font-bold text-[#1a1f1e] hover:underline underline-offset-4 transition-colors">
+                                        Se connecter
+                                    </a>
                                 </div>
                             </div>
                         </section>
