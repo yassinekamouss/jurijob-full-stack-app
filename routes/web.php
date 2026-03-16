@@ -6,15 +6,14 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
-});
+Route::inertia('/', 'Home')->name('home');
 
-// Candidat Registration Routes
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::inertia('dashboard', 'dashboard')->name('dashboard');
+// });
+
+// Candidat & Recruteur Registration Routes
 Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat'))->name('register.candidat.form');
 Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur'))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
@@ -23,3 +22,4 @@ Route::post('/check-email', CheckEmailController::class)->name('check.email');
 Route::get('/private/file', DownloadPrivateFileController::class)->name('download.private')->middleware('auth');
 
 require __DIR__.'/settings.php';
+
