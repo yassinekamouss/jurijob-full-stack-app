@@ -1,122 +1,189 @@
-import Reveal from "@/components/home/Reveal";
+import Reveal from '@/components/home/Reveal';
 
 export default function About() {
-  return (
-    <section id="about" className="bg-gray-50 py-24 md:py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
-        {/* Header - Sobre et solennel */}
-        <div className="text-center mb-16 md:mb-24">
-          <Reveal direction="up">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-black mb-6">
-              À propos de Jurijob
-            </h2>
-          </Reveal>
-          <div className="w-20 h-1.5 bg-black mx-auto"></div>
-        </div>
+    return (
+        <section
+            id="about"
+            className="relative border-b border-[#FDFCF8]/10 bg-[#1a1f1e] py-24 text-[#FDFCF8] md:py-32"
+        >
+            <div className="relative z-10 mx-auto max-w-7xl px-8 md:px-16">
+                {/* Header - Sobre et solennel */}
+                <div className="mb-20 flex flex-col items-start border-b border-[#FDFCF8]/20 pb-10 md:mb-28">
+                    <Reveal direction="up">
+                        <h2
+                            className="mb-4 text-5xl tracking-tight md:text-7xl"
+                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        >
+                            À propos de{' '}
+                            <span className="font-light text-[#C06041] italic">
+                                Jurijob
+                            </span>
+                        </h2>
+                    </Reveal>
+                </div>
 
-        {/* Contenu principal */}
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
-          
-          {/* Illustration Professionnelle */}
-          <Reveal direction="left" className="relative group">
-            <div className="relative z-10">
-              {/* Effet d'ombre décalée noire (style brutaliste chic) */}
-              <div className="absolute -bottom-6 -right-6 w-full h-full bg-black rounded-lg -z-10 group-hover:-bottom-4 group-hover:-right-4 transition-all duration-500"></div>
-              
-              <img
-                src="/images/_.jpeg" // Assure-toi que l'image est dans public/images/
-                alt="Justice et professionnalisme"
-                className="w-full h-[550px] object-cover rounded-lg shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
-              />
-            </div>
-            
-            {/* Badge flottant sur l'image */}
-            <div className="absolute top-8 left-8 bg-white/90 backdrop-blur-md p-6 rounded-lg shadow-xl z-20 hidden md:block">
-              <p className="text-black font-bold text-xl italic leading-tight">
-                "L'excellence au service <br/> de la justice."
-              </p>
-            </div>
-          </Reveal>
+                {/* Contenu principal */}
+                <div className="mb-24 grid items-start gap-16 lg:grid-cols-2">
+                    {/* Illustration Professionnelle */}
+                    <Reveal direction="left" className="group relative">
+                        <div className="relative z-10 pr-6 pb-6">
+                            {/* Offset Fine Border */}
+                            <div className="absolute top-6 left-6 z-0 h-full w-full border border-[#C06041]/60"></div>
 
-          {/* Texte et Valeurs */}
-          <div className="space-y-12">
-            <Reveal direction="up">
-              <div>
-                <h3 className="text-2xl font-bold text-black mb-6 flex items-center gap-3">
-                  <span className="w-8 h-1 bg-black"></span>
-                  Notre mission
-                </h3>
-                <p className="text-gray-600 leading-relaxed text-xl">
-                  Nous nous engageons à rapprocher les talents du droit et les
-                  employeurs visionnaires au Maroc. Notre plateforme simplifie
-                  le processus de recrutement tout en maintenant les plus hauts
-                  standards de professionnalisme.
-                </p>
-              </div>
-            </Reveal>
+                            <img
+                                src="/images/_.jpeg" // Assure-toi que l'image est dans public/images/
+                                alt="Justice et professionnalisme"
+                                className="relative z-10 h-[600px] w-full object-cover mix-blend-luminosity brightness-110 grayscale transition-all duration-700 group-hover:mix-blend-normal group-hover:grayscale-0"
+                            />
+                        </div>
 
-            <div className="space-y-8">
-              <Reveal direction="up" delay={0.1}>
-                <h3 className="text-2xl font-bold text-black mb-8 flex items-center gap-3">
-                  <span className="w-8 h-1 bg-black"></span>
-                  Nos valeurs
-                </h3>
-              </Reveal>
+                        {/* Badge flottant sur l'image */}
+                        <div className="absolute top-12 -right-8 z-20 hidden max-w-[200px] border border-[#1a1f1e] bg-[#FDFCF8] p-6 text-[#1a1f1e] shadow-2xl md:block">
+                            <p
+                                className="text-lg leading-tight font-medium italic"
+                                style={{
+                                    fontFamily: 'Cormorant Garamond, serif',
+                                }}
+                            >
+                                "L'excellence au service de la justice."
+                            </p>
+                        </div>
+                    </Reveal>
 
-              <div className="grid gap-8">
-                {[
-                  { id: "01", title: "Sérieux", desc: "Standards professionnels garantis dans chaque interaction." },
-                  { id: "02", title: "Neutralité", desc: "Plateforme impartiale assurant l'égalité des chances." },
-                  { id: "03", title: "Éthique", desc: "Respect strict des exigences de la profession juridique." }
-                ].map((val, i) => (
-                  <Reveal key={val.id} delay={0.1 * (i + 1)} direction="up">
-                    <div className="flex gap-6 group">
-                      <div className="flex-shrink-0 text-3xl font-black text-gray-200 group-hover:text-black transition-colors duration-300">
-                        {val.id}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-black text-xl mb-1">{val.title}</h4>
-                        <p className="text-gray-500 leading-relaxed">{val.desc}</p>
-                      </div>
+                    {/* Texte et Valeurs */}
+                    <div className="space-y-16 pt-4">
+                        <Reveal direction="up">
+                            <div>
+                                <h3 className="mb-6 flex items-center gap-4 text-sm font-medium tracking-widest text-[#C06041] uppercase">
+                                    <span className="h-px w-12 bg-[#C06041]"></span>
+                                    Notre mission
+                                </h3>
+                                <p className="text-xl leading-relaxed font-light text-[#FDFCF8]/80">
+                                    Nous nous engageons à rapprocher les talents
+                                    du droit et les employeurs visionnaires au
+                                    Maroc. Notre plateforme simplifie le
+                                    processus de recrutement tout en maintenant
+                                    les plus hauts standards de
+                                    professionnalisme.
+                                </p>
+                            </div>
+                        </Reveal>
+
+                        <div className="space-y-10">
+                            <Reveal direction="up" delay={0.1}>
+                                <h3 className="mb-2 flex items-center gap-4 text-sm font-medium tracking-widest text-[#C06041] uppercase">
+                                    <span className="h-px w-12 bg-[#C06041]"></span>
+                                    Nos valeurs
+                                </h3>
+                            </Reveal>
+
+                            <div className="grid gap-6">
+                                {[
+                                    {
+                                        id: '01',
+                                        title: 'Sérieux',
+                                        desc: 'Standards professionnels garantis dans chaque interaction.',
+                                    },
+                                    {
+                                        id: '02',
+                                        title: 'Neutralité',
+                                        desc: "Plateforme impartiale assurant l'égalité des chances.",
+                                    },
+                                    {
+                                        id: '03',
+                                        title: 'Éthique',
+                                        desc: 'Respect strict des exigences de la profession juridique.',
+                                    },
+                                ].map((val, i) => (
+                                    <Reveal
+                                        key={val.id}
+                                        delay={0.1 * (i + 1)}
+                                        direction="up"
+                                    >
+                                        <div className="group flex gap-6 border-t border-[#FDFCF8]/10 pt-6 transition-colors duration-500 hover:border-[#C06041]">
+                                            <div className="flex-shrink-0 text-sm font-medium tracking-widest text-[#FDFCF8]/30 transition-colors duration-300 group-hover:text-[#C06041]">
+                                                {val.id}
+                                            </div>
+                                            <div>
+                                                <h4
+                                                    className="mb-2 text-2xl"
+                                                    style={{
+                                                        fontFamily:
+                                                            'Cormorant Garamond, serif',
+                                                    }}
+                                                >
+                                                    {val.title}
+                                                </h4>
+                                                <p className="text-sm leading-relaxed font-light text-[#FDFCF8]/60">
+                                                    {val.desc}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+                </div>
 
-        {/* Statistiques optionnelles */}
-        <Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-16 border-t border-gray-200">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-black mb-2">500+</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide">
-                Diplômés en droit
-              </div>
+                {/* Statistiques optionnelles */}
+                <Reveal>
+                    <div className="grid grid-cols-2 gap-8 border-t border-[#FDFCF8]/10 pt-16 md:grid-cols-4">
+                        <div className="border-l border-[#FDFCF8]/10 pl-6 text-left">
+                            <div
+                                className="mb-2 text-5xl"
+                                style={{
+                                    fontFamily: 'Cormorant Garamond, serif',
+                                }}
+                            >
+                                500+
+                            </div>
+                            <div className="text-xs font-medium tracking-widest text-[#FDFCF8]/50 uppercase">
+                                Diplômés
+                            </div>
+                        </div>
+                        <div className="border-l border-[#FDFCF8]/10 pl-6 text-left">
+                            <div
+                                className="mb-2 text-5xl"
+                                style={{
+                                    fontFamily: 'Cormorant Garamond, serif',
+                                }}
+                            >
+                                150+
+                            </div>
+                            <div className="text-xs font-medium tracking-widest text-[#FDFCF8]/50 uppercase">
+                                Cabinets
+                            </div>
+                        </div>
+                        <div className="border-l border-[#FDFCF8]/10 pl-6 text-left">
+                            <div
+                                className="mb-2 text-5xl"
+                                style={{
+                                    fontFamily: 'Cormorant Garamond, serif',
+                                }}
+                            >
+                                95%
+                            </div>
+                            <div className="text-xs font-medium tracking-widest text-[#FDFCF8]/50 uppercase">
+                                Placement
+                            </div>
+                        </div>
+                        <div className="border-l border-[#FDFCF8]/10 pl-6 text-left">
+                            <div
+                                className="mb-2 text-5xl"
+                                style={{
+                                    fontFamily: 'Cormorant Garamond, serif',
+                                }}
+                            >
+                                24/7
+                            </div>
+                            <div className="text-xs font-medium tracking-widest text-[#FDFCF8]/50 uppercase">
+                                Support
+                            </div>
+                        </div>
+                    </div>
+                </Reveal>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-black mb-2">150+</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide">
-                Cabinets d’avocats
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-black mb-2">95%</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide">
-                Taux de réussite
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-black mb-2">24/7</div>
-              <div className="text-gray-600 text-sm uppercase tracking-wide">
-                Support
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }

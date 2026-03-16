@@ -1,61 +1,61 @@
 import { Link } from "@inertiajs/react";
-import { Users, Target } from "lucide-react";
 import Reveal from "@/components/home/Reveal"; // Import du composant global
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-screen flex items-center bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section id="home" className="relative min-h-[90vh] flex items-center bg-[#FDFCF8] overflow-hidden pt-12 pb-24">
+      <div className="absolute top-0 left-8 md:left-16 w-[1px] h-full bg-[#1a1f1e]/5" />
+      <div className="absolute top-0 right-8 md:right-16 w-[1px] h-full bg-[#1a1f1e]/5" />
+      
+      <div className="max-w-7xl mx-auto px-8 md:px-16 w-full relative z-10">
+        <div className="grid lg:grid-cols-12 gap-16 items-center">
           
           {/* Texte - Colonne Gauche */}
-          <Reveal direction="left" duration={1} delay={0.2} className="space-y-8">
-            <div className="space-y-6">
+          <Reveal direction="left" duration={1} delay={0.2} className="lg:col-span-7 space-y-10">
+            <div className="space-y-8">
               <Reveal direction="up" duration={0.8} delay={0.4}>
-                <div className="inline-flex items-center px-4 py-2 bg-gray-50 rounded-full">
-                  <span className="w-2 h-2 bg-black rounded-full mr-2"></span>
-                  <span className="text-sm font-medium text-gray-700">
+                <div className="inline-flex items-center space-x-3 border-b border-[#1a1f1e]/20 pb-2">
+                  <span className="w-1.5 h-1.5 bg-[#C06041] block"></span>
+                  <span className="text-xs uppercase tracking-widest font-medium text-[#1a1f1e]/70">
                     Plateforme juridique n°1 au Maroc
                   </span>
                 </div>
               </Reveal>
 
               <Reveal direction="up" duration={1} delay={0.6}>
-                <h1 className="text-5xl lg:text-7xl font-bold text-black leading-tight">
-                  <span className="block">Relier les talents</span>
-                  <span className="block bg-gradient-to-r from-black via-gray-800 to-gray-600 bg-clip-text text-transparent">
-                    juridiques
-                  </span>
-                  <span className="block">aux</span>
-                  <span className="block relative">
-                    opportunités
-                    <Reveal direction="up" delay={1.5} duration={1}>
-                      <div className="absolute -bottom-2 left-0 h-1 bg-black w-full" />
+                <h1 className="text-6xl lg:text-8xl text-[#1a1f1e] leading-[1.05] tracking-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  <span className="block italic text-[#C06041] font-light">Relier</span>
+                  <span className="block font-medium">les talents</span>
+                  <span className="block font-medium">juridiques</span>
+                  <span className="block relative inline-block mt-2">
+                    aux opportunités
+                    <Reveal direction="left" delay={1.5} duration={1}>
+                      <div className="absolute bottom-2 left-0 h-[3px] bg-[#1a1f1e] w-full" />
                     </Reveal>
                   </span>
                 </h1>
               </Reveal>
 
               <Reveal direction="up" duration={0.8} delay={0.8}>
-                <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                  Jurijob est la plateforme de référence au Maroc qui comble le
-                  fossé entre les jeunes diplômés en droit ambitieux et les
-                  recruteurs visionnaires.
+                <p className="text-lg text-[#1a1f1e]/80 leading-relaxed max-w-md font-light">
+                  Jurijob est l'écosystème de référence qui comble le fossé entre 
+                  l'ambition des jeunes diplômés et la vision des recruteurs au Maroc.
                 </p>
               </Reveal>
             </div>
 
             {/* Boutons CTA */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-5 pt-4">
               <Link 
                 href="/register?type=candidate"
-                className="bg-black text-white hover:bg-gray-800 px-8 py-3 rounded-md transition text-center"
+                className="bg-[#1a1f1e] text-[#FDFCF8] hover:bg-[#343a38] px-8 py-4 text-sm uppercase tracking-wide transition-all text-center flex items-center justify-center gap-3 group"
               >
                 Je suis diplômé(e)
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
               </Link>
               <Link 
                 href="/register?type=recruteur"
-                className="border border-black text-black hover:bg-gray-50 px-8 py-3 rounded-md transition text-center"
+                className="border border-[#1a1f1e] text-[#1a1f1e] hover:bg-[#1a1f1e]/5 px-8 py-4 text-sm uppercase tracking-wide transition-all text-center flex items-center justify-center gap-3"
               >
                 Je suis recruteur
               </Link>
@@ -63,51 +63,39 @@ export default function Hero() {
           </Reveal>
 
           {/* Image - Colonne Droite */}
-          <Reveal direction="right" duration={1} delay={0.4} className="relative">
-            <div className="relative">
-              {/* Bordure décorative arrière */}
-              <div className="absolute -top-8 -right-8 w-full h-full border-2 border-gray-200 rounded-3xl" />
-
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-2xl">
-                {/* Dans Laravel, le chemin commence par / car le dossier public est la racine.
-                  Assure-toi que ton image est dans public/images/fallback.png
-                */}
+          <Reveal direction="right" duration={1} delay={0.4} className="lg:col-span-5 relative h-full">
+            <div className="relative aspect-[4/5] w-full md:w-5/6 ml-auto">
+              <div className="absolute top-8 -left-8 w-full h-full bg-[#1a1f1e] z-0" />
+              <div className="relative h-full z-10 overflow-hidden bg-zinc-200">
                 <img
                   src="/images/fallback.png" 
-                  alt="Espace de travail juridique moderne"
-                  className="w-full h-auto"
+                  alt="Espace de travail juridique"
+                  className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 contrast-125"
                   loading="eager"
                 />
+                <div className="absolute inset-0 bg-[#C06041]/10 mix-blend-overlay"></div>
               </div>
 
-              {/* Cartes flottantes */}
+              {/* Stat 1 - bottom left */}
               <Reveal direction="up" duration={0.8} delay={1.2}>
-                <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-lg p-4 border border-gray-100">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-                      <Users className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-black">1 250+</div>
-                      <div className="text-sm text-gray-600">Utilisateurs actifs</div>
-                    </div>
+                <div className="absolute -left-12 bottom-12 bg-[#FDFCF8] p-5 shadow-2xl z-20 border border-[#1a1f1e]/10 backdrop-blur-sm">
+                  <div className="flex flex-col">
+                    <div className="text-3xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>1,250+</div>
+                    <div className="text-xs uppercase tracking-wider text-[#1a1f1e]/60 mt-1">Utilisateurs actifs</div>
                   </div>
                 </div>
               </Reveal>
 
+              {/* ✅ Stat 2 - moved INSIDE the relative div, not after </section> */}
               <Reveal direction="down" duration={0.8} delay={1.4}>
-                <div className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-lg p-4 border border-gray-100">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Target className="w-5 h-5 text-black" />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-black">98%</div>
-                      <div className="text-sm text-gray-600">Taux d’adéquation</div>
-                    </div>
+                <div className="absolute -right-8 -top-8 bg-[#FDFCF8] p-5 shadow-2xl z-20 border border-[#1a1f1e]/10 backdrop-blur-sm">
+                  <div className="flex flex-col text-right">
+                    <div className="text-3xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>98%</div>
+                    <div className="text-xs uppercase tracking-wider text-[#1a1f1e]/60 mt-1">Taux d'adéquation</div>
                   </div>
                 </div>
               </Reveal>
+
             </div>
           </Reveal>
         </div>

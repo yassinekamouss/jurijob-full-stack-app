@@ -1,112 +1,146 @@
-import { Link } from "@inertiajs/react";
-import { Check } from "lucide-react";
-import Reveal from "@/components/home/Reveal";
+import { Link } from '@inertiajs/react';
+import { Check } from 'lucide-react';
+import Reveal from '@/components/home/Reveal';
 
 export default function Pricing() {
-  return (
-    <section id="pricing" className="bg-white py-24 md:py-32">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center mb-16 md:mb-24">
-          <Reveal direction="up">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-black mb-6">
-              Tarification simple et transparente
-            </h2>
-          </Reveal>
-          <Reveal direction="up" delay={0.1}>
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto">
-              Choisissez l’offre qui correspond à votre profil et vos objectifs.
-            </p>
-          </Reveal>
-        </div>
-
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-          
-          {/* For Graduates - Design Doux & Vert */}
-          <Reveal direction="up" delay={0.2}>
-            <div className="group border border-emerald-100 bg-emerald-50/30 rounded-[2.5rem] p-10 flex flex-col h-full hover:bg-emerald-50 transition-colors duration-500">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-emerald-900 mb-2">
-                  Pour les diplômés
-                </h3>
-                <div className="flex items-baseline gap-1 mt-4">
-                  <span className="text-5xl font-bold text-black tracking-tighter">Gratuit</span>
-                  <span className="text-emerald-700/60 font-medium">/ à vie</span>
+    return (
+        <section
+            id="pricing"
+            className="border-b border-[#1a1f1e]/10 bg-[#FDFCF8] py-24 md:py-32"
+        >
+            <div className="mx-auto max-w-7xl px-8 md:px-16">
+                {/* Section Header */}
+                <div className="mb-16 text-center md:mb-24">
+                    <Reveal direction="up">
+                        <h2
+                            className="mb-6 text-5xl tracking-tight text-[#1a1f1e] md:text-7xl"
+                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        >
+                            Tarification{' '}
+                            <span className="font-light text-[#C06041] italic">
+                                sur mesure
+                            </span>
+                        </h2>
+                    </Reveal>
+                    <Reveal direction="up" delay={0.1}>
+                        <p className="mx-auto max-w-2xl text-lg font-light text-[#1a1f1e]/70 md:text-xl">
+                            Choisissez l'offre qui correspond à votre profil
+                            d'expertise et vos ambitions.
+                        </p>
+                    </Reveal>
                 </div>
-                <p className="text-emerald-800/70 mt-4 leading-relaxed">
-                  Toujours gratuit pour les jeunes talents du droit au Maroc.
-                </p>
-              </div>
 
-              <ul className="space-y-4 mb-10 flex-grow">
-                {[
-                  "Créez un profil professionnel",
-                  "Téléchargez et validez votre CV",
-                  "Soyez découvert par des recruteurs",
-                  "Accès aux ressources de carrière",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                    </div>
-                    <span className="text-emerald-900/80 font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
+                {/* Pricing Cards */}
+                <div className="mx-auto grid max-w-5xl gap-0 border border-[#1a1f1e] md:grid-cols-2">
+                    {/* For Graduates */}
+                    <Reveal direction="up" delay={0.2}>
+                        <div className="flex h-full flex-col border-b border-[#1a1f1e] bg-[#FDFCF8] p-12 md:border-r md:border-b-0 md:p-16">
+                            <div className="mb-10">
+                                <h3 className="mb-4 text-sm font-medium tracking-widest text-[#C06041] uppercase">
+                                    Diplômés & Talents
+                                </h3>
+                                <div className="mt-4 flex items-baseline gap-2">
+                                    <span
+                                        className="text-5xl text-[#1a1f1e] md:text-6xl"
+                                        style={{
+                                            fontFamily:
+                                                'Cormorant Garamond, serif',
+                                        }}
+                                    >
+                                        Gratuit
+                                    </span>
+                                    <span className="font-light text-[#1a1f1e]/50 italic">
+                                        / à vie
+                                    </span>
+                                </div>
+                                <p className="mt-6 text-sm leading-relaxed font-light text-[#1a1f1e]/70">
+                                    L'accès à l'excellence professionnelle ne
+                                    devrait jamais être tarifé pour les talents
+                                    de demain.
+                                </p>
+                            </div>
 
-              <Link
-                href="/register?type=candidate"
-                className="w-full bg-black text-white text-center py-4 rounded-2xl font-bold hover:bg-emerald-950 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-900/10"
-              >
-                Rejoindre en tant que diplômé(e)
-              </Link>
-            </div>
-          </Reveal>
+                            <ul className="mb-12 flex-grow space-y-5">
+                                {[
+                                    'Création de profil détaillé',
+                                    'Validation de CV prioritaire',
+                                    'Visibilité auprès des grands cabinets',
+                                    'Ressources de développement de carrière',
+                                ].map((item, i) => (
+                                    <li
+                                        key={i}
+                                        className="flex items-center gap-4"
+                                    >
+                                        <div className="h-1.5 w-1.5 flex-shrink-0 bg-[#C06041]"></div>
+                                        <span className="text-sm font-light text-[#1a1f1e]/80">
+                                            {item}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
 
-          {/* For Recruiters - Design Black & Bold */}
-          <Reveal direction="up" delay={0.3}>
-            <div className="group border border-gray-100 bg-white rounded-[2.5rem] p-10 flex flex-col h-full shadow-sm hover:shadow-2xl transition-all duration-500 border-2 hover:border-black">
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-black mb-2">
-                  Pour les recruteurs
-                </h3>
-                <div className="flex items-baseline gap-1 mt-4">
-                  <span className="text-4xl font-bold text-black tracking-tighter">Sur mesure</span>
+                            <Link
+                                href="/register?type=candidate"
+                                className="w-full bg-[#1a1f1e] py-5 text-center text-xs font-medium tracking-widest text-[#FDFCF8] uppercase transition-colors duration-500 hover:bg-[#C06041]"
+                            >
+                                Rejoindre la plateforme
+                            </Link>
+                        </div>
+                    </Reveal>
+
+                    {/* For Recruiters */}
+                    <Reveal direction="up" delay={0.3}>
+                        <div className="flex h-full flex-col bg-[#1a1f1e] p-12 text-[#FDFCF8] md:p-16">
+                            <div className="mb-10">
+                                <h3 className="mb-4 text-sm font-medium tracking-widest text-[#C06041] uppercase">
+                                    Cabinets & Recruteurs
+                                </h3>
+                                <div className="mt-4 flex items-baseline gap-2">
+                                    <span
+                                        className="text-5xl md:text-6xl"
+                                        style={{
+                                            fontFamily:
+                                                'Cormorant Garamond, serif',
+                                        }}
+                                    >
+                                        Élite
+                                    </span>
+                                </div>
+                                <p className="mt-6 text-sm leading-relaxed font-light text-[#FDFCF8]/60">
+                                    Une tarification personnalisée pour répondre
+                                    à vos exigences de volume et de qualité.
+                                </p>
+                            </div>
+
+                            <ul className="mb-12 flex-grow space-y-5">
+                                {[
+                                    'Accès exclusif à notre vivier certifié',
+                                    'Filtrage hybride (IA + Experts)',
+                                    'Recherche multicritère avancée',
+                                    'Accompagnement marque employeur',
+                                ].map((item, i) => (
+                                    <li
+                                        key={i}
+                                        className="flex items-center gap-4"
+                                    >
+                                        <div className="h-1.5 w-1.5 flex-shrink-0 bg-[#C06041]"></div>
+                                        <span className="text-sm font-light text-[#FDFCF8]/70">
+                                            {item}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <Link
+                                href="/contact"
+                                className="w-full border border-[#FDFCF8] py-5 text-center text-xs font-medium tracking-widest text-[#FDFCF8] uppercase transition-colors duration-500 hover:bg-[#FDFCF8] hover:text-[#1a1f1e]"
+                            >
+                                Contacter l'équipe
+                            </Link>
+                        </div>
+                    </Reveal>
                 </div>
-                <p className="text-gray-500 mt-4 leading-relaxed">
-                  Tarification personnalisée selon vos volumes de recrutement.
-                </p>
-              </div>
-
-              <ul className="space-y-4 mb-10 flex-grow">
-                {[
-                  "Accès à une CVthèque sélectionnée",
-                  "Profils validés par nos experts",
-                  "Critères de recherche avancés",
-                  "Accompagnement dédié",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-center gap-3">
-                    <div className="flex-shrink-0 w-5 h-5 bg-black rounded-full flex items-center justify-center">
-                      <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                    </div>
-                    <span className="text-gray-700 font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/contact"
-                className="w-full border-2 border-black text-black text-center py-4 rounded-2xl font-bold hover:bg-black hover:text-white transition-all duration-300"
-              >
-                Contacter les ventes
-              </Link>
             </div>
-          </Reveal>
-          
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }

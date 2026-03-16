@@ -1,26 +1,48 @@
-import { Link } from "@inertiajs/react";
+import { Link } from '@inertiajs/react';
+import Reveal from '@/components/home/Reveal';
 
 export default function CallToAction() {
     return (
-        <section className="bg-zinc-950 text-white py-40 px-4 sm:px-6 relative overflow-hidden">
-            {/* Soft Organic Gradients */}
-            <div className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#FE5F55] opacity-30 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
-            <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#9BF6FF] opacity-20 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
-            
-            <div className="max-w-5xl mx-auto text-center relative z-10 flex flex-col items-center">
-                <h2 className="text-7xl sm:text-[8rem] font-black mb-8 tracking-tighter leading-[0.9]">Prêt pour le <br/><span className="italic font-light opacity-90">changement ?</span></h2>
-                <p className="text-2xl font-medium text-gray-300 mb-14 max-w-2xl mx-auto">
-                    Rejoignez l'écosystème juridique le plus abouti du Maroc. Deux minutes suffisent.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center gap-6">
-                    <Link href="/register" className="bg-[#B4F8C8] text-black border-4 border-[#B4F8C8] rounded-[2rem] px-12 py-6 font-black text-2xl hover:bg-white hover:border-white transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_50px_rgba(180,248,200,0.5)]">
-                        Commencer maintenant
-                    </Link>
-                </div>
+        <section className="relative overflow-hidden bg-[#1a1f1e] px-4 py-40 text-[#FDFCF8] sm:px-6">
+            {/* Architectural Grid Lines */}
+            <div className="pointer-events-none absolute top-0 left-1/4 h-full w-[1px] bg-white/5"></div>
+            <div className="pointer-events-none absolute top-0 left-2/4 h-full w-[1px] bg-white/5"></div>
+            <div className="pointer-events-none absolute top-0 left-3/4 h-full w-[1px] bg-white/5"></div>
+
+            <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
+                <Reveal direction="up" duration={0.8}>
+                    <h2
+                        className="mb-10 text-6xl leading-[1] font-medium tracking-tight sm:text-[7rem]"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                    >
+                        Prêt pour le <br />
+                        <span className="font-light text-[#C06041] italic">
+                            changement ?
+                        </span>
+                    </h2>
+                </Reveal>
+
+                <Reveal direction="up" duration={0.8} delay={0.2}>
+                    <p className="mx-auto mb-14 max-w-xl text-xl font-light text-[#FDFCF8]/70">
+                        Rejoignez l'écosystème juridique d'élite du Maroc.
+                        Prenez en main votre évolution.
+                    </p>
+                </Reveal>
+
+                <Reveal direction="up" duration={0.8} delay={0.4}>
+                    <div className="flex flex-col justify-center gap-6 sm:flex-row">
+                        <Link
+                            href="/register"
+                            className="border border-[#FDFCF8] bg-[#FDFCF8] px-12 py-5 text-sm tracking-widest text-[#1a1f1e] uppercase transition-colors duration-500 hover:bg-[#C06041] hover:text-[#FDFCF8]"
+                        >
+                            Commencer maintenant
+                        </Link>
+                    </div>
+                </Reveal>
             </div>
-            
+
             {/* Seamless transition bleed element to footer */}
-            <div className="absolute bottom-0 left-0 w-full h-[8px] bg-gradient-to-r from-[#FFADAD] via-[#FFD6A5] to-[#CAFFBF]"></div>
+            <div className="absolute bottom-0 left-0 h-[1px] w-full bg-white/10"></div>
         </section>
     );
 }

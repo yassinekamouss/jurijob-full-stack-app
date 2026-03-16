@@ -1,79 +1,101 @@
-import { Scale, CheckCircle, Shield, Clock } from "lucide-react";
-import Reveal from "@/components/home/Reveal";
+import { Scale, CheckCircle, Shield, Clock } from 'lucide-react';
+import Reveal from '@/components/home/Reveal';
 
 export default function WhyChooseUs() {
-  const features = [
-    {
-      icon: Scale,
-      title: "Adapté au secteur juridique",
-      description:
-        "Une plateforme conçue spécifiquement pour les besoins uniques des professionnels du droit et des cabinets.",
-    },
-    {
-      icon: CheckCircle,
-      title: "Profils vérifiés",
-      description:
-        "Chaque profil fait l’objet d’une validation rigoureuse pour garantir la qualité et l’authenticité des candidats.",
-    },
-    {
-      icon: Shield,
-      title: "Gratuit pour les diplômés",
-      description:
-        "Aucun coût pour les diplômés en droit souhaitant rejoindre la plateforme et se connecter à des employeurs.",
-    },
-    {
-      icon: Clock,
-      title: "Accès efficace aux CV",
-      description:
-        "Gagnez du temps grâce à un processus rationalisé qui vous présente rapidement des candidats préqualifiés.",
-    },
-  ];
+    const features = [
+        {
+            icon: Scale,
+            title: 'Adapté au secteur juridique',
+            description:
+                'Une plateforme conçue spécifiquement pour les besoins uniques des professionnels du droit et des cabinets.',
+        },
+        {
+            icon: CheckCircle,
+            title: 'Profils vérifiés',
+            description:
+                'Chaque profil fait l’objet d’une validation rigoureuse pour garantir la qualité et l’authenticité des candidats.',
+        },
+        {
+            icon: Shield,
+            title: 'Gratuit pour les diplômés',
+            description:
+                'Aucun coût pour les diplômés en droit souhaitant rejoindre la plateforme et se connecter à des employeurs.',
+        },
+        {
+            icon: Clock,
+            title: 'Accès efficace aux CV',
+            description:
+                'Gagnez du temps grâce à un processus rationalisé qui vous présente rapidement des candidats préqualifiés.',
+        },
+    ];
 
-  return (
-    <section id="why-choose-us" className="bg-white py-24 md:py-32">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        
-        {/* Header - Aligné avec le style "Comment ça marche" */}
-        <div className="text-center mb-16 md:mb-24">
-          <Reveal direction="up">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-black mb-6">
-              Pourquoi choisir Jurijob ?
-            </h2>
-          </Reveal>
-          <Reveal direction="up" delay={0.1}>
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-              Construire la confiance grâce à la qualité, la sécurité et l’efficacité au service du droit.
-            </p>
-          </Reveal>
-        </div>
+    return (
+        <section
+            id="why-choose-us"
+            className="relative border-t border-b border-[#FDFCF8]/10 bg-[#1a1f1e] py-24 text-[#FDFCF8] md:py-32"
+        >
+            <div className="pointer-events-none absolute top-0 right-1/4 hidden h-full w-[1px] bg-white/5 md:block"></div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <Reveal key={index} delay={index * 0.1} direction="up">
-              <div className="group bg-white border border-gray-100 rounded-2xl p-8 text-center shadow-sm hover:shadow-xl hover:border-black/5 transition-all duration-300 flex flex-col h-full relative overflow-hidden">
-                
-                {/* Icône avec effet au hover */}
-                <div className="bg-gray-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-black group-hover:scale-110 transition-all duration-300">
-                  <feature.icon className="w-8 h-8 text-black group-hover:text-white transition-colors duration-300" />
+            <div className="mx-auto max-w-7xl px-8 md:px-16">
+                {/* Header - Aligné avec le style "Comment ça marche" */}
+                <div className="mb-20 grid items-end gap-12 md:mb-32 md:grid-cols-2">
+                    <Reveal direction="up">
+                        <h2
+                            className="mb-4 text-5xl leading-[1.1] tracking-tight md:text-7xl"
+                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        >
+                            Pourquoi <br />
+                            <span className="text-[#C06041] italic">
+                                choisir Jurijob?
+                            </span>
+                        </h2>
+                    </Reveal>
+                    <Reveal direction="up" delay={0.1}>
+                        <p className="border-b border-[#FDFCF8]/20 pb-4 text-lg leading-relaxed font-light text-[#FDFCF8]/60 md:text-xl">
+                            Construire la confiance grâce à la qualité, la
+                            sécurité et l'efficacité au service du droit.
+                        </p>
+                    </Reveal>
                 </div>
 
-                <h3 className="text-xl font-bold text-black mb-4">
-                  {feature.title}
-                </h3>
-                
-                <p className="text-gray-500 leading-relaxed flex-grow">
-                  {feature.description}
-                </p>
+                {/* Features Grid */}
+                <div className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
+                    {features.map((feature, index) => (
+                        <Reveal key={index} delay={index * 0.1} direction="up">
+                            <div className="group relative flex h-full flex-col">
+                                {/* Numéro & Ligne */}
+                                <div className="mb-8 flex items-center space-x-4">
+                                    <span className="text-sm font-medium tracking-widest text-[#C06041]">
+                                        0{index + 1}
+                                    </span>
+                                    <div className="h-[1px] flex-grow bg-[#FDFCF8]/20 transition-colors duration-500 group-hover:bg-[#C06041]"></div>
+                                </div>
 
-                {/* Petite ligne décorative discrète au hover */}
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-              </div>
-            </Reveal>
-          ))}
-        </div>
+                                {/* Icône avec effet minimal */}
+                                <div className="mb-6">
+                                    <feature.icon
+                                        className="h-8 w-8 text-[#FDFCF8] transition-transform duration-500 group-hover:-translate-y-1"
+                                        strokeWidth={1}
+                                    />
+                                </div>
 
-      </div>
-    </section>
-  );
+                                <h3
+                                    className="mb-4 text-2xl"
+                                    style={{
+                                        fontFamily: 'Cormorant Garamond, serif',
+                                    }}
+                                >
+                                    {feature.title}
+                                </h3>
+
+                                <p className="text-sm leading-relaxed font-light text-[#FDFCF8]/60">
+                                    {feature.description}
+                                </p>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
 }
