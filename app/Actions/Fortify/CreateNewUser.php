@@ -99,7 +99,6 @@ class CreateNewUser implements CreatesNewUsers
                 'telephone' => $input['telephone'] ?? null,
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
-                'image_url' => $imageUrl,
                 'role' => 'candidat',
                 'is_active' => true,
                 'is_archived' => false,
@@ -111,6 +110,7 @@ class CreateNewUser implements CreatesNewUsers
                 'poste_recherche' => $input['poste_recherche'],
                 'niveau_experience' => $input['niveau_experience'],
                 'formation_juridique' => $input['formation_juridique'],
+                'image_url' => $imageUrl,
             ]);
 
             if (! empty($input['specialisations'])) {

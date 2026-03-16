@@ -18,6 +18,7 @@ class Candidat extends Model
         'poste_recherche',
         'niveau_experience',
         'formation_juridique',
+        'image_url',
     ];
 
     public function user(): BelongsTo
