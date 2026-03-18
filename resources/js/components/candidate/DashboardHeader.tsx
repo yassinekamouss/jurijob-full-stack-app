@@ -28,11 +28,10 @@ export default function DashboardHeader() {
                     <nav className="hidden md:flex items-center gap-1">
                         <Link
                             href={candidateDashboard.url()}
-                            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
-                                isCurrent(candidateDashboard.definition.url)
+                            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${isCurrent(candidateDashboard.definition.url)
                                     ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
                                     : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
-                            }`}
+                                }`}
                         >
                             <LayoutDashboard className="h-4 w-4" />
                             Tableau de bord
@@ -72,10 +71,22 @@ export default function DashboardHeader() {
                             <p className="text-xs text-[#1a1f1e]/40 font-medium">Candidate</p>
                         </div>
                         <div className="relative group">
-                            <button className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#1a1f1e]/5 to-[#1a1f1e]/10 border border-[#1a1f1e]/10 hover:border-[#1a1f1e]/20 transition-all">
-                                <User className="h-5 w-5 text-[#1a1f1e]" />
+                            <button className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 hover:border-[#1a1f1e]/20 transition-all bg-white">
+                                {auth.user.candidat?.image_url ? (
+                                    <img
+                                        src={`${import.meta.env.VITE_APP_URL}/candidat-profile-image/${auth.user.candidat.image_url}`}
+                                        alt="Profile"
+                                        className="h-full w-full object-cover"
+                                    />
+                                ) : (
+                                    <img
+                                        src="/images/default_profile_image.avif"
+                                        alt="Default Profile"
+                                        className="h-full w-full object-cover"
+                                    />
+                                )}
                             </button>
-                            
+
                             {/* Simple Hover Menu */}
                             <div className="absolute right-0 top-full mt-2 hidden group-hover:block w-48 rounded-xl border border-[#e5e7eb] bg-[#FDFCF8] p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in slide-in-from-top-2">
                                 <Link
