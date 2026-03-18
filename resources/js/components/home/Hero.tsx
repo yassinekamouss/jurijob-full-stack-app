@@ -47,14 +47,14 @@ export default function Hero() {
             {/* Boutons CTA */}
             <div className="flex flex-col sm:flex-row gap-5 pt-4">
               <Link 
-                href="/register?type=candidate"
+                href="/register/candidat"
                 className="bg-[#1a1f1e] text-[#FDFCF8] hover:bg-[#343a38] px-8 py-4 text-sm uppercase tracking-wide transition-all text-center flex items-center justify-center gap-3 group"
               >
                 Je suis diplômé(e)
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </Link>
               <Link 
-                href="/register?type=recruteur"
+                href="/register/recruteur"
                 className="border border-[#1a1f1e] text-[#1a1f1e] hover:bg-[#1a1f1e]/5 px-8 py-4 text-sm uppercase tracking-wide transition-all text-center flex items-center justify-center gap-3"
               >
                 Je suis recruteur

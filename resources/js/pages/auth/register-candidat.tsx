@@ -1,12 +1,19 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable react-hooks/purity */
 import { router, Head } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
-import Header from '@/components/home/Header';
-import FormNavigator from '@/components/signup/FormNavigator';
-import FormCommunFields, { UserFormData } from '@/components/signup/FormCommunFields';
-import FormCandidat, { CandidatFormData, Formation, Experience } from '@/components/signup/FormCandidat';
+import Header from '@/components/layout/Header';
 import CandidatDetails from '@/components/signup/CandidatDetails';
+import type {
+    CandidatFormData,
+    Formation,
+    Experience,
+} from '@/components/signup/FormCandidat';
+import FormCandidat from '@/components/signup/FormCandidat';
+import type { UserFormData } from '@/components/signup/FormCommunFields';
+import FormCommunFields from '@/components/signup/FormCommunFields';
 import FormConfirmation from '@/components/signup/FormConfirmation';
+import FormNavigator from '@/components/signup/FormNavigator';
 import Icon from '@/components/signup/FormularIcons';
 
 interface FullFormData {
@@ -78,11 +85,24 @@ export default function RegisterCandidat() {
     type UserErrors = Partial<Record<keyof UserFormData, string>>;
     type CandidatErrors = Partial<Record<keyof CandidatFormData, string>>;
 
-    const [errors, setErrors] = useState<{ user?: UserErrors; candidat?: CandidatErrors }>({});
+    const [errors, setErrors] = useState<{
+        user?: UserErrors;
+        candidat?: CandidatErrors;
+    }>({});
 
-    const onFieldChange = (section: 'user' | 'candidat', field: string, value: any) => {
-        setFormData((prev) => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
-        setErrors((prev) => ({ ...prev, [section]: { ...(prev[section] as any), [field]: '' } }));
+    const onFieldChange = (
+        section: 'user' | 'candidat',
+        field: string,
+        value: any,
+    ) => {
+        setFormData((prev) => ({
+            ...prev,
+            [section]: { ...prev[section], [field]: value },
+        }));
+        setErrors((prev) => ({
+            ...prev,
+            [section]: { ...(prev[section] as any), [field]: '' },
+        }));
     };
 
     const buildFormPayload = (): FormData => {
@@ -97,6 +117,7 @@ export default function RegisterCandidat() {
         payload.append('password', user.password);
         payload.append('password_confirmation', user.confirmPassword);
         payload.append('role', 'candidat');
+
         if (user.imageFile) {
             payload.append('image_file', user.imageFile);
         }
@@ -106,16 +127,28 @@ export default function RegisterCandidat() {
         payload.append('niveau_experience', candidat.niveauExperience);
         payload.append('formation_juridique', candidat.formationJuridique);
 
-        candidat.specialisations.forEach((s: string, i: number) => payload.append(`specialisations[${i}][specialisation]`, s));
-        candidat.domainExperiences.forEach((d: string, i: number) => payload.append(`domain_experiences[${i}][domain_experience]`, d));
-        candidat.typeTravailRecherche.forEach((t: string, i: number) => payload.append(`type_travails[${i}][type_travail]`, t));
-        candidat.villesTravailRecherche.forEach((v: string, i: number) => payload.append(`ville_travails[${i}][ville]`, v));
-        candidat.modeTravailRecherche.forEach((m: string, i: number) => payload.append(`mode_travails[${i}][mode_travail]`, m));
+        candidat.specialisations.forEach((s: string, i: number) =>
+            payload.append(`specialisations[${i}][specialisation]`, s),
+        );
+        candidat.domainExperiences.forEach((d: string, i: number) =>
+            payload.append(`domain_experiences[${i}][domain_experience]`, d),
+        );
+        candidat.typeTravailRecherche.forEach((t: string, i: number) =>
+            payload.append(`type_travails[${i}][type_travail]`, t),
+        );
+        candidat.villesTravailRecherche.forEach((v: string, i: number) =>
+            payload.append(`ville_travails[${i}][ville]`, v),
+        );
+        candidat.modeTravailRecherche.forEach((m: string, i: number) =>
+            payload.append(`mode_travails[${i}][mode_travail]`, m),
+        );
 
-        candidat.langues.forEach((lang: { nom: string; niveau: string }, i: number) => {
-            payload.append(`langues[${i}][nom]`, lang.nom);
-            payload.append(`langues[${i}][niveau]`, lang.niveau);
-        });
+        candidat.langues.forEach(
+            (lang: { nom: string; niveau: string }, i: number) => {
+                payload.append(`langues[${i}][nom]`, lang.nom);
+                payload.append(`langues[${i}][niveau]`, lang.niveau);
+            },
+        );
 
         candidat.formations.forEach((f: Formation, i: number) => {
             payload.append(`formations[${i}][annee_debut]`, f.anneeDebut);
@@ -123,6 +156,7 @@ export default function RegisterCandidat() {
             payload.append(`formations[${i}][niveau]`, f.niveau);
             payload.append(`formations[${i}][domaine]`, f.domaine);
             payload.append(`formations[${i}][ecole]`, f.ecole);
+
             if (f.diplomaFile) {
                 payload.append(`formations[${i}][diploma_file]`, f.diplomaFile);
             }
@@ -150,7 +184,13 @@ export default function RegisterCandidat() {
                     resolve();
                 },
                 onError: (errs) => {
-                    const userKeys: (keyof UserFormData)[] = ['nom', 'prenom', 'email', 'telephone', 'password'];
+                    const userKeys: (keyof UserFormData)[] = [
+                        'nom',
+                        'prenom',
+                        'email',
+                        'telephone',
+                        'password',
+                    ];
                     const userErrors: UserErrors = {};
                     const candidatErrors: CandidatErrors = {};
 
@@ -165,9 +205,17 @@ export default function RegisterCandidat() {
                     setErrors({ user: userErrors, candidat: candidatErrors });
 
                     const firstError = Object.values(errs)[0];
-                    if (firstError) toast.error(firstError as string);
 
-                    reject(new Error(firstError as string || 'Erreur lors de l\'inscription'));
+                    if (firstError) {
+                        toast.error(firstError as string);
+                    }
+
+                    reject(
+                        new Error(
+                            (firstError as string) ||
+                                "Erreur lors de l'inscription",
+                        ),
+                    );
                 },
             });
         });
@@ -180,10 +228,20 @@ export default function RegisterCandidat() {
 
         if (step === 1) {
             section = 'user';
-            const requiredFields: (keyof UserFormData)[] = ['nom', 'prenom', 'email', 'password', 'confirmPassword'];
+            const requiredFields: (keyof UserFormData)[] = [
+                'nom',
+                'prenom',
+                'email',
+                'password',
+                'confirmPassword',
+            ];
             requiredFields.forEach((field) => {
                 const value = formData.user[field];
-                if (!value || (typeof value === 'string' && value.trim() === '')) {
+
+                if (
+                    !value ||
+                    (typeof value === 'string' && value.trim() === '')
+                ) {
                     newErrors[field] = 'Ce champ est obligatoire';
                     valid = false;
                 }
@@ -191,12 +249,21 @@ export default function RegisterCandidat() {
 
             if (formData.user.password && formData.user.confirmPassword) {
                 if (formData.user.password !== formData.user.confirmPassword) {
-                    newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+                    newErrors.confirmPassword =
+                        'Les mots de passe ne correspondent pas';
                     valid = false;
                 } else {
                     const p = formData.user.password;
-                    if (p.length < 8 || !/[A-Z]/.test(p) || !/[a-z]/.test(p) || !/[0-9]/.test(p) || !/[^A-Za-z0-9]/.test(p)) {
-                        newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères, majuscules, minuscules, chiffres et symboles';
+
+                    if (
+                        p.length < 8 ||
+                        !/[A-Z]/.test(p) ||
+                        !/[a-z]/.test(p) ||
+                        !/[0-9]/.test(p) ||
+                        !/[^A-Za-z0-9]/.test(p)
+                    ) {
+                        newErrors.password =
+                            'Le mot de passe doit contenir au moins 8 caractères, majuscules, minuscules, chiffres et symboles';
                         valid = false;
                     }
                 }
@@ -206,26 +273,40 @@ export default function RegisterCandidat() {
                 try {
                     const res = await fetch('/check-email', {
                         method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json', 
-                            'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || '' 
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN':
+                                (
+                                    document.querySelector(
+                                        'meta[name="csrf-token"]',
+                                    ) as HTMLMetaElement
+                                )?.content || '',
                         },
                         body: JSON.stringify({ email: formData.user.email }),
                     });
-                    
+
                     if (!res.ok) {
                         valid = false;
+
                         if (res.status === 409) {
                             newErrors.email = 'Cet email est déjà utilisé';
-                            toast.error('Cet email est déjà associé à un compte.');
+                            toast.error(
+                                'Cet email est déjà associé à un compte.',
+                            );
                         } else if (res.status === 422) {
                             const data = await res.json();
                             newErrors.email = data.message || 'Email invalide';
-                            toast.error(data.message || 'Veuillez vérifier votre email.');
+                            toast.error(
+                                data.message ||
+                                    'Veuillez vérifier votre email.',
+                            );
                         } else {
-                            toast.error('Une erreur est survenue lors de la vérification de l\'email.');
+                            toast.error(
+                                "Une erreur est survenue lors de la vérification de l'email.",
+                            );
                         }
                     }
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 } catch (error) {
                     valid = false;
                     toast.error('Erreur de connexion. Veuillez réessayer.');
@@ -233,10 +314,26 @@ export default function RegisterCandidat() {
             }
         } else if (step === 2) {
             section = 'candidat';
-            const requiredFields: (keyof CandidatFormData)[] = ['niveauExperience', 'formationJuridique', 'specialisations', 'langues', 'domainExperiences', 'PosteRecherche', 'typeTravailRecherche', 'villesTravailRecherche', 'modeTravailRecherche'];
+            const requiredFields: (keyof CandidatFormData)[] = [
+                'niveauExperience',
+                'formationJuridique',
+                'specialisations',
+                'langues',
+                'domainExperiences',
+                'PosteRecherche',
+                'typeTravailRecherche',
+                'villesTravailRecherche',
+                'modeTravailRecherche',
+            ];
             requiredFields.forEach((field) => {
                 const value = formData.candidat[field];
-                if (value === undefined || value === null || (typeof value === 'string' && value.trim() === '') || (Array.isArray(value) && value.length === 0)) {
+
+                if (
+                    value === undefined ||
+                    value === null ||
+                    (typeof value === 'string' && value.trim() === '') ||
+                    (Array.isArray(value) && value.length === 0)
+                ) {
                     (newErrors as any)[field] = 'Ce champ est obligatoire';
                     valid = false;
                 }
@@ -246,25 +343,52 @@ export default function RegisterCandidat() {
             const { formations = [], experiences = [] } = formData.candidat;
 
             if (formations.length === 0) {
-                newErrors.formations = 'Veuillez ajouter au moins une formation.';
+                newErrors.formations =
+                    'Veuillez ajouter au moins une formation.';
                 valid = false;
-            } else if (formations.some((f: Formation) => !f.anneeDebut || !f.anneeFin || !f.niveau || !f.domaine || !f.ecole || !f.diplomaFile)) {
-                newErrors.formations = 'Veuillez remplir tous les champs de chaque formation, y compris le diplôme PDF.';
+            } else if (
+                formations.some(
+                    (f: Formation) =>
+                        !f.anneeDebut ||
+                        !f.anneeFin ||
+                        !f.niveau ||
+                        !f.domaine ||
+                        !f.ecole ||
+                        !f.diplomaFile,
+                )
+            ) {
+                newErrors.formations =
+                    'Veuillez remplir tous les champs de chaque formation, y compris le diplôme PDF.';
                 valid = false;
             }
 
             if (experiences.length === 0) {
-                newErrors.experiences = 'Veuillez ajouter au moins une expérience.';
+                newErrors.experiences =
+                    'Veuillez ajouter au moins une expérience.';
                 valid = false;
-            } else if (experiences.some((e: Experience) => !e.debut || !e.fin || !e.type || !e.entreprise || !e.poste)) {
-                newErrors.experiences = 'Veuillez remplir tous les champs de chaque expérience.';
+            } else if (
+                experiences.some(
+                    (e: Experience) =>
+                        !e.debut ||
+                        !e.fin ||
+                        !e.type ||
+                        !e.entreprise ||
+                        !e.poste,
+                )
+            ) {
+                newErrors.experiences =
+                    'Veuillez remplir tous les champs de chaque expérience.';
                 valid = false;
             }
         }
 
         if (Object.keys(newErrors).length > 0) {
-            setErrors((prev) => ({ ...prev, [section]: { ...((prev as any)[section] || {}), ...newErrors } }));
+            setErrors((prev) => ({
+                ...prev,
+                [section]: { ...((prev as any)[section] || {}), ...newErrors },
+            }));
         }
+
         return valid;
     };
 
@@ -274,7 +398,9 @@ export default function RegisterCandidat() {
                 return (
                     <FormCommunFields
                         formData={formData.user}
-                        onFieldChange={(field, value) => onFieldChange('user', field as string, value)}
+                        onFieldChange={(field, value) =>
+                            onFieldChange('user', field as string, value)
+                        }
                         errors={errors.user || {}}
                     />
                 );
@@ -282,7 +408,9 @@ export default function RegisterCandidat() {
                 return (
                     <FormCandidat
                         formData={formData.candidat}
-                        onFieldChange={(field, value) => onFieldChange('candidat', field as string, value)}
+                        onFieldChange={(field, value) =>
+                            onFieldChange('candidat', field as string, value)
+                        }
                         errors={errors.candidat || {}}
                     />
                 );
@@ -290,19 +418,26 @@ export default function RegisterCandidat() {
                 return (
                     <CandidatDetails
                         formData={formData.candidat}
-                        onFieldChange={(field, value) => onFieldChange('candidat', field as string, value)}
+                        onFieldChange={(field, value) =>
+                            onFieldChange('candidat', field as string, value)
+                        }
                         errors={errors.candidat || {}}
                     />
                 );
             case 4:
-                return <FormConfirmation formData={formData} onSubmit={handleSubmit} />;
+                return (
+                    <FormConfirmation
+                        formData={formData}
+                        onSubmit={handleSubmit}
+                    />
+                );
             default:
                 return null;
         }
     };
 
     return (
-        <div 
+        <div
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
@@ -321,51 +456,86 @@ export default function RegisterCandidat() {
             <Header />
 
             <main className="relative flex-1 py-12">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-                    <div className="grid lg:grid-cols-3 gap-10 lg:gap-16 items-start">
-
+                <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+                    <div className="grid items-start gap-10 lg:grid-cols-3 lg:gap-16">
                         {/* Left sidebar */}
-                        <aside className="hidden lg:block lg:col-span-1">
+                        <aside className="hidden lg:col-span-1 lg:block">
                             <div className="sticky top-28 space-y-8">
                                 <div>
-                                    <span className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm px-4 py-1.5 text-xs font-bold text-[#1a1f1e] uppercase tracking-widest shadow-sm">
-                                        <Icon name="Sparkles" size={14} className="text-[#C06041]" />
+                                    <span className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-4 py-1.5 text-xs font-bold tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
+                                        <Icon
+                                            name="Sparkles"
+                                            size={14}
+                                            className="text-[#C06041]"
+                                        />
                                         Inscription candidat
                                     </span>
 
-                                    <h1 className="mt-8 text-4xl font-bold tracking-tight text-[#1a1f1e] leading-[1.1]" 
-                                        style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                                        Créez votre compte et trouvez le poste idéal
+                                    <h1
+                                        className="mt-8 text-4xl leading-[1.1] font-bold tracking-tight text-[#1a1f1e]"
+                                        style={{
+                                            fontFamily:
+                                                'Cormorant Garamond, serif',
+                                        }}
+                                    >
+                                        Créez votre compte et trouvez le poste
+                                        idéal
                                     </h1>
 
-                                    <p className="mt-4 text-lg text-[#1a1f1e]/70 font-medium">
-                                        Un processus simple, une présentation professionnelle et des correspondances intelligentes.
+                                    <p className="mt-4 text-lg font-medium text-[#1a1f1e]/70">
+                                        Un processus simple, une présentation
+                                        professionnelle et des correspondances
+                                        intelligentes.
                                     </p>
                                 </div>
 
                                 <ul className="space-y-4">
-                                    {['Profil clair et structuré', 'Mise en avant de vos spécialités', 'Matching avec les meilleures opportunités'].map((text) => (
-                                        <li key={text} className="flex items-center gap-3">
+                                    {[
+                                        'Profil clair et structuré',
+                                        'Mise en avant de vos spécialités',
+                                        'Matching avec les meilleures opportunités',
+                                    ].map((text) => (
+                                        <li
+                                            key={text}
+                                            className="flex items-center gap-3"
+                                        >
                                             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1a1f1e] text-[#FDFCF8] shadow-sm">
                                                 <Icon name="Check" size={14} />
                                             </div>
-                                            <span className="text-sm font-bold text-[#1a1f1e]">{text}</span>
+                                            <span className="text-sm font-bold text-[#1a1f1e]">
+                                                {text}
+                                            </span>
                                         </li>
                                     ))}
                                 </ul>
 
                                 <div className="grid grid-cols-2 gap-4">
-                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm p-5 shadow-sm">
-                                        <div className="flex items-center gap-2 font-bold text-[#1a1f1e] mb-2">
-                                            <Icon name="Shield" size={18} className="text-[#C06041]" /> Sécurisé
+                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm">
+                                        <div className="mb-2 flex items-center gap-2 font-bold text-[#1a1f1e]">
+                                            <Icon
+                                                name="Shield"
+                                                size={18}
+                                                className="text-[#C06041]"
+                                            />{' '}
+                                            Sécurisé
                                         </div>
-                                        <p className="text-xs text-[#1a1f1e]/60 font-medium leading-relaxed">Vos données restent privées et protégées.</p>
+                                        <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
+                                            Vos données restent privées et
+                                            protégées.
+                                        </p>
                                     </div>
-                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm p-5 shadow-sm">
-                                        <div className="flex items-center gap-2 font-bold text-[#1a1f1e] mb-2">
-                                            <Icon name="Clock" size={18} className="text-[#C06041]" /> Rapide
+                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm">
+                                        <div className="mb-2 flex items-center gap-2 font-bold text-[#1a1f1e]">
+                                            <Icon
+                                                name="Clock"
+                                                size={18}
+                                                className="text-[#C06041]"
+                                            />{' '}
+                                            Rapide
                                         </div>
-                                        <p className="text-xs text-[#1a1f1e]/60 font-medium leading-relaxed">Inscription en moins de 3 minutes.</p>
+                                        <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
+                                            Inscription en moins de 3 minutes.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -373,14 +543,22 @@ export default function RegisterCandidat() {
 
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
-                            <div className="mx-auto w-full max-w-2xl rounded-[40px] border border-[#1a1f1e]/10 bg-white p-6 sm:p-10 shadow-2xl shadow-[#1a1f1e]/5 relative z-10">
-                                <FormNavigator onNextStep={handleNextStepValidation} steps={candidatSteps}>
+                            <div className="relative z-10 mx-auto w-full max-w-2xl rounded-[40px] border border-[#1a1f1e]/10 bg-white p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
+                                <FormNavigator
+                                    onNextStep={handleNextStepValidation}
+                                    steps={candidatSteps}
+                                >
                                     {renderStep}
                                 </FormNavigator>
 
-                                <div className="mt-10 pt-8 border-t border-[#1a1f1e]/5 flex items-center justify-center gap-2">
-                                    <p className="text-sm text-[#1a1f1e]/50 font-medium">Déjà un compte ?</p>
-                                    <a href="/login" className="text-sm font-bold text-[#1a1f1e] hover:underline underline-offset-4 transition-colors">
+                                <div className="mt-10 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-8">
+                                    <p className="text-sm font-medium text-[#1a1f1e]/50">
+                                        Déjà un compte ?
+                                    </p>
+                                    <a
+                                        href="/login"
+                                        className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
+                                    >
                                         Se connecter
                                     </a>
                                 </div>
