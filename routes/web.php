@@ -4,7 +4,6 @@ use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\DownloadPrivateFileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
 
 Route::inertia('/', 'Home')->name('home');

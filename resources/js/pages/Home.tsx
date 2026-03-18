@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import About from '@/components/home/About';
 import CallToAction from '@/components/home/CallToAction';
-import Footer from '@/components/home/Footer';
-import Header from '@/components/home/Header';
 import Hero from '@/components/home/Hero';
 import HowItWorks from '@/components/home/HowItWorks';
 import Pricing from '@/components/home/Pricing';
 import Testimonials from '@/components/home/Testimonials';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
 
 export default function Home() {
     useEffect(() => {
