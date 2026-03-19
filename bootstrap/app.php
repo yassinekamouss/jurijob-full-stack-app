@@ -21,6 +21,23 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+// 1. Where to send GUESTS (Not logged in)
+    $middleware->redirectTo(
+        guests: function ($request) {
+            if ($request->is('admin/*') || $request->is('admin')) {
+                return route('admin.login');
+            }
+            return route('login');
+        }
+    );
+
+    // 2. Where to send AUTHENTICATED users (Already logged in)
+    $middleware->redirectUsersTo(function () {
+        if (Auth::guard('admin')->check()) {
+            return route('admin.dashboard');
+        }
+        return route('dashboard');
+    });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

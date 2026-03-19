@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
 use App\Http\Controllers\Candidate\ProfileImageController;
@@ -25,6 +26,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
     // Placeholder for recruiter dashboard
     Route::get('/recruiter/dashboard', fn () => Inertia::render('recruiter/Dashboard'))->name('recruiter.dashboard');
+});
+
+// admin login Route
+Route::middleware('guest:admin')->group(function () {
+    Route::get('/admin/login', fn () => Inertia::render('admin/auth/Login'))->name('admin.login');
+    Route::post('/admin/login', [AdminAuthController::class, 'login']);
+});
+
+// Admin Protected Routes
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin/dashboard', fn () => Inertia::render('admin/Dashboard'))->name('admin.dashboard');
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 
 // Candidat & Recruteur Registration Routes
