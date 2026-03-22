@@ -50,8 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
     });
 
-    // Placeholder for recruiter dashboard
-    Route::get('/recruteur/dashboard', fn () => Inertia::render('recruiter/Dashboard'))->name('recruiter.dashboard');
+    // Placeholder for recruteur dashboard
+    Route::get('/recruteur/dashboard', fn () => Inertia::render('recruteur/Dashboard'))->name('recruteur.dashboard');
 
     Route::middleware('role:candidat')->group(function () {
         Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
