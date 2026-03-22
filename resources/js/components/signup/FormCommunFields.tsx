@@ -1,17 +1,9 @@
 import React, { useRef, useState } from 'react';
 import Icon from '@/components/signup/FormularIcons';
 
-export interface UserFormData {
-    nom: string;
-    prenom: string;
-    telephone: string;
-    email: string;
-    imageFile: File | null;
-    password: string;
-    confirmPassword: string;
-}
+import { UserFormData } from '@/types';
 
-interface CommonFieldsProps {
+type CommonFieldsProps = {
     formData: UserFormData;
     onFieldChange: (field: keyof UserFormData, value: any) => void;
     errors: Partial<Record<keyof UserFormData, string>>;
@@ -19,17 +11,18 @@ interface CommonFieldsProps {
     isRecruiter?: boolean;
 }
 
-const FormCommunFields: React.FC<CommonFieldsProps> = ({ 
-    formData, 
-    onFieldChange, 
-    errors = {}, 
+const FormCommunFields: React.FC<CommonFieldsProps> = ({
+    formData,
+    onFieldChange,
+    errors = {},
     className = '',
-    isRecruiter = false 
+    isRecruiter = false
 }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [dragActive, setDragActive] = useState(false);
     const [localImgError, setLocalImgError] = useState<string | null>(null);
+    const [localPhoneError, setLocalPhoneError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const getPasswordStrength = (password: string) => {
@@ -161,8 +154,26 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
             {/* --- TELEPHONE --- */}
             <div>
                 <label className={labelClasses}>Téléphone</label>
-                <input type="tel" placeholder="+212 6 00 00 00 00" value={formData.telephone || ''} onChange={(e) => onFieldChange('telephone', e.target.value)} className={inputClasses} />
-                {errors.telephone && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.telephone}</p>}
+                <input 
+                    type="tel" 
+                    placeholder="+212600000000" 
+                    value={formData.telephone || ''} 
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        onFieldChange('telephone', val);
+                        if (val && !/^\+?[0-9]*$/.test(val)) {
+                            setLocalPhoneError('Format: + et chiffres uniquement');
+                        } else {
+                            setLocalPhoneError(null);
+                        }
+                    }} 
+                    className={`${inputClasses} ${localPhoneError ? 'border-red-300 ring-red-50' : ''}`} 
+                />
+                {(errors.telephone || localPhoneError) && (
+                    <p className="text-xs text-red-500 mt-1.5 font-medium">
+                        {localPhoneError || errors.telephone}
+                    </p>
+                )}
             </div>
 
             {/* --- PASSWORD --- */}

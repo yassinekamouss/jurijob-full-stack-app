@@ -36,7 +36,7 @@ export default function Dashboard({ candidat, user }: Props) {
 
             <DashboardHeader />
 
-            <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 relative z-10">
+            <main className="mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8 relative z-10">
 
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
 
@@ -78,7 +78,7 @@ export default function Dashboard({ candidat, user }: Props) {
                                 </h3>
 
                                 <a
-                                    href="/settings"
+                                    href="/candidate/settings"
                                     className="flex items-center gap-1.5 text-xs font-bold hover:underline"
                                 >
                                     Modifier mon profil
@@ -105,7 +105,7 @@ export default function Dashboard({ candidat, user }: Props) {
                                         <div className="mb-6 h-24 w-24 overflow-hidden rounded-[24px] border-4 border-[#FDFCF8]/10 bg-[#FDFCF8] shadow-inner p-1">
                                             {candidat?.image_url ? (
                                                 <img
-                                                    src={`${import.meta.env.VITE_APP_URL}/candidat-profile-image/${candidat.image_url}`}
+                                                    src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`}
                                                     alt="Profile"
                                                     className="h-full w-full rounded-[18px] object-cover"
                                                 />
@@ -152,53 +152,9 @@ export default function Dashboard({ candidat, user }: Props) {
                                                 </span>
                                             </div>
                                         </div>
-
-                                        <button className="mt-10 group/btn relative w-full overflow-hidden rounded-2xl bg-[#FDFCF8] py-4 text-sm font-black uppercase tracking-widest text-[#1a1f1e] transition-all hover:bg-white active:scale-95 shadow-lg shadow-black/20">
-                                            <span className="relative z-10">Optimiser mon CV</span>
-                                            <div className="absolute inset-0 z-0 bg-gradient-to-r from-emerald-50 to-white opacity-0 transition-opacity group-hover/btn:opacity-100" />
-                                        </button>
                                     </div>
                                 </div>
                             </motion.div>
-
-                            {/* QUICK ACTIONS */}
-                            <div className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
-                                <h4 className="text-sm font-black uppercase tracking-widest text-[#1a1f1e]/30 mb-6">
-                                    Paramètres rapides
-                                </h4>
-
-                                <div className="space-y-2">
-                                    <a
-                                        href="/settings"
-                                        className="flex items-center justify-between rounded-2xl border border-transparent p-4 transition-all hover:bg-[#1a1f1e]/5 hover:border-[#1a1f1e]/10 group"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a1f1e]/5">
-                                                <LayoutGrid className="h-5 w-5" />
-                                            </div>
-                                            <span className="text-sm font-bold">
-                                                Compte & Sécurité
-                                            </span>
-                                        </div>
-                                        <Search className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
-                                    </a>
-
-                                    <a
-                                        href="/settings/profile"
-                                        className="flex items-center justify-between rounded-2xl border border-transparent p-4 transition-all hover:bg-[#1a1f1e]/5 hover:border-[#1a1f1e]/10 group"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a1f1e]/5">
-                                                <Folder className="h-5 w-5" />
-                                            </div>
-                                            <span className="text-sm font-bold">
-                                                Expériences & Diplômes
-                                            </span>
-                                        </div>
-                                        <Search className="h-4 w-4 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
-                                    </a>
-                                </div>
-                            </div>
 
                             {/* HELP CARD */}
                             <div className="rounded-[32px] bg-emerald-50 p-8 border border-emerald-100 group cursor-pointer transition-all hover:bg-emerald-100/50">

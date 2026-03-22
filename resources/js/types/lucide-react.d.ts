@@ -35,4 +35,16 @@ declare module 'lucide-react' {
     export const BookOpen: Icon;
     export const Folder: Icon;
     export const ChevronRight: Icon;
+    export const Eye: Icon;
+    export const EyeOff: Icon;
+    export const Camera: Icon;
+    export const Lock: Icon;
+    export const Clock: Icon;
+    export const Building2: Icon;
+    export const Plus: Icon;
+    export const Trash2: Icon;
+    export const Upload: Icon;
+    export const X: Icon;
+    export const ChevronUp: Icon;
+    export const Pencil: Icon;
 }

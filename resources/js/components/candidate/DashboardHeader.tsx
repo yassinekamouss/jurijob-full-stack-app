@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { User, LogOut, LayoutDashboard, Briefcase, FileText, Bell, Settings } from 'lucide-react';
-import { dashboard as candidateDashboard } from '@/routes/candidate';
+import { dashboard as candidateDashboard, settings as candidateSettings } from '@/routes/candidate';
 import { edit as profileEdit } from '@/routes/profile';
 import { logout } from '@/routes';
 
@@ -11,7 +11,7 @@ export default function DashboardHeader() {
     const isCurrent = (path: string) => url === path;
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-[#e5e7eb]/50 bg-[#FDFCF8]/80 backdrop-blur-md">
+        <header className="fixed top-0 left-0 right-0 z-[100] w-full border-b border-[#e5e7eb]/50 bg-[#FDFCF8]/80 backdrop-blur-md">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo Section */}
                 <div className="flex items-center gap-8">
@@ -74,7 +74,7 @@ export default function DashboardHeader() {
                             <button className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 hover:border-[#1a1f1e]/20 transition-all bg-white">
                                 {auth.user.candidat?.image_url ? (
                                     <img
-                                        src={`${import.meta.env.VITE_APP_URL}/candidat-profile-image/${auth.user.candidat.image_url}`}
+                                        src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${auth.user.candidat.id}`}
                                         alt="Profile"
                                         className="h-full w-full object-cover"
                                     />
@@ -90,7 +90,7 @@ export default function DashboardHeader() {
                             {/* Simple Hover Menu */}
                             <div className="absolute right-0 top-full mt-2 hidden group-hover:block w-48 rounded-xl border border-[#e5e7eb] bg-[#FDFCF8] p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in slide-in-from-top-2">
                                 <Link
-                                    href={profileEdit.url()}
+                                    href={candidateSettings.url()}
                                     className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#1a1f1e]/70 transition-colors hover:bg-[#1a1f1e]/5 hover:text-[#1a1f1e]"
                                 >
                                     <Settings className="h-4 w-4" />

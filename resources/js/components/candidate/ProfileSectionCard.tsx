@@ -6,10 +6,11 @@ interface Props {
   title: string;
   icon: LucideIcon;
   children: ReactNode;
+  footer?: ReactNode;
   delay?: number;
 }
 
-export default function ProfileSectionCard({ title, icon: Icon, children, delay = 0 }: Props) {
+export default function ProfileSectionCard({ title, icon: Icon, children, footer, delay = 0 }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -29,6 +30,12 @@ export default function ProfileSectionCard({ title, icon: Icon, children, delay 
       <div className="relative">
         {children}
       </div>
+
+      {footer && (
+        <div className="mt-8 pt-6 border-t border-[#1a1f1e]/5">
+          {footer}
+        </div>
+      )}
     </motion.div>
   );
 }

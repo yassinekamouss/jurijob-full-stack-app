@@ -12,40 +12,9 @@ import {
     niveauxLangue
 } from '@/constants/options';
 
-export interface Formation {
-    id: string;
-    anneeDebut: string;
-    anneeFin: string;
-    niveau: string;
-    domaine: string;
-    ecole: string;
-    diplomaFile: File | null;
-}
+import { CandidatFormData, Formation, Experience } from '@/types';
 
-export interface Experience {
-    id: string;
-    debut: string;
-    fin: string;
-    type: string;
-    entreprise: string;
-    poste: string;
-}
-
-export interface CandidatFormData {
-    niveauExperience: string;
-    formationJuridique: string;
-    PosteRecherche: string;
-    specialisations: string[];
-    domainExperiences: string[];
-    typeTravailRecherche: string[];
-    modeTravailRecherche: string[];
-    villesTravailRecherche: string[];
-    langues: { nom: string; niveau: string }[];
-    formations: Formation[];
-    experiences: Experience[];
-}
-
-interface CandidateFieldsProps {
+type CandidateFieldsProps = {
     formData: CandidatFormData;
     onFieldChange: (field: keyof CandidatFormData, value: any) => void;
     errors: Partial<Record<keyof CandidatFormData, string>>;

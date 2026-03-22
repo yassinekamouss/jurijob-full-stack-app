@@ -1,21 +1,18 @@
 import { useState, useEffect } from 'react';
-import { router, Head } from '@inertiajs/react';
+import { router, Head, usePage } from '@inertiajs/react';
 import { Toaster, toast } from 'react-hot-toast';
 import Header from '@/components/layout/Header';
+import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import FormNavigator from '@/components/signup/FormNavigator';
-import FormCommunFields, {
-    UserFormData,
-} from '@/components/signup/FormCommunFields';
-import FormRecruiter, {
-    RecruiterFormData,
-} from '@/components/signup/FormRecruiter';
+import { 
+    UserFormData, 
+    RecruteurFormData, 
+    FullRecruteurFormData 
+} from '@/types';
+import FormCommunFields from '@/components/signup/FormCommunFields';
+import FormRecruiter from '@/components/signup/FormRecruiter';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import Icon from '@/components/signup/FormularIcons';
-
-interface FullFormData {
-    user: UserFormData;
-    recruiter: RecruiterFormData;
-}
 
 const recruiterSteps = [
     { id: 1, label: 'Informations', icon: 'FileText' },
@@ -24,6 +21,8 @@ const recruiterSteps = [
 ];
 
 export default function RegisterRecruteur() {
+    const { auth } = usePage().props as any;
+
     useEffect(() => {
         // Preload Outfit Font if not already
         const link = document.createElement('link');
@@ -33,7 +32,7 @@ export default function RegisterRecruteur() {
         document.head.appendChild(link);
     }, []);
 
-    const [formData, setFormData] = useState<FullFormData>({
+    const [formData, setFormData] = useState<FullRecruteurFormData>({
         user: {
             nom: '',
             prenom: '',
@@ -43,26 +42,26 @@ export default function RegisterRecruteur() {
             password: '',
             confirmPassword: '',
         },
-        recruiter: {
-            nomEntreprise: '',
-            typeOrganisation: '',
-            tailleEntreprise: '',
-            siteWeb: '',
+        recruteur: {
+            nom_entreprise: '',
+            type_organisation: '',
+            taille_entreprise: '',
+            site_web: '',
             ville: '',
             poste: '',
         },
     });
 
     type UserErrors = Partial<Record<keyof UserFormData, string>>;
-    type RecruiterErrors = Partial<Record<keyof RecruiterFormData, string>>;
+    type RecruteurErrors = Partial<Record<keyof RecruteurFormData, string>>;
 
     const [errors, setErrors] = useState<{
         user?: UserErrors;
-        recruiter?: RecruiterErrors;
+        recruteur?: RecruteurErrors;
     }>({});
 
     const onFieldChange = (
-        section: 'user' | 'recruiter',
+        section: 'user' | 'recruteur',
         field: string,
         value: any,
     ) => {
@@ -78,7 +77,7 @@ export default function RegisterRecruteur() {
 
     const buildFormPayload = (): FormData => {
         const payload = new FormData();
-        const { user, recruiter } = formData;
+        const { user, recruteur } = formData;
 
         // --- User fields ---
         payload.append('email', user.email);
@@ -88,12 +87,12 @@ export default function RegisterRecruteur() {
         payload.append('role', 'recruteur');
 
         // --- Recruiter fields ---
-        payload.append('nom_entreprise', recruiter.nomEntreprise);
-        payload.append('type_organisation', recruiter.typeOrganisation);
-        payload.append('taille_entreprise', recruiter.tailleEntreprise);
-        payload.append('site_web', recruiter.siteWeb || '');
-        payload.append('ville', recruiter.ville);
-        payload.append('poste', recruiter.poste || '');
+        payload.append('nom_entreprise', recruteur.nom_entreprise);
+        payload.append('type_organisation', recruteur.type_organisation);
+        payload.append('taille_entreprise', recruteur.taille_entreprise);
+        payload.append('site_web', recruteur.site_web || '');
+        payload.append('ville', recruteur.ville);
+        payload.append('poste', recruteur.poste || '');
 
         return payload;
     };
@@ -110,31 +109,31 @@ export default function RegisterRecruteur() {
                 },
                 onError: (errs) => {
                     const userErrors: UserErrors = {};
-                    const recruiterErrors: RecruiterErrors = {};
+                    const recruiterErrors: RecruteurErrors = {};
 
                     // Map backend field names to frontend paths
                     const fieldMapping: Record<
                         string,
-                        { section: 'user' | 'recruiter'; key: string }
+                        { section: 'user' | 'recruteur'; key: string }
                     > = {
                         email: { section: 'user', key: 'email' },
                         telephone: { section: 'user', key: 'telephone' },
                         password: { section: 'user', key: 'password' },
                         nom_entreprise: {
-                            section: 'recruiter',
-                            key: 'nomEntreprise',
+                            section: 'recruteur',
+                            key: 'nom_entreprise',
                         },
                         type_organisation: {
-                            section: 'recruiter',
-                            key: 'typeOrganisation',
+                            section: 'recruteur',
+                            key: 'type_organisation',
                         },
                         taille_entreprise: {
-                            section: 'recruiter',
-                            key: 'tailleEntreprise',
+                            section: 'recruteur',
+                            key: 'taille_entreprise',
                         },
-                        site_web: { section: 'recruiter', key: 'siteWeb' },
-                        ville: { section: 'recruiter', key: 'ville' },
-                        poste: { section: 'recruiter', key: 'poste' },
+                        site_web: { section: 'recruteur', key: 'site_web' },
+                        ville: { section: 'recruteur', key: 'ville' },
+                        poste: { section: 'recruteur', key: 'poste' },
                     };
 
                     Object.entries(errs).forEach(([key, msg]) => {
@@ -150,10 +149,12 @@ export default function RegisterRecruteur() {
                         }
                     });
 
-                    setErrors({ user: userErrors, recruiter: recruiterErrors });
+                    setErrors({ user: userErrors, recruteur: recruiterErrors });
 
                     const firstError = Object.values(errs)[0];
-                    if (firstError) toast.error(firstError as string);
+                    if (firstError) {
+                        toast.error(firstError as string);
+                    }
 
                     reject(
                         new Error(
@@ -169,7 +170,7 @@ export default function RegisterRecruteur() {
     const handleNextStepValidation = async (step: number): Promise<boolean> => {
         const newErrors: Record<string, string> = {};
         let valid = true;
-        let section: 'user' | 'recruiter' = 'user';
+        let section: 'user' | 'recruteur' = 'user';
 
         if (step === 1) {
             section = 'user';
@@ -184,7 +185,7 @@ export default function RegisterRecruteur() {
                     !value ||
                     (typeof value === 'string' && value.trim() === '')
                 ) {
-                    newErrors[field] = 'Ce champ est obligatoire';
+                    (newErrors as any)[field] = 'Ce champ est obligatoire';
                     valid = false;
                 }
             });
@@ -252,20 +253,20 @@ export default function RegisterRecruteur() {
                 }
             }
         } else if (step === 2) {
-            section = 'recruiter';
-            const requiredFields: (keyof RecruiterFormData)[] = [
-                'nomEntreprise',
-                'typeOrganisation',
-                'tailleEntreprise',
+            section = 'recruteur';
+            const requiredFields: (keyof RecruteurFormData)[] = [
+                'nom_entreprise',
+                'type_organisation',
+                'taille_entreprise',
                 'ville',
             ];
             requiredFields.forEach((field) => {
-                const value = formData.recruiter[field];
+                const value = formData.recruteur[field];
                 if (
                     !value ||
                     (typeof value === 'string' && value.trim() === '')
                 ) {
-                    newErrors[field] = 'Ce champ est obligatoire';
+                    (newErrors as any)[field] = 'Ce champ est obligatoire';
                     valid = false;
                 }
             });
@@ -296,11 +297,11 @@ export default function RegisterRecruteur() {
             case 2:
                 return (
                     <FormRecruiter
-                        formData={formData.recruiter}
+                        formData={formData.recruteur}
                         onFieldChange={(field, value) =>
-                            onFieldChange('recruiter', field as string, value)
+                            onFieldChange('recruteur', field as string, value)
                         }
-                        errors={errors.recruiter || {}}
+                        errors={errors.recruteur || {}}
                     />
                 );
             case 3:
@@ -423,12 +424,16 @@ export default function RegisterRecruteur() {
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
                             <div className="relative z-10 mx-auto w-full max-w-2xl rounded-[40px] border border-[#1a1f1e]/10 bg-white p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
-                                <FormNavigator
-                                    onNextStep={handleNextStepValidation}
-                                    steps={recruiterSteps}
-                                >
-                                    {renderStep}
-                                </FormNavigator>
+                                {auth.user ? (
+                                    <AlreadyAuthenticatedCard user={auth.user} />
+                                ) : (
+                                    <FormNavigator
+                                        onNextStep={handleNextStepValidation}
+                                        steps={recruiterSteps}
+                                    >
+                                        {renderStep}
+                                    </FormNavigator>
+                                )}
 
                                 <div className="mt-10 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-8">
                                     <p className="text-sm font-medium text-[#1a1f1e]/50">

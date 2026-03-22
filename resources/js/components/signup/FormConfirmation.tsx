@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import Icon from '@/components/signup/FormularIcons';
 
-interface FullFormData {
-    user: {
-        nom: string;
-        prenom: string;
-        telephone: string;
-        email: string;
-        imageFile: File | null;
-    };
-    candidat?: any;
-    recruiter?: any;
+import { UserFormData, CandidatFormData, RecruteurFormData } from '@/types';
+
+type FullFormData = {
+    user: UserFormData;
+    candidat?: CandidatFormData;
+    recruteur?: RecruteurFormData;
 }
 
-interface FormConfirmationProps {
+type FormConfirmationProps = {
     formData: FullFormData;
     onSubmit: () => Promise<void>;
 }
@@ -30,7 +26,7 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
         }
     };
 
-    const isRecruiter = !!formData.recruiter;
+    const isRecruiter = !!formData.recruteur;
 
     return (
         <div className="space-y-8 max-w-2xl mx-auto">
@@ -82,18 +78,18 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                 </div>
 
                 {/* Specific info */}
-                {isRecruiter ? (
+                {isRecruiter && formData.recruteur ? (
                     <div className="border border-slate-100 rounded-[24px] p-6 bg-slate-50/50">
                         <div className="flex items-center gap-3 mb-5">
                             <div className="p-2 bg-slate-900 text-white rounded-lg"><Icon name="Building" size={18} /></div>
                             <h4 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Détails Entreprise</h4>
                         </div>
                         <div className="grid gap-3">
-                            <Item label="Organisation" value={formData.recruiter.nomEntreprise} />
-                            <Item label="Type" value={formData.recruiter.typeOrganisation} />
-                            <Item label="Taille" value={formData.recruiter.tailleEntreprise} />
-                            <Item label="Ville" value={formData.recruiter.ville} />
-                            <Item label="Poste occupé" value={formData.recruiter.poste} />
+                            <Item label="Organisation" value={formData.recruteur.nom_entreprise} />
+                            <Item label="Type" value={formData.recruteur.type_organisation} />
+                            <Item label="Taille" value={formData.recruteur.taille_entreprise} />
+                            <Item label="Ville" value={formData.recruteur.ville} />
+                            <Item label="Poste occupé" value={formData.recruteur.poste || ''} />
                         </div>
                     </div>
                 ) : formData.candidat && (

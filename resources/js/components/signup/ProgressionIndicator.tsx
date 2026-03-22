@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from '@/components/signup/FormularIcons';
 
-interface ProgressIndicatorProps {
+type ProgressIndicatorProps = {
     currentStep: number;
     steps: { id: number; label: string; icon: string }[];
 }

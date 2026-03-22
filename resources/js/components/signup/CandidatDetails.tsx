@@ -2,12 +2,13 @@ import React from 'react';
 import { Plus, Trash2, GraduationCap, Briefcase, FileText, Calendar, Building2, BookOpen, Upload, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formationsJuridiques, ecolesMaroc, specialisations, typesExperience, postes } from '@/constants/options';
-import type { CandidatFormData, Formation, Experience } from '@/components/signup/FormCandidat';
+import { CandidatFormData, Formation, Experience } from '@/types';
+import Icon from '@/components/signup/FormularIcons';
 
-interface CandidatDetailsProps {
+type CandidatDetailsProps = {
     formData: CandidatFormData;
     onFieldChange: (field: keyof CandidatFormData, value: any) => void;
-    errors: Partial<Record<keyof CandidatFormData, string>>;
+    errors: Record<string, string>;
     className?: string;
 }
 
@@ -118,12 +119,32 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Début</label>
-                                                    <input type="number" min="1980" max="2030" placeholder="YYYY" value={formation.anneeDebut} onChange={(e) => updateFormation(formation.id, 'anneeDebut', e.target.value)} className={inputClasses} />
+                                                    <label className={labelClasses}>Début</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                                        <input 
+                                                            type="month" 
+                                                            value={formation.anneeDebut} 
+                                                            onChange={(e) => updateFormation(formation.id, 'anneeDebut', e.target.value)} 
+                                                            onClick={(e) => e.currentTarget.showPicker()}
+                                                            className={`${inputClasses} pl-10 cursor-pointer ${errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_debut`] ? 'border-red-500' : ''}`} 
+                                                        />
+                                                    </div>
+                                                    {errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_debut`] && <p className="text-[10px] text-red-500 font-bold mt-1">{errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_debut`]}</p>}
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Fin</label>
-                                                    <input type="number" min="1980" max="2035" placeholder="YYYY" value={formation.anneeFin} onChange={(e) => updateFormation(formation.id, 'anneeFin', e.target.value)} className={inputClasses} />
+                                                    <label className={labelClasses}>Fin</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                                        <input 
+                                                            type="month" 
+                                                            value={formation.anneeFin} 
+                                                            onChange={(e) => updateFormation(formation.id, 'anneeFin', e.target.value)} 
+                                                            onClick={(e) => e.currentTarget.showPicker()}
+                                                            className={`${inputClasses} pl-10 cursor-pointer ${errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_fin`] ? 'border-red-500' : ''}`} 
+                                                        />
+                                                    </div>
+                                                    {errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_fin`] && <p className="text-[10px] text-red-500 font-bold mt-1">{errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_fin`]}</p>}
                                                 </div>
                                             </div>
                                         </div>
@@ -220,12 +241,32 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Début</label>
-                                                    <input type="month" value={exp.debut} onChange={(e) => updateExperience(exp.id, 'debut', e.target.value)} className={inputClasses} />
+                                                    <label className={labelClasses}>Début</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                                        <input 
+                                                            type="month" 
+                                                            value={exp.debut} 
+                                                            onChange={(e) => updateExperience(exp.id, 'debut', e.target.value)} 
+                                                            onClick={(e) => e.currentTarget.showPicker()}
+                                                            className={`${inputClasses} pl-10 cursor-pointer ${errors[`experiences.${experiences.findIndex(e => e.id === exp.id)}.debut`] ? 'border-red-500' : ''}`} 
+                                                        />
+                                                    </div>
+                                                    {errors[`experiences.${experiences.findIndex(e => e.id === exp.id)}.debut`] && <p className="text-[10px] text-red-500 font-bold mt-1">{errors[`experiences.${experiences.findIndex(e => e.id === exp.id)}.debut`]}</p>}
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}><Calendar size={14} className="text-slate-400" /> Fin</label>
-                                                    <input type="month" value={exp.fin} onChange={(e) => updateExperience(exp.id, 'fin', e.target.value)} className={inputClasses} />
+                                                    <label className={labelClasses}>Fin</label>
+                                                    <div className="relative">
+                                                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                                        <input 
+                                                            type="month" 
+                                                            value={exp.fin} 
+                                                            onChange={(e) => updateExperience(exp.id, 'fin', e.target.value)} 
+                                                            onClick={(e) => e.currentTarget.showPicker()}
+                                                            className={`${inputClasses} pl-10 cursor-pointer ${errors[`experiences.${experiences.findIndex(e => e.id === exp.id)}.fin`] ? 'border-red-500' : ''}`} 
+                                                        />
+                                                    </div>
+                                                    {errors[`experiences.${experiences.findIndex(e => e.id === exp.id)}.fin`] && <p className="text-[10px] text-red-500 font-bold mt-1">{errors[`experiences.${experiences.findIndex(e => e.id === exp.id)}.fin`]}</p>}
                                                 </div>
                                             </div>
                                         </div>
@@ -244,20 +285,6 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
             </section>
         </div>
     );
-};
-
-interface IconProps {
-    name: string;
-    size?: number;
-    className?: string;
-}
-
-const Icon: React.FC<IconProps> = ({ name, size = 16, className = '' }) => {
-    switch (name) {
-        case 'GraduationCap': return <GraduationCap size={size} className={className} />;
-        case 'Briefcase': return <Briefcase size={size} className={className} />;
-        default: return null;
-    }
 };
 
 export default CandidatDetails;

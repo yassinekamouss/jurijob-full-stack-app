@@ -1,25 +1,22 @@
 /* eslint-disable react-hooks/purity */
-import { router, Head } from '@inertiajs/react';
+import { router, Head, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import Header from '@/components/layout/Header';
+import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import CandidatDetails from '@/components/signup/CandidatDetails';
-import type {
-    CandidatFormData,
-    Formation,
-    Experience,
-} from '@/components/signup/FormCandidat';
+import { 
+    UserFormData, 
+    CandidatFormData, 
+    Formation, 
+    Experience, 
+    FullCandidatFormData 
+} from '@/types';
 import FormCandidat from '@/components/signup/FormCandidat';
-import type { UserFormData } from '@/components/signup/FormCommunFields';
 import FormCommunFields from '@/components/signup/FormCommunFields';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import FormNavigator from '@/components/signup/FormNavigator';
 import Icon from '@/components/signup/FormularIcons';
-
-interface FullFormData {
-    user: UserFormData;
-    candidat: CandidatFormData;
-}
 
 const candidatSteps = [
     { id: 1, label: 'Informations', icon: 'FileText' },
@@ -29,6 +26,8 @@ const candidatSteps = [
 ];
 
 export default function RegisterCandidat() {
+    const { auth } = usePage().props as any;
+
     useEffect(() => {
         // Preload Outfit Font if not already
         const link = document.createElement('link');
@@ -38,7 +37,7 @@ export default function RegisterCandidat() {
         document.head.appendChild(link);
     }, []);
 
-    const [formData, setFormData] = useState<FullFormData>({
+    const [formData, setFormData] = useState<FullCandidatFormData>({
         user: {
             nom: '',
             prenom: '',
@@ -86,8 +85,8 @@ export default function RegisterCandidat() {
     type CandidatErrors = Partial<Record<keyof CandidatFormData, string>>;
 
     const [errors, setErrors] = useState<{
-        user?: UserErrors;
-        candidat?: CandidatErrors;
+        user?: Record<string, string>;
+        candidat?: Record<string, string>;
     }>({});
 
     const onFieldChange = (
@@ -379,6 +378,21 @@ export default function RegisterCandidat() {
                 newErrors.experiences =
                     'Veuillez remplir tous les champs de chaque expérience.';
                 valid = false;
+            } else {
+                // Specific date/year logic (after or equal)
+                formations.forEach((f: Formation, i: number) => {
+                    if (f.anneeDebut && f.anneeFin && f.anneeFin < f.anneeDebut) {
+                        (newErrors as any)[`formations.${i}.annee_fin`] = "L'année de fin doit être postérieure ou égale à l'année de début.";
+                        valid = false;
+                    }
+                });
+
+                experiences.forEach((e: Experience, i: number) => {
+                    if (e.debut && e.fin && e.fin < e.debut) {
+                        (newErrors as any)[`experiences.${i}.fin`] = "La date de fin doit être postérieure ou égale à la date de début.";
+                        valid = false;
+                    }
+                });
             }
         }
 
@@ -544,12 +558,16 @@ export default function RegisterCandidat() {
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
                             <div className="relative z-10 mx-auto w-full max-w-2xl rounded-[40px] border border-[#1a1f1e]/10 bg-white p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
-                                <FormNavigator
-                                    onNextStep={handleNextStepValidation}
-                                    steps={candidatSteps}
-                                >
-                                    {renderStep}
-                                </FormNavigator>
+                                {auth.user ? (
+                                    <AlreadyAuthenticatedCard user={auth.user} />
+                                ) : (
+                                    <FormNavigator
+                                        onNextStep={handleNextStepValidation}
+                                        steps={candidatSteps}
+                                    >
+                                        {renderStep}
+                                    </FormNavigator>
+                                )}
 
                                 <div className="mt-10 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-8">
                                     <p className="text-sm font-medium text-[#1a1f1e]/50">

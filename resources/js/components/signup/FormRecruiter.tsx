@@ -1,19 +1,12 @@
 import React from 'react';
 import { typeOrganisation, tailleEntreprise, villes } from '@/constants/options';
 
-export interface RecruiterFormData {
-    nomEntreprise: string;
-    typeOrganisation: string;
-    tailleEntreprise: string;
-    siteWeb: string;
-    ville: string;
-    poste?: string;
-}
+import { RecruteurFormData } from '@/types';
 
-interface RecruiterFieldsProps {
-    formData: RecruiterFormData;
-    onFieldChange: (field: keyof RecruiterFormData, value: any) => void;
-    errors: Partial<Record<keyof RecruiterFormData, string>>;
+type RecruiterFieldsProps = {
+    formData: RecruteurFormData;
+    onFieldChange: (field: keyof RecruteurFormData, value: any) => void;
+    errors: Partial<Record<keyof RecruteurFormData, string>>;
     className?: string;
 }
 
@@ -39,11 +32,11 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                     <input
                         type="text"
                         placeholder="Nom de votre organisation"
-                        value={formData.nomEntreprise || ''}
-                        onChange={(e) => onFieldChange('nomEntreprise', e.target.value)}
+                        value={formData.nom_entreprise || ''}
+                        onChange={(e) => onFieldChange('nom_entreprise', e.target.value)}
                         className={inputClasses}
                     />
-                    {errors.nomEntreprise && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.nomEntreprise}</p>}
+                    {errors.nom_entreprise && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.nom_entreprise}</p>}
                 </div>
 
                 <div>
@@ -64,8 +57,8 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                 <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1.5">Type d'organisation *</label>
                     <select
-                        value={formData.typeOrganisation || ''}
-                        onChange={(e) => onFieldChange('typeOrganisation', e.target.value)}
+                        value={formData.type_organisation || ''}
+                        onChange={(e) => onFieldChange('type_organisation', e.target.value)}
                         className={inputClasses}
                     >
                         <option value="">Sélectionnez le type</option>
@@ -73,14 +66,14 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                             <option key={opt} value={opt}>{opt}</option>
                         ))}
                     </select>
-                    {errors.typeOrganisation && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.typeOrganisation}</p>}
+                    {errors.type_organisation && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.type_organisation}</p>}
                 </div>
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1.5">Taille de l'entreprise *</label>
                     <select
-                        value={formData.tailleEntreprise || ''}
-                        onChange={(e) => onFieldChange('tailleEntreprise', e.target.value)}
+                        value={formData.taille_entreprise || ''}
+                        onChange={(e) => onFieldChange('taille_entreprise', e.target.value)}
                         className={inputClasses}
                     >
                         <option value="">Nombre d'employés</option>
@@ -88,7 +81,7 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                             <option key={opt} value={opt}>{opt}</option>
                         ))}
                     </select>
-                    {errors.tailleEntreprise && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.tailleEntreprise}</p>}
+                    {errors.taille_entreprise && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.taille_entreprise}</p>}
                 </div>
             </div>
 
@@ -98,12 +91,12 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                 <input
                     type="url"
                     placeholder="https://www.votre-entreprise.com"
-                    value={formData.siteWeb || ''}
-                    onChange={(e) => onFieldChange('siteWeb', e.target.value)}
+                    value={formData.site_web || ''}
+                    onChange={(e) => onFieldChange('site_web', e.target.value)}
                     className={inputClasses}
                 />
                 <p className="text-xs text-slate-400 mt-1.5 font-medium">Optionnel - Aide à valider votre profil</p>
-                {errors.siteWeb && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.siteWeb}</p>}
+                {errors.site_web && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.site_web}</p>}
             </div>
 
             {/* Ville */}
