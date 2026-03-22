@@ -2,21 +2,24 @@
 import { router, Head, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import CandidatDetails from '@/components/signup/CandidatDetails';
-import { 
-    UserFormData, 
-    CandidatFormData, 
-    Formation, 
-    Experience, 
-    FullCandidatFormData 
+import {
+    UserFormData,
+    CandidatFormData,
+    Formation,
+    Experience,
+    FullCandidatFormData
 } from '@/types';
 import FormCandidat from '@/components/signup/FormCandidat';
 import FormCommunFields from '@/components/signup/FormCommunFields';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import FormNavigator from '@/components/signup/FormNavigator';
 import Icon from '@/components/signup/FormularIcons';
+
+
 
 const candidatSteps = [
     { id: 1, label: 'Informations', icon: 'FileText' },
@@ -212,7 +215,7 @@ export default function RegisterCandidat() {
                     reject(
                         new Error(
                             (firstError as string) ||
-                                "Erreur lors de l'inscription",
+                            "Erreur lors de l'inscription",
                         ),
                     );
                 },
@@ -297,7 +300,7 @@ export default function RegisterCandidat() {
                             newErrors.email = data.message || 'Email invalide';
                             toast.error(
                                 data.message ||
-                                    'Veuillez vérifier votre email.',
+                                'Veuillez vérifier votre email.',
                             );
                         } else {
                             toast.error(
@@ -585,6 +588,7 @@ export default function RegisterCandidat() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 }
