@@ -2,6 +2,7 @@
 import { router, Head } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import CandidatDetails from '@/components/signup/CandidatDetails';
 import type {
@@ -15,6 +16,7 @@ import FormCommunFields from '@/components/signup/FormCommunFields';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import FormNavigator from '@/components/signup/FormNavigator';
 import Icon from '@/components/signup/FormularIcons';
+
 
 interface FullFormData {
     user: UserFormData;
@@ -567,6 +569,7 @@ export default function RegisterCandidat() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 }

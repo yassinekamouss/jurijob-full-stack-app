@@ -22,9 +22,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect()->route('home');
     })->name('dashboard');
 
-    Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
-    // Placeholder for recruiter dashboard
-    Route::get('/recruiter/dashboard', fn () => Inertia::render('recruiter/Dashboard'))->name('recruiter.dashboard');
+    Route::middleware('role:candidat')->group(function () {
+        Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
+    });
+
+    Route::middleware('role:recruteur')->group(function () {
+        Route::get('/recruiter/dashboard', fn () => Inertia::render('recruiter/Dashboard'))->name('recruiter.dashboard');
+    });
 });
 
 // Candidat & Recruteur Registration Routes
