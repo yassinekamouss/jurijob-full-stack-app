@@ -47,4 +47,6 @@ declare module 'lucide-react' {
     export const X: Icon;
     export const ChevronUp: Icon;
     export const Pencil: Icon;
+    export const Quote: Icon;
+    export const Check: Icon;
 }

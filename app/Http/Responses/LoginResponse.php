@@ -13,7 +13,7 @@ class LoginResponse implements LoginResponseContract
         $home = '/';
 
         if ($role === 'recruteur') {
-            $home = route('recruiter.dashboard', [], false);
+            $home = route('recruteur.dashboard', [], false);
         } elseif ($role === 'candidat') {
             $home = route('candidate.dashboard', [], false);
         }
