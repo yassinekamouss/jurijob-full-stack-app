@@ -29,40 +29,46 @@ export default function DashboardHeader() {
                         <Link
                             href={candidateDashboard.url()}
                             className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${isCurrent(candidateDashboard.definition.url)
-                                    ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
-                                    : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
+                                ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
+                                : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
                                 }`}
                         >
                             <LayoutDashboard className="h-4 w-4" />
                             Tableau de bord
-                        </Link>
-                        <Link
-                            href="#"
-                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg"
-                        >
-                            <Briefcase className="h-4 w-4" />
-                            Mes candidatures
-                        </Link>
-                        <Link
-                            href="#"
-                            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg"
-                        >
-                            <FileText className="h-4 w-4" />
-                            Documents
                         </Link>
                     </nav>
                 </div>
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
-                    <button className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg">
-                        <Bell className="h-5 w-5" />
-                        <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-red-500 border-2 border-[#FDFCF8]"></span>
-                    </button>
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <button className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg" title="Notifications">
+                            <Bell className="h-5 w-5" />
+                            <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-red-500 border-2 border-[#FDFCF8]"></span>
+                        </button>
+
+                        <Link
+                            href={candidateSettings.url()}
+                            className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg"
+                            title="Paramètres"
+                        >
+                            <Settings className="h-5 w-5" />
+                        </Link>
+
+                        <Link
+                            href={logout.url()}
+                            method="post"
+                            as="button"
+                            className="relative p-2 text-red-500 transition-colors hover:text-red-700 hover:bg-red-50 rounded-lg"
+                            title="Déconnexion"
+                        >
+                            <LogOut className="h-5 w-5" />
+                        </Link>
+                    </div>
 
                     <div className="h-6 w-px bg-[#e5e7eb]"></div>
 
-                    {/* Profile Dropdown (Simplified for now) */}
+                    {/* Profile Info */}
                     <div className="flex items-center gap-3">
                         <div className="hidden text-right lg:block">
                             <p className="text-sm font-semibold text-[#1a1f1e]">
@@ -70,43 +76,20 @@ export default function DashboardHeader() {
                             </p>
                             <p className="text-xs text-[#1a1f1e]/40 font-medium">Candidate</p>
                         </div>
-                        <div className="relative group">
-                            <button className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 hover:border-[#1a1f1e]/20 transition-all bg-white">
-                                {auth.user.candidat?.image_url ? (
-                                    <img
-                                        src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${auth.user.candidat.id}`}
-                                        alt="Profile"
-                                        className="h-full w-full object-cover"
-                                    />
-                                ) : (
-                                    <img
-                                        src="/images/default_profile_image.avif"
-                                        alt="Default Profile"
-                                        className="h-full w-full object-cover"
-                                    />
-                                )}
-                            </button>
-
-                            {/* Simple Hover Menu */}
-                            <div className="absolute right-0 top-full mt-2 hidden group-hover:block w-48 rounded-xl border border-[#e5e7eb] bg-[#FDFCF8] p-2 shadow-xl ring-1 ring-black/5 animate-in fade-in slide-in-from-top-2">
-                                <Link
-                                    href={candidateSettings.url()}
-                                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#1a1f1e]/70 transition-colors hover:bg-[#1a1f1e]/5 hover:text-[#1a1f1e]"
-                                >
-                                    <Settings className="h-4 w-4" />
-                                    Paramètres
-                                </Link>
-                                <div className="my-1 h-px bg-[#e5e7eb]"></div>
-                                <Link
-                                    href={logout.url()}
-                                    method="post"
-                                    as="button"
-                                    className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
-                                >
-                                    <LogOut className="h-4 w-4" />
-                                    Déconnexion
-                                </Link>
-                            </div>
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 bg-white">
+                            {auth.user.candidat?.image_url ? (
+                                <img
+                                    src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${auth.user.candidat.id}`}
+                                    alt="Profile"
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <img
+                                    src="/images/default_profile_image.avif"
+                                    alt="Default Profile"
+                                    className="h-full w-full object-cover"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
