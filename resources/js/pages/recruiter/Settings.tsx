@@ -1,5 +1,17 @@
 import { Head, Link, useForm, usePage, router } from '@inertiajs/react';
-import { ArrowLeft, Save, Building2, Briefcase, Globe, MapPin, Users, ShieldCheck, ShieldAlert, Building } from 'lucide-react';
+import {motion, nimatePesence } fm 'framer-motion';
+import { Arro
+    At ryperowLeft,
+    Save,useS, ueEfftec
+    Building2,
+    Briefcase,
+    Globe,
+    MapPin,
+    Users,
+    ShieldCheck,
+    ShieldAlert,
+    Building,
+} from 'lucide-react';
 import { FormEvent, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
@@ -28,7 +40,7 @@ export default function Settings({ recruteur, user }: Props) {
     const submit = (e: FormEvent) => {
         e.preventDefault();
         put('/recruteur/settings/profile', {
-            preserveScroll: true
+            preserveScroll: true,
         });
     };
 
@@ -62,9 +74,10 @@ export default function Settings({ recruteur, user }: Props) {
                     setIsSetupModalOpen(true);
                 },
                 onFinish: () => setEnablingTwoFactor(false),
-            }
+            },
         );
     };
+
 
     const disableTwoFactor = () => {
         router.delete('/user/two-factor-authentication', {
@@ -96,9 +109,9 @@ export default function Settings({ recruteur, user }: Props) {
 
             <main className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 lg:px-8">
                 <div className="mb-12">
-                    <Link 
+                    <Link
                         href="/recruteur/dashboard"
-                        className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[#1a1f1e]/50 hover:text-[#1a1f1e] transition-colors"
+                        className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[#1a1f1e]/50 transition-colors hover:text-[#1a1f1e]"
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Retour au tableau de bord
@@ -107,7 +120,8 @@ export default function Settings({ recruteur, user }: Props) {
                         Paramètres de l'entreprise
                     </h1>
                     <p className="font-medium text-[#1a1f1e]/50">
-                        Gérez vos informations d'entreprise et la sécurité de votre accès.
+                        Gérez vos informations d'entreprise et la sécurité de
+                        votre accès.
                     </p>
                 </div>
 
@@ -152,7 +166,10 @@ export default function Settings({ recruteur, user }: Props) {
                                     className="space-y-10"
                                 >
                                     <section className="relative overflow-hidden rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
-                                        <form onSubmit={submit} className="space-y-8 relative z-10">
+                                        <form
+                                            onSubmit={submit}
+                                            className="relative z-10 space-y-8"
+                                        >
                                             <div className="grid gap-6 sm:grid-cols-2">
                                                 {/* Nom de l'entreprise */}
                                                 <div className="space-y-2">
@@ -162,12 +179,25 @@ export default function Settings({ recruteur, user }: Props) {
                                                     </label>
                                                     <input
                                                         type="text"
-                                                        value={data.nom_entreprise}
-                                                        onChange={e => setData('nom_entreprise', e.target.value)}
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                        value={
+                                                            data.nom_entreprise
+                                                        }
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                'nom_entreprise',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     />
-                                                    {errors.nom_entreprise && <div className="text-red-500 text-xs">{errors.nom_entreprise}</div>}
+                                                    {errors.nom_entreprise && (
+                                                        <div className="text-xs text-red-500">
+                                                            {
+                                                                errors.nom_entreprise
+                                                            }
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Poste */}
@@ -179,11 +209,20 @@ export default function Settings({ recruteur, user }: Props) {
                                                     <input
                                                         type="text"
                                                         value={data.poste}
-                                                        onChange={e => setData('poste', e.target.value)}
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                'poste',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     />
-                                                    {errors.poste && <div className="text-red-500 text-xs">{errors.poste}</div>}
+                                                    {errors.poste && (
+                                                        <div className="text-xs text-red-500">
+                                                            {errors.poste}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Type d'organisation */}
@@ -193,19 +232,50 @@ export default function Settings({ recruteur, user }: Props) {
                                                         Type d'organisation *
                                                     </label>
                                                     <select
-                                                        value={data.type_organisation}
-                                                        onChange={e => setData('type_organisation', e.target.value)}
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                        value={
+                                                            data.type_organisation
+                                                        }
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                'type_organisation',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     >
-                                                        <option value="" disabled>Sélectionner le type</option>
-                                                        <option value="Cabinet d'avocats">Cabinet d'avocats</option>
-                                                        <option value="Entreprise (Direction juridique)">Entreprise (Direction juridique)</option>
-                                                        <option value="Etude de notaire">Etude de notaire</option>
-                                                        <option value="Cabinet de recrutement">Cabinet de recrutement</option>
-                                                        <option value="Autre">Autre</option>
+                                                        <option
+                                                            value=""
+                                                            disabled
+                                                        >
+                                                            Sélectionner le type
+                                                        </option>
+                                                        <option value="Cabinet d'avocats">
+                                                            Cabinet d'avocats
+                                                        </option>
+                                                        <option value="Entreprise (Direction juridique)">
+                                                            Entreprise
+                                                            (Direction
+                                                            juridique)
+                                                        </option>
+                                                        <option value="Etude de notaire">
+                                                            Etude de notaire
+                                                        </option>
+                                                        <option value="Cabinet de recrutement">
+                                                            Cabinet de
+                                                            recrutement
+                                                        </option>
+                                                        <option value="Autre">
+                                                            Autre
+                                                        </option>
                                                     </select>
-                                                    {errors.type_organisation && <div className="text-red-500 text-xs">{errors.type_organisation}</div>}
+                                                    {errors.type_organisation && (
+                                                        <div className="text-xs text-red-500">
+                                                            {
+                                                                errors.type_organisation
+                                                            }
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Taille de l'entreprise */}
@@ -215,19 +285,48 @@ export default function Settings({ recruteur, user }: Props) {
                                                         Taille de l'entreprise *
                                                     </label>
                                                     <select
-                                                        value={data.taille_entreprise}
-                                                        onChange={e => setData('taille_entreprise', e.target.value)}
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                        value={
+                                                            data.taille_entreprise
+                                                        }
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                'taille_entreprise',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     >
-                                                        <option value="" disabled>Sélectionner la taille</option>
-                                                        <option value="1-10">1-10 employés</option>
-                                                        <option value="11-50">11-50 employés</option>
-                                                        <option value="51-200">51-200 employés</option>
-                                                        <option value="201-500">201-500 employés</option>
-                                                        <option value="500+">Plus de 500 employés</option>
+                                                        <option
+                                                            value=""
+                                                            disabled
+                                                        >
+                                                            Sélectionner la
+                                                            taille
+                                                        </option>
+                                                        <option value="1-10">
+                                                            1-10 employés
+                                                        </option>
+                                                        <option value="11-50">
+                                                            11-50 employés
+                                                        </option>
+                                                        <option value="51-200">
+                                                            51-200 employés
+                                                        </option>
+                                                        <option value="201-500">
+                                                            201-500 employés
+                                                        </option>
+                                                        <option value="500+">
+                                                            Plus de 500 employés
+                                                        </option>
                                                     </select>
-                                                    {errors.taille_entreprise && <div className="text-red-500 text-xs">{errors.taille_entreprise}</div>}
+                                                    {errors.taille_entreprise && (
+                                                        <div className="text-xs text-red-500">
+                                                            {
+                                                                errors.taille_entreprise
+                                                            }
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Ville */}
@@ -239,11 +338,20 @@ export default function Settings({ recruteur, user }: Props) {
                                                     <input
                                                         type="text"
                                                         value={data.ville}
-                                                        onChange={e => setData('ville', e.target.value)}
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                'ville',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     />
-                                                    {errors.ville && <div className="text-red-500 text-xs">{errors.ville}</div>}
+                                                    {errors.ville && (
+                                                        <div className="text-xs text-red-500">
+                                                            {errors.ville}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Site Web */}
@@ -255,11 +363,20 @@ export default function Settings({ recruteur, user }: Props) {
                                                     <input
                                                         type="url"
                                                         value={data.site_web}
-                                                        onChange={e => setData('site_web', e.target.value)}
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                'site_web',
+                                                                e.target.value,
+                                                            )
+                                                        }
                                                         placeholder="https://www.exemple.com"
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                     />
-                                                    {errors.site_web && <div className="text-red-500 text-xs">{errors.site_web}</div>}
+                                                    {errors.site_web && (
+                                                        <div className="text-xs text-red-500">
+                                                            {errors.site_web}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
@@ -267,10 +384,11 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <button
                                                     type="submit"
                                                     disabled={processing}
-                                                    className="inline-flex items-center gap-2 rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+                                                    className="inline-flex items-center gap-2 rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
                                                 >
                                                     <Save className="h-4 w-4" />
-                                                    Enregistrer les modifications
+                                                    Enregistrer les
+                                                    modifications
                                                 </button>
                                             </div>
                                         </form>
