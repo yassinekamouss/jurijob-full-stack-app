@@ -1,14 +1,14 @@
 import { Head, useForm, usePage, Deferred, router } from '@inertiajs/react';
 import DashboardHeader from '@/components/candidate/DashboardHeader';
-import { 
-    User, 
-    Mail, 
-    Phone, 
-    Lock, 
-    Camera, 
-    ShieldCheck, 
+import {
+    User,
+    Mail,
+    Phone,
+    Lock,
+    Camera,
+    ShieldCheck,
     ShieldAlert,
-    CheckCircle2, 
+    CheckCircle2,
     AlertCircle,
     ChevronRight,
     Briefcase,
@@ -17,16 +17,20 @@ import {
     EyeOff,
     LayoutGrid,
     Folder,
-    Languages
+    Languages,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { 
-    updateProfile as updateProfileRoute, 
-    updateAccount as updateAccountRoute, 
-    updateImage as updateImageRoute 
+import {
+    updateProfile as updateProfileRoute,
+    updateAccount as updateAccountRoute,
+    updateImage as updateImageRoute,
 } from '@/routes/candidate/settings';
-import { postes, niveauxExperience, formationsJuridiques } from '@/constants/options';
+import {
+    postes,
+    niveauxExperience,
+    formationsJuridiques,
+} from '@/constants/options';
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
@@ -44,17 +48,36 @@ interface Props {
     langues?: any[];
 }
 
-type TabType = 'profile' | 'account' | 'experiences' | 'formations' | 'specialisations' | 'langues' | 'security';
+type TabType =
+    | 'profile'
+    | 'account'
+    | 'experiences'
+    | 'formations'
+    | 'specialisations'
+    | 'langues'
+    | 'security';
 
-export default function Settings({ candidat, user, experiences, formations, specialisations, langues }: Props) {
+export default function Settings({
+    candidat,
+    user,
+    experiences,
+    formations,
+    specialisations,
+    langues,
+}: Props) {
     const { flash } = usePage().props as any;
     const [activeTab, setActiveTab] = useState<TabType>('profile');
-    const [visibleFlash, setVisibleFlash] = useState<{success?: string, error?: string} | null>(null);
+    const [visibleFlash, setVisibleFlash] = useState<{
+        success?: string;
+        error?: string;
+    } | null>(null);
 
     // 2FA logic
     const { auth } = usePage().props as any;
-    const isTwoFactorEnabled = !!(auth?.user?.two_factor_confirmed_at || user?.two_factor_confirmed_at);
-    
+    const isTwoFactorEnabled = !!(
+        auth?.user?.two_factor_confirmed_at || user?.two_factor_confirmed_at
+    );
+
     const {
         qrCodeSvg,
         manualSetupKey,
@@ -79,7 +102,7 @@ export default function Settings({ candidat, user, experiences, formations, spec
                     setIsSetupModalOpen(true);
                 },
                 onFinish: () => setEnablingTwoFactor(false),
-            }
+            },
         );
     };
 
@@ -103,29 +126,43 @@ export default function Settings({ candidat, user, experiences, formations, spec
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const tab = params.get('tab') as TabType;
-        if (tab && ['profile', 'account', 'experiences', 'formations', 'specialisations', 'langues', 'security'].includes(tab)) {
+        if (
+            tab &&
+            [
+                'profile',
+                'account',
+                'experiences',
+                'formations',
+                'specialisations',
+                'langues',
+                'security',
+            ].includes(tab)
+        ) {
             setActiveTab(tab);
         }
     }, []);
     const [showPassword, setShowPassword] = useState(false);
 
     const SectionSkeleton = () => (
-        <div className="space-y-6 animate-pulse px-4 sm:px-0">
-            <div className="flex justify-between items-center">
+        <div className="animate-pulse space-y-6 px-4 sm:px-0">
+            <div className="flex items-center justify-between">
                 <div className="space-y-2">
-                    <div className="h-6 w-48 bg-[#1a1f1e]/5 rounded-lg" />
-                    <div className="h-4 w-64 bg-[#1a1f1e]/5 rounded-lg" />
+                    <div className="h-6 w-48 rounded-lg bg-[#1a1f1e]/5" />
+                    <div className="h-4 w-64 rounded-lg bg-[#1a1f1e]/5" />
                 </div>
-                <div className="h-10 w-32 bg-[#1a1f1e]/5 rounded-xl" />
+                <div className="h-10 w-32 rounded-xl bg-[#1a1f1e]/5" />
             </div>
             <div className="grid grid-cols-1 gap-4">
-                {[1, 2, 3].map(i => (
-                    <div key={i} className="h-24 bg-white rounded-[24px] border border-[#1a1f1e]/10 p-6 flex items-center justify-between">
+                {[1, 2, 3].map((i) => (
+                    <div
+                        key={i}
+                        className="flex h-24 items-center justify-between rounded-[24px] border border-[#1a1f1e]/10 bg-white p-6"
+                    >
                         <div className="flex items-center gap-6">
                             <div className="h-12 w-12 rounded-2xl bg-[#1a1f1e]/5" />
                             <div className="space-y-2">
-                                <div className="h-5 w-40 bg-[#1a1f1e]/5 rounded-md" />
-                                <div className="h-4 w-32 bg-[#1a1f1e]/5 rounded-md" />
+                                <div className="h-5 w-40 rounded-md bg-[#1a1f1e]/5" />
+                                <div className="h-4 w-32 rounded-md bg-[#1a1f1e]/5" />
                             </div>
                         </div>
                     </div>
@@ -168,7 +205,8 @@ export default function Settings({ candidat, user, experiences, formations, spec
         e.preventDefault();
         accountForm.put(updateAccountRoute.url(), {
             preserveScroll: true,
-            onSuccess: () => accountForm.reset('password', 'password_confirmation'),
+            onSuccess: () =>
+                accountForm.reset('password', 'password_confirmation'),
         });
     };
 
@@ -177,18 +215,22 @@ export default function Settings({ candidat, user, experiences, formations, spec
         if (file) {
             imageForm.setData('image', file);
             // Auto submit image using router directly to avoid async setData issues
-            router.post(updateImageRoute.url(), {
-                _method: 'POST',
-                image: file,
-            }, {
-                forceFormData: true,
-                preserveScroll: true,
-            });
+            router.post(
+                updateImageRoute.url(),
+                {
+                    _method: 'POST',
+                    image: file,
+                },
+                {
+                    forceFormData: true,
+                    preserveScroll: true,
+                },
+            );
         }
     };
 
     return (
-        <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
+        <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Paramètres - Jurijob" />
 
             {/* Grain Texture */}
@@ -202,22 +244,27 @@ export default function Settings({ candidat, user, experiences, formations, spec
 
             <DashboardHeader />
 
-            <main className="mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8 relative z-10">
+            <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
                 <div className="mb-12">
-                    <h1 className="text-4xl font-bold font-serif italic mb-2">Paramètres du compte</h1>
-                    <p className="text-[#1a1f1e]/50 font-medium">Gérez vos informations personnelles et la sécurité de votre accès.</p>
+                    <h1 className="mb-2 font-serif text-4xl font-bold italic">
+                        Paramètres du compte
+                    </h1>
+                    <p className="font-medium text-[#1a1f1e]/50">
+                        Gérez vos informations personnelles et la sécurité de
+                        votre accès.
+                    </p>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-12">
+                <div className="flex flex-col gap-12 lg:flex-row">
                     {/* Sidebar Tabs */}
-                    <div className="lg:w-64 flex-shrink-0">
-                        <nav className="flex lg:flex-col gap-2 p-1 bg-[#1a1f1e]/5 rounded-2xl">
+                    <div className="flex-shrink-0 lg:w-64">
+                        <nav className="flex gap-2 rounded-2xl bg-[#1a1f1e]/5 p-1 lg:flex-col">
                             <button
                                 onClick={() => setActiveTab('profile')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'profile' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'profile'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <User className="h-4 w-4" />
@@ -225,10 +272,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                             </button>
                             <button
                                 onClick={() => setActiveTab('experiences')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'experiences' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'experiences'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <LayoutGrid className="h-4 w-4" />
@@ -236,10 +283,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                             </button>
                             <button
                                 onClick={() => setActiveTab('formations')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'formations' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'formations'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <GraduationCap className="h-4 w-4" />
@@ -247,10 +294,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                             </button>
                             <button
                                 onClick={() => setActiveTab('specialisations')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'specialisations' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'specialisations'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <Folder className="h-4 w-4" />
@@ -258,10 +305,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                             </button>
                             <button
                                 onClick={() => setActiveTab('langues')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'langues' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'langues'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <Languages className="h-4 w-4" />
@@ -269,10 +316,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                             </button>
                             <button
                                 onClick={() => setActiveTab('account')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'account' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'account'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <Lock className="h-4 w-4" />
@@ -280,10 +327,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                             </button>
                             <button
                                 onClick={() => setActiveTab('security')}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                    activeTab === 'security' 
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm' 
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'security'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                 }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />
@@ -293,7 +340,7 @@ export default function Settings({ candidat, user, experiences, formations, spec
                     </div>
 
                     {/* Content Area */}
-                    <div className="flex-1 max-w-2xl">
+                    <div className="max-w-2xl flex-1">
                         <AnimatePresence mode="wait">
                             {activeTab === 'profile' && (
                                 <motion.div
@@ -304,123 +351,245 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     className="space-y-10"
                                 >
                                     {/* Photo Section */}
-                                    <section className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm">
-                                        <div className="flex flex-col sm:flex-row items-center gap-8">
-                                            <div className="relative group">
-                                                <div className="h-24 w-24 rounded-[28px] overflow-hidden border-4 border-[#1a1f1e]/5 bg-[#1a1f1e]/5 ring-1 ring-[#1a1f1e]/10">
+                                    <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                        <div className="flex flex-col items-center gap-8 sm:flex-row">
+                                            <div className="group relative">
+                                                <div className="h-24 w-24 overflow-hidden rounded-[28px] border-4 border-[#1a1f1e]/5 bg-[#1a1f1e]/5 ring-1 ring-[#1a1f1e]/10">
                                                     {candidat?.image_url ? (
-                                                        <img 
-                                                            src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`} 
-                                                            alt="Avatar" 
+                                                        <img
+                                                            src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`}
+                                                            alt="Avatar"
                                                             className="h-full w-full object-cover"
                                                         />
                                                     ) : (
-                                                        <img 
-                                                            src="/images/default_profile_image.avif" 
-                                                            alt="Default Avatar" 
+                                                        <img
+                                                            src="/images/default_profile_image.avif"
+                                                            alt="Default Avatar"
                                                             className="h-full w-full object-cover opacity-60"
                                                         />
                                                     )}
                                                 </div>
-                                                <label className="absolute -bottom-2 -right-2 h-10 w-10 bg-[#1a1f1e] text-white rounded-xl flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
+                                                <label className="absolute -right-2 -bottom-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-[#1a1f1e] text-white shadow-lg transition-transform hover:scale-110">
                                                     <Camera className="h-5 w-5" />
-                                                    <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} disabled={imageForm.processing} />
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        accept="image/*"
+                                                        onChange={
+                                                            handleImageChange
+                                                        }
+                                                        disabled={
+                                                            imageForm.processing
+                                                        }
+                                                    />
                                                 </label>
                                             </div>
                                             <div>
-                                                <h3 className="text-xl font-bold font-serif italic mb-1">Photo de profil</h3>
-                                                <p className="text-sm text-[#1a1f1e]/50 font-medium mb-3">Une photo professionnelle aide à établir la confiance.</p>
-                                                <div className="text-[10px] font-black uppercase tracking-widest text-[#1a1f1e]/30">JPG, PNG or WebP • Max 2MB</div>
+                                                <h3 className="mb-1 font-serif text-xl font-bold italic">
+                                                    Photo de profil
+                                                </h3>
+                                                <p className="mb-3 text-sm font-medium text-[#1a1f1e]/50">
+                                                    Une photo professionnelle
+                                                    aide à établir la confiance.
+                                                </p>
+                                                <div className="text-[10px] font-black tracking-widest text-[#1a1f1e]/30 uppercase">
+                                                    JPG, PNG or WebP • Max 2MB
+                                                </div>
                                             </div>
                                         </div>
                                     </section>
 
                                     {/* Info Form */}
-                                    <section className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm">
-                                        <form onSubmit={handleProfileSubmit} className="space-y-6">
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                        <form
+                                            onSubmit={handleProfileSubmit}
+                                            className="space-y-6"
+                                        >
+                                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                                 <div className="space-y-2">
-                                                    <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Prénom</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={profileForm.data.prenom}
-                                                        onChange={e => profileForm.setData('prenom', e.target.value)}
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                                                    <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                        Prénom
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        value={
+                                                            profileForm.data
+                                                                .prenom
+                                                        }
+                                                        onChange={(e) =>
+                                                            profileForm.setData(
+                                                                'prenom',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Nom</label>
-                                                    <input 
-                                                        type="text" 
-                                                        value={profileForm.data.nom}
-                                                        onChange={e => profileForm.setData('nom', e.target.value)}
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                                                    <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                        Nom
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        value={
+                                                            profileForm.data.nom
+                                                        }
+                                                        onChange={(e) =>
+                                                            profileForm.setData(
+                                                                'nom',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                     />
                                                 </div>
                                             </div>
 
                                             <div className="space-y-2">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Poste Recherché</label>
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    Poste Recherché
+                                                </label>
                                                 <div className="relative">
-                                                    <Briefcase className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
-                                                    <select 
-                                                        value={profileForm.data.poste_recherche}
-                                                        onChange={e => profileForm.setData('poste_recherche', e.target.value)}
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-10 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                                                    <Briefcase className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                    <select
+                                                        value={
+                                                            profileForm.data
+                                                                .poste_recherche
+                                                        }
+                                                        onChange={(e) =>
+                                                            profileForm.setData(
+                                                                'poste_recherche',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full cursor-pointer appearance-none rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                     >
-                                                        <option value="">Choisir un poste</option>
-                                                        {postes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                                        <option value="Autre">Autre</option>
+                                                        <option value="">
+                                                            Choisir un poste
+                                                        </option>
+                                                        {postes.map((opt) => (
+                                                            <option
+                                                                key={opt}
+                                                                value={opt}
+                                                            >
+                                                                {opt}
+                                                            </option>
+                                                        ))}
+                                                        <option value="Autre">
+                                                            Autre
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
 
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                                 <div className="space-y-2">
-                                                    <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Niveau d'expérience</label>
-                                                    <select 
-                                                        value={profileForm.data.niveau_experience}
-                                                        onChange={e => profileForm.setData('niveau_experience', e.target.value)}
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                                                    <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                        Niveau d'expérience
+                                                    </label>
+                                                    <select
+                                                        value={
+                                                            profileForm.data
+                                                                .niveau_experience
+                                                        }
+                                                        onChange={(e) =>
+                                                            profileForm.setData(
+                                                                'niveau_experience',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full cursor-pointer appearance-none rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                     >
-                                                        <option value="">Choisir un niveau</option>
-                                                        {niveauxExperience.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                                        <option value="">
+                                                            Choisir un niveau
+                                                        </option>
+                                                        {niveauxExperience.map(
+                                                            (opt) => (
+                                                                <option
+                                                                    key={opt}
+                                                                    value={opt}
+                                                                >
+                                                                    {opt}
+                                                                </option>
+                                                            ),
+                                                        )}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Formation Majuscule</label>
+                                                    <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                        Formation Majuscule
+                                                    </label>
                                                     <div className="relative">
-                                                        <GraduationCap className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
-                                                        <select 
-                                                            value={profileForm.data.formation_juridique}
-                                                            onChange={e => profileForm.setData('formation_juridique', e.target.value)}
-                                                            className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-10 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                                                        <GraduationCap className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                        <select
+                                                            value={
+                                                                profileForm.data
+                                                                    .formation_juridique
+                                                            }
+                                                            onChange={(e) =>
+                                                                profileForm.setData(
+                                                                    'formation_juridique',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            className="w-full cursor-pointer appearance-none rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                         >
-                                                            <option value="">Choisir une formation</option>
-                                                            {formationsJuridiques.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                                            <option value="">
+                                                                Choisir une
+                                                                formation
+                                                            </option>
+                                                            {formationsJuridiques.map(
+                                                                (opt) => (
+                                                                    <option
+                                                                        key={
+                                                                            opt
+                                                                        }
+                                                                        value={
+                                                                            opt
+                                                                        }
+                                                                    >
+                                                                        {opt}
+                                                                    </option>
+                                                                ),
+                                                            )}
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="pt-4 flex items-center justify-between border-t border-[#1a1f1e]/5">
+                                            <div className="flex items-center justify-between border-t border-[#1a1f1e]/5 pt-4">
                                                 <div className="flex items-center gap-3">
-                                                    <label className="relative inline-flex items-center cursor-pointer">
-                                                        <input 
-                                                            type="checkbox" 
-                                                            checked={profileForm.data.is_active}
-                                                            onChange={e => profileForm.setData('is_active', e.target.checked)}
-                                                            className="sr-only peer" 
+                                                    <label className="relative inline-flex cursor-pointer items-center">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={
+                                                                profileForm.data
+                                                                    .is_active
+                                                            }
+                                                            onChange={(e) =>
+                                                                profileForm.setData(
+                                                                    'is_active',
+                                                                    e.target
+                                                                        .checked,
+                                                                )
+                                                            }
+                                                            className="peer sr-only"
                                                         />
-                                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                                                        <div className="peer h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-emerald-500 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
                                                     </label>
-                                                    <span className="text-sm font-bold">Activer ma visibilité</span>
+                                                    <span className="text-sm font-bold">
+                                                        Activer ma visibilité
+                                                    </span>
                                                 </div>
 
-                                                <button 
-                                                    type="submit" 
-                                                    disabled={profileForm.processing || !profileForm.isDirty}
-                                                    className="bg-[#1a1f1e] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-[#343a38] transition-all disabled:opacity-50"
+                                                <button
+                                                    type="submit"
+                                                    disabled={
+                                                        profileForm.processing ||
+                                                        !profileForm.isDirty
+                                                    }
+                                                    className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
                                                 >
                                                     Enregistrer
                                                 </button>
@@ -437,8 +606,13 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
-                                    <Deferred data="experiences" fallback={<SectionSkeleton />}>
-                                        <ExperienceSection experiences={experiences || []} />
+                                    <Deferred
+                                        data="experiences"
+                                        fallback={<SectionSkeleton />}
+                                    >
+                                        <ExperienceSection
+                                            experiences={experiences || []}
+                                        />
                                     </Deferred>
                                 </motion.div>
                             )}
@@ -450,8 +624,13 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
-                                    <Deferred data="formations" fallback={<SectionSkeleton />}>
-                                        <FormationSection formations={formations || []} />
+                                    <Deferred
+                                        data="formations"
+                                        fallback={<SectionSkeleton />}
+                                    >
+                                        <FormationSection
+                                            formations={formations || []}
+                                        />
                                     </Deferred>
                                 </motion.div>
                             )}
@@ -463,8 +642,15 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
-                                    <Deferred data="specialisations" fallback={<SectionSkeleton />}>
-                                        <SpecialisationSection specialisations={specialisations || []} />
+                                    <Deferred
+                                        data="specialisations"
+                                        fallback={<SectionSkeleton />}
+                                    >
+                                        <SpecialisationSection
+                                            specialisations={
+                                                specialisations || []
+                                            }
+                                        />
                                     </Deferred>
                                 </motion.div>
                             )}
@@ -476,8 +662,13 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                 >
-                                    <Deferred data="langues" fallback={<SectionSkeleton />}>
-                                        <LanguageSection langues={langues || []} />
+                                    <Deferred
+                                        data="langues"
+                                        fallback={<SectionSkeleton />}
+                                    >
+                                        <LanguageSection
+                                            langues={langues || []}
+                                        />
                                     </Deferred>
                                 </motion.div>
                             )}
@@ -490,83 +681,174 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-10"
                                 >
-                                    <section className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm">
-                                        <h3 className="text-xl font-bold font-serif italic mb-6">Informations de connexion</h3>
-                                        <form onSubmit={handleAccountSubmit} className="space-y-6">
+                                    <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                        <h3 className="mb-6 font-serif text-xl font-bold italic">
+                                            Informations de connexion
+                                        </h3>
+                                        <form
+                                            onSubmit={handleAccountSubmit}
+                                            className="space-y-6"
+                                        >
                                             <div className="space-y-2">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Email professionnel</label>
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    Email professionnel
+                                                </label>
                                                 <div className="relative">
-                                                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
-                                                    <input 
-                                                        type="email" 
-                                                        value={accountForm.data.email}
-                                                        onChange={e => accountForm.setData('email', e.target.value)}
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                                                    <Mail className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                    <input
+                                                        type="email"
+                                                        value={
+                                                            accountForm.data
+                                                                .email
+                                                        }
+                                                        onChange={(e) =>
+                                                            accountForm.setData(
+                                                                'email',
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-5 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                     />
                                                 </div>
                                             </div>
 
                                             <div className="space-y-2">
-                                                <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Téléphone</label>
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    Téléphone
+                                                </label>
                                                 <div className="relative">
-                                                    <Phone className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
-                                                    <input 
-                                                        type="tel" 
-                                                        value={accountForm.data.telephone}
-                                                        onChange={e => {
-                                                            const val = e.target.value;
-                                                            accountForm.setData('telephone', val);
-                                                            if (val && !/^\+?[0-9]*$/.test(val)) {
-                                                                accountForm.setError('telephone', 'Format: + et chiffres uniquement');
-                                                            } else if (accountForm.errors.telephone === 'Format: + et chiffres uniquement') {
-                                                                accountForm.clearErrors('telephone');
+                                                    <Phone className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                    <input
+                                                        type="tel"
+                                                        value={
+                                                            accountForm.data
+                                                                .telephone
+                                                        }
+                                                        onChange={(e) => {
+                                                            const val =
+                                                                e.target.value;
+                                                            accountForm.setData(
+                                                                'telephone',
+                                                                val,
+                                                            );
+                                                            if (
+                                                                val &&
+                                                                !/^\+?[0-9]*$/.test(
+                                                                    val,
+                                                                )
+                                                            ) {
+                                                                accountForm.setError(
+                                                                    'telephone',
+                                                                    'Format: + et chiffres uniquement',
+                                                                );
+                                                            } else if (
+                                                                accountForm
+                                                                    .errors
+                                                                    .telephone ===
+                                                                'Format: + et chiffres uniquement'
+                                                            ) {
+                                                                accountForm.clearErrors(
+                                                                    'telephone',
+                                                                );
                                                             }
                                                         }}
-                                                        className={`w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none ${accountForm.errors.telephone ? 'border-red-300 ring-red-50' : ''}`}
+                                                        className={`w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-5 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0 ${accountForm.errors.telephone ? 'border-red-300 ring-red-50' : ''}`}
                                                     />
                                                 </div>
-                                                {accountForm.errors.telephone && <p className="text-xs text-red-500 font-bold ml-1">{accountForm.errors.telephone}</p>}
+                                                {accountForm.errors
+                                                    .telephone && (
+                                                    <p className="ml-1 text-xs font-bold text-red-500">
+                                                        {
+                                                            accountForm.errors
+                                                                .telephone
+                                                        }
+                                                    </p>
+                                                )}
                                             </div>
 
-                                            <div className="pt-6 border-t border-[#1a1f1e]/5">
-                                                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-[#1a1f1e]/30 mb-6 italic">Modification du mot de passe</h4>
-                                                
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                            <div className="border-t border-[#1a1f1e]/5 pt-6">
+                                                <h4 className="mb-6 text-sm font-black tracking-[0.2em] text-[#1a1f1e]/30 uppercase italic">
+                                                    Modification du mot de passe
+                                                </h4>
+
+                                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                                     <div className="space-y-2">
-                                                        <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Nouveau mot de passe</label>
+                                                        <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                            Nouveau mot de passe
+                                                        </label>
                                                         <div className="relative">
-                                                            <input 
-                                                                type={showPassword ? "text" : "password"} 
-                                                                value={accountForm.data.password}
-                                                                onChange={e => accountForm.setData('password', e.target.value)}
-                                                                className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                                                            <input
+                                                                type={
+                                                                    showPassword
+                                                                        ? 'text'
+                                                                        : 'password'
+                                                                }
+                                                                value={
+                                                                    accountForm
+                                                                        .data
+                                                                        .password
+                                                                }
+                                                                onChange={(e) =>
+                                                                    accountForm.setData(
+                                                                        'password',
+                                                                        e.target
+                                                                            .value,
+                                                                    )
+                                                                }
+                                                                className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                             />
-                                                            <button 
-                                                                type="button" 
-                                                                onClick={() => setShowPassword(!showPassword)}
-                                                                className="absolute right-5 top-1/2 -translate-y-1/2 text-[#1a1f1e]/30 hover:text-[#1a1f1e]/60"
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    setShowPassword(
+                                                                        !showPassword,
+                                                                    )
+                                                                }
+                                                                className="absolute top-1/2 right-5 -translate-y-1/2 text-[#1a1f1e]/30 hover:text-[#1a1f1e]/60"
                                                             >
-                                                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                                                {showPassword ? (
+                                                                    <EyeOff className="h-4 w-4" />
+                                                                ) : (
+                                                                    <Eye className="h-4 w-4" />
+                                                                )}
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div className="space-y-2">
-                                                        <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Confirmation</label>
-                                                        <input 
-                                                            type={showPassword ? "text" : "password"} 
-                                                            value={accountForm.data.password_confirmation}
-                                                            onChange={e => accountForm.setData('password_confirmation', e.target.value)}
-                                                            className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                                                        <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                            Confirmation
+                                                        </label>
+                                                        <input
+                                                            type={
+                                                                showPassword
+                                                                    ? 'text'
+                                                                    : 'password'
+                                                            }
+                                                            value={
+                                                                accountForm.data
+                                                                    .password_confirmation
+                                                            }
+                                                            onChange={(e) =>
+                                                                accountForm.setData(
+                                                                    'password_confirmation',
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="pt-4 flex justify-end">
-                                                <button 
-                                                    type="submit" 
-                                                    disabled={accountForm.processing || !accountForm.isDirty}
-                                                    className="bg-[#1a1f1e] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-[#343a38] transition-all disabled:opacity-50"
+                                            <div className="flex justify-end pt-4">
+                                                <button
+                                                    type="submit"
+                                                    disabled={
+                                                        accountForm.processing ||
+                                                        !accountForm.isDirty
+                                                    }
+                                                    className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
                                                 >
                                                     Mettre à jour le compte
                                                 </button>
@@ -584,10 +866,10 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-10"
                                 >
-                                    <section className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm relative overflow-hidden">
-                                        <div className="absolute top-0 right-0 -mr-12 -mt-12 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
-                                        
-                                        <div className="space-y-6 relative z-10">
+                                    <section className="relative overflow-hidden rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                        <div className="absolute top-0 right-0 -mt-12 -mr-12 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
+
+                                        <div className="relative z-10 space-y-6">
                                             {!isTwoFactorEnabled ? (
                                                 <div className="flex flex-col items-center rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10 p-8 text-center">
                                                     <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-gray-50 text-gray-400">
@@ -597,14 +879,22 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                                         Sécurité standard
                                                     </h4>
                                                     <p className="mb-8 max-w-xs text-sm text-[#1a1f1e]/40">
-                                                        Votre compte est uniquement protégé par votre mot de passe.
+                                                        Votre compte est
+                                                        uniquement protégé par
+                                                        votre mot de passe.
                                                     </p>
-                                                    <button 
-                                                        onClick={enableTwoFactor} 
-                                                        disabled={enablingTwoFactor}
+                                                    <button
+                                                        onClick={
+                                                            enableTwoFactor
+                                                        }
+                                                        disabled={
+                                                            enablingTwoFactor
+                                                        }
                                                         className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 disabled:opacity-50"
                                                     >
-                                                        {enablingTwoFactor ? 'Activation...' : 'Activer le 2FA'}
+                                                        {enablingTwoFactor
+                                                            ? 'Activation...'
+                                                            : 'Activer le 2FA'}
                                                     </button>
                                                 </div>
                                             ) : (
@@ -618,21 +908,29 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                                                 2FA Activé
                                                             </div>
                                                             <div className="text-sm text-emerald-700/70">
-                                                                Votre compte est hautement sécurisé.
+                                                                Votre compte est
+                                                                hautement
+                                                                sécurisé.
                                                             </div>
                                                         </div>
-                                                        <button 
-                                                            onClick={disableTwoFactor}
+                                                        <button
+                                                            onClick={
+                                                                disableTwoFactor
+                                                            }
                                                             className="ml-auto text-xs font-black tracking-widest text-red-500 uppercase transition-colors hover:text-red-700"
                                                         >
                                                             Désactiver
                                                         </button>
                                                     </div>
 
-                                                    <TwoFactorRecoveryCodes 
-                                                        recoveryCodesList={recoveryCodesList} 
-                                                        fetchRecoveryCodes={fetchRecoveryCodes} 
-                                                        errors={errors} 
+                                                    <TwoFactorRecoveryCodes
+                                                        recoveryCodesList={
+                                                            recoveryCodesList
+                                                        }
+                                                        fetchRecoveryCodes={
+                                                            fetchRecoveryCodes
+                                                        }
+                                                        errors={errors}
                                                     />
                                                 </div>
                                             )}
@@ -640,16 +938,19 @@ export default function Settings({ candidat, user, experiences, formations, spec
 
                                         <TwoFactorSetupModal
                                             isOpen={isSetupModalOpen}
-                                            onClose={() => setIsSetupModalOpen(false)}
+                                            onClose={() =>
+                                                setIsSetupModalOpen(false)
+                                            }
                                             requiresConfirmation={true}
-                                            twoFactorEnabled={isTwoFactorEnabled}
+                                            twoFactorEnabled={
+                                                isTwoFactorEnabled
+                                            }
                                             qrCodeSvg={qrCodeSvg}
                                             manualSetupKey={manualSetupKey}
                                             clearSetupData={clearSetupData}
                                             fetchSetupData={fetchSetupData}
                                             errors={errors}
                                         />
-                                            
                                     </section>
                                 </motion.div>
                             )}
@@ -660,38 +961,41 @@ export default function Settings({ candidat, user, experiences, formations, spec
                 {/* Notifications Toasts Placeholder */}
                 <AnimatePresence>
                     {visibleFlash?.success && (
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 50 }}
-                            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] w-fit"
+                            className="fixed bottom-8 left-1/2 z-[200] w-fit -translate-x-1/2"
                         >
-                            <div className="flex items-center gap-3 bg-[#1a1f1e] text-white px-6 py-4 rounded-[20px] shadow-2xl border border-white/10 backdrop-blur-md">
-                                <div className="h-8 w-8 rounded-full bg-emerald-500 flex items-center justify-center">
+                            <div className="flex items-center gap-3 rounded-[20px] border border-white/10 bg-[#1a1f1e] px-6 py-4 text-white shadow-2xl backdrop-blur-md">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500">
                                     <CheckCircle2 className="h-5 w-5" />
                                 </div>
-                                <span className="text-sm font-bold tracking-tight whitespace-nowrap">{visibleFlash?.success}</span>
+                                <span className="text-sm font-bold tracking-tight whitespace-nowrap">
+                                    {visibleFlash?.success}
+                                </span>
                             </div>
                         </motion.div>
                     )}
 
                     {visibleFlash?.error && (
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 50 }}
-                            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] w-fit"
+                            className="fixed bottom-8 left-1/2 z-[200] w-fit -translate-x-1/2"
                         >
-                            <div className="flex items-center gap-3 bg-red-600 text-white px-6 py-4 rounded-[20px] shadow-2xl border border-white/10 backdrop-blur-md">
-                                <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
+                            <div className="flex items-center gap-3 rounded-[20px] border border-white/10 bg-red-600 px-6 py-4 text-white shadow-2xl backdrop-blur-md">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
                                     <AlertCircle className="h-5 w-5" />
                                 </div>
-                                <span className="text-sm font-bold tracking-tight whitespace-nowrap">{visibleFlash.error}</span>
+                                <span className="text-sm font-bold tracking-tight whitespace-nowrap">
+                                    {visibleFlash.error}
+                                </span>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
-
             </main>
         </div>
     );
