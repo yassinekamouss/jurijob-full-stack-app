@@ -1,8 +1,8 @@
 import { Head, Link, useForm, usePage, router } from '@inertiajs/react';
-import {motion, nimatePesence } fm 'framer-motion';
-import { Arro
-    At ryperowLeft,
-    Save,useS, ueEfftec
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+    ArrowLeft,
+    Save,
     Building2,
     Briefcase,
     Globe,
@@ -12,8 +12,8 @@ import { Arro
     ShieldAlert,
     Building,
 } from 'lucide-react';
-import { FormEvent, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
@@ -46,9 +46,7 @@ export default function Settings({ recruteur, user }: Props) {
 
     // 2FA logic
     const { auth } = usePage().props as any;
-    const isTwoFactorEnabled = !!(
-        auth?.user?.two_factor_confirmed_at || user?.two_factor_confirmed_at
-    );
+    const isTwoFactorEnabled = !!user?.two_factor_confirmed_at;
 
     const {
         qrCodeSvg,
