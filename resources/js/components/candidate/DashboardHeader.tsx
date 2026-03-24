@@ -4,6 +4,28 @@ import { dashboard as candidateDashboard, settings as candidateSettings } from '
 import { edit as profileEdit } from '@/routes/profile';
 import { logout } from '@/routes';
 
+// --- Sous-composant Brand ---
+const Brand = () => (
+    <Link
+        href="/"
+        className="flex items-center tracking-tight"
+        aria-label="Accueil JuriJob"
+    >
+        <div
+            className="bg-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#FDFCF8]"
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+        >
+            JURI
+        </div>
+        <div
+            className="border border-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#1a1f1e]"
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+        >
+            JOB
+        </div>
+    </Link>
+);
+
 export default function DashboardHeader() {
     const { auth } = usePage().props as any;
     const { url } = usePage();
@@ -11,18 +33,12 @@ export default function DashboardHeader() {
     const isCurrent = (path: string) => url === path;
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-[100] w-full border-b border-[#e5e7eb]/50 bg-[#FDFCF8]/80 backdrop-blur-md">
+        <header className="fixed w-full z-50 border-b border-[#1a1f1e]/10 bg-[#FDFCF8]/90 mix-blend-normal backdrop-blur-xl">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo Section */}
                 <div className="flex items-center gap-8">
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#1a1f1e] to-[#2c3533] shadow-lg shadow-[#1a1f1e]/10">
-                            <span className="text-xl font-bold italic text-[#FDFCF8]">J</span>
-                        </div>
-                        <span className="text-xl font-bold tracking-tight text-[#1a1f1e] md:block hidden">
-                            JuriJob
-                        </span>
-                    </Link>
+
+                    <Brand />
 
                     {/* Navigation */}
                     <nav className="hidden md:flex items-center gap-1">

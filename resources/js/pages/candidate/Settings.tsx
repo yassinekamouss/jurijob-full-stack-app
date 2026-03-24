@@ -30,6 +30,7 @@ import ExperienceSection from '@/components/candidate/settings/ExperienceSection
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
 import LanguageSection from '@/components/candidate/settings/LanguageSection';
+import TwoFactorManager from '@/components/auth/2fa/TwoFactorManager';
 
 interface Props {
     candidat: any;
@@ -544,53 +545,8 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     <section className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm relative overflow-hidden">
                                         <div className="absolute top-0 right-0 -mr-12 -mt-12 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
                                         
-                                        <div className="relative">
-                                            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 mb-8">
-                                                <ShieldCheck className="h-7 w-7" />
-                                            </div>
-
-                                            <h3 className="text-2xl font-bold font-serif italic mb-2">Double Authentification (2FA)</h3>
-                                            <p className="text-[#1a1f1e]/50 font-medium mb-8 max-w-md">Ajoutez une couche de sécurité supplémentaire à votre compte en demandant un code de vérification à chaque connexion.</p>
-
-                                            <div className="flex flex-col gap-4">
-                                                <div className="flex items-start gap-4 p-4 rounded-2xl bg-[#FDFCF8] border border-[#1a1f1e]/5 opacity-60 grayscale cursor-not-allowed">
-                                                    <div className="mt-1 h-5 w-5 rounded-full bg-[#1a1f1e]/10 flex items-center justify-center">
-                                                        <div className="h-2 w-2 rounded-full bg-[#1a1f1e]/30" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-bold text-sm">Application d'authentification</div>
-                                                        <div className="text-xs text-[#1a1f1e]/40">Utilisez Google Authenticator ou Authy.</div>
-                                                    </div>
-                                                    <div className="ml-auto">
-                                                        <span className="text-[10px] font-black bg-[#1a1f1e]/5 px-2 py-1 rounded-md text-[#1a1f1e]/40 uppercase tracking-widest">Bientôt</span>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="flex items-start gap-4 p-4 rounded-2xl bg-[#FDFCF8] border border-[#1a1f1e]/5 opacity-60 grayscale cursor-not-allowed">
-                                                    <div className="mt-1 h-5 w-5 rounded-full bg-[#1a1f1e]/10 flex items-center justify-center">
-                                                        <div className="h-2 w-2 rounded-full bg-[#1a1f1e]/30" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="font-bold text-sm">Authentification par SMS</div>
-                                                        <div className="text-xs text-[#1a1f1e]/40">Recevez un code sur votre téléphone.</div>
-                                                    </div>
-                                                    <div className="ml-auto">
-                                                        <span className="text-[10px] font-black bg-[#1a1f1e]/5 px-2 py-1 rounded-md text-[#1a1f1e]/40 uppercase tracking-widest">Bientôt</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="mt-10 p-6 rounded-3xl bg-[#1a1f1e] text-[#FDFCF8] relative overflow-hidden group">
-                                               <div className="relative z-10 flex items-center justify-between">
-                                                    <div>
-                                                        <div className="font-serif italic text-lg mb-1">Passer à la sécurité supérieure</div>
-                                                        <div className="text-xs opacity-50 font-bold uppercase tracking-widest">Action requise prochainement</div>
-                                                    </div>
-                                                    <ChevronRight className="h-6 w-6 opacity-30 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                                               </div>
-                                               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            </div>
-                                        </div>
+                                        <TwoFactorManager />
+                                            
                                     </section>
                                 </motion.div>
                             )}
