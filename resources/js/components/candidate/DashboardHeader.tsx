@@ -1,8 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
-import { User, LogOut, LayoutDashboard, Briefcase, FileText, Bell, Settings } from 'lucide-react';
-import { dashboard as candidateDashboard, settings as candidateSettings } from '@/routes/candidate';
-import { edit as profileEdit } from '@/routes/profile';
+import { LogOut, LayoutDashboard, Bell, Settings } from 'lucide-react';
 import { logout } from '@/routes';
+import { dashboard as candidateDashboard, settings as candidateSettings } from '@/routes/candidate';
 
 // --- Sous-composant Brand ---
 const Brand = () => (

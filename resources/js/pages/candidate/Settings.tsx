@@ -7,6 +7,7 @@ import {
     Lock, 
     Camera, 
     ShieldCheck, 
+    ShieldAlert,
     CheckCircle2, 
     AlertCircle,
     ChevronRight,
@@ -30,7 +31,9 @@ import ExperienceSection from '@/components/candidate/settings/ExperienceSection
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
 import LanguageSection from '@/components/candidate/settings/LanguageSection';
-import TwoFactorManager from '@/components/auth/2fa/TwoFactorManager';
+import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
+import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
+import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 
 interface Props {
     candidat: any;
@@ -47,6 +50,45 @@ export default function Settings({ candidat, user, experiences, formations, spec
     const { flash } = usePage().props as any;
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [visibleFlash, setVisibleFlash] = useState<{success?: string, error?: string} | null>(null);
+
+    // 2FA logic
+    const { auth } = usePage().props as any;
+    const isTwoFactorEnabled = !!(auth?.user?.two_factor_confirmed_at || user?.two_factor_confirmed_at);
+    
+    const {
+        qrCodeSvg,
+        manualSetupKey,
+        recoveryCodesList,
+        errors,
+        clearSetupData,
+        fetchSetupData,
+        fetchRecoveryCodes,
+    } = useTwoFactorAuth();
+
+    const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
+    const [enablingTwoFactor, setEnablingTwoFactor] = useState(false);
+
+    const enableTwoFactor = () => {
+        setEnablingTwoFactor(true);
+        router.post(
+            '/user/two-factor-authentication',
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setIsSetupModalOpen(true);
+                },
+                onFinish: () => setEnablingTwoFactor(false),
+            }
+        );
+    };
+
+    const disableTwoFactor = () => {
+        router.delete('/user/two-factor-authentication', {
+            preserveScroll: true,
+            onSuccess: () => clearSetupData(),
+        });
+    };
 
     useEffect(() => {
         if (flash?.success || flash?.error) {
@@ -545,7 +587,68 @@ export default function Settings({ candidat, user, experiences, formations, spec
                                     <section className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm relative overflow-hidden">
                                         <div className="absolute top-0 right-0 -mr-12 -mt-12 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
                                         
-                                        <TwoFactorManager />
+                                        <div className="space-y-6 relative z-10">
+                                            {!isTwoFactorEnabled ? (
+                                                <div className="flex flex-col items-center rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10 p-8 text-center">
+                                                    <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-3xl bg-gray-50 text-gray-400">
+                                                        <ShieldAlert className="h-8 w-8" />
+                                                    </div>
+                                                    <h4 className="mb-2 font-serif text-xl font-bold italic">
+                                                        Sécurité standard
+                                                    </h4>
+                                                    <p className="mb-8 max-w-xs text-sm text-[#1a1f1e]/40">
+                                                        Votre compte est uniquement protégé par votre mot de passe.
+                                                    </p>
+                                                    <button 
+                                                        onClick={enableTwoFactor} 
+                                                        disabled={enablingTwoFactor}
+                                                        className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 disabled:opacity-50"
+                                                    >
+                                                        {enablingTwoFactor ? 'Activation...' : 'Activer le 2FA'}
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-8">
+                                                    <div className="flex items-center gap-6 rounded-[32px] border border-emerald-100 bg-emerald-50 p-6">
+                                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-sm">
+                                                            <ShieldCheck className="h-7 w-7" />
+                                                        </div>
+                                                        <div>
+                                                            <div className="font-bold text-emerald-900">
+                                                                2FA Activé
+                                                            </div>
+                                                            <div className="text-sm text-emerald-700/70">
+                                                                Votre compte est hautement sécurisé.
+                                                            </div>
+                                                        </div>
+                                                        <button 
+                                                            onClick={disableTwoFactor}
+                                                            className="ml-auto text-xs font-black tracking-widest text-red-500 uppercase transition-colors hover:text-red-700"
+                                                        >
+                                                            Désactiver
+                                                        </button>
+                                                    </div>
+
+                                                    <TwoFactorRecoveryCodes 
+                                                        recoveryCodesList={recoveryCodesList} 
+                                                        fetchRecoveryCodes={fetchRecoveryCodes} 
+                                                        errors={errors} 
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <TwoFactorSetupModal
+                                            isOpen={isSetupModalOpen}
+                                            onClose={() => setIsSetupModalOpen(false)}
+                                            requiresConfirmation={true}
+                                            twoFactorEnabled={isTwoFactorEnabled}
+                                            qrCodeSvg={qrCodeSvg}
+                                            manualSetupKey={manualSetupKey}
+                                            clearSetupData={clearSetupData}
+                                            fetchSetupData={fetchSetupData}
+                                            errors={errors}
+                                        />
                                             
                                     </section>
                                 </motion.div>
