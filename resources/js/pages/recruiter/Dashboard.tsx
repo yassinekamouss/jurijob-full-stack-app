@@ -1,17 +1,16 @@
 import { Head, Link } from '@inertiajs/react';
+import { motion } from 'framer-motion';
 import {
-    Buil motion } from 'framer-motion';
-import {ding2,
+    Building2,
     Mail,
     Phone,
     MapPin,
     ExternalLink,
     Search,
-    LogOut,
-    Settings,
     Briefcase,
 } from 'lucide-react';
-import { motion } frents/recruiter/DashboardHeader';
+
+import DashboardHeader from '@/components/recruiter/DashboardHeader';
 
 interface Props {
     recruteur: any;
