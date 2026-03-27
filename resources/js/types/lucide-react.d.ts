@@ -42,11 +42,17 @@ declare module 'lucide-react' {
     export const Clock: Icon;
     export const Building2: Icon;
     export const Plus: Icon;
-    export const Trash2: Icon;
+    export const Trash2: Icon;;
     export const Upload: Icon;
     export const X: Icon;
     export const ChevronUp: Icon;
     export const Pencil: Icon;
     export const Quote: Icon;
     export const Check: Icon;
+    export const ShieldAlert: Icon;
+    export const Building: Icon;
+    export const Globe: Icon;
+    export const Users: Icon;
+    export const ArrowLeft: Icon;
+    export const Save: Icon;
 }

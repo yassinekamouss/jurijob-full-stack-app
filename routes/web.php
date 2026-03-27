@@ -10,7 +10,12 @@ use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
+
 use App\Http\Controllers\Auth\VerifyEmailController;
+
+
+use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
+use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,15 +57,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
     });
 
-    // Placeholder for recruteur dashboard
-    Route::get('/recruteur/dashboard', fn () => Inertia::render('recruteur/Dashboard'))->name('recruteur.dashboard');
-
     Route::middleware('role:candidat')->group(function () {
         Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
     });
 
     Route::middleware('role:recruteur')->group(function () {
-        Route::get('/recruteur/dashboard', fn () => Inertia::render('recruteur/Dashboard'))->name('recruteur.dashboard');
+        Route::get('/recruteur/dashboard', [RecruiterDashboardController::class, 'index'])->name('recruteur.dashboard');
+        
+        Route::get('/recruteur/settings', [RecruiterSettingsController::class, 'index'])->name('recruteur.settings');
+        Route::put('/recruteur/settings/profile', [RecruiterSettingsController::class, 'updateProfile'])->name('recruteur.settings.update-profile');
     });
 });
 
