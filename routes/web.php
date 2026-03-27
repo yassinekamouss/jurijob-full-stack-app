@@ -10,6 +10,8 @@ use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -79,5 +81,10 @@ Route::middleware('auth:admin')->group(function () {
 Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat'))->name('register.candidat.form');
 Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur'))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
+
+// Guest Email Verification Route (Overrides Fortify's default)
+Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
 require __DIR__.'/settings.php';
