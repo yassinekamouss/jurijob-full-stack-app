@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('candidat_langues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
-            $table->string('nom');
-            $table->string('niveau');
+            $table->foreignId('langue_id')->constrained('langues')->cascadeOnDelete();
+            $table->foreignId('niveau_langue_id')->constrained('niveau_langues')->cascadeOnDelete();
             $table->timestamps();
         });
     }

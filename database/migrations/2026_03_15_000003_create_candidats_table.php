@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('nom');
             $table->string('prenom');
-            $table->string('poste_recherche');
-            $table->string('niveau_experience');
-            $table->string('formation_juridique');
+            $table->foreignId('poste_id')->nullable()->constrained('postes')->nullOnDelete();
+            $table->foreignId('niveau_experience_id')->nullable()->constrained('niveau_experiences')->nullOnDelete();
+            $table->foreignId('formation_juridique_id')->nullable()->constrained('formation_juridiques')->nullOnDelete();
             $table->timestamps();
         });
     }

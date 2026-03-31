@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\CandidatLangue;
+use App\Models\Candidat\CandidatLangue;
 use App\Models\User;
 
 class CandidatLanguePolicy

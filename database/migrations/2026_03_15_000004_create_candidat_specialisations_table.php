@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('candidat_specialisations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
-            $table->string('specialisation');
+            $table->foreignId('specialisation_id')->constrained('specialisations')->cascadeOnDelete();
             $table->timestamps();
         });
     }

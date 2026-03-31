@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreExperienceRequest;
-use App\Models\CandidatExperience;
+use App\Models\Candidat\CandidatExperience;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 

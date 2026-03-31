@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('candidat_mode_travails', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
-            $table->string('mode_travail');
+            $table->foreignId('mode_travail_id')->constrained('mode_travails')->cascadeOnDelete();
             $table->timestamps();
         });
     }

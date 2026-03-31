@@ -1,22 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Candidat;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CandidatExperience extends Model
+class CandidatSpecialisation extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'candidat_id',
-        'debut',
-        'fin',
-        'type',
-        'entreprise',
-        'poste',
+        'specialisation',
     ];
 
     public function candidat(): BelongsTo

@@ -14,8 +14,8 @@ return new class extends Migration
             $table->string('annee_debut')->nullable();
             $table->string('annee_fin')->nullable();
             $table->string('niveau');
-            $table->string('domaine');
-            $table->string('ecole');
+            $table->foreignId('formation_juridique_id')->nullable()->constrained('formation_juridiques')->nullOnDelete();
+            $table->foreignId('ecole_id')->nullable()->constrained('ecoles')->nullOnDelete();
             $table->string('diploma_file');
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ return new class extends Migration
         });
 
         Schema::table('candidats', function (Blueprint $table) {
-            $table->string('image_url')->nullable()->after('formation_juridique');
+            $table->string('image_url')->nullable()->after('formation_juridique_id');
         });
     }
 

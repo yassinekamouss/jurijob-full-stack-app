@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\CandidatExperience;
+use App\Models\Candidat\CandidatExperience;
 use App\Models\User;
 
 class CandidatExperiencePolicy

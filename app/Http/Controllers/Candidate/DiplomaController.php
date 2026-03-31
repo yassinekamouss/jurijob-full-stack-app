@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
-use App\Models\CandidatFormation;
+use App\Models\Candidat\CandidatFormation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -19,7 +19,7 @@ class DiplomaController extends Controller
     {
         $this->authorize('view', $formation);
 
-        if (! $formation->diploma_file || ! Storage::disk('private')->exists($formation->diploma_file)) {
+        if (!$formation->diploma_file || !Storage::disk('private')->exists($formation->diploma_file)) {
             abort(404, 'Diploma file not found.');
         }
 

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Candidat;
+use App\Models\Candidat\Candidat;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -83,11 +83,11 @@ class RegistrationService
      */
     protected function handleFileUpload(?UploadedFile $file, string $directory): ?string
     {
-        if (! $file instanceof UploadedFile) {
+        if (!$file instanceof UploadedFile) {
             return null;
         }
 
-        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
 
         return $file->storeAs($directory, $filename, 'private');
     }
@@ -99,35 +99,35 @@ class RegistrationService
      */
     protected function syncCandidatRelations(Candidat $candidat, array $data): void
     {
-        if (! empty($data['specialisations'])) {
+        if (!empty($data['specialisations'])) {
             $candidat->specialisations()->createMany($data['specialisations']);
         }
 
-        if (! empty($data['domain_experiences'])) {
+        if (!empty($data['domain_experiences'])) {
             $candidat->domainExperiences()->createMany($data['domain_experiences']);
         }
 
-        if (! empty($data['langues'])) {
+        if (!empty($data['langues'])) {
             $candidat->langues()->createMany($data['langues']);
         }
 
-        if (! empty($data['type_travails'])) {
+        if (!empty($data['type_travails'])) {
             $candidat->typeTravails()->createMany($data['type_travails']);
         }
 
-        if (! empty($data['mode_travails'])) {
+        if (!empty($data['mode_travails'])) {
             $candidat->modeTravails()->createMany($data['mode_travails']);
         }
 
-        if (! empty($data['ville_travails'])) {
+        if (!empty($data['ville_travails'])) {
             $candidat->villeTravails()->createMany($data['ville_travails']);
         }
 
-        if (! empty($data['experiences'])) {
+        if (!empty($data['experiences'])) {
             $candidat->experiences()->createMany($data['experiences']);
         }
 
-        if (! empty($data['formations'])) {
+        if (!empty($data['formations'])) {
             $formationsData = [];
             foreach ($data['formations'] as $formation) {
                 $diplomaPath = $this->handleFileUpload(

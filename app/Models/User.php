@@ -11,7 +11,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Laravel\Fortify\TwoFactorAuthenticatable;
-
+use App\Models\Candidat\Candidat;
+use App\Models\Recruteur\Recruteur;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

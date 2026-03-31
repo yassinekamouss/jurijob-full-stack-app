@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('candidat_domain_experiences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
-            $table->string('domain_experience');
+            $table->foreignId('domaine_experience_id')->constrained('domaine_experiences')->cascadeOnDelete();
             $table->timestamps();
         });
     }

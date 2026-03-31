@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreFormationRequest;
-use App\Models\CandidatFormation;
+use App\Models\Candidat\CandidatFormation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
@@ -21,7 +21,7 @@ class FormationController extends Controller
 
         if ($request->hasFile('diploma_file')) {
             $file = $request->file('diploma_file');
-            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
         }
 
@@ -35,11 +35,11 @@ class FormationController extends Controller
         $this->authorize('update', $formation);
 
         $data = $request->validated();
-        if (! $request->hasFile('diploma_file')) {
+        if (!$request->hasFile('diploma_file')) {
             unset($data['diploma_file']);
         } else {
             $file = $request->file('diploma_file');
-            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
         }
 

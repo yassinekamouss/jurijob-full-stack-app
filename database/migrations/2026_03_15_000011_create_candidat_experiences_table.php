@@ -13,9 +13,9 @@ return new class extends Migration
             $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
             $table->string('debut')->nullable();
             $table->string('fin')->nullable();
-            $table->string('type');
-            $table->string('entreprise');
-            $table->string('poste');
+            $table->foreignId('type_experience_id')->nullable()->constrained('type_experiences')->nullOnDelete();
+            $table->string('entreprise')->nullable();
+            $table->foreignId('poste_id')->nullable()->constrained('postes')->nullOnDelete();
             $table->timestamps();
         });
     }
