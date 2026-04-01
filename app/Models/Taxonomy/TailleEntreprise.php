@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TailleEntreprise extends Model
 {
-    //
+        protected $fillable = [
+        'nom',
+    ];
 }

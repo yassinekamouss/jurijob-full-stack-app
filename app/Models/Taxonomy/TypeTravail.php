@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TypeTravail extends Model
 {
-    //
+        protected $fillable = [
+        'nom',
+    ];
 }

@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Langue extends Model
 {
-    //
+        protected $fillable = [
+        'nom',
+    ];
 }

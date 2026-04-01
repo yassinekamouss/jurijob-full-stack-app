@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Specialisation extends Model
 {
-    //
+        protected $fillable = [
+        'nom',
+    ];
 }
