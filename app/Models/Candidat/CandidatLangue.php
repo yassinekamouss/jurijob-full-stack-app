@@ -12,8 +12,8 @@ class CandidatLangue extends Model
 
     protected $fillable = [
         'candidat_id',
-        'nom',
-        'niveau',
+        'langue_id',
+        'niveau_langue_id',
     ];
 
     public function candidat(): BelongsTo

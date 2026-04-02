@@ -15,15 +15,30 @@ class CandidatFormation extends Model
         'candidat_id',
         'annee_debut',
         'annee_fin',
-        'niveau',
-        'domaine',
-        'ecole',
+        'specialisation_id',
+        'formation_juridique_id',
+        'ecole_id',
         'diploma_file',
     ];
 
     public function candidat(): BelongsTo
     {
         return $this->belongsTo(Candidat::class);
+    }
+
+    public function specialisation(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Taxonomy\Specialisation::class);
+    }
+
+    public function formationJuridique(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Taxonomy\FormationJuridique::class);
+    }
+
+    public function ecole(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Taxonomy\Ecole::class);
     }
 
     /**

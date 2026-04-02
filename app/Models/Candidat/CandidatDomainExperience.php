@@ -12,7 +12,7 @@ class CandidatDomainExperience extends Model
 
     protected $fillable = [
         'candidat_id',
-        'domain_experience',
+        'domain_experience_id',
     ];
 
     public function candidat(): BelongsTo

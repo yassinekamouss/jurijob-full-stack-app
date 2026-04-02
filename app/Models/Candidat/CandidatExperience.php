@@ -14,9 +14,9 @@ class CandidatExperience extends Model
         'candidat_id',
         'debut',
         'fin',
-        'type',
+        'type_experience_id',
         'entreprise',
-        'poste',
+        'poste_id',
     ];
 
     public function candidat(): BelongsTo

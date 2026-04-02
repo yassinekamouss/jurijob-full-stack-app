@@ -17,9 +17,9 @@ class Candidat extends Model
         'user_id',
         'nom',
         'prenom',
-        'poste_recherche',
-        'niveau_experience',
-        'formation_juridique',
+        'poste_id',
+        'niveau_experience_id',
+        'formation_juridique_id',
         'image_url',
     ];
 

@@ -12,7 +12,7 @@ class CandidatTypeTravail extends Model
 
     protected $fillable = [
         'candidat_id',
-        'type_travail',
+        'type_travail_id',
     ];
 
     public function candidat(): BelongsTo

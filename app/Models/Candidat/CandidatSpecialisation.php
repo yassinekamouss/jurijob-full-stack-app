@@ -12,7 +12,7 @@ class CandidatSpecialisation extends Model
 
     protected $fillable = [
         'candidat_id',
-        'specialisation',
+        'specialisation_id',
     ];
 
     public function candidat(): BelongsTo
