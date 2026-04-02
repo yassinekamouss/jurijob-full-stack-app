@@ -53,6 +53,8 @@ class HandleInertiaRequests extends Middleware
             'error' => $request->session()->get('error'),
         ],
 
+        'taxonomies' => \Inertia\Inertia::lazy(fn () => \App\Repositories\TaxonomyRepository::getAll()),
+
         'sidebarOpen' => ! $request->hasCookie('sidebar_state')
             || $request->cookie('sidebar_state') === 'true',
     ];

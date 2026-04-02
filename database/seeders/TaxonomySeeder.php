@@ -166,8 +166,6 @@ class TaxonomySeeder extends Seeder
             foreach ($dataArray as $item) {
                 DB::table($tableName)->insert([
                     'nom' => $item,
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ]);
             }
         };
