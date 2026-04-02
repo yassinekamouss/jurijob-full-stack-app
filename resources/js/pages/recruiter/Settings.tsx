@@ -17,6 +17,7 @@ import { useState, useEffect, FormEvent } from 'react';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
+import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
 
 interface Props {
     recruteur: any;
@@ -26,6 +27,7 @@ interface Props {
 type TabType = 'profile' | 'security';
 
 export default function Settings({ recruteur, user }: Props) {
+    const { typeOrganisations, tailleEntreprises, villes } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
 
     const { data, setData, put, processing, errors } = useForm({
@@ -246,24 +248,13 @@ export default function Settings({ recruteur, user }: Props) {
                                                         >
                                                             Sélectionner le type
                                                         </option>
-                                                        <option value="Cabinet d'avocats">
-                                                            Cabinet d'avocats
-                                                        </option>
-                                                        <option value="Entreprise (Direction juridique)">
-                                                            Entreprise
-                                                            (Direction
-                                                            juridique)
-                                                        </option>
-                                                        <option value="Etude de notaire">
-                                                            Etude de notaire
-                                                        </option>
-                                                        <option value="Cabinet de recrutement">
-                                                            Cabinet de
-                                                            recrutement
-                                                        </option>
-                                                        <option value="Autre">
-                                                            Autre
-                                                        </option>
+                                                        {useLoadingTaxonomy(typeOrganisations) ? (
+                                                            <option disabled>Chargement...</option>
+                                                        ) : (
+                                                            typeOrganisations.map(opt => (
+                                                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                                            ))
+                                                        )}
                                                     </select>
                                                     {errors.type_organisation && (
                                                         <div className="text-xs text-red-500">
@@ -300,21 +291,13 @@ export default function Settings({ recruteur, user }: Props) {
                                                             Sélectionner la
                                                             taille
                                                         </option>
-                                                        <option value="1-10">
-                                                            1-10 employés
-                                                        </option>
-                                                        <option value="11-50">
-                                                            11-50 employés
-                                                        </option>
-                                                        <option value="51-200">
-                                                            51-200 employés
-                                                        </option>
-                                                        <option value="201-500">
-                                                            201-500 employés
-                                                        </option>
-                                                        <option value="500+">
-                                                            Plus de 500 employés
-                                                        </option>
+                                                        {useLoadingTaxonomy(tailleEntreprises) ? (
+                                                            <option disabled>Chargement...</option>
+                                                        ) : (
+                                                            tailleEntreprises.map(opt => (
+                                                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                                            ))
+                                                        )}
                                                     </select>
                                                     {errors.taille_entreprise && (
                                                         <div className="text-xs text-red-500">
@@ -331,8 +314,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                         <MapPin className="h-4 w-4 opacity-50" />
                                                         Ville *
                                                     </label>
-                                                    <input
-                                                        type="text"
+                                                    <select
                                                         value={data.ville}
                                                         onChange={(e) =>
                                                             setData(
@@ -342,7 +324,16 @@ export default function Settings({ recruteur, user }: Props) {
                                                         }
                                                         className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
-                                                    />
+                                                    >
+                                                        <option value="" disabled>Sélectionner une ville</option>
+                                                        {useLoadingTaxonomy(villes) ? (
+                                                            <option disabled>Chargement...</option>
+                                                        ) : (
+                                                            villes.map(opt => (
+                                                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                                            ))
+                                                        )}
+                                                    </select>
                                                     {errors.ville && (
                                                         <div className="text-xs text-red-500">
                                                             {errors.ville}

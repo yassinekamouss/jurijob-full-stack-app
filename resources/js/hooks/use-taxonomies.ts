@@ -61,7 +61,7 @@ export const getTaxonomyLabel = (value: string | number, taxonomy: Taxonomy[]): 
     if (!value || !taxonomy || taxonomy.length === 0) {
         return String(value || '');
     }
-    const item = taxonomy.find((t) => t.id === Number(value));
+    const item = taxonomy.find((t) => String(t.id) === String(value));
     return item?.nom || String(value);
 };
 

@@ -14,7 +14,7 @@ class StoreSpecialisationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'specialisation' => ['required', 'string', 'max:255'],
+            'specialisation_id' => ['required', 'integer', 'exists:specialisations,id'],
         ];
     }
 }

@@ -14,8 +14,8 @@ class StoreLanguageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => ['required', 'string', 'max:255'],
-            'niveau' => ['required', 'string', 'max:255'],
+            'langue_id' => ['required', 'integer', 'exists:langues,id'],
+            'niveau_langue_id' => ['required', 'integer', 'exists:niveau_langues,id'],
         ];
     }
 }

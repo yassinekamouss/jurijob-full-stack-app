@@ -1,5 +1,6 @@
 import { LayoutGrid, Folder, BookOpen, Languages, Plus } from 'lucide-react';
 import ProfileSectionCard from './ProfileSectionCard';
+import { useTaxonomies , getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { Link } from '@inertiajs/react';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export default function ProfileGrid({ candidat }: Props) {
+  const { specialisations, langues, ecoles, formationJuridiques, niveauLangues } = useTaxonomies();
   const VoirPlusLink = ({ tab }: { tab: string }) => (
     <Link 
       href={`/candidate/settings?tab=${tab}`}
@@ -52,8 +54,8 @@ export default function ProfileGrid({ candidat }: Props) {
             {candidat?.formations?.length > 0 ? (
               candidat.formations.slice(0, 1).map((form: any, i: number) => (
                 <div key={i} className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-2 before:w-2 before:rounded-full before:bg-[#1a1f1e]">
-                  <h4 className="font-bold text-[#1a1f1e] text-lg">{form.niveau} en {form.domaine}</h4>
-                  <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">{form.ecole}</p>
+                  <h4 className="font-bold text-[#1a1f1e] text-lg">{getTaxonomyLabel(form.niveau, formationJuridiques)} en {getTaxonomyLabel(form.domaine, specialisations)}</h4>
+                  <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">{getTaxonomyLabel(form.ecole, ecoles)}</p>
                   <p className="mt-1 text-xs font-bold text-[#1a1f1e]/40">{form.annee_debut} — {form.annee_fin || 'N/A'}</p>
                 </div>
               ))
@@ -76,7 +78,7 @@ export default function ProfileGrid({ candidat }: Props) {
             {candidat?.specialisations?.length > 0 ? (
               candidat.specialisations.slice(0, 1).map((s: any, i: number) => (
                 <span key={i} className="rounded-2xl bg-[#1a1f1e]/5 border border-[#1a1f1e]/5 px-5 py-2.5 text-sm font-bold text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e] hover:text-[#FDFCF8] cursor-default">
-                  {s.specialisation}
+                  {getTaxonomyLabel(s.specialisation_id, specialisations)}
                 </span>
               ))
             ) : (
@@ -95,9 +97,9 @@ export default function ProfileGrid({ candidat }: Props) {
             {candidat?.langues?.length > 0 ? (
               candidat.langues.slice(0, 1).map((l: any, i: number) => (
                 <div key={i} className="flex items-center justify-between rounded-2xl bg-[#FDFCF8] border border-[#1a1f1e]/10 p-4">
-                  <span className="font-bold text-[#1a1f1e]">{l.nom}</span>
+                  <span className="font-bold text-[#1a1f1e]">{getTaxonomyLabel(l.langue_id, langues)}</span>
                   <span className="rounded-full bg-[#1a1f1e] px-4 py-1.5 text-[10px] font-black uppercase tracking-tighter text-[#FDFCF8]">
-                    {l.niveau}
+                    {getTaxonomyLabel(l.niveau_langue_id, niveauLangues)}
                   </span>
                 </div>
               ))

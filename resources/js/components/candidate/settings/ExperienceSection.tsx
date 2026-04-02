@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { Briefcase, Plus, Trash2, X, Calendar, CheckCircle2 } from 'lucide-react';
 import Icon from '@/components/signup/FormularIcons';
 import { motion, AnimatePresence } from 'framer-motion';
-import { postes, typesExperience } from '@/constants/options';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { store, update, destroy } from '@/routes/candidate/experiences';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 }
 
 export default function ExperienceSection({ experiences }: Props) {
+  const { postes, typeExperiences } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -101,7 +102,11 @@ export default function ExperienceSection({ experiences }: Props) {
                     required
                   >
                     <option value="">Choisir un poste</option>
-                    {postes.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {useLoadingTaxonomy(postes) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      postes.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                     <option value="Autre">Autre</option>
                   </select>
                   {form.errors.poste && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.poste}</p>}
@@ -130,7 +135,11 @@ export default function ExperienceSection({ experiences }: Props) {
                     required
                   >
                     <option value="">Choisir un type</option>
-                    {typesExperience.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {useLoadingTaxonomy(typeExperiences) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      typeExperiences.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                   </select>
                   {form.errors.type && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.type}</p>}
                 </div>
@@ -204,11 +213,11 @@ export default function ExperienceSection({ experiences }: Props) {
                       <Briefcase className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">{exp.poste}</h4>
+                      <h4 className="font-bold text-lg">{getTaxonomyLabel(exp.poste_id, postes)}</h4>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{exp.entreprise}</p>
                         <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/20" />
-                        <p className="text-[10px] font-black uppercase tracking-widest text-[#C06041]">{exp.type}</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#C06041]">{getTaxonomyLabel(exp.type_experience_id, typeExperiences)}</p>
                       </div>
                       <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{exp.debut} — {exp.fin || 'Présent'}</p>
                     </div>

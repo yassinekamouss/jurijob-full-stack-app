@@ -22,6 +22,7 @@ class SettingsController extends Controller
         return Inertia::render('candidate/Settings', [
             'candidat' => $candidat,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
+            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
             'experiences' => Inertia::defer(fn () => $candidat->experiences),
             'formations' => Inertia::defer(fn () => $candidat->formations),
             'specialisations' => Inertia::defer(fn () => $candidat->specialisations),

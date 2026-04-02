@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { GraduationCap, Plus, Trash2, FileText, Calendar } from 'lucide-react';
 import Icon from '@/components/signup/FormularIcons';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ecolesMaroc, formationsJuridiques, specialisations } from '@/constants/options';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { store, update, destroy } from '@/routes/candidate/formations';
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
 }
 
 export default function FormationSection({ formations }: Props) {
+  const { ecoles, formationJuridiques, specialisations } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -31,9 +32,9 @@ export default function FormationSection({ formations }: Props) {
 
   const handleEdit = (formItem: any) => {
     form.setData({
-      niveau: formItem.niveau,
-      domaine: formItem.domaine,
-      ecole: formItem.ecole,
+      niveau: formItem.formation_juridique_id,
+      domaine: formItem.specialisation_id,
+      ecole: formItem.ecole_id,
       annee_debut: formItem.annee_debut,
       annee_fin: formItem.annee_fin || '',
       diploma_file: null,
@@ -111,7 +112,11 @@ export default function FormationSection({ formations }: Props) {
                     required
                   >
                     <option value="">Choisir un niveau</option>
-                    {formationsJuridiques.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {useLoadingTaxonomy(formationJuridiques) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      formationJuridiques.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                   </select>
                   {form.errors.niveau && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.niveau}</p>}
                 </div>
@@ -124,7 +129,11 @@ export default function FormationSection({ formations }: Props) {
                     required
                   >
                     <option value="">Choisir un domaine</option>
-                    {specialisations.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {useLoadingTaxonomy(specialisations) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      specialisations.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                   </select>
                   {form.errors.domaine && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.domaine}</p>}
                 </div>
@@ -139,7 +148,11 @@ export default function FormationSection({ formations }: Props) {
                     required
                   >
                     <option value="">Choisir un établissement</option>
-                    {ecolesMaroc.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {useLoadingTaxonomy(ecoles) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      ecoles.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                   </select>
                   {form.errors.ecole && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.ecole}</p>}
                 </div>
@@ -220,8 +233,8 @@ export default function FormationSection({ formations }: Props) {
                       <GraduationCap className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">{f.niveau} en {f.domaine}</h4>
-                      <p className="text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{f.ecole}</p>
+                      <h4 className="font-bold text-lg">{getTaxonomyLabel(f.formation_juridique_id, formationJuridiques)} en {getTaxonomyLabel(f.specialisation_id, specialisations)}</h4>
+                      <p className="text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{getTaxonomyLabel(f.ecole_id, ecoles)}</p>
                       <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{f.annee_debut} — {f.annee_fin || 'N/A'}</p>
                     </div>
                   </div>

@@ -26,6 +26,7 @@ class DashboardController extends Controller
         return Inertia::render('candidate/Dashboard', [
             'candidat' => $candidat,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
+            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
         ]);
     }
 }

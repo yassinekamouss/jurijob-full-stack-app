@@ -18,6 +18,7 @@ class SettingsController extends Controller
         return Inertia::render('recruiter/Settings', [
             'recruteur' => $recruteur,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
+            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
         ]);
     }
 

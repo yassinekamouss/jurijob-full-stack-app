@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Languages, Plus, Trash2, CheckCircle2, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { langues as langueOptions, niveauxLangue } from '@/constants/options';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { store, destroy } from '@/routes/candidate/langues';
 
 interface Props {
@@ -10,11 +10,12 @@ interface Props {
 }
 
 export default function LanguageSection({ langues }: Props) {
+  const { langues: langueOptions, niveauLangues } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
 
   const form = useForm({
-    nom: '',
-    niveau: '',
+    langue_id: '',
+    niveau_langue_id: '',
   });
 
   const submit = (e: React.FormEvent) => {
@@ -64,16 +65,19 @@ export default function LanguageSection({ langues }: Props) {
                 <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">Langue</label>
                 <div className="relative group">
                   <select
-                    value={form.data.nom}
-                    onChange={e => form.setData('nom', e.target.value)}
+                    value={form.data.langue_id}
+                    onChange={e => form.setData('langue_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
                     <option value="">Choisir une langue</option>
-                    {langueOptions
-                      .filter(opt => !langues.some(l => l.nom === opt))
-                      .map(opt => <option key={opt} value={opt}>{opt}</option>)
-                    }
+                    {useLoadingTaxonomy(langueOptions) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      langueOptions
+                        .filter(opt => !langues.some(l => l.langue_id === opt.id))
+                        .map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
                 </div>
@@ -83,13 +87,17 @@ export default function LanguageSection({ langues }: Props) {
                 <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">Niveau</label>
                 <div className="relative group">
                   <select
-                    value={form.data.niveau}
-                    onChange={e => form.setData('niveau', e.target.value)}
+                    value={form.data.niveau_langue_id}
+                    onChange={e => form.setData('niveau_langue_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
                     <option value="">Niveau</option>
-                    {niveauxLangue.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {useLoadingTaxonomy(niveauLangues) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      niveauLangues.map(n => <option key={n.id} value={n.id}>{n.nom}</option>)
+                    )}
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
                 </div>
@@ -130,9 +138,9 @@ export default function LanguageSection({ langues }: Props) {
                   <Languages className="h-4 w-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-[#1a1f1e]">{l.nom}</span>
+                  <span className="font-bold text-[#1a1f1e]">{getTaxonomyLabel(l.langue_id, langueOptions)}</span>
                   <div className="text-[10px] font-black uppercase tracking-tighter text-[#1a1f1e]/40">
-                    {l.niveau}
+                    {getTaxonomyLabel(l.niveau_langue_id, niveauLangues)}
                   </div>
                 </div>
               </div>

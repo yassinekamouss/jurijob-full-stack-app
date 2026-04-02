@@ -14,9 +14,9 @@ class StoreFormationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'niveau' => ['required', 'string', 'max:255'],
-            'domaine' => ['required', 'string', 'max:255'],
-            'ecole' => ['required', 'string', 'max:255'],
+            'niveau' => ['required', 'integer', 'exists:formation_juridiques,id'],
+            'domaine' => ['required', 'integer', 'exists:specialisations,id'],
+            'ecole' => ['required', 'integer', 'exists:ecoles,id'],
             'annee_debut' => ['required', 'date_format:Y-m'],
             'annee_fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:annee_debut'],
             'diploma_file' => ['nullable', 'file', 'mimes:pdf,jpg,png', 'max:5120'],
@@ -28,5 +28,14 @@ class StoreFormationRequest extends FormRequest
         return [
             'annee_fin.gte' => 'L\'année de fin doit être postérieure ou égale à l\'année de début.',
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'formation_juridique_id' => $this->niveau,
+            'specialisation_id' => $this->domaine,
+            'ecole_id' => $this->ecole,
+        ]);
     }
 }

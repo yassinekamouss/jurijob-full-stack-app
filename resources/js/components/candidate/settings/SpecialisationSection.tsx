@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Folder, Plus, Trash2, CheckCircle2, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { specialisations as specialisationOptions } from '@/constants/options';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { store, destroy } from '@/routes/candidate/specialisations';
 
 interface Props {
@@ -10,10 +10,11 @@ interface Props {
 }
 
 export default function SpecialisationSection({ specialisations }: Props) {
+  const { specialisations: specialisationOptions } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
 
   const form = useForm({
-    specialisation: '',
+    specialisation_id: '',
   });
 
   const submit = (e: React.FormEvent) => {
@@ -63,16 +64,19 @@ export default function SpecialisationSection({ specialisations }: Props) {
                 <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">Spécialisation</label>
                 <div className="relative group">
                   <select
-                    value={form.data.specialisation}
-                    onChange={e => form.setData('specialisation', e.target.value)}
+                    value={form.data.specialisation_id}
+                    onChange={e => form.setData('specialisation_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
                     <option value="">Sélectionner une expertise</option>
-                    {specialisationOptions
-                      .filter(opt => !specialisations.some(s => s.specialisation === opt))
-                      .map(opt => <option key={opt} value={opt}>{opt}</option>)
-                    }
+                    {useLoadingTaxonomy(specialisationOptions) ? (
+                      <option disabled>Chargement...</option>
+                    ) : (
+                      specialisationOptions
+                        .filter(opt => !specialisations.some(s => s.specialisation_id === opt.id))
+                        .map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                    )}
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
                 </div>
@@ -109,7 +113,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
               className="group relative flex items-center gap-3 rounded-2xl bg-white border border-[#1a1f1e]/10 px-6 py-4 transition-all hover:border-[#1a1f1e] hover:shadow-sm"
             >
               <Folder className="h-4 w-4 text-[#1a1f1e]/20" />
-              <span className="font-bold text-sm text-[#1a1f1e]">{s.specialisation}</span>
+              <span className="font-bold text-sm text-[#1a1f1e]">{getTaxonomyLabel(s.specialisation_id, specialisationOptions)}</span>
               <button
                 onClick={() => handleDelete(s.id)}
                 className="opacity-0 group-hover:opacity-100 transition-opacity text-red-300 hover:text-red-500 ml-2"

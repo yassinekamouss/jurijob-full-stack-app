@@ -9,6 +9,7 @@ import {
     Search,
     Briefcase,
 } from 'lucide-react';
+import { useTaxonomies, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 
@@ -18,6 +19,8 @@ interface Props {
 }
 
 export default function Dashboard({ recruteur, user }: Props) {
+    const { typeOrganisations, tailleEntreprises } = useTaxonomies();
+
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Espace Recruteur - Jurijob" />
@@ -120,8 +123,9 @@ export default function Dashboard({ recruteur, user }: Props) {
                                                 Type d'organisation
                                             </p>
                                             <p className="font-semibold">
-                                                {recruteur?.type_organisation ||
-                                                    'Non défini'}
+                                                {recruteur?.type_organisation
+                                                    ? getTaxonomyLabel(recruteur.type_organisation, typeOrganisations)
+                                                    : 'Non défini'}
                                             </p>
                                         </div>
                                     </div>
@@ -136,8 +140,9 @@ export default function Dashboard({ recruteur, user }: Props) {
                                                 Taille de l'entreprise
                                             </p>
                                             <p className="font-semibold">
-                                                {recruteur?.taille_entreprise ||
-                                                    'Non défini'}
+                                                {recruteur?.taille_entreprise
+                                                    ? getTaxonomyLabel(recruteur.taille_entreprise, tailleEntreprises)
+                                                    : 'Non défini'}
                                             </p>
                                         </div>
                                     </div>

@@ -17,6 +17,7 @@ class DashboardController extends Controller
         return Inertia::render('recruiter/Dashboard', [
             'recruteur' => $recruteur,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
+            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
         ]);
     }
 }

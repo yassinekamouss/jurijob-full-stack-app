@@ -26,11 +26,7 @@ import {
     updateAccount as updateAccountRoute,
     updateImage as updateImageRoute,
 } from '@/routes/candidate/settings';
-import {
-    postes,
-    niveauxExperience,
-    formationsJuridiques,
-} from '@/constants/options';
+import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
@@ -66,6 +62,7 @@ export default function Settings({
     langues,
 }: Props) {
     const { flash } = usePage().props as any;
+    const { postes, niveauExperiences, formationJuridiques } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [visibleFlash, setVisibleFlash] = useState<{
         success?: string;
@@ -467,14 +464,18 @@ export default function Settings({
                                                         <option value="">
                                                             Choisir un poste
                                                         </option>
-                                                        {postes.map((opt) => (
-                                                            <option
-                                                                key={opt}
-                                                                value={opt}
-                                                            >
-                                                                {opt}
-                                                            </option>
-                                                        ))}
+                                                        {useLoadingTaxonomy(postes) ? (
+                                                            <option disabled>Chargement...</option>
+                                                        ) : (
+                                                            postes.map((opt) => (
+                                                                <option
+                                                                    key={opt.id}
+                                                                    value={opt.id}
+                                                                >
+                                                                    {opt.nom}
+                                                                </option>
+                                                            ))
+                                                        )}
                                                         <option value="Autre">
                                                             Autre
                                                         </option>
@@ -503,16 +504,19 @@ export default function Settings({
                                                         <option value="">
                                                             Choisir un niveau
                                                         </option>
-                                                        {niveauxExperience.map(
-                                                            (opt) => (
-                                                                <option
-                                                                    key={opt}
-                                                                    value={opt}
-                                                                >
-                                                                    {opt}
-                                                                </option>
-                                                            ),
-                                                        )}
+                                                        {useLoadingTaxonomy(niveauExperiences) ? (
+                                                            <option disabled>Chargement...</option>
+                                                        ) : (
+                                                            niveauExperiences.map(
+                                                                (opt) => (
+                                                                    <option
+                                                                        key={opt.id}
+                                                                        value={opt.id}
+                                                                    >
+                                                                        {opt.nom}
+                                                                    </option>
+                                                                )
+                                                        ))}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
@@ -539,20 +543,23 @@ export default function Settings({
                                                                 Choisir une
                                                                 formation
                                                             </option>
-                                                            {formationsJuridiques.map(
-                                                                (opt) => (
-                                                                    <option
-                                                                        key={
-                                                                            opt
+                                                            {useLoadingTaxonomy(formationJuridiques) ? (
+                                                                <option disabled>Chargement...</option>
+                                                            ) : (
+                                                                formationJuridiques.map(
+                                                                    (opt) => (
+                                                                        <option
+                                                                            key={
+                                                                                opt.id
                                                                         }
                                                                         value={
-                                                                            opt
+                                                                            opt.id
                                                                         }
                                                                     >
-                                                                        {opt}
+                                                                        {opt.nom}
                                                                     </option>
-                                                                ),
-                                                            )}
+                                                                )
+                                                            ))}
                                                         </select>
                                                     </div>
                                                 </div>
