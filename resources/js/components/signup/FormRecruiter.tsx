@@ -1,7 +1,6 @@
 import React from 'react';
-import { typeOrganisation, tailleEntreprise, villes } from '@/constants/options';
-
 import { RecruteurFormData } from '@/types';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 
 type RecruiterFieldsProps = {
     formData: RecruteurFormData;
@@ -16,6 +15,7 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
     errors = {},
     className = '',
 }) => {
+    const { typeOrganisations, tailleEntreprises, villes } = useTaxonomies();
     const inputClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-400";
 
     return (
@@ -62,9 +62,13 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                         className={inputClasses}
                     >
                         <option value="">Sélectionnez le type</option>
-                        {typeOrganisation.map((opt) => (
-                            <option key={opt} value={opt}>{opt}</option>
-                        ))}
+                        {useLoadingTaxonomy(typeOrganisations) ? (
+                            <option disabled>Chargement des options...</option>
+                        ) : (
+                            typeOrganisations.map((opt) => (
+                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                            ))
+                        )}
                     </select>
                     {errors.type_organisation && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.type_organisation}</p>}
                 </div>
@@ -77,9 +81,13 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                         className={inputClasses}
                     >
                         <option value="">Nombre d'employés</option>
-                        {tailleEntreprise.map((opt) => (
-                            <option key={opt} value={opt}>{opt}</option>
-                        ))}
+                        {useLoadingTaxonomy(tailleEntreprises) ? (
+                            <option disabled>Chargement des options...</option>
+                        ) : (
+                            tailleEntreprises.map((opt) => (
+                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                            ))
+                        )}
                     </select>
                     {errors.taille_entreprise && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.taille_entreprise}</p>}
                 </div>
@@ -108,9 +116,13 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                     className={inputClasses}
                 >
                     <option value="">Sélectionnez une ville</option>
-                    {villes.map((v) => (
-                        <option key={v} value={v}>{v}</option>
-                    ))}
+                    {useLoadingTaxonomy(villes) ? (
+                        <option disabled>Chargement des options...</option>
+                    ) : (
+                        villes.map((v) => (
+                            <option key={v.id} value={v.id}>{v.nom}</option>
+                        ))
+                    )}
                 </select>
                 {errors.ville && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.ville}</p>}
             </div>

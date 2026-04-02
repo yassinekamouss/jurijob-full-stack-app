@@ -53,43 +53,43 @@ class CreateNewUser implements CreatesNewUsers
             // Candidat rules
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'poste_recherche' => ['required', 'string', 'max:255'],
-            'niveau_experience' => ['required', 'string', 'max:255'],
-            'formation_juridique' => ['required', 'string', 'max:255'],
+            'poste_recherche' => ['required', 'integer'],
+            'niveau_experience' => ['required', 'integer'],
+            'formation_juridique' => ['required', 'integer'],
 
             // Relationships
             'specialisations' => ['nullable', 'array'],
-            'specialisations.*.specialisation' => ['required_with:specialisations', 'string', 'max:255'],
+            'specialisations.*.specialisation' => ['required_with:specialisations', 'integer'],
 
             'domain_experiences' => ['nullable', 'array'],
-            'domain_experiences.*.domain_experience' => ['required_with:domain_experiences', 'string', 'max:255'],
+            'domain_experiences.*.domain_experience' => ['required_with:domain_experiences', 'integer'],
 
             'langues' => ['nullable', 'array'],
-            'langues.*.nom' => ['required_with:langues', 'string', 'max:255'],
-            'langues.*.niveau' => ['required_with:langues', 'string', 'max:255'],
+            'langues.*.nom' => ['required_with:langues', 'integer'],
+            'langues.*.niveau' => ['required_with:langues', 'integer'],
 
             'type_travails' => ['nullable', 'array'],
-            'type_travails.*.type_travail' => ['required_with:type_travails', 'string', 'max:255'],
+            'type_travails.*.type_travail' => ['required_with:type_travails', 'integer'],
 
             'mode_travails' => ['nullable', 'array'],
-            'mode_travails.*.mode_travail' => ['required_with:mode_travails', 'string', 'max:255'],
+            'mode_travails.*.mode_travail' => ['required_with:mode_travails', 'integer'],
 
             'ville_travails' => ['nullable', 'array'],
-            'ville_travails.*.ville' => ['required_with:ville_travails', 'string', 'max:255'],
+            'ville_travails.*.ville' => ['required_with:ville_travails', 'integer'],
 
             'experiences' => ['nullable', 'array'],
             'experiences.*.debut' => ['required_with:experiences', 'date_format:Y-m'],
             'experiences.*.fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:experiences.*.debut'],
-            'experiences.*.type' => ['required_with:experiences', 'string', 'max:255'],
+            'experiences.*.type' => ['required_with:experiences', 'integer'],
             'experiences.*.entreprise' => ['required_with:experiences', 'string', 'max:255'],
-            'experiences.*.poste' => ['required_with:experiences', 'string', 'max:255'],
+            'experiences.*.poste' => ['required_with:experiences', 'integer'],
 
             'formations' => ['nullable', 'array'],
             'formations.*.annee_debut' => ['required_with:formations', 'date_format:Y-m'],
             'formations.*.annee_fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:formations.*.annee_debut'],
-            'formations.*.niveau' => ['required_with:formations', 'string', 'max:255'],
-            'formations.*.domaine' => ['required_with:formations', 'string', 'max:255'],
-            'formations.*.ecole' => ['required_with:formations', 'string', 'max:255'],
+            'formations.*.niveau' => ['required_with:formations', 'integer'],
+            'formations.*.domaine' => ['required_with:formations', 'integer'],
+            'formations.*.ecole' => ['required_with:formations', 'integer'],
             'formations.*.diploma_file' => ['required_with:formations', 'file', 'mimes:pdf,jpg,png,jpeg', 'max:5120'],
         ], [
             'telephone.regex' => 'Le numéro de téléphone doit contenir uniquement des chiffres et éventuellement un + au début.',
@@ -113,9 +113,9 @@ class CreateNewUser implements CreatesNewUsers
 
             // Recruteur rules
             'nom_entreprise' => ['required', 'string', 'max:255'],
-            'type_organisation' => ['required', 'string', 'max:255'],
-            'taille_entreprise' => ['required', 'string', 'max:255'],
-            'ville' => ['required', 'string', 'max:255'],
+            'type_organisation' => ['required', 'integer'],
+            'taille_entreprise' => ['required', 'integer'],
+            'ville' => ['required', 'integer'],
             'site_web' => ['nullable', 'string', 'max:255', 'url'],
             'poste' => ['nullable', 'string', 'max:255'],
         ], [

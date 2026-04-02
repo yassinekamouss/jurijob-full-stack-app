@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
 
+use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -83,8 +84,13 @@ Route::middleware('auth:admin')->group(function () {
 
 // Candidat & Recruteur Registration Routes
 // ... registration routes ...
-Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat'))->name('register.candidat.form');
-Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur'))->name('register.recruteur.form');
+Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat', [
+    'taxonomies' => fn () => TaxonomyRepository::getAll(),
+]))->name('register.candidat.form');
+
+Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur', [
+    'taxonomies' => fn () => TaxonomyRepository::getAll(),
+]))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
 
 // Guest Email Verification Route (Overrides Fortify's default)

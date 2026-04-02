@@ -16,14 +16,29 @@ class Recruteur extends Model
         'user_id',
         'nom_entreprise',
         'poste',
-        'type_organisation',
-        'taille_entreprise',
+        'type_organisation_id',
+        'taille_entreprise_id',
         'site_web',
-        'ville',
+        'ville_id',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function typeOrganisation(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Taxonomy\TypeOrganisation::class);
+    }
+
+    public function tailleEntreprise(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Taxonomy\TailleEntreprise::class);
+    }
+
+    public function ville(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Taxonomy\Ville::class);
     }
 }

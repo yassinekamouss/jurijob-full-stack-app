@@ -36,9 +36,9 @@ class RegistrationService
             $candidat = $user->candidat()->create([
                 'nom' => $data['nom'],
                 'prenom' => $data['prenom'],
-                'poste_recherche' => $data['poste_recherche'],
-                'niveau_experience' => $data['niveau_experience'],
-                'formation_juridique' => $data['formation_juridique'],
+                'poste_id' => $data['poste_recherche'],
+                'niveau_experience_id' => $data['niveau_experience'],
+                'formation_juridique_id' => $data['formation_juridique'],
                 'image_url' => $imageUrl,
             ]);
 
@@ -67,9 +67,9 @@ class RegistrationService
 
             $user->recruteur()->create([
                 'nom_entreprise' => $data['nom_entreprise'],
-                'type_organisation' => $data['type_organisation'],
-                'taille_entreprise' => $data['taille_entreprise'],
-                'ville' => $data['ville'],
+                'type_organisation_id' => $data['type_organisation'],
+                'taille_entreprise_id' => $data['taille_entreprise'],
+                'ville_id' => $data['ville'],
                 'site_web' => $data['site_web'] ?? null,
                 'poste' => $data['poste'] ?? null,
             ]);
@@ -83,11 +83,11 @@ class RegistrationService
      */
     protected function handleFileUpload(?UploadedFile $file, string $directory): ?string
     {
-        if (!$file instanceof UploadedFile) {
+        if (! $file instanceof UploadedFile) {
             return null;
         }
 
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
 
         return $file->storeAs($directory, $filename, 'private');
     }
@@ -99,35 +99,48 @@ class RegistrationService
      */
     protected function syncCandidatRelations(Candidat $candidat, array $data): void
     {
-        if (!empty($data['specialisations'])) {
-            $candidat->specialisations()->createMany($data['specialisations']);
+        if (! empty($data['specialisations'])) {
+            $specialisations = array_map(fn ($item) => ['specialisation_id' => $item['specialisation']], $data['specialisations']);
+            $candidat->specialisations()->createMany($specialisations);
         }
 
-        if (!empty($data['domain_experiences'])) {
-            $candidat->domainExperiences()->createMany($data['domain_experiences']);
+        if (! empty($data['domain_experiences'])) {
+            $domainExperiences = array_map(fn ($item) => ['domaine_experience_id' => $item['domain_experience']], $data['domain_experiences']);
+            $candidat->domainExperiences()->createMany($domainExperiences);
         }
 
-        if (!empty($data['langues'])) {
-            $candidat->langues()->createMany($data['langues']);
+        if (! empty($data['langues'])) {
+            $langues = array_map(fn ($item) => ['langue_id' => $item['nom'], 'niveau_langue_id' => $item['niveau']], $data['langues']);
+            $candidat->langues()->createMany($langues);
         }
 
-        if (!empty($data['type_travails'])) {
-            $candidat->typeTravails()->createMany($data['type_travails']);
+        if (! empty($data['type_travails'])) {
+            $typeTravails = array_map(fn ($item) => ['type_travail_id' => $item['type_travail']], $data['type_travails']);
+            $candidat->typeTravails()->createMany($typeTravails);
         }
 
-        if (!empty($data['mode_travails'])) {
-            $candidat->modeTravails()->createMany($data['mode_travails']);
+        if (! empty($data['mode_travails'])) {
+            $modeTravails = array_map(fn ($item) => ['mode_travail_id' => $item['mode_travail']], $data['mode_travails']);
+            $candidat->modeTravails()->createMany($modeTravails);
         }
 
-        if (!empty($data['ville_travails'])) {
-            $candidat->villeTravails()->createMany($data['ville_travails']);
+        if (! empty($data['ville_travails'])) {
+            $villeTravails = array_map(fn ($item) => ['ville_id' => $item['ville']], $data['ville_travails']);
+            $candidat->villeTravails()->createMany($villeTravails);
         }
 
-        if (!empty($data['experiences'])) {
-            $candidat->experiences()->createMany($data['experiences']);
+        if (! empty($data['experiences'])) {
+            $experiences = array_map(fn ($item) => [
+                'type_experience_id' => $item['type'],
+                'poste_id' => $item['poste'],
+                'entreprise' => $item['entreprise'],
+                'debut' => $item['debut'],
+                'fin' => $item['fin'] ?? null,
+            ], $data['experiences']);
+            $candidat->experiences()->createMany($experiences);
         }
 
-        if (!empty($data['formations'])) {
+        if (! empty($data['formations'])) {
             $formationsData = [];
             foreach ($data['formations'] as $formation) {
                 $diplomaPath = $this->handleFileUpload(
@@ -138,9 +151,9 @@ class RegistrationService
                 $formationsData[] = [
                     'annee_debut' => $formation['annee_debut'] ?? null,
                     'annee_fin' => $formation['annee_fin'] ?? null,
-                    'niveau' => $formation['niveau'],
-                    'domaine' => $formation['domaine'],
-                    'ecole' => $formation['ecole'],
+                    'specialisation_id' => $formation['domaine'],
+                    'formation_juridique_id' => $formation['niveau'],
+                    'ecole_id' => $formation['ecole'],
                     'diploma_file' => $diplomaPath,
                 ];
             }

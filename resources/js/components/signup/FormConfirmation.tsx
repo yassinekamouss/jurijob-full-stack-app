@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Icon from '@/components/signup/FormularIcons';
+import { useTaxonomies, getTaxonomyLabel, getTaxonomyLabels } from '@/hooks/use-taxonomies';
 
 import { UserFormData, CandidatFormData, RecruteurFormData } from '@/types';
 
@@ -16,6 +17,7 @@ type FormConfirmationProps = {
 
 const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit }) => {
     const [loading, setLoading] = useState(false);
+    const { typeOrganisations, tailleEntreprises, villes, postes, niveauExperiences, formationJuridiques, specialisations } = useTaxonomies();
 
     const handleSubmit = async () => {
         setLoading(true);
@@ -86,9 +88,9 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                         </div>
                         <div className="grid gap-3">
                             <Item label="Organisation" value={formData.recruteur.nom_entreprise} />
-                            <Item label="Type" value={formData.recruteur.type_organisation} />
-                            <Item label="Taille" value={formData.recruteur.taille_entreprise} />
-                            <Item label="Ville" value={formData.recruteur.ville} />
+                            <Item label="Type" value={getTaxonomyLabel(formData.recruteur.type_organisation, typeOrganisations)} />
+                            <Item label="Taille" value={getTaxonomyLabel(formData.recruteur.taille_entreprise, tailleEntreprises)} />
+                            <Item label="Ville" value={getTaxonomyLabel(formData.recruteur.ville, villes)} />
                             <Item label="Poste occupé" value={formData.recruteur.poste || ''} />
                         </div>
                     </div>
@@ -99,13 +101,13 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                             <h4 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Profil Candidat</h4>
                         </div>
                         <div className="grid gap-3">
-                            <Item label="Poste visé" value={formData.candidat.PosteRecherche} />
-                            <Item label="Expérience" value={formData.candidat.niveauExperience} />
-                            <Item label="Formation" value={formData.candidat.formationJuridique} />
+                            <Item label="Poste visé" value={getTaxonomyLabel(formData.candidat.PosteRecherche, postes)} />
+                            <Item label="Expérience" value={getTaxonomyLabel(formData.candidat.niveauExperience, niveauExperiences)} />
+                            <Item label="Formation" value={getTaxonomyLabel(formData.candidat.formationJuridique, formationJuridiques)} />
                             <div className="pt-2 border-t border-slate-100 mt-2">
                                 <p className="text-[10px] font-black text-slate-400 uppercase mb-2">Spécialisations</p>
                                 <div className="flex flex-wrap gap-1.5">
-                                    {(formData.candidat.specialisations || []).map((s: string) => (
+                                    {getTaxonomyLabels(formData.candidat.specialisations || [], specialisations).map((s: string) => (
                                         <span key={s} className="px-2 py-0.5 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-700">{s}</span>
                                     ))}
                                 </div>
