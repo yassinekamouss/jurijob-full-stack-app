@@ -25,9 +25,9 @@ class UpdateProfileRequest extends FormRequest
         return [
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'poste_recherche' => ['required', 'string', 'max:255'],
-            'niveau_experience' => ['required', 'string', 'max:255'],
-            'formation_juridique' => ['required', 'string', 'max:255'],
+            'poste_id' => ['required', 'integer', 'exists:postes,id'],
+            'niveau_experience_id' => ['required', 'integer', 'exists:niveau_experiences,id'],
+            'formation_juridique_id' => ['required', 'integer', 'exists:formation_juridiques,id'],
             'is_active' => ['required', 'boolean'],
         ];
     }

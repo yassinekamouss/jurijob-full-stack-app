@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Languages, Plus, Trash2, CheckCircle2, X, ChevronDown } from 'lucide-react';
+import { Languages, Plus, Trash2, Check, X, ChevronDown, Pencil } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
-import { store, destroy } from '@/routes/candidate/langues';
+import { store, update, destroy } from '@/routes/candidate/langues';
 
 interface Props {
   langues: any[];
@@ -12,20 +12,44 @@ interface Props {
 export default function LanguageSection({ langues }: Props) {
   const { langues: langueOptions, niveauLangues } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const form = useForm({
     langue_id: '',
     niveau_langue_id: '',
   });
 
+  const resetForm = () => {
+    form.reset();
+    setIsAdding(false);
+    setEditingId(null);
+  };
+
+  const handleEdit = (langue: any) => {
+    form.setData({
+      langue_id: langue.langue_id,
+      niveau_langue_id: langue.niveau_langue_id,
+    });
+    setEditingId(langue.id);
+    setIsAdding(false);
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    form.post(store().url, {
-      onSuccess: () => {
-        form.reset();
-        setIsAdding(false);
-      },
-    });
+    
+    if (editingId) {
+      form.put(update(editingId).url, {
+        onSuccess: () => {
+          resetForm();
+        },
+      });
+    } else {
+      form.post(store().url, {
+        onSuccess: () => {
+          resetForm();
+        },
+      });
+    }
   };
 
   const handleDelete = (id: number) => {
@@ -41,7 +65,7 @@ export default function LanguageSection({ langues }: Props) {
           <h3 className="text-xl font-bold font-serif italic mb-1">Langues</h3>
           <p className="text-sm text-[#1a1f1e]/50 font-medium">Maîtrise linguistique.</p>
         </div>
-        {!isAdding && (
+        {!isAdding && !editingId && (
           <button
             onClick={() => setIsAdding(true)}
             className="flex items-center gap-2 bg-[#1a1f1e] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#343a38] transition-all"
@@ -53,7 +77,7 @@ export default function LanguageSection({ langues }: Props) {
       </div>
 
       <AnimatePresence>
-        {isAdding && (
+        {(isAdding || editingId) && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -75,12 +99,13 @@ export default function LanguageSection({ langues }: Props) {
                       <option disabled>Chargement...</option>
                     ) : (
                       langueOptions
-                        .filter(opt => !langues.some(l => l.langue_id === opt.id))
+                        .filter(opt => !langues.some(l => l.langue_id === opt.id && l.id !== editingId))
                         .map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
                 </div>
+                {form.errors.langue_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.langue_id}</p>}
               </div>
 
               <div className="flex-1 space-y-2 w-full">
@@ -101,6 +126,7 @@ export default function LanguageSection({ langues }: Props) {
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
                 </div>
+                {form.errors.niveau_langue_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.niveau_langue_id}</p>}
               </div>
 
               <div className="flex gap-3 w-full sm:w-auto">
@@ -108,13 +134,13 @@ export default function LanguageSection({ langues }: Props) {
                   type="submit"
                   disabled={form.processing || !form.isDirty}
                   className="flex-1 sm:flex-none bg-[#1a1f1e] text-white p-4 px-6 rounded-2xl flex items-center justify-center hover:bg-[#343a38] transition-all disabled:opacity-50 shadow-xl shadow-[#1a1f1e]/10 active:scale-95"
-                  title="Ajouter"
+                  title={editingId ? 'Mettre à jour' : 'Ajouter'}
                 >
-                  <Plus className="h-5 w-5" />
+                  {editingId ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setIsAdding(false)}
+                  onClick={() => resetForm()}
                   className="p-4 rounded-2xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:bg-white hover:text-[#1a1f1e] hover:border-[#1a1f1e]/20 transition-all active:scale-95"
                   title="Annuler"
                 >
@@ -144,16 +170,26 @@ export default function LanguageSection({ langues }: Props) {
                   </div>
                 </div>
               </div>
-              <button
-                onClick={() => handleDelete(l.id)}
-                className="opacity-0 group-hover:opacity-100 transition-opacity text-red-300 hover:text-red-500"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => handleEdit(l)}
+                  className="p-2 rounded-xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-all"
+                  title="Éditer"
+                >
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(l.id)}
+                  className="text-red-300 hover:text-red-500 transition-all"
+                  title="Supprimer"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           ))
         ) : (
-          <div className="col-span-full text-center py-12 rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10">
+          <div className="col-span-1 sm:col-span-2 text-center py-12 rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10">
             <p className="text-[#1a1f1e]/30 font-bold italic">Aucune langue ajoutée.</p>
           </div>
         )}

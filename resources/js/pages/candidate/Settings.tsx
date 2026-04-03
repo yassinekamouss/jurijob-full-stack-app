@@ -26,7 +26,7 @@ import {
     updateAccount as updateAccountRoute,
     updateImage as updateImageRoute,
 } from '@/routes/candidate/settings';
-import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
@@ -172,9 +172,9 @@ export default function Settings({
     const profileForm = useForm({
         nom: candidat?.nom || '',
         prenom: candidat?.prenom || '',
-        poste_recherche: candidat?.poste_recherche || '',
-        niveau_experience: candidat?.niveau_experience || '',
-        formation_juridique: candidat?.formation_juridique || '',
+        poste_id: candidat?.poste_id || '',
+        niveau_experience_id: candidat?.niveau_experience_id || '',
+        formation_juridique_id: candidat?.formation_juridique_id || '',
         is_active: user.is_active,
     });
 
@@ -451,11 +451,11 @@ export default function Settings({
                                                     <select
                                                         value={
                                                             profileForm.data
-                                                                .poste_recherche
+                                                                .poste_id
                                                         }
                                                         onChange={(e) =>
                                                             profileForm.setData(
-                                                                'poste_recherche',
+                                                                'poste_id',
                                                                 e.target.value,
                                                             )
                                                         }
@@ -491,11 +491,11 @@ export default function Settings({
                                                     <select
                                                         value={
                                                             profileForm.data
-                                                                .niveau_experience
+                                                                .niveau_experience_id
                                                         }
                                                         onChange={(e) =>
                                                             profileForm.setData(
-                                                                'niveau_experience',
+                                                                'niveau_experience_id',
                                                                 e.target.value,
                                                             )
                                                         }
@@ -528,11 +528,11 @@ export default function Settings({
                                                         <select
                                                             value={
                                                                 profileForm.data
-                                                                    .formation_juridique
+                                                                    .formation_juridique_id
                                                             }
                                                             onChange={(e) =>
                                                                 profileForm.setData(
-                                                                    'formation_juridique',
+                                                                    'formation_juridique_id',
                                                                     e.target
                                                                         .value,
                                                                 )

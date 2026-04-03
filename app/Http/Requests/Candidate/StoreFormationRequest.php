@@ -29,13 +29,4 @@ class StoreFormationRequest extends FormRequest
             'annee_fin.gte' => 'L\'année de fin doit être postérieure ou égale à l\'année de début.',
         ];
     }
-
-    protected function passedValidation(): void
-    {
-        $this->merge([
-            'formation_juridique_id' => $this->niveau,
-            'specialisation_id' => $this->domaine,
-            'ecole_id' => $this->ecole,
-        ]);
-    }
 }

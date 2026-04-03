@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Folder, Plus, Trash2, CheckCircle2, X, ChevronDown } from 'lucide-react';
+import { Folder, Plus, Trash2, Check, X, ChevronDown, Pencil } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
-import { store, destroy } from '@/routes/candidate/specialisations';
+import { store, update, destroy } from '@/routes/candidate/specialisations';
 
 interface Props {
   specialisations: any[];
@@ -12,19 +12,42 @@ interface Props {
 export default function SpecialisationSection({ specialisations }: Props) {
   const { specialisations: specialisationOptions } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const form = useForm({
     specialisation_id: '',
   });
 
+  const resetForm = () => {
+    form.reset();
+    setIsAdding(false);
+    setEditingId(null);
+  };
+
+  const handleEdit = (spec: any) => {
+    form.setData({
+      specialisation_id: spec.specialisation_id,
+    });
+    setEditingId(spec.id);
+    setIsAdding(false);
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    form.post(store().url, {
-      onSuccess: () => {
-        form.reset();
-        setIsAdding(false);
-      },
-    });
+    
+    if (editingId) {
+      form.put(update(editingId).url, {
+        onSuccess: () => {
+          resetForm();
+        },
+      });
+    } else {
+      form.post(store().url, {
+        onSuccess: () => {
+          resetForm();
+        },
+      });
+    }
   };
 
   const handleDelete = (id: number) => {
@@ -40,7 +63,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
           <h3 className="text-xl font-bold font-serif italic mb-1">Spécialisations</h3>
           <p className="text-sm text-[#1a1f1e]/50 font-medium">Vos expertises juridiques.</p>
         </div>
-        {!isAdding && (
+        {!isAdding && !editingId && (
           <button
             onClick={() => setIsAdding(true)}
             className="flex items-center gap-2 bg-[#1a1f1e] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#343a38] transition-all"
@@ -52,7 +75,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
       </div>
 
       <AnimatePresence>
-        {isAdding && (
+        {(isAdding || editingId) && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -74,12 +97,13 @@ export default function SpecialisationSection({ specialisations }: Props) {
                       <option disabled>Chargement...</option>
                     ) : (
                       specialisationOptions
-                        .filter(opt => !specialisations.some(s => s.specialisation_id === opt.id))
+                        .filter(opt => !specialisations.some(s => s.specialisation_id === opt.id && s.id !== editingId))
                         .map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
                   <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
                 </div>
+                {form.errors.specialisation_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.specialisation_id}</p>}
               </div>
 
               <div className="flex gap-3 w-full sm:w-auto">
@@ -87,13 +111,13 @@ export default function SpecialisationSection({ specialisations }: Props) {
                   type="submit"
                   disabled={form.processing || !form.isDirty}
                   className="flex-1 sm:flex-none bg-[#1a1f1e] text-white p-4 px-6 rounded-2xl flex items-center justify-center hover:bg-[#343a38] transition-all disabled:opacity-50 shadow-xl shadow-[#1a1f1e]/10 active:scale-95"
-                  title="Ajouter"
+                  title={editingId ? 'Mettre à jour' : 'Ajouter'}
                 >
-                  <Plus className="h-5 w-5" />
+                  {editingId ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setIsAdding(false)}
+                  onClick={() => resetForm()}
                   className="p-4 rounded-2xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:bg-white hover:text-[#1a1f1e] hover:border-[#1a1f1e]/20 transition-all active:scale-95"
                   title="Annuler"
                 >
@@ -114,12 +138,22 @@ export default function SpecialisationSection({ specialisations }: Props) {
             >
               <Folder className="h-4 w-4 text-[#1a1f1e]/20" />
               <span className="font-bold text-sm text-[#1a1f1e]">{getTaxonomyLabel(s.specialisation_id, specialisationOptions)}</span>
-              <button
-                onClick={() => handleDelete(s.id)}
-                className="opacity-0 group-hover:opacity-100 transition-opacity text-red-300 hover:text-red-500 ml-2"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-auto">
+                <button
+                  onClick={() => handleEdit(s)}
+                  className="p-1.5 rounded-lg text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-all"
+                  title="Éditer"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  onClick={() => handleDelete(s.id)}
+                  className="p-1.5 rounded-lg text-red-300 hover:text-red-500 transition-all"
+                  title="Supprimer"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
           ))
         ) : (

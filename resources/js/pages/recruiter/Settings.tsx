@@ -17,7 +17,7 @@ import { useState, useEffect, FormEvent } from 'react';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
-import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 
 interface Props {
     recruteur: any;
@@ -33,10 +33,10 @@ export default function Settings({ recruteur, user }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         nom_entreprise: recruteur?.nom_entreprise || '',
         poste: recruteur?.poste || '',
-        type_organisation: recruteur?.type_organisation || '',
-        taille_entreprise: recruteur?.taille_entreprise || '',
+        type_organisation_id: recruteur?.type_organisation_id || '',
+        taille_entreprise_id: recruteur?.taille_entreprise_id || '',
         site_web: recruteur?.site_web || '',
-        ville: recruteur?.ville || '',
+        ville_id: recruteur?.ville_id || '',
     });
 
     const submit = (e: FormEvent) => {
@@ -231,11 +231,11 @@ export default function Settings({ recruteur, user }: Props) {
                                                     </label>
                                                     <select
                                                         value={
-                                                            data.type_organisation
+                                                            data.type_organisation_id
                                                         }
                                                         onChange={(e) =>
                                                             setData(
-                                                                'type_organisation',
+                                                                'type_organisation_id',
                                                                 e.target.value,
                                                             )
                                                         }
@@ -256,10 +256,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                             ))
                                                         )}
                                                     </select>
-                                                    {errors.type_organisation && (
+                                                    {errors.type_organisation_id && (
                                                         <div className="text-xs text-red-500">
                                                             {
-                                                                errors.type_organisation
+                                                                errors.type_organisation_id
                                                             }
                                                         </div>
                                                     )}
@@ -273,11 +273,11 @@ export default function Settings({ recruteur, user }: Props) {
                                                     </label>
                                                     <select
                                                         value={
-                                                            data.taille_entreprise
+                                                            data.taille_entreprise_id
                                                         }
                                                         onChange={(e) =>
                                                             setData(
-                                                                'taille_entreprise',
+                                                                'taille_entreprise_id',
                                                                 e.target.value,
                                                             )
                                                         }
@@ -299,10 +299,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                             ))
                                                         )}
                                                     </select>
-                                                    {errors.taille_entreprise && (
+                                                    {errors.taille_entreprise_id && (
                                                         <div className="text-xs text-red-500">
                                                             {
-                                                                errors.taille_entreprise
+                                                                errors.taille_entreprise_id
                                                             }
                                                         </div>
                                                     )}
@@ -315,10 +315,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                         Ville *
                                                     </label>
                                                     <select
-                                                        value={data.ville}
+                                                        value={data.ville_id}
                                                         onChange={(e) =>
                                                             setData(
-                                                                'ville',
+                                                                'ville_id',
                                                                 e.target.value,
                                                             )
                                                         }
@@ -334,9 +334,9 @@ export default function Settings({ recruteur, user }: Props) {
                                                             ))
                                                         )}
                                                     </select>
-                                                    {errors.ville && (
+                                                    {errors.ville_id && (
                                                         <div className="text-xs text-red-500">
-                                                            {errors.ville}
+                                                            {errors.ville_id}
                                                         </div>
                                                     )}
                                                 </div>

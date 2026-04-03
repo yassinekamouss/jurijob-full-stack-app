@@ -19,9 +19,15 @@ class FormationController extends Controller
         $data = $request->validated();
         $candidat = $request->user()->candidat;
 
+        // Rename fields to match database columns
+        $data['formation_juridique_id'] = $data['niveau'];
+        $data['specialisation_id'] = $data['domaine'];
+        $data['ecole_id'] = $data['ecole'];
+        unset($data['niveau'], $data['domaine'], $data['ecole']);
+
         if ($request->hasFile('diploma_file')) {
             $file = $request->file('diploma_file');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
             $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
         }
 
@@ -35,18 +41,36 @@ class FormationController extends Controller
         $this->authorize('update', $formation);
 
         $data = $request->validated();
-        if (!$request->hasFile('diploma_file')) {
-            unset($data['diploma_file']);
-        } else {
-            $file = $request->file('diploma_file');
-            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
+
+        // Rename fields to match database columns
+        $data['formation_juridique_id'] = $data['niveau'];
+        $data['specialisation_id'] = $data['domaine'];
+        $data['ecole_id'] = $data['ecole'];
+        unset($data['niveau'], $data['domaine'], $data['ecole']);
+
+        Log::info('Updating formation', [
+            'id' => $formation->id,
+            'data_keys' => array_keys($data),
+            'data' => $data,
+        ]);
+
+        try {
+            if (! $request->hasFile('diploma_file')) {
+                unset($data['diploma_file']);
+            } else {
+                $file = $request->file('diploma_file');
+                $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+                $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
+            }
+
+            $formation->update($data);
+
+            return back()->with('success', 'Formation mise à jour avec succès.');
+        } catch (\Exception $e) {
+            Log::error('Error updating formation', ['error' => $e->getMessage(), 'data' => $data]);
+
+            return back()->with('error', 'Erreur lors de la mise à jour de la formation.');
         }
-
-        Log::info('Updating formation', ['id' => $formation->id, 'data' => $data]);
-        $formation->update($data);
-
-        return back()->with('success', 'Formation mise à jour.');
     }
 
     public function destroy(CandidatFormation $formation): RedirectResponse

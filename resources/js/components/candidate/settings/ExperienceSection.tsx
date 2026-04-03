@@ -31,11 +31,11 @@ export default function ExperienceSection({ experiences }: Props) {
 
   const handleEdit = (exp: any) => {
     form.setData({
-      poste: exp.poste,
+      poste: exp.poste_id,
       entreprise: exp.entreprise,
       debut: exp.debut,
       fin: exp.fin || '',
-      type: exp.type || 'CDI',
+      type: exp.type_experience_id || 'CDI',
     });
     setEditingId(exp.id);
     setIsAdding(false);

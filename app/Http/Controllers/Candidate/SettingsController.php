@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Candidate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\UpdateAccountRequest;
 use App\Http\Requests\Candidate\UpdateProfileRequest;
+use App\Repositories\TaxonomyRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -22,11 +24,11 @@ class SettingsController extends Controller
         return Inertia::render('candidate/Settings', [
             'candidat' => $candidat,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
-            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
-            'experiences' => Inertia::defer(fn () => $candidat->experiences),
-            'formations' => Inertia::defer(fn () => $candidat->formations),
-            'specialisations' => Inertia::defer(fn () => $candidat->specialisations),
-            'langues' => Inertia::defer(fn () => $candidat->langues),
+            'taxonomies' => TaxonomyRepository::getAll(),
+            'experiences' => $candidat->experiences,
+            'formations' => $candidat->formations,
+            'specialisations' => $candidat->specialisations,
+            'langues' => $candidat->langues,
         ]);
     }
 
@@ -35,14 +37,28 @@ class SettingsController extends Controller
         $user = $request->user();
         $candidat = $user->candidat;
 
-        $candidat->update($request->validated());
-
-        // Update user is_active as well
-        $user->update([
-            'is_active' => $request->is_active,
+        Log::info('Updating candidat profile', [
+            'candidat_id' => $candidat->id,
+            'data' => $request->validated(),
         ]);
 
-        return back()->with('success', 'Profil mis à jour avec succès.');
+        try {
+            $candidat->update($request->validated());
+
+            // Update user is_active as well
+            $user->update([
+                'is_active' => $request->is_active,
+            ]);
+
+            return back()->with('success', 'Profil mis à jour avec succès.');
+        } catch (\Exception $e) {
+            Log::error('Error updating candidat profile', [
+                'error' => $e->getMessage(),
+                'candidat_id' => $candidat->id,
+            ]);
+
+            return back()->with('error', 'Erreur lors de la mise à jour du profil.');
+        }
     }
 
     public function updateAccount(UpdateAccountRequest $request): RedirectResponse

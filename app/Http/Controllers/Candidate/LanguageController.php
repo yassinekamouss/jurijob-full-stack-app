@@ -7,6 +7,7 @@ use App\Http\Requests\Candidate\StoreLanguageRequest;
 use App\Models\Candidat\CandidatLangue;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 
 class LanguageController extends Controller
 {
@@ -16,26 +17,54 @@ class LanguageController extends Controller
     {
         $candidat = $request->user()->candidat;
 
-        $candidat->langues()->create($request->validated());
+        Log::info('Storing language', [
+            'candidat_id' => $candidat->id,
+            'data' => $request->validated(),
+        ]);
 
-        return back()->with('success', 'Langue ajoutée.');
+        try {
+            $candidat->langues()->create($request->validated());
+
+            return back()->with('success', 'Langue ajoutée.');
+        } catch (\Exception $e) {
+            Log::error('Error storing language', ['error' => $e->getMessage()]);
+
+            return back()->with('error', 'Erreur lors de l\'ajout de la langue.');
+        }
     }
 
     public function update(StoreLanguageRequest $request, CandidatLangue $langue): RedirectResponse
     {
         $this->authorize('update', $langue);
 
-        $langue->update($request->validated());
+        Log::info('Updating language', [
+            'language_id' => $langue->id,
+            'data' => $request->validated(),
+        ]);
 
-        return back()->with('success', 'Langue mise à jour.');
+        try {
+            $langue->update($request->validated());
+
+            return back()->with('success', 'Langue mise à jour.');
+        } catch (\Exception $e) {
+            Log::error('Error updating language', ['error' => $e->getMessage()]);
+
+            return back()->with('error', 'Erreur lors de la mise à jour de la langue.');
+        }
     }
 
     public function destroy(CandidatLangue $langue): RedirectResponse
     {
         $this->authorize('delete', $langue);
 
-        $langue->delete();
+        try {
+            $langue->delete();
 
-        return back()->with('success', 'Langue supprimée.');
+            return back()->with('success', 'Langue supprimée.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting language', ['error' => $e->getMessage()]);
+
+            return back()->with('error', 'Erreur lors de la suppression de la langue.');
+        }
     }
 }
