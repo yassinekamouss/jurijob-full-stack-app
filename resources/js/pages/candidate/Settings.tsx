@@ -207,24 +207,37 @@ export default function Settings({
         });
     };
 
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            imageForm.setData('image', file);
-            // Auto submit image using router directly to avoid async setData issues
-            router.post(
-                updateImageRoute.url(),
-                {
-                    _method: 'POST',
-                    image: file,
-                },
-                {
-                    forceFormData: true,
-                    preserveScroll: true,
-                },
-            );
-        }
-    };
+            const file = e.target.files?.[0];
+            if (file) {
+                // 2. Créer une URL temporaire pour l'affichage immédiat
+                const localUrl = URL.createObjectURL(file);
+                setPreviewUrl(localUrl);
+
+                router.post(
+                    updateImageRoute.url(),
+                    { _method: 'POST', image: file },
+                    {
+                        forceFormData: true,
+                        preserveScroll: true,
+                        onFinish: () => {
+                            // Optionnel : nettoyer l'URL locale pour éviter les fuites mémoire
+                            // URL.revokeObjectURL(localUrl);
+                        }
+                    }
+                );
+            }
+        };
+
+
+        const currentImageSrc = previewUrl 
+    ? previewUrl 
+    : (candidat?.image_url 
+        ? `${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}` 
+        : "/images/default_profile_image.avif");
+
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
@@ -352,17 +365,11 @@ export default function Settings({
                                         <div className="flex flex-col items-center gap-8 sm:flex-row">
                                             <div className="group relative">
                                                 <div className="h-24 w-24 overflow-hidden rounded-[28px] border-4 border-[#1a1f1e]/5 bg-[#1a1f1e]/5 ring-1 ring-[#1a1f1e]/10">
-                                                    {candidat?.image_url ? (
+                                                    {currentImageSrc && (
                                                         <img
-                                                            src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`}
+                                                            src={currentImageSrc}
                                                             alt="Avatar"
                                                             className="h-full w-full object-cover"
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            src="/images/default_profile_image.avif"
-                                                            alt="Default Avatar"
-                                                            className="h-full w-full object-cover opacity-60"
                                                         />
                                                     )}
                                                 </div>
