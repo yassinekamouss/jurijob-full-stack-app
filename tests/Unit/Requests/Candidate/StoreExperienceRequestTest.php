@@ -52,9 +52,9 @@ class StoreExperienceRequestTest extends TestCase
 
         // Vérifier que les clés ont été transformées
         $this->assertArrayHasKey('poste_id', $result);
-        $this->assertArrayHasKey('type_experience_id', $result);
+        $this->assertArrayHasKey('type_travail_id', $result);
         $this->assertEquals(5, $result['poste_id']);
-        $this->assertEquals(3, $result['type_experience_id']);
+        $this->assertEquals(3, $result['type_travail_id']);
     }
 
     /**

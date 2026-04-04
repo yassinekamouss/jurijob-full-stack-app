@@ -18,7 +18,7 @@ class StoreExperienceRequest extends FormRequest
             'entreprise' => ['required', 'string', 'max:255'],
             'debut' => ['required', 'date_format:Y-m'],
             'fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:debut'],
-            'type_experience_id' => ['nullable', 'integer', 'exists:type_experiences,id'],
+            'type_travail_id' => ['nullable', 'integer', 'exists:type_travails,id'],
         ];
     }
 

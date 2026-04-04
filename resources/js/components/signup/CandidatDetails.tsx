@@ -13,7 +13,7 @@ type CandidatDetailsProps = {
 }
 
 const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChange, errors = {}, className = '' }) => {
-    const { ecoles, formationJuridiques, specialisations, typeExperiences, postes } = useTaxonomies();
+    const { ecoles, formationJuridiques, specialisations, typeTravails, postes } = useTaxonomies();
     
     const formations = formData.formations || [];
     const experiences = formData.experiences || [];
@@ -43,7 +43,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
     };
 
     const addExperience = () => {
-        const newExperience: Experience = { id: Math.random().toString(36).substr(2, 9), debut: '', fin: '', type_experience_id: '', entreprise: '', poste_id: '' };
+        const newExperience: Experience = { id: Math.random().toString(36).substr(2, 9), debut: '', fin: '', type_travail_id: '', entreprise: '', poste_id: '' };
         onFieldChange('experiences', [...experiences, newExperience]);
     };
 
@@ -239,12 +239,12 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             </div>
                                             <div className="space-y-1.5">
                                                 <label className={labelClasses}><FileText size={14} className="text-slate-400" /> Type d'expérience</label>
-                                                <select value={exp.type_experience_id} onChange={(e) => updateExperience(exp.id, 'type_experience_id', e.target.value)} className={inputClasses}>
+                                                <select value={exp.type_travail_id} onChange={(e) => updateExperience(exp.id, 'type_travail_id', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un type</option>
-                                                    {useLoadingTaxonomy(typeExperiences) ? (
+                                                    {useLoadingTaxonomy(typeTravails) ? (
                                                         <option disabled>Chargement des options...</option>
                                                     ) : (
-                                                        typeExperiences.map((t) => <option key={t.id} value={t.id}>{t.nom}</option>)
+                                                        typeTravails.map((t) => <option key={t.id} value={t.id}>{t.nom}</option>)
                                                     )}
                                                 </select>
                                             </div>

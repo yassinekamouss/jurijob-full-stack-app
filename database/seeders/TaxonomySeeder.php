@@ -136,14 +136,7 @@ class TaxonomySeeder extends Seeder
             "Conseil Juridique",
         ];
 
-        $typesExperience = [
-            "Stage",
-            "Freelance",
-            "CDI",
-            "CDD",
-            "Alternance",
-            "Service Militaire / Autre",
-        ];
+    
 
         $typeOrganisation = [
             "Cabinet d'avocats",
@@ -181,7 +174,6 @@ class TaxonomySeeder extends Seeder
         $insertRecords('mode_travails', $modesTravailRecherche);
         $insertRecords('domaine_experiences', $domainesExperience);
         $insertRecords('postes', $postes);
-        $insertRecords('type_experiences', $typesExperience);
         $insertRecords('type_organisations', $typeOrganisation);
         $insertRecords('taille_entreprises', $tailleEntreprise);
     }

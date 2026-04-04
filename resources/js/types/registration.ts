@@ -27,7 +27,7 @@ export type Experience = {
     id: string;
     debut: string;
     fin: string;
-    type_experience_id: string | number;
+    type_travail_id: string | number;
     entreprise: string;
     poste_id: string | number;
 };

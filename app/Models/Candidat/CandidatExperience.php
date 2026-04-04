@@ -14,7 +14,7 @@ class CandidatExperience extends Model
         'candidat_id',
         'debut',
         'fin',
-        'type_experience_id',
+        'type_travail_id',
         'entreprise',
         'poste_id',
     ];

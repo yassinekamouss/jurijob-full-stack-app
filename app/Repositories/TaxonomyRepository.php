@@ -20,7 +20,6 @@ class TaxonomyRepository
                 'postes' => \App\Models\Taxonomy\Poste::select('id', 'nom')->orderBy('nom')->get()->toArray(),
                 'specialisations' => \App\Models\Taxonomy\Specialisation::select('id', 'nom')->orderBy('nom')->get()->toArray(),
                 'tailleEntreprises' => \App\Models\Taxonomy\TailleEntreprise::select('id', 'nom')->get()->toArray(),
-                'typeExperiences' => \App\Models\Taxonomy\TypeExperience::select('id', 'nom')->get()->toArray(),
                 'typeOrganisations' => \App\Models\Taxonomy\TypeOrganisation::select('id', 'nom')->get()->toArray(),
                 'typeTravails' => \App\Models\Taxonomy\TypeTravail::select('id', 'nom')->get()->toArray(),
                 'villes' => \App\Models\Taxonomy\Ville::select('id', 'nom')->orderBy('nom')->get()->toArray(),

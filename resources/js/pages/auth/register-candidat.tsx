@@ -76,7 +76,7 @@ export default function RegisterCandidat() {
                     id: Math.random().toString(36).substr(2, 9),
                     debut: '',
                     fin: '',
-                    type_experience_id: '',
+                    type_travail_id: '',
                     entreprise: '',
                     poste_id: '',
                 },
@@ -167,7 +167,7 @@ export default function RegisterCandidat() {
         candidat.experiences.forEach((e: Experience, i: number) => {
             payload.append(`experiences[${i}][debut]`, e.debut);
             payload.append(`experiences[${i}][fin]`, e.fin);
-            payload.append(`experiences[${i}][type_experience_id]`, String(e.type_experience_id));
+            payload.append(`experiences[${i}][type_travail_id]`, String(e.type_travail_id));
             payload.append(`experiences[${i}][entreprise]`, e.entreprise);
             payload.append(`experiences[${i}][poste_id]`, String(e.poste_id));
         });
@@ -373,7 +373,7 @@ export default function RegisterCandidat() {
                     (e: Experience) =>
                         !e.debut ||
                         !e.fin ||
-                        !e.type_experience_id ||
+                        !e.type_travail_id ||
                         !e.entreprise ||
                         !e.poste_id,
                 )

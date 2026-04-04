@@ -17,7 +17,6 @@ return new class extends Migration
         'postes',
         'specialisations',
         'taille_entreprises',
-        'type_experiences',
         'type_organisations',
         'type_travails',
         'villes',

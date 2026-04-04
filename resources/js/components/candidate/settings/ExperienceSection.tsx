@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function ExperienceSection({ experiences }: Props) {
-  const { postes, typeExperiences } = useTaxonomies();
+  const { postes, typeTravails } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -20,7 +20,7 @@ export default function ExperienceSection({ experiences }: Props) {
     entreprise: '',
     debut: '',
     fin: '',
-    type_experience_id: '',
+    type_travail_id: '',
   });
 
   const resetForm = () => {
@@ -35,7 +35,7 @@ export default function ExperienceSection({ experiences }: Props) {
       entreprise: exp.entreprise,
       debut: exp.debut,
       fin: exp.fin || '',
-      type_experience_id: exp.type_experience_id || '',
+      type_travail_id: exp.type_travail_id || '',
     });
     setEditingId(exp.id);
     setIsAdding(false);
@@ -128,19 +128,19 @@ export default function ExperienceSection({ experiences }: Props) {
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Type de contrat</label>
                   <select
-                    value={form.data.type_experience_id}
-                    onChange={e => form.setData('type_experience_id', e.target.value)}
+                    value={form.data.type_travail_id}
+                    onChange={e => form.setData('type_travail_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
                     <option value="">Choisir un type</option>
-                    {useLoadingTaxonomy(typeExperiences) ? (
+                    {useLoadingTaxonomy(typeTravails) ? (
                       <option disabled>Chargement...</option>
                     ) : (
-                      typeExperiences.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                      typeTravails.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
-                  {form.errors.type_experience_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.type_experience_id}</p>}
+                  {form.errors.type_travail_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.type_travail_id}</p>}
                 </div>
                 <div className="hidden sm:block" /> {/** Spacer */}
               </div>
@@ -216,7 +216,7 @@ export default function ExperienceSection({ experiences }: Props) {
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{exp.entreprise}</p>
                         <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/20" />
-                        <p className="text-[10px] font-black uppercase tracking-widest text-[#C06041]">{getTaxonomyLabel(exp.type_experience_id, typeExperiences)}</p>
+                        <p className="text-[10px] font-black uppercase tracking-widest text-[#C06041]">{getTaxonomyLabel(exp.type_travail_id, typeTravails)}</p>
                       </div>
                       <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{exp.debut} — {exp.fin || 'Présent'}</p>
                     </div>

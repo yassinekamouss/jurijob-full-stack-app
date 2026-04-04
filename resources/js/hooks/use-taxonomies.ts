@@ -16,7 +16,6 @@ interface Taxonomies {
     postes: Taxonomy[];
     specialisations: Taxonomy[];
     tailleEntreprises: Taxonomy[];
-    typeExperiences: Taxonomy[];
     typeOrganisations: Taxonomy[];
     typeTravails: Taxonomy[];
     villes: Taxonomy[];
@@ -37,7 +36,6 @@ export const useTaxonomies = (): Taxonomies => {
         postes: taxonomies.postes || [],
         specialisations: taxonomies.specialisations || [],
         tailleEntreprises: taxonomies.tailleEntreprises || [],
-        typeExperiences: taxonomies.typeExperiences || [],
         typeOrganisations: taxonomies.typeOrganisations || [],
         typeTravails: taxonomies.typeTravails || [],
         villes: taxonomies.villes || [],

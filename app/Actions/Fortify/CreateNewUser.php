@@ -80,7 +80,7 @@ class CreateNewUser implements CreatesNewUsers
             'experiences' => ['nullable', 'array'],
             'experiences.*.debut' => ['required_with:experiences', 'date_format:Y-m'],
             'experiences.*.fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:experiences.*.debut'],
-            'experiences.*.type_experience_id' => ['required_with:experiences', 'integer'],
+            'experiences.*.type_travail_id' => ['required_with:experiences', 'integer'],
             'experiences.*.entreprise' => ['required_with:experiences', 'string', 'max:255'],
             'experiences.*.poste_id' => ['required_with:experiences', 'integer'],
 

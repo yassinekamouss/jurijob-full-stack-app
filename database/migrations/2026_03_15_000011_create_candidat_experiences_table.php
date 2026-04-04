@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('candidat_id')->constrained('candidats')->cascadeOnDelete();
             $table->string('debut')->nullable();
             $table->string('fin')->nullable();
-            $table->foreignId('type_experience_id')->nullable()->constrained('type_experiences')->nullOnDelete();
+            $table->foreignId('type_travail_id')->nullable()->constrained('type_travails')->nullOnDelete();
             $table->string('entreprise')->nullable();
             $table->foreignId('poste_id')->nullable()->constrained('postes')->nullOnDelete();
             $table->timestamps();
