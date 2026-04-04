@@ -3,10 +3,12 @@
 namespace App\Models\Recruteur;
 
 
+use App\Models\Offre\Offre;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Recruteur extends Model
 {
@@ -40,5 +42,10 @@ class Recruteur extends Model
     public function ville(): BelongsTo
     {
         return $this->belongsTo(\App\Models\Taxonomy\Ville::class);
+    }
+
+    public function offres(): HasMany
+    {
+        return $this->hasMany(Offre::class);
     }
 }

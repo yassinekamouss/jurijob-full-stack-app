@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
+use App\Http\Controllers\Offre\OffreController;
 
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +68,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('/recruteur/settings', [RecruiterSettingsController::class, 'index'])->name('recruteur.settings');
         Route::put('/recruteur/settings/profile', [RecruiterSettingsController::class, 'updateProfile'])->name('recruteur.settings.update-profile');
+
+        Route::resource('offres', OffreController::class);
     });
 });
 
