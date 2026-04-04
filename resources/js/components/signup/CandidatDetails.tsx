@@ -25,7 +25,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
     const toggleExperience = (id: string) => setExpandedExperiences((prev) => ({ ...prev, [id]: prev[id] === false ? true : false }));
 
     const addFormation = () => {
-        const newFormation: Formation = { id: Math.random().toString(36).substr(2, 9), anneeDebut: '', anneeFin: '', niveau: '', domaine: '', ecole: '', diplomaFile: null };
+        const newFormation: Formation = { id: Math.random().toString(36).substr(2, 9), annee_debut: '', annee_fin: '', formation_juridique_id: '', specialisation_id: '', ecole_id: '', diploma_file: null };
         onFieldChange('formations', [...formations, newFormation]);
     };
 
@@ -39,11 +39,11 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
             alert('Veuillez sélectionner un fichier PDF uniquement.');
             return;
         }
-        updateFormation(id, 'diplomaFile', file);
+        updateFormation(id, 'diploma_file', file);
     };
 
     const addExperience = () => {
-        const newExperience: Experience = { id: Math.random().toString(36).substr(2, 9), debut: '', fin: '', type: '', entreprise: '', poste: '' };
+        const newExperience: Experience = { id: Math.random().toString(36).substr(2, 9), debut: '', fin: '', type_experience_id: '', entreprise: '', poste_id: '' };
         onFieldChange('experiences', [...experiences, newExperience]);
     };
 
@@ -86,7 +86,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             {expandedFormations[formation.id] !== false ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                         </button>
                                         <h5 className="font-bold text-slate-900 truncate max-w-[200px] sm:max-w-md">
-                                            {formation.domaine || formation.ecole ? `${getTaxonomyLabel(formation.domaine, specialisations)} – ${getTaxonomyLabel(formation.ecole, ecoles)}` : 'Nouvelle Formation'}
+                                            {formation.specialisation_id || formation.ecole_id ? `${getTaxonomyLabel(formation.specialisation_id, specialisations)} – ${getTaxonomyLabel(formation.ecole_id, ecoles)}` : 'Nouvelle Formation'}
                                         </h5>
                                     </div>
                                     <button type="button" onClick={() => removeFormation(formation.id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
@@ -97,7 +97,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                         <div className="space-y-5">
                                             <div className="space-y-1.5">
                                                 <label className={labelClasses}><Building2 size={14} className="text-slate-400" /> École / Université</label>
-                                                <select value={formation.ecole} onChange={(e) => updateFormation(formation.id, 'ecole', e.target.value)} className={inputClasses}>
+                                                <select value={formation.ecole_id} onChange={(e) => updateFormation(formation.id, 'ecole_id', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner une institution</option>
                                                     {useLoadingTaxonomy(ecoles) ? (
                                                         <option disabled>Chargement des options...</option>
@@ -108,7 +108,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             </div>
                                             <div className="space-y-1.5">
                                                 <label className={labelClasses}><BookOpen size={14} className="text-slate-400" /> Niveau d'études</label>
-                                                <select value={formation.niveau} onChange={(e) => updateFormation(formation.id, 'niveau', e.target.value)} className={inputClasses}>
+                                                <select value={formation.formation_juridique_id} onChange={(e) => updateFormation(formation.id, 'formation_juridique_id', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un niveau</option>
                                                     {useLoadingTaxonomy(formationJuridiques) ? (
                                                         <option disabled>Chargement des options...</option>
@@ -122,7 +122,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                         <div className="space-y-5">
                                             <div className="space-y-1.5">
                                                 <label className={labelClasses}><FileText size={14} className="text-slate-400" /> Domaine d'études</label>
-                                                <select value={formation.domaine} onChange={(e) => updateFormation(formation.id, 'domaine', e.target.value)} className={inputClasses}>
+                                                <select value={formation.specialisation_id} onChange={(e) => updateFormation(formation.id, 'specialisation_id', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un domaine</option>
                                                     {useLoadingTaxonomy(specialisations) ? (
                                                         <option disabled>Chargement des options...</option>
@@ -138,8 +138,8 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                                                         <input 
                                                             type="month" 
-                                                            value={formation.anneeDebut} 
-                                                            onChange={(e) => updateFormation(formation.id, 'anneeDebut', e.target.value)} 
+                                                            value={formation.annee_debut} 
+                                                            onChange={(e) => updateFormation(formation.id, 'annee_debut', e.target.value)} 
                                                             onClick={(e) => e.currentTarget.showPicker()}
                                                             className={`${inputClasses} pl-10 cursor-pointer ${errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_debut`] ? 'border-red-500' : ''}`} 
                                                         />
@@ -152,8 +152,8 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
                                                         <input 
                                                             type="month" 
-                                                            value={formation.anneeFin} 
-                                                            onChange={(e) => updateFormation(formation.id, 'anneeFin', e.target.value)} 
+                                                            value={formation.annee_fin} 
+                                                            onChange={(e) => updateFormation(formation.id, 'annee_fin', e.target.value)} 
                                                             onClick={(e) => e.currentTarget.showPicker()}
                                                             className={`${inputClasses} pl-10 cursor-pointer ${errors[`formations.${formations.findIndex(f => f.id === formation.id)}.annee_fin`] ? 'border-red-500' : ''}`} 
                                                         />
@@ -165,17 +165,17 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
 
                                         <div className="md:col-span-2">
                                             <label className="text-xs font-bold text-slate-700 uppercase tracking-tight mb-2 block">Diplôme (Format PDF)</label>
-                                            <div className={`relative border-2 border-dashed rounded-2xl p-4 transition-all duration-300 ${formation.diplomaFile ? 'border-slate-900 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-400'}`}>
+                                            <div className={`relative border-2 border-dashed rounded-2xl p-4 transition-all duration-300 ${formation.diploma_file ? 'border-slate-900 bg-slate-50' : 'border-slate-200 bg-white hover:border-slate-400'}`}>
                                                 <input type="file" accept=".pdf" onChange={(e) => handleFileUpload(formation.id, e.target.files?.[0] || null)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                                 <div className="flex items-center justify-center gap-4">
-                                                    {formation.diplomaFile ? (
+                                                    {formation.diploma_file ? (
                                                         <>
                                                             <div className="p-2 bg-slate-900 text-white rounded-lg"><FileText size={20} /></div>
                                                             <div className="flex-1 min-w-0">
-                                                                <p className="text-sm font-bold text-slate-900 truncate">{formation.diplomaFile.name}</p>
-                                                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{(formation.diplomaFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                                                                <p className="text-sm font-bold text-slate-900 truncate">{formation.diploma_file.name}</p>
+                                                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">{(formation.diploma_file.size / 1024 / 1024).toFixed(2)} MB</p>
                                                             </div>
-                                                            <button type="button" onClick={(e) => { e.preventDefault(); updateFormation(formation.id, 'diplomaFile', null); }} className="relative z-20 p-2 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"><X size={16} /></button>
+                                                            <button type="button" onClick={(e) => { e.preventDefault(); updateFormation(formation.id, 'diploma_file', null); }} className="relative z-20 p-2 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"><X size={16} /></button>
                                                         </>
                                                     ) : (
                                                         <>
@@ -224,7 +224,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             {expandedExperiences[exp.id] !== false ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                         </button>
                                         <h5 className="font-bold text-slate-900 truncate max-w-[200px] sm:max-w-md">
-                                            {exp.poste || exp.entreprise ? `${getTaxonomyLabel(exp.poste, postes)} @ ${exp.entreprise}` : 'Nouvelle Expérience'}
+                                            {exp.poste_id || exp.entreprise ? `${getTaxonomyLabel(exp.poste_id, postes)} @ ${exp.entreprise}` : 'Nouvelle Expérience'}
                                         </h5>
                                     </div>
                                     <button type="button" onClick={() => removeExperience(exp.id)} className="p-2 text-slate-300 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
@@ -239,7 +239,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                             </div>
                                             <div className="space-y-1.5">
                                                 <label className={labelClasses}><FileText size={14} className="text-slate-400" /> Type d'expérience</label>
-                                                <select value={exp.type} onChange={(e) => updateExperience(exp.id, 'type', e.target.value)} className={inputClasses}>
+                                                <select value={exp.type_experience_id} onChange={(e) => updateExperience(exp.id, 'type_experience_id', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un type</option>
                                                     {useLoadingTaxonomy(typeExperiences) ? (
                                                         <option disabled>Chargement des options...</option>
@@ -252,7 +252,7 @@ const CandidatDetails: React.FC<CandidatDetailsProps> = ({ formData, onFieldChan
                                         <div className="space-y-5">
                                             <div className="space-y-1.5">
                                                 <label className={labelClasses}><Briefcase size={14} className="text-slate-400" /> Poste</label>
-                                                <select value={exp.poste} onChange={(e) => updateExperience(exp.id, 'poste', e.target.value)} className={inputClasses}>
+                                                <select value={exp.poste_id} onChange={(e) => updateExperience(exp.id, 'poste_id', e.target.value)} className={inputClasses}>
                                                     <option value="">Sélectionner un poste</option>
                                                     {useLoadingTaxonomy(postes) ? (
                                                         <option disabled>Chargement des options...</option>

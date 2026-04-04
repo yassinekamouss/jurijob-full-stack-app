@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Candidate;
 
+use App\DTOs\Candidate\ProfileData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\UpdateAccountRequest;
 use App\Http\Requests\Candidate\UpdateProfileRequest;
@@ -36,18 +37,19 @@ class SettingsController extends Controller
     {
         $user = $request->user();
         $candidat = $user->candidat;
+        $dto = ProfileData::fromRequest($request);
 
         Log::info('Updating candidat profile', [
             'candidat_id' => $candidat->id,
-            'data' => $request->validated(),
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $candidat->update($request->validated());
+            $candidat->update($dto->toArray());
 
             // Update user is_active as well
             $user->update([
-                'is_active' => $request->is_active,
+                'is_active' => $dto->is_active,
             ]);
 
             return back()->with('success', 'Profil mis à jour avec succès.');

@@ -8,40 +8,40 @@ export type UserFormData = {
     prenom: string;
     telephone: string;
     email: string;
-    imageFile: File | null;
+    image_file: File | null;
     password: string;
-    confirmPassword: string;
+    password_confirmation: string;
 };
 
 export type Formation = {
     id: string;
-    anneeDebut: string;
-    anneeFin: string;
-    niveau: string | number;
-    domaine: string | number;
-    ecole: string | number;
-    diplomaFile: File | null;
+    annee_debut: string;
+    annee_fin: string;
+    formation_juridique_id: string | number;
+    specialisation_id: string | number;
+    ecole_id: string | number;
+    diploma_file: File | null;
 };
 
 export type Experience = {
     id: string;
     debut: string;
     fin: string;
-    type: string | number;
+    type_experience_id: string | number;
     entreprise: string;
-    poste: string | number;
+    poste_id: string | number;
 };
 
 export type CandidatFormData = {
-    niveauExperience: string | number;
-    formationJuridique: string | number;
-    PosteRecherche: string | number;
+    niveau_experience_id: string | number;
+    formation_juridique_id: string | number;
+    poste_id: string | number;
     specialisations: (string | number)[];
-    domainExperiences: (string | number)[];
-    typeTravailRecherche: (string | number)[];
-    modeTravailRecherche: (string | number)[];
-    villesTravailRecherche: (string | number)[];
-    langues: { nom: string | number; niveau: string | number }[];
+    domain_experiences: (string | number)[];
+    type_travails: (string | number)[];
+    mode_travails: (string | number)[];
+    ville_travails: (string | number)[];
+    langues: { langue_id: string | number; niveau_langue_id: string | number }[];
     formations: Formation[];
     experiences: Experience[];
 };
@@ -53,9 +53,9 @@ export type FullCandidatFormData = {
 
 export type RecruteurFormData = {
     nom_entreprise: string;
-    type_organisation: string | number;
-    taille_entreprise: string | number;
-    ville: string | number;
+    type_organisation_id: string | number;
+    taille_entreprise_id: string | number;
+    ville_id: string | number;
     site_web: string;
     poste: string;
 };

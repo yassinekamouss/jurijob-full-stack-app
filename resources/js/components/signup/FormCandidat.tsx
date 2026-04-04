@@ -71,7 +71,7 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
             <div className="grid gap-4 md:grid-cols-2">
                 <div>
                     <label className={labelClasses}>Niveau d'expérience *</label>
-                    <select value={formData.niveauExperience || ''} onChange={(e) => onFieldChange('niveauExperience', e.target.value)} className={selectClasses}>
+                    <select value={formData.niveau_experience_id || ''} onChange={(e) => onFieldChange('niveau_experience_id', e.target.value)} className={selectClasses}>
                         <option value="">Sélectionnez votre niveau</option>
                         {useLoadingTaxonomy(niveauExperiences) ? (
                             <option disabled>Chargement des options...</option>
@@ -79,11 +79,11 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                             niveauExperiences.map((opt) => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                         )}
                     </select>
-                    {errors.niveauExperience && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.niveauExperience}</p>}
+                    {errors.niveau_experience_id && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.niveau_experience_id}</p>}
                 </div>
                 <div>
                     <label className={labelClasses}>Formation juridique *</label>
-                    <select value={formData.formationJuridique || ''} onChange={(e) => onFieldChange('formationJuridique', e.target.value)} className={selectClasses}>
+                    <select value={formData.formation_juridique_id || ''} onChange={(e) => onFieldChange('formation_juridique_id', e.target.value)} className={selectClasses}>
                         <option value="">Votre niveau d'études</option>
                         {useLoadingTaxonomy(formationJuridiques) ? (
                             <option disabled>Chargement des options...</option>
@@ -91,14 +91,14 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                             formationJuridiques.map((opt) => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                         )}
                     </select>
-                    {errors.formationJuridique && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.formationJuridique}</p>}
+                    {errors.formation_juridique_id && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.formation_juridique_id}</p>}
                 </div>
             </div>
 
             {/* Poste recherché */}
             <div>
                 <label className={labelClasses}>Poste recherché *</label>
-                <select value={formData.PosteRecherche || ''} onChange={(e) => onFieldChange('PosteRecherche', e.target.value)} className={selectClasses}>
+                <select value={formData.poste_id || ''} onChange={(e) => onFieldChange('poste_id', e.target.value)} className={selectClasses}>
                     <option value="">Sélectionnez un poste</option>
                     {useLoadingTaxonomy(postes) ? (
                         <option disabled>Chargement des options...</option>
@@ -106,7 +106,7 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                         postes.map((opt) => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                 </select>
-                {errors.PosteRecherche && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.PosteRecherche}</p>}
+                {errors.poste_id && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.poste_id}</p>}
             </div>
 
             {/* Spécialisations */}
@@ -119,25 +119,25 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
             {/* Domaine d'expérience */}
             <div>
                 <label className={labelClasses}>Domaine d'expérience *</label>
-                <CheckboxGroup options={domaineExperiences} selected={formData.domainExperiences || []} onChange={(v) => onFieldChange('domainExperiences', v)} error={errors.domainExperiences} loading={useLoadingTaxonomy(domaineExperiences)} />
+                <CheckboxGroup options={domaineExperiences} selected={formData.domain_experiences || []} onChange={(v) => onFieldChange('domain_experiences', v)} error={errors.domain_experiences} loading={useLoadingTaxonomy(domaineExperiences)} />
             </div>
 
             {/* Type de travail */}
             <div>
                 <label className={labelClasses}>Type de travail recherché *</label>
-                <CheckboxGroup options={typeTravails} selected={formData.typeTravailRecherche || []} onChange={(v) => onFieldChange('typeTravailRecherche', v)} error={errors.typeTravailRecherche} loading={useLoadingTaxonomy(typeTravails)} />
+                <CheckboxGroup options={typeTravails} selected={formData.type_travails || []} onChange={(v) => onFieldChange('type_travails', v)} error={errors.type_travails} loading={useLoadingTaxonomy(typeTravails)} />
             </div>
 
             {/* Mode de travail */}
             <div>
                 <label className={labelClasses}>Mode de travail recherché *</label>
-                <CheckboxGroup options={modeTravails} selected={formData.modeTravailRecherche || []} onChange={(v) => onFieldChange('modeTravailRecherche', v)} error={errors.modeTravailRecherche} loading={useLoadingTaxonomy(modeTravails)} />
+                <CheckboxGroup options={modeTravails} selected={formData.mode_travails || []} onChange={(v) => onFieldChange('mode_travails', v)} error={errors.mode_travails} loading={useLoadingTaxonomy(modeTravails)} />
             </div>
 
             {/* Villes */}
             <div>
                 <label className={labelClasses}>Villes souhaitées *</label>
-                <CheckboxGroup options={villes} selected={formData.villesTravailRecherche || []} onChange={(v) => onFieldChange('villesTravailRecherche', v)} error={errors.villesTravailRecherche} loading={useLoadingTaxonomy(villes)} />
+                <CheckboxGroup options={villes} selected={formData.ville_travails || []} onChange={(v) => onFieldChange('ville_travails', v)} error={errors.ville_travails} loading={useLoadingTaxonomy(villes)} />
             </div>
 
             {/* Langues */}
@@ -155,7 +155,7 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                         </div>
                     ) : (
                         langues.map((opt) => {
-                            const isSelected = (formData.langues || []).some((l) => l.nom === opt.id);
+                            const isSelected = (formData.langues || []).some((l) => l.langue_id === opt.id);
                             return (
                                 <label key={opt.id} className={`flex items-center gap-2 border rounded-full px-4 py-2 cursor-pointer transition-all ${isSelected ? 'bg-slate-900 text-white border-slate-900 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'}`}>
                                     <input
@@ -163,7 +163,7 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                                         checked={isSelected}
                                         onChange={() => {
                                             const current = [...(formData.langues || [])];
-                                            onFieldChange('langues', isSelected ? current.filter((l) => l.nom !== opt.id) : [...current, { nom: opt.id, niveau: '' }]);
+                                            onFieldChange('langues', isSelected ? current.filter((l) => l.langue_id !== opt.id) : [...current, { langue_id: opt.id, niveau_langue_id: '' }]);
                                         }}
                                         className="w-4 h-4 rounded cursor-pointer accent-slate-900"
                                     />
@@ -176,15 +176,15 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                 {(formData.langues || []).length > 0 && (
                     <div className="mt-5 space-y-4">
                         {(formData.langues || []).map((lang, index) => {
-                            const langName = langues.find((l) => l.id === lang.nom)?.nom || String(lang.nom);
+                            const langName = langues.find((l) => l.id === lang.langue_id)?.nom || String(lang.langue_id);
                             return (
-                                <div key={lang.nom} className="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
+                                <div key={lang.langue_id} className="p-4 border border-slate-100 rounded-xl bg-slate-50/50">
                                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2.5">Niveau — {langName}</label>
                                     <select
-                                        value={lang.niveau}
+                                        value={lang.niveau_langue_id}
                                         onChange={(e) => {
                                             const updated = [...(formData.langues || [])];
-                                            updated[index] = { ...updated[index], niveau: e.target.value };
+                                            updated[index] = { ...updated[index], niveau_langue_id: e.target.value };
                                             onFieldChange('langues', updated);
                                         }}
                                         className={selectClasses}

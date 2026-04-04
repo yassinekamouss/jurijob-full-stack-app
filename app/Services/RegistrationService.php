@@ -2,11 +2,19 @@
 
 namespace App\Services;
 
+use App\DTOs\Candidate\ExperienceData;
+use App\DTOs\Candidate\FormationData;
+use App\DTOs\Candidate\LanguageData;
+use App\DTOs\Candidate\ProfileData as CandidateProfile;
+use App\DTOs\Candidate\SpecialisationData;
+use App\DTOs\Recruteur\ProfileData as RecruteurProfile;
 use App\Models\Candidat\Candidat;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class RegistrationService
@@ -19,32 +27,35 @@ class RegistrationService
     public function registerCandidat(array $data): User
     {
         return DB::transaction(function () use ($data) {
-            $imageUrl = $this->handleFileUpload(
-                $data['image_file'] ?? null,
-                'candidat_profiles'
-            );
+            try {
+                $imageUrl = $this->handleFileUpload(
+                    $data['image_file'] ?? null,
+                    'candidat_profiles'
+                );
 
-            $user = User::create([
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'telephone' => $data['telephone'] ?? null,
-                'role' => 'candidat',
-                'is_active' => true,
-                'is_archived' => false,
-            ]);
+                $user = User::create([
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'telephone' => $data['telephone'] ?? null,
+                    'role' => 'candidat',
+                    'is_active' => true,
+                    'is_archived' => false,
+                ]);
 
-            $candidat = $user->candidat()->create([
-                'nom' => $data['nom'],
-                'prenom' => $data['prenom'],
-                'poste_id' => $data['poste_recherche'],
-                'niveau_experience_id' => $data['niveau_experience'],
-                'formation_juridique_id' => $data['formation_juridique'],
-                'image_url' => $imageUrl,
-            ]);
+                $profile = CandidateProfile::fromArray($data);
 
-            $this->syncCandidatRelations($candidat, $data);
+                $candidat = $user->candidat()->create(array_merge(
+                    $profile->toArray(),
+                    ['image_url' => $imageUrl]
+                ));
 
-            return $user;
+                $this->syncCandidatRelations($candidat, $data);
+
+                return $user;
+            } catch (Exception $e) {
+                Log::error('Registration error (Candidate): '.$e->getMessage());
+                throw $e;
+            }
         });
     }
 
@@ -56,25 +67,25 @@ class RegistrationService
     public function registerRecruteur(array $data): User
     {
         return DB::transaction(function () use ($data) {
-            $user = User::create([
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'telephone' => $data['telephone'] ?? null,
-                'role' => 'recruteur',
-                'is_active' => true,
-                'is_archived' => false,
-            ]);
+            try {
+                $user = User::create([
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'telephone' => $data['telephone'] ?? null,
+                    'role' => 'recruteur',
+                    'is_active' => true,
+                    'is_archived' => false,
+                ]);
 
-            $user->recruteur()->create([
-                'nom_entreprise' => $data['nom_entreprise'],
-                'type_organisation_id' => $data['type_organisation'],
-                'taille_entreprise_id' => $data['taille_entreprise'],
-                'ville_id' => $data['ville'],
-                'site_web' => $data['site_web'] ?? null,
-                'poste' => $data['poste'] ?? null,
-            ]);
+                $profile = RecruteurProfile::fromArray($data);
 
-            return $user;
+                $user->recruteur()->create($profile->toArray());
+
+                return $user;
+            } catch (Exception $e) {
+                Log::error('Registration error (Recruiter): '.$e->getMessage());
+                throw $e;
+            }
         });
     }
 
@@ -100,43 +111,43 @@ class RegistrationService
     protected function syncCandidatRelations(Candidat $candidat, array $data): void
     {
         if (! empty($data['specialisations'])) {
-            $specialisations = array_map(fn ($item) => ['specialisation_id' => $item['specialisation']], $data['specialisations']);
+            $specialisations = array_map(function ($item) {
+                return SpecialisationData::fromArray($item)->toArray();
+            }, $data['specialisations']);
             $candidat->specialisations()->createMany($specialisations);
         }
 
         if (! empty($data['domain_experiences'])) {
-            $domainExperiences = array_map(fn ($item) => ['domaine_experience_id' => $item['domain_experience']], $data['domain_experiences']);
+            $domainExperiences = array_map(fn ($item) => ['domaine_experience_id' => $item['domain_experience_id']], $data['domain_experiences']);
             $candidat->domainExperiences()->createMany($domainExperiences);
         }
 
         if (! empty($data['langues'])) {
-            $langues = array_map(fn ($item) => ['langue_id' => $item['nom'], 'niveau_langue_id' => $item['niveau']], $data['langues']);
+            $langues = array_map(function ($item) {
+                return LanguageData::fromArray($item)->toArray();
+            }, $data['langues']);
             $candidat->langues()->createMany($langues);
         }
 
         if (! empty($data['type_travails'])) {
-            $typeTravails = array_map(fn ($item) => ['type_travail_id' => $item['type_travail']], $data['type_travails']);
+            $typeTravails = array_map(fn ($item) => ['type_travail_id' => $item['type_travail_id']], $data['type_travails']);
             $candidat->typeTravails()->createMany($typeTravails);
         }
 
         if (! empty($data['mode_travails'])) {
-            $modeTravails = array_map(fn ($item) => ['mode_travail_id' => $item['mode_travail']], $data['mode_travails']);
+            $modeTravails = array_map(fn ($item) => ['mode_travail_id' => $item['mode_travail_id']], $data['mode_travails']);
             $candidat->modeTravails()->createMany($modeTravails);
         }
 
         if (! empty($data['ville_travails'])) {
-            $villeTravails = array_map(fn ($item) => ['ville_id' => $item['ville']], $data['ville_travails']);
+            $villeTravails = array_map(fn ($item) => ['ville_id' => $item['ville_id']], $data['ville_travails']);
             $candidat->villeTravails()->createMany($villeTravails);
         }
 
         if (! empty($data['experiences'])) {
-            $experiences = array_map(fn ($item) => [
-                'type_experience_id' => $item['type'],
-                'poste_id' => $item['poste'],
-                'entreprise' => $item['entreprise'],
-                'debut' => $item['debut'],
-                'fin' => $item['fin'] ?? null,
-            ], $data['experiences']);
+            $experiences = array_map(function ($item) {
+                return ExperienceData::fromArray($item)->toArray();
+            }, $data['experiences']);
             $candidat->experiences()->createMany($experiences);
         }
 
@@ -148,14 +159,8 @@ class RegistrationService
                     'candidat_diplomas'
                 );
 
-                $formationsData[] = [
-                    'annee_debut' => $formation['annee_debut'] ?? null,
-                    'annee_fin' => $formation['annee_fin'] ?? null,
-                    'specialisation_id' => $formation['domaine'],
-                    'formation_juridique_id' => $formation['niveau'],
-                    'ecole_id' => $formation['ecole'],
-                    'diploma_file' => $diplomaPath,
-                ];
+                $dto = FormationData::fromArray(array_merge($formation, ['diploma_file' => $diplomaPath]));
+                $formationsData[] = $dto->toArray();
             }
             $candidat->formations()->createMany($formationsData);
         }

@@ -123,8 +123,8 @@ export default function Dashboard({ recruteur, user }: Props) {
                                                 Type d'organisation
                                             </p>
                                             <p className="font-semibold">
-                                                {recruteur?.type_organisation
-                                                    ? getTaxonomyLabel(recruteur.type_organisation, typeOrganisations)
+                                                {recruteur?.type_organisation_id
+                                                    ? getTaxonomyLabel(recruteur.type_organisation_id, typeOrganisations)
                                                     : 'Non défini'}
                                             </p>
                                         </div>
@@ -140,8 +140,8 @@ export default function Dashboard({ recruteur, user }: Props) {
                                                 Taille de l'entreprise
                                             </p>
                                             <p className="font-semibold">
-                                                {recruteur?.taille_entreprise
-                                                    ? getTaxonomyLabel(recruteur.taille_entreprise, tailleEntreprises)
+                                                {recruteur?.taille_entreprise_id
+                                                    ? getTaxonomyLabel(recruteur.taille_entreprise_id, tailleEntreprises)
                                                     : 'Non défini'}
                                             </p>
                                         </div>

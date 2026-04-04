@@ -38,11 +38,11 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
             </div>
 
             {/* Profile image preview */}
-            {!isRecruiter && formData.user.imageFile && (
+            {!isRecruiter && formData.user.image_file && (
                 <div className="flex flex-col items-center">
                     <div className="relative">
                         <img
-                            src={URL.createObjectURL(formData.user.imageFile)}
+                            src={URL.createObjectURL(formData.user.image_file)}
                             alt="Photo de profil"
                             className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-xl"
                         />
@@ -88,9 +88,9 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                         </div>
                         <div className="grid gap-3">
                             <Item label="Organisation" value={formData.recruteur.nom_entreprise} />
-                            <Item label="Type" value={getTaxonomyLabel(formData.recruteur.type_organisation, typeOrganisations)} />
-                            <Item label="Taille" value={getTaxonomyLabel(formData.recruteur.taille_entreprise, tailleEntreprises)} />
-                            <Item label="Ville" value={getTaxonomyLabel(formData.recruteur.ville, villes)} />
+                            <Item label="Type" value={getTaxonomyLabel(formData.recruteur.type_organisation_id, typeOrganisations)} />
+                            <Item label="Taille" value={getTaxonomyLabel(formData.recruteur.taille_entreprise_id, tailleEntreprises)} />
+                            <Item label="Ville" value={getTaxonomyLabel(formData.recruteur.ville_id, villes)} />
                             <Item label="Poste occupé" value={formData.recruteur.poste || ''} />
                         </div>
                     </div>
@@ -101,9 +101,9 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                             <h4 className="text-sm font-bold text-slate-900 uppercase tracking-widest">Profil Candidat</h4>
                         </div>
                         <div className="grid gap-3">
-                            <Item label="Poste visé" value={getTaxonomyLabel(formData.candidat.PosteRecherche, postes)} />
-                            <Item label="Expérience" value={getTaxonomyLabel(formData.candidat.niveauExperience, niveauExperiences)} />
-                            <Item label="Formation" value={getTaxonomyLabel(formData.candidat.formationJuridique, formationJuridiques)} />
+                            <Item label="Poste visé" value={getTaxonomyLabel(formData.candidat.poste_id, postes)} />
+                            <Item label="Expérience" value={getTaxonomyLabel(formData.candidat.niveau_experience_id, niveauExperiences)} />
+                            <Item label="Formation" value={getTaxonomyLabel(formData.candidat.formation_juridique_id, formationJuridiques)} />
                             <div className="pt-2 border-t border-slate-100 mt-2">
                                 <p className="text-[10px] font-black text-slate-400 uppercase mb-2">Spécialisations</p>
                                 <div className="flex flex-wrap gap-1.5">

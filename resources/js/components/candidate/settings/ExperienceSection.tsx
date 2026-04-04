@@ -16,11 +16,11 @@ export default function ExperienceSection({ experiences }: Props) {
   const [editingId, setEditingId] = useState<number | null>(null);
 
   const form = useForm({
-    poste: '',
+    poste_id: '',
     entreprise: '',
     debut: '',
     fin: '',
-    type: 'CDI',
+    type_experience_id: '',
   });
 
   const resetForm = () => {
@@ -31,11 +31,11 @@ export default function ExperienceSection({ experiences }: Props) {
 
   const handleEdit = (exp: any) => {
     form.setData({
-      poste: exp.poste_id,
+      poste_id: exp.poste_id,
       entreprise: exp.entreprise,
       debut: exp.debut,
       fin: exp.fin || '',
-      type: exp.type_experience_id || 'CDI',
+      type_experience_id: exp.type_experience_id || '',
     });
     setEditingId(exp.id);
     setIsAdding(false);
@@ -96,8 +96,8 @@ export default function ExperienceSection({ experiences }: Props) {
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Poste occupé</label>
                   <select
-                    value={form.data.poste}
-                    onChange={e => form.setData('poste', e.target.value)}
+                    value={form.data.poste_id}
+                    onChange={e => form.setData('poste_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
@@ -107,9 +107,8 @@ export default function ExperienceSection({ experiences }: Props) {
                     ) : (
                       postes.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
-                    <option value="Autre">Autre</option>
                   </select>
-                  {form.errors.poste && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.poste}</p>}
+                  {form.errors.poste_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.poste_id}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Entreprise / Cabinet</label>
@@ -129,8 +128,8 @@ export default function ExperienceSection({ experiences }: Props) {
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Type de contrat</label>
                   <select
-                    value={form.data.type}
-                    onChange={e => form.setData('type', e.target.value)}
+                    value={form.data.type_experience_id}
+                    onChange={e => form.setData('type_experience_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
@@ -141,7 +140,7 @@ export default function ExperienceSection({ experiences }: Props) {
                       typeExperiences.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
-                  {form.errors.type && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.type}</p>}
+                  {form.errors.type_experience_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.type_experience_id}</p>}
                 </div>
                 <div className="hidden sm:block" /> {/** Spacer */}
               </div>

@@ -54,7 +54,7 @@ export default function ProfileGrid({ candidat }: Props) {
             {candidat?.formations?.length > 0 ? (
               candidat.formations.slice(0, 1).map((form: any, i: number) => (
                 <div key={i} className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-2 before:w-2 before:rounded-full before:bg-[#1a1f1e]">
-                  <h4 className="font-bold text-[#1a1f1e] text-lg">{getTaxonomyLabel(form.niveau, formationJuridiques)} en {getTaxonomyLabel(form.domaine, specialisations)}</h4>
+                  <h4 className="font-bold text-[#1a1f1e] text-lg">{getTaxonomyLabel(form.formation_juridique_id , formationJuridiques)} en {getTaxonomyLabel(form.specialisation_id, specialisations)}</h4>
                   <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">{getTaxonomyLabel(form.ecole, ecoles)}</p>
                   <p className="mt-1 text-xs font-bold text-[#1a1f1e]/40">{form.annee_debut} — {form.annee_fin || 'N/A'}</p>
                 </div>

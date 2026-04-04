@@ -38,16 +38,16 @@ export default function RegisterRecruteur() {
             prenom: '',
             telephone: '',
             email: '',
-            imageFile: null,
+            image_file: null,
             password: '',
-            confirmPassword: '',
+            password_confirmation: '',
         },
         recruteur: {
             nom_entreprise: '',
-            type_organisation: '',
-            taille_entreprise: '',
+            type_organisation_id: '',
+            taille_entreprise_id: '',
             site_web: '',
-            ville: '',
+            ville_id: '',
             poste: '',
         },
     });
@@ -83,15 +83,15 @@ export default function RegisterRecruteur() {
         payload.append('email', user.email);
         payload.append('telephone', user.telephone || '');
         payload.append('password', user.password);
-        payload.append('password_confirmation', user.confirmPassword);
+        payload.append('password_confirmation', user.password_confirmation);
         payload.append('role', 'recruteur');
 
         // --- Recruiter fields ---
         payload.append('nom_entreprise', recruteur.nom_entreprise);
-        payload.append('type_organisation', recruteur.type_organisation);
-        payload.append('taille_entreprise', recruteur.taille_entreprise);
+        payload.append('type_organisation_id', String(recruteur.type_organisation_id));
+        payload.append('taille_entreprise_id', String(recruteur.taille_entreprise_id));
         payload.append('site_web', recruteur.site_web || '');
-        payload.append('ville', recruteur.ville);
+        payload.append('ville_id', String(recruteur.ville_id));
         payload.append('poste', recruteur.poste || '');
 
         return payload;
@@ -123,16 +123,16 @@ export default function RegisterRecruteur() {
                             section: 'recruteur',
                             key: 'nom_entreprise',
                         },
-                        type_organisation: {
+                        type_organisation_id: {
                             section: 'recruteur',
-                            key: 'type_organisation',
+                            key: 'type_organisation_id',
                         },
-                        taille_entreprise: {
+                        taille_entreprise_id: {
                             section: 'recruteur',
-                            key: 'taille_entreprise',
+                            key: 'taille_entreprise_id',
                         },
                         site_web: { section: 'recruteur', key: 'site_web' },
-                        ville: { section: 'recruteur', key: 'ville' },
+                        ville_id: { section: 'recruteur', key: 'ville_id' },
                         poste: { section: 'recruteur', key: 'poste' },
                     };
 
@@ -177,7 +177,7 @@ export default function RegisterRecruteur() {
             const requiredFields: (keyof UserFormData)[] = [
                 'email',
                 'password',
-                'confirmPassword',
+                'password_confirmation',
             ];
             requiredFields.forEach((field) => {
                 const value = formData.user[field];
@@ -190,9 +190,9 @@ export default function RegisterRecruteur() {
                 }
             });
 
-            if (formData.user.password && formData.user.confirmPassword) {
-                if (formData.user.password !== formData.user.confirmPassword) {
-                    newErrors.confirmPassword =
+            if (formData.user.password && formData.user.password_confirmation) {
+                if (formData.user.password !== formData.user.password_confirmation) {
+                    newErrors.password_confirmation =
                         'Les mots de passe ne correspondent pas';
                     valid = false;
                 } else {
@@ -256,9 +256,9 @@ export default function RegisterRecruteur() {
             section = 'recruteur';
             const requiredFields: (keyof RecruteurFormData)[] = [
                 'nom_entreprise',
-                'type_organisation',
-                'taille_entreprise',
-                'ville',
+                'type_organisation_id',
+                'taille_entreprise_id',
+                'ville_id',
             ];
             requiredFields.forEach((field) => {
                 const value = formData.recruteur[field];

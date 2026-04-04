@@ -16,9 +16,9 @@ export default function FormationSection({ formations }: Props) {
   const [editingId, setEditingId] = useState<number | null>(null);
 
   const form = useForm({
-    niveau: '',
-    domaine: '',
-    ecole: '',
+    formation_juridique_id: '',
+    specialisation_id: '',
+    ecole_id: '',
     annee_debut: '',
     annee_fin: '',
     diploma_file: null as File | null,
@@ -32,9 +32,9 @@ export default function FormationSection({ formations }: Props) {
 
   const handleEdit = (formItem: any) => {
     form.setData({
-      niveau: formItem.formation_juridique_id,
-      domaine: formItem.specialisation_id,
-      ecole: formItem.ecole_id,
+      formation_juridique_id: formItem.formation_juridique_id,
+      specialisation_id: formItem.specialisation_id,
+      ecole_id: formItem.ecole_id,
       annee_debut: formItem.annee_debut,
       annee_fin: formItem.annee_fin || '',
       diploma_file: null,
@@ -106,8 +106,8 @@ export default function FormationSection({ formations }: Props) {
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Niveau</label>
                   <select
-                    value={form.data.niveau}
-                    onChange={e => form.setData('niveau', e.target.value)}
+                    value={form.data.formation_juridique_id}
+                    onChange={e => form.setData('formation_juridique_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
@@ -118,13 +118,13 @@ export default function FormationSection({ formations }: Props) {
                       formationJuridiques.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
-                  {form.errors.niveau && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.niveau}</p>}
+                  {form.errors.formation_juridique_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.formation_juridique_id}</p>}
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Domaine d'études</label>
                   <select
-                    value={form.data.domaine}
-                    onChange={e => form.setData('domaine', e.target.value)}
+                    value={form.data.specialisation_id}
+                    onChange={e => form.setData('specialisation_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
@@ -135,15 +135,15 @@ export default function FormationSection({ formations }: Props) {
                       specialisations.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
-                  {form.errors.domaine && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.domaine}</p>}
+                  {form.errors.specialisation_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.specialisation_id}</p>}
                 </div>
               </div>
 
-              <div className="space-y-2">
+                <div className="space-y-2">
                   <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">École / Université</label>
                   <select
-                    value={form.data.ecole}
-                    onChange={e => form.setData('ecole', e.target.value)}
+                    value={form.data.ecole_id}
+                    onChange={e => form.setData('ecole_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
@@ -154,7 +154,7 @@ export default function FormationSection({ formations }: Props) {
                       ecoles.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
                   </select>
-                  {form.errors.ecole && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.ecole}</p>}
+                  {form.errors.ecole_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.ecole_id}</p>}
                 </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

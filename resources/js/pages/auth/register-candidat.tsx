@@ -46,29 +46,29 @@ export default function RegisterCandidat() {
             prenom: '',
             telephone: '',
             email: '',
-            imageFile: null,
+            image_file: null,
             password: '',
-            confirmPassword: '',
+            password_confirmation: '',
         },
         candidat: {
-            niveauExperience: '',
-            formationJuridique: '',
+            niveau_experience_id: '',
+            formation_juridique_id: '',
             specialisations: [],
             langues: [],
-            domainExperiences: [],
-            typeTravailRecherche: [],
-            villesTravailRecherche: [],
-            modeTravailRecherche: [],
-            PosteRecherche: '',
+            domain_experiences: [],
+            type_travails: [],
+            ville_travails: [],
+            mode_travails: [],
+            poste_id: '',
             formations: [
                 {
                     id: Math.random().toString(36).substr(2, 9),
-                    anneeDebut: '',
-                    anneeFin: '',
-                    niveau: '',
-                    domaine: '',
-                    ecole: '',
-                    diplomaFile: null,
+                    annee_debut: '',
+                    annee_fin: '',
+                    formation_juridique_id: '',
+                    specialisation_id: '',
+                    ecole_id: '',
+                    diploma_file: null,
                 },
             ],
             experiences: [
@@ -76,9 +76,9 @@ export default function RegisterCandidat() {
                     id: Math.random().toString(36).substr(2, 9),
                     debut: '',
                     fin: '',
-                    type: '',
+                    type_experience_id: '',
                     entreprise: '',
-                    poste: '',
+                    poste_id: '',
                 },
             ],
         },
@@ -117,59 +117,59 @@ export default function RegisterCandidat() {
         payload.append('email', user.email);
         payload.append('telephone', user.telephone || '');
         payload.append('password', user.password);
-        payload.append('password_confirmation', user.confirmPassword);
+        payload.append('password_confirmation', user.password_confirmation);
         payload.append('role', 'candidat');
 
-        if (user.imageFile) {
-            payload.append('image_file', user.imageFile);
+        if (user.image_file) {
+            payload.append('image_file', user.image_file);
         }
 
         // --- Candidat fields ---
-        payload.append('poste_recherche', candidat.PosteRecherche);
-        payload.append('niveau_experience', candidat.niveauExperience);
-        payload.append('formation_juridique', candidat.formationJuridique);
+        payload.append('poste_id', String(candidat.poste_id));
+        payload.append('niveau_experience_id', String(candidat.niveau_experience_id));
+        payload.append('formation_juridique_id', String(candidat.formation_juridique_id));
 
-        candidat.specialisations.forEach((s: string, i: number) =>
-            payload.append(`specialisations[${i}][specialisation]`, s),
+        candidat.specialisations.forEach((s: string | number, i: number) =>
+            payload.append(`specialisations[${i}][specialisation_id]`, String(s)),
         );
-        candidat.domainExperiences.forEach((d: string, i: number) =>
-            payload.append(`domain_experiences[${i}][domain_experience]`, d),
+        candidat.domain_experiences.forEach((d: string | number, i: number) =>
+            payload.append(`domain_experiences[${i}][domain_experience_id]`, String(d)),
         );
-        candidat.typeTravailRecherche.forEach((t: string, i: number) =>
-            payload.append(`type_travails[${i}][type_travail]`, t),
+        candidat.type_travails.forEach((t: string | number, i: number) =>
+            payload.append(`type_travails[${i}][type_travail_id]`, String(t)),
         );
-        candidat.villesTravailRecherche.forEach((v: string, i: number) =>
-            payload.append(`ville_travails[${i}][ville]`, v),
+        candidat.ville_travails.forEach((v: string | number, i: number) =>
+            payload.append(`ville_travails[${i}][ville_id]`, String(v)),
         );
-        candidat.modeTravailRecherche.forEach((m: string, i: number) =>
-            payload.append(`mode_travails[${i}][mode_travail]`, m),
+        candidat.mode_travails.forEach((m: string | number, i: number) =>
+            payload.append(`mode_travails[${i}][mode_travail_id]`, String(m)),
         );
 
         candidat.langues.forEach(
-            (lang: { nom: string; niveau: string }, i: number) => {
-                payload.append(`langues[${i}][nom]`, lang.nom);
-                payload.append(`langues[${i}][niveau]`, lang.niveau);
+            (lang: { langue_id: string | number; niveau_langue_id: string | number }, i: number) => {
+                payload.append(`langues[${i}][langue_id]`, String(lang.langue_id));
+                payload.append(`langues[${i}][niveau_langue_id]`, String(lang.niveau_langue_id));
             },
         );
 
         candidat.formations.forEach((f: Formation, i: number) => {
-            payload.append(`formations[${i}][annee_debut]`, f.anneeDebut);
-            payload.append(`formations[${i}][annee_fin]`, f.anneeFin);
-            payload.append(`formations[${i}][niveau]`, f.niveau);
-            payload.append(`formations[${i}][domaine]`, f.domaine);
-            payload.append(`formations[${i}][ecole]`, f.ecole);
+            payload.append(`formations[${i}][annee_debut]`, f.annee_debut);
+            payload.append(`formations[${i}][annee_fin]`, f.annee_fin);
+            payload.append(`formations[${i}][formation_juridique_id]`, String(f.formation_juridique_id));
+            payload.append(`formations[${i}][specialisation_id]`, String(f.specialisation_id));
+            payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
 
-            if (f.diplomaFile) {
-                payload.append(`formations[${i}][diploma_file]`, f.diplomaFile);
+            if (f.diploma_file) {
+                payload.append(`formations[${i}][diploma_file]`, f.diploma_file);
             }
         });
 
         candidat.experiences.forEach((e: Experience, i: number) => {
             payload.append(`experiences[${i}][debut]`, e.debut);
             payload.append(`experiences[${i}][fin]`, e.fin);
-            payload.append(`experiences[${i}][type]`, e.type);
+            payload.append(`experiences[${i}][type_experience_id]`, String(e.type_experience_id));
             payload.append(`experiences[${i}][entreprise]`, e.entreprise);
-            payload.append(`experiences[${i}][poste]`, e.poste);
+            payload.append(`experiences[${i}][poste_id]`, String(e.poste_id));
         });
 
         return payload;
@@ -235,7 +235,7 @@ export default function RegisterCandidat() {
                 'prenom',
                 'email',
                 'password',
-                'confirmPassword',
+                'password_confirmation',
             ];
             requiredFields.forEach((field) => {
                 const value = formData.user[field];
@@ -249,9 +249,9 @@ export default function RegisterCandidat() {
                 }
             });
 
-            if (formData.user.password && formData.user.confirmPassword) {
-                if (formData.user.password !== formData.user.confirmPassword) {
-                    newErrors.confirmPassword =
+            if (formData.user.password && formData.user.password_confirmation) {
+                if (formData.user.password !== formData.user.password_confirmation) {
+                    newErrors.password_confirmation =
                         'Les mots de passe ne correspondent pas';
                     valid = false;
                 } else {
@@ -317,15 +317,15 @@ export default function RegisterCandidat() {
         } else if (step === 2) {
             section = 'candidat';
             const requiredFields: (keyof CandidatFormData)[] = [
-                'niveauExperience',
-                'formationJuridique',
+                'niveau_experience_id',
+                'formation_juridique_id',
                 'specialisations',
                 'langues',
-                'domainExperiences',
-                'PosteRecherche',
-                'typeTravailRecherche',
-                'villesTravailRecherche',
-                'modeTravailRecherche',
+                'domain_experiences',
+                'poste_id',
+                'type_travails',
+                'ville_travails',
+                'mode_travails',
             ];
             requiredFields.forEach((field) => {
                 const value = formData.candidat[field];
@@ -351,12 +351,12 @@ export default function RegisterCandidat() {
             } else if (
                 formations.some(
                     (f: Formation) =>
-                        !f.anneeDebut ||
-                        !f.anneeFin ||
-                        !f.niveau ||
-                        !f.domaine ||
-                        !f.ecole ||
-                        !f.diplomaFile,
+                        !f.annee_debut ||
+                        !f.annee_fin ||
+                        !f.formation_juridique_id ||
+                        !f.specialisation_id ||
+                        !f.ecole_id ||
+                        !f.diploma_file,
                 )
             ) {
                 newErrors.formations =
@@ -373,9 +373,9 @@ export default function RegisterCandidat() {
                     (e: Experience) =>
                         !e.debut ||
                         !e.fin ||
-                        !e.type ||
+                        !e.type_experience_id ||
                         !e.entreprise ||
-                        !e.poste,
+                        !e.poste_id,
                 )
             ) {
                 newErrors.experiences =
@@ -384,7 +384,7 @@ export default function RegisterCandidat() {
             } else {
                 // Specific date/year logic (after or equal)
                 formations.forEach((f: Formation, i: number) => {
-                    if (f.anneeDebut && f.anneeFin && f.anneeFin < f.anneeDebut) {
+                    if (f.annee_debut && f.annee_fin && f.annee_fin < f.annee_debut) {
                         (newErrors as any)[`formations.${i}.annee_fin`] = "L'année de fin doit être postérieure ou égale à l'année de début.";
                         valid = false;
                     }

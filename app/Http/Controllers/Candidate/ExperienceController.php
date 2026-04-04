@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Candidate;
 
+use App\DTOs\Candidate\ExperienceData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreExperienceRequest;
 use App\Models\Candidat\CandidatExperience;
@@ -16,21 +17,15 @@ class ExperienceController extends Controller
     public function store(StoreExperienceRequest $request): RedirectResponse
     {
         $candidat = $request->user()->candidat;
-
-        $data = $request->validated();
-
-        // Rename fields to match database columns
-        $data['poste_id'] = $data['poste'];
-        $data['type_experience_id'] = $data['type'] ?? null;
-        unset($data['poste'], $data['type']);
+        $dto = ExperienceData::fromRequest($request);
 
         Log::info('Storing experience', [
             'candidat_id' => $candidat->id,
-            'data' => $data,
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $candidat->experiences()->create($data);
+            $candidat->experiences()->create($dto->toArray());
 
             return back()->with('success', 'Expérience ajoutée avec succès.');
         } catch (\Exception $e) {
@@ -44,20 +39,15 @@ class ExperienceController extends Controller
     {
         $this->authorize('update', $experience);
 
-        $data = $request->validated();
-
-        // Rename fields to match database columns
-        $data['poste_id'] = $data['poste'];
-        $data['type_experience_id'] = $data['type'] ?? null;
-        unset($data['poste'], $data['type']);
+        $dto = ExperienceData::fromRequest($request);
 
         Log::info('Updating experience', [
             'experience_id' => $experience->id,
-            'data' => $data,
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $experience->update($data);
+            $experience->update($dto->toArray());
 
             return back()->with('success', 'Expérience mise à jour avec succès.');
         } catch (\Exception $e) {

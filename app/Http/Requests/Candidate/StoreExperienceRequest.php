@@ -14,11 +14,11 @@ class StoreExperienceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'poste' => ['required', 'integer', 'exists:postes,id'],
+            'poste_id' => ['required', 'integer', 'exists:postes,id'],
             'entreprise' => ['required', 'string', 'max:255'],
             'debut' => ['required', 'date_format:Y-m'],
             'fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:debut'],
-            'type' => ['nullable', 'integer', 'exists:type_experiences,id'],
+            'type_experience_id' => ['nullable', 'integer', 'exists:type_experiences,id'],
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Candidate;
 
+use App\DTOs\Candidate\FormationData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreFormationRequest;
 use App\Models\Candidat\CandidatFormation;
@@ -16,58 +17,53 @@ class FormationController extends Controller
 
     public function store(StoreFormationRequest $request): RedirectResponse
     {
-        $data = $request->validated();
         $candidat = $request->user()->candidat;
-
-        // Rename fields to match database columns
-        $data['formation_juridique_id'] = $data['niveau'];
-        $data['specialisation_id'] = $data['domaine'];
-        $data['ecole_id'] = $data['ecole'];
-        unset($data['niveau'], $data['domaine'], $data['ecole']);
+        $diplomaPath = null;
 
         if ($request->hasFile('diploma_file')) {
             $file = $request->file('diploma_file');
             $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-            $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
+            $diplomaPath = $file->storeAs('candidat_diplomas', $filename, 'private');
         }
 
-        $candidat->formations()->create($data);
+        $dto = FormationData::fromRequest($request, $diplomaPath);
 
-        return back()->with('success', 'Formation ajoutée avec succès.');
+        try {
+            $candidat->formations()->create($dto->toArray());
+
+            return back()->with('success', 'Formation ajoutée avec succès.');
+        } catch (\Exception $e) {
+            Log::error('Error storing formation', ['error' => $e->getMessage()]);
+
+            return back()->with('error', 'Erreur lors de l\'ajout de la formation.');
+        }
     }
 
     public function update(StoreFormationRequest $request, CandidatFormation $formation): RedirectResponse
     {
         $this->authorize('update', $formation);
 
-        $data = $request->validated();
+        $diplomaPath = $formation->diploma_file;
 
-        // Rename fields to match database columns
-        $data['formation_juridique_id'] = $data['niveau'];
-        $data['specialisation_id'] = $data['domaine'];
-        $data['ecole_id'] = $data['ecole'];
-        unset($data['niveau'], $data['domaine'], $data['ecole']);
+        if ($request->hasFile('diploma_file')) {
+            $file = $request->file('diploma_file');
+            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+            $diplomaPath = $file->storeAs('candidat_diplomas', $filename, 'private');
+        }
+
+        $dto = FormationData::fromRequest($request, $diplomaPath);
 
         Log::info('Updating formation', [
             'id' => $formation->id,
-            'data_keys' => array_keys($data),
-            'data' => $data,
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            if (! $request->hasFile('diploma_file')) {
-                unset($data['diploma_file']);
-            } else {
-                $file = $request->file('diploma_file');
-                $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-                $data['diploma_file'] = $file->storeAs('candidat_diplomas', $filename, 'private');
-            }
-
-            $formation->update($data);
+            $formation->update($dto->toArray());
 
             return back()->with('success', 'Formation mise à jour avec succès.');
         } catch (\Exception $e) {
-            Log::error('Error updating formation', ['error' => $e->getMessage(), 'data' => $data]);
+            Log::error('Error updating formation', ['error' => $e->getMessage()]);
 
             return back()->with('error', 'Erreur lors de la mise à jour de la formation.');
         }

@@ -56,7 +56,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
 
     const validateAndSetImage = (file: File | undefined | null) => {
         if (!file) {
-            onFieldChange('imageFile', null);
+            onFieldChange('image_file', null);
             setLocalImgError(null);
             return;
         }
@@ -71,7 +71,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
             return;
         }
         setLocalImgError(null);
-        onFieldChange('imageFile', file);
+        onFieldChange('image_file', file);
     };
 
     const inputClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-400";
@@ -96,8 +96,8 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                     >
                         <div className="flex items-center gap-4 p-4">
                             <div className="h-16 w-16 rounded-full overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center flex-shrink-0">
-                                {formData.imageFile ? (
-                                    <img src={URL.createObjectURL(formData.imageFile)} alt="Aperçu" className="h-full w-full object-cover" />
+                                {formData.image_file ? (
+                                    <img src={URL.createObjectURL(formData.image_file)} alt="Aperçu" className="h-full w-full object-cover" />
                                 ) : (
                                     <Icon name="UserRound" size={28} className="text-slate-400" />
                                 )}
@@ -105,9 +105,9 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                             <div className="flex-1 min-w-0">
                                 <p className="text-sm font-bold text-slate-900">Glissez-déposez une image ici</p>
                                 <p className="text-xs text-slate-500">PNG, JPG, WebP – max 3MB</p>
-                                {formData.imageFile && (
+                                {formData.image_file && (
                                     <p className="mt-1 text-xs text-slate-600 font-medium truncate">
-                                        {formData.imageFile.name} · {formatBytes(formData.imageFile.size)}
+                                        {formData.image_file.name} · {formatBytes(formData.image_file.size)}
                                     </p>
                                 )}
                             </div>
@@ -115,7 +115,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                                 <button type="button" onClick={() => inputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg bg-slate-900 text-white px-3 py-2 text-sm font-medium hover:bg-slate-800 transition">
                                     <Icon name="Camera" size={16} /> Choisir
                                 </button>
-                                {formData.imageFile && (
+                                {formData.image_file && (
                                     <button type="button" onClick={() => validateAndSetImage(null)} className="inline-flex items-center gap-2 rounded-lg bg-slate-100 text-slate-700 px-3 py-2 text-sm font-medium hover:bg-slate-200 transition">
                                         <Icon name="Trash2" size={16} />
                                     </button>
@@ -124,7 +124,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                         </div>
                         <input ref={inputRef} type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => validateAndSetImage(e.target.files?.[0])} className="hidden" />
                     </div>
-                    {(errors.imageFile || localImgError) && <p className="text-xs text-red-500 mt-2 font-medium">{localImgError || errors.imageFile}</p>}
+                    {(errors.image_file || localImgError) && <p className="text-xs text-red-500 mt-2 font-medium">{localImgError || errors.image_file}</p>}
                 </div>
             )}
 
@@ -200,14 +200,14 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
             {/* --- CONFIRM PASSWORD --- */}
             <div className="relative">
                 <label className={labelClasses}>Confirmer le mot de passe *</label>
-                <input type={showConfirmPassword ? 'text' : 'password'} placeholder="Confirmez votre mot de passe" value={formData.confirmPassword || ''} onChange={(e) => onFieldChange('confirmPassword', e.target.value)} className={`${inputClasses} pr-10`} />
+                <input type={showConfirmPassword ? 'text' : 'password'} placeholder="Confirmez votre mot de passe" value={formData.password_confirmation || ''} onChange={(e) => onFieldChange('password_confirmation', e.target.value)} className={`${inputClasses} pr-10`} />
                 <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-600 transition-colors">
                     <Icon name={showConfirmPassword ? 'EyeOff' : 'Eye'} size={20} />
                 </button>
-                {formData.confirmPassword && formData.confirmPassword !== formData.password && (
+                {formData.password_confirmation && formData.password_confirmation !== formData.password && (
                     <p className="text-xs text-red-500 mt-1.5 font-medium">Les mots de passe ne correspondent pas</p>
                 )}
-                {errors.confirmPassword && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.confirmPassword}</p>}
+                {errors.password_confirmation && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.password_confirmation}</p>}
             </div>
         </div>
     );

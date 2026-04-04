@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Candidate;
 
+use App\DTOs\Candidate\SpecialisationData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreSpecialisationRequest;
 use App\Models\Candidat\CandidatSpecialisation;
@@ -16,14 +17,15 @@ class SpecialisationController extends Controller
     public function store(StoreSpecialisationRequest $request): RedirectResponse
     {
         $candidat = $request->user()->candidat;
+        $dto = SpecialisationData::fromRequest($request);
 
         Log::info('Storing specialisation', [
             'candidat_id' => $candidat->id,
-            'data' => $request->validated(),
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $candidat->specialisations()->create($request->validated());
+            $candidat->specialisations()->create($dto->toArray());
 
             return back()->with('success', 'Spécialisation ajoutée.');
         } catch (\Exception $e) {
@@ -36,14 +38,15 @@ class SpecialisationController extends Controller
     public function update(StoreSpecialisationRequest $request, CandidatSpecialisation $specialisation): RedirectResponse
     {
         $this->authorize('update', $specialisation);
+        $dto = SpecialisationData::fromRequest($request);
 
         Log::info('Updating specialisation', [
             'specialisation_id' => $specialisation->id,
-            'data' => $request->validated(),
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $specialisation->update($request->validated());
+            $specialisation->update($dto->toArray());
 
             return back()->with('success', 'Spécialisation mise à jour.');
         } catch (\Exception $e) {

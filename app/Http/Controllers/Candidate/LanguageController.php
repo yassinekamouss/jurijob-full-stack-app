@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Candidate;
 
+use App\DTOs\Candidate\LanguageData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreLanguageRequest;
 use App\Models\Candidat\CandidatLangue;
@@ -16,14 +17,15 @@ class LanguageController extends Controller
     public function store(StoreLanguageRequest $request): RedirectResponse
     {
         $candidat = $request->user()->candidat;
+        $dto = LanguageData::fromRequest($request);
 
         Log::info('Storing language', [
             'candidat_id' => $candidat->id,
-            'data' => $request->validated(),
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $candidat->langues()->create($request->validated());
+            $candidat->langues()->create($dto->toArray());
 
             return back()->with('success', 'Langue ajoutée.');
         } catch (\Exception $e) {
@@ -36,14 +38,15 @@ class LanguageController extends Controller
     public function update(StoreLanguageRequest $request, CandidatLangue $langue): RedirectResponse
     {
         $this->authorize('update', $langue);
+        $dto = LanguageData::fromRequest($request);
 
         Log::info('Updating language', [
             'language_id' => $langue->id,
-            'data' => $request->validated(),
+            'data' => $dto->toArray(),
         ]);
 
         try {
-            $langue->update($request->validated());
+            $langue->update($dto->toArray());
 
             return back()->with('success', 'Langue mise à jour.');
         } catch (\Exception $e) {
