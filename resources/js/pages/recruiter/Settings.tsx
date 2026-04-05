@@ -18,6 +18,7 @@ import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
+import DashboardHeader from '@/components/recruiter/DashboardHeader';
 
 interface Props {
     recruteur: any;
@@ -107,7 +108,9 @@ export default function Settings({ recruteur, user }: Props) {
                 }}
             />
 
-            <main className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 lg:px-8">
+            <DashboardHeader />
+            
+            <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
                 <div className="mb-12">
                     <Link
                         href="/recruteur/dashboard"

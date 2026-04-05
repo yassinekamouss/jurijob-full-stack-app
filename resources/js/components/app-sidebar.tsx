@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Briefcase } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -14,6 +14,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { index as offresIndex } from '@/routes/offres';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
@@ -22,13 +23,18 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Gestion des Offres',
+        href: offresIndex().url,
+        icon: Briefcase,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
         href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        icon: Folder,
     },
     {
         title: 'Documentation',

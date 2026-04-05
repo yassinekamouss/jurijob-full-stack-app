@@ -3,7 +3,10 @@ import { useCallback } from 'react';
 export type GetInitialsFn = (fullName: string) => string;
 
 export function useInitials(): GetInitialsFn {
-    return useCallback((fullName: string): string => {
+    return useCallback((fullName: string | null | undefined): string => {
+        if (!fullName) {
+            return '';
+        }
         const names = fullName.trim().split(' ');
 
         if (names.length === 0) {

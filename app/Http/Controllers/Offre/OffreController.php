@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Offre;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Offre\StoreOffreRequest;
 use App\Models\Offre\Offre;
+use App\Repositories\TaxonomyRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,8 @@ class OffreController extends Controller
      */
     public function index(): Response
     {
+        auth()->user()->loadMissing('recruteur');
+
         $offres = auth()->user()->recruteur->offres()
             ->with(['poste', 'typeTravail', 'requirements'])
             ->latest()
@@ -35,7 +38,9 @@ class OffreController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Offres/Create');
+        return Inertia::render('Offres/Create', [
+            'taxonomies' => TaxonomyRepository::getAll(),
+        ]);
     }
 
     /**
@@ -50,13 +55,30 @@ class OffreController extends Controller
             $offre = $recruteur->offres()->create($request->validated());
 
             if ($request->has('requirements')) {
-                $offre->requirements()->createMany($request->requirements);
+                $requirements = collect($request->requirements)->map(function ($requirement) {
+                    $requirementsData = $requirement['requirements_data'] ?? [];
+
+                    if ($requirement['taxonomy_type'] === 'langue' && isset($requirement['niveau_langue_id'])) {
+                        $requirementsData['niveau_langue_id'] = (int) $requirement['niveau_langue_id'];
+                    }
+
+                    return [
+                        'taxonomy_id' => $requirement['taxonomy_id'],
+                        'taxonomy_type' => $requirement['taxonomy_type'],
+                        'importance' => $requirement['importance'],
+                        'requirements_data' => $requirementsData,
+                    ];
+                })->toArray();
+
+                $offre->requirements()->createMany($requirements);
             }
 
             DB::commit();
+
             return to_route('offres.index')->with('success', 'Offre publiée avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();
+
             return back()->with('error', 'Erreur lors de la publication de l\'offre.');
         }
     }
@@ -105,19 +127,30 @@ class OffreController extends Controller
             $offre->requirements()->delete();
 
             if ($request->has('requirements')) {
-                foreach ($request->requirements as $requirement) {
-                    $offre->requirements()->create([
+                $requirements = collect($request->requirements)->map(function ($requirement) {
+                    $requirementsData = $requirement['requirements_data'] ?? [];
+
+                    if ($requirement['taxonomy_type'] === 'langue' && isset($requirement['niveau_langue_id'])) {
+                        $requirementsData['niveau_langue_id'] = (int) $requirement['niveau_langue_id'];
+                    }
+
+                    return [
                         'taxonomy_id' => $requirement['taxonomy_id'],
                         'taxonomy_type' => $requirement['taxonomy_type'],
                         'importance' => $requirement['importance'],
-                    ]);
-                }
+                        'requirements_data' => $requirementsData,
+                    ];
+                })->toArray();
+
+                $offre->requirements()->createMany($requirements);
             }
 
             DB::commit();
+
             return to_route('offres.index')->with('success', 'Offre mise à jour avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();
+
             return back()->with('error', 'Erreur lors de la mise à jour de l\'offre.');
         }
     }
@@ -131,6 +164,7 @@ class OffreController extends Controller
 
         try {
             $offre->delete();
+
             return to_route('offres.index')->with('success', 'Offre supprimée avec succès.');
         } catch (\Exception $e) {
             return back()->with('error', 'Erreur lors de la suppression de l\'offre.');

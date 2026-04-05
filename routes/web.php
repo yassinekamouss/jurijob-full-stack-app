@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Auth\CheckEmailController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
 use App\Http\Controllers\Candidate\DiplomaController;
 use App\Http\Controllers\Candidate\ExperienceController;
@@ -10,14 +11,9 @@ use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
-
-use App\Http\Controllers\Auth\VerifyEmailController;
-
-
+use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
-use App\Http\Controllers\Offre\OffreController;
-
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,7 +33,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         return redirect()->route('home');
     })->name('dashboard');
-
 
     Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
 
@@ -65,11 +60,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('role:recruteur')->group(function () {
         Route::get('/recruteur/dashboard', [RecruiterDashboardController::class, 'index'])->name('recruteur.dashboard');
-        
+
         Route::get('/recruteur/settings', [RecruiterSettingsController::class, 'index'])->name('recruteur.settings');
         Route::put('/recruteur/settings/profile', [RecruiterSettingsController::class, 'updateProfile'])->name('recruteur.settings.update-profile');
 
-        Route::resource('offres', OffreController::class);
+        Route::resource('/recruteur/offres', OffreController::class);
     });
 });
 

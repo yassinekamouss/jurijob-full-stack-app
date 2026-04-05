@@ -2,6 +2,8 @@ import { Link, usePage } from '@inertiajs/react';
 import { LogOut, LayoutDashboard, Bell, Settings } from 'lucide-react';
 import { logout } from '@/routes';
 import { dashboard as recruiterDashboard, settings as recruiterSettings } from '@/routes/recruteur';
+import { index as offresIndex, create as offresCreate } from '@/routes/offres';
+import { Briefcase, Plus } from 'lucide-react';
 
 // --- Sous-composant Brand ---
 const Brand = () => (
@@ -42,14 +44,35 @@ export default function DashboardHeader() {
                     <nav className="hidden md:flex items-center gap-1">
                         <Link
                             href={recruiterDashboard.url?.() ?? '/recruteur/dashboard'}
-                            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${
-                                isCurrent(recruiterDashboard?.definition?.url ?? '/recruteur/dashboard')
-                                    ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
-                                    : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
-                            }`}
+                            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${isCurrent(recruiterDashboard?.definition?.url ?? '/recruteur/dashboard')
+                                ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
+                                : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
+                                }`}
                         >
                             <LayoutDashboard className="h-4 w-4" />
                             Tableau de bord
+                        </Link>
+
+                        <Link
+                            href={offresIndex().url}
+                            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${isCurrent(offresIndex().url)
+                                ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
+                                : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
+                                }`}
+                        >
+                            <Briefcase className="h-4 w-4" />
+                            Mes Offres
+                        </Link>
+
+                        <Link
+                            href={offresCreate().url}
+                            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors rounded-lg ${isCurrent(offresCreate().url)
+                                ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
+                                : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
+                                }`}
+                        >
+                            <Plus className="h-4 w-4" />
+                            Publier
                         </Link>
                     </nav>
                 </div>
@@ -64,11 +87,10 @@ export default function DashboardHeader() {
 
                         <Link
                             href={recruiterSettings.url?.() ?? '/recruteur/settings'}
-                            className={`relative p-2 transition-colors rounded-lg ${
-                                isCurrent(recruiterSettings?.definition?.url ?? '/recruteur/settings')
-                                    ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
-                                    : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
-                            }`}
+                            className={`relative p-2 transition-colors rounded-lg ${isCurrent(recruiterSettings?.definition?.url ?? '/recruteur/settings')
+                                ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
+                                : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
+                                }`}
                             title="Paramètres"
                         >
                             <Settings className="h-5 w-5" />
