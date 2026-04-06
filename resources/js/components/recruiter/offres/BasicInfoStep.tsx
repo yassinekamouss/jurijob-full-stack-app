@@ -79,6 +79,30 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                     </div>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <Label htmlFor="niveau_experience_id" className="text-base font-bold text-gray-700">Niveau d'expérience requis</Label>
+                        <div className="mt-2">
+                            <Select 
+                                value={String(data.niveau_experience_id)} 
+                                onValueChange={(val) => setData('niveau_experience_id', val)}
+                            >
+                                <SelectTrigger className="h-12 border-gray-200">
+                                    <SelectValue placeholder="Junior, Senior..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {taxonomies.niveauExperiences.map((level: any) => (
+                                        <SelectItem key={level.id} value={String(level.id)}>
+                                            {level.nom}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        {errors.niveau_experience_id && <p className="mt-1 text-sm text-red-500">{errors.niveau_experience_id}</p>}
+                    </div>
+                </div>
+
                 <div>
                     <Label htmlFor="description" className="text-base font-bold text-gray-700">Description de l'offre</Label>
                     <textarea

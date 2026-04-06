@@ -18,12 +18,11 @@ class Offre extends Model
         'recruteur_id',
         'poste_id',
         'type_travail_id',
+        'niveau_experience_id',
         'titre',
         'description',
         'statut',
     ];
-
-
 
     public function recruteur(): BelongsTo
     {
@@ -40,8 +39,33 @@ class Offre extends Model
         return $this->belongsTo(TypeTravail::class);
     }
 
-    public function requirements(): HasMany
+    public function modeTravailRequirements(): HasMany
     {
-        return $this->hasMany(OffreRequirement::class);
+        return $this->hasMany(OffreModeTravail::class);
+    }
+
+    public function langueRequirements(): HasMany
+    {
+        return $this->hasMany(OffreLangue::class);
+    }
+
+    public function specialisationRequirements(): HasMany
+    {
+        return $this->hasMany(OffreSpecialisation::class);
+    }
+
+    public function villeRequirements(): HasMany
+    {
+        return $this->hasMany(OffreVille::class);
+    }
+
+    public function formationJuridiqueRequirements(): HasMany
+    {
+        return $this->hasMany(OffreFormationJuridique::class);
+    }
+
+    public function domainExperienceRequirements(): HasMany
+    {
+        return $this->hasMany(OffreDomainExperience::class);
     }
 }

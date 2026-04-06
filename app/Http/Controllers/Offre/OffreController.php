@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Offre;
 
+use App\DTOs\Offre\OffreData;
+use App\DTOs\Offre\RequirementData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Offre\StoreOffreRequest;
 use App\Models\Offre\Offre;
@@ -24,7 +26,15 @@ class OffreController extends Controller
         auth()->user()->loadMissing('recruteur');
 
         $offres = auth()->user()->recruteur->offres()
-            ->with(['poste', 'typeTravail', 'requirements'])
+            ->with(['poste', 'typeTravail'])
+            ->withCount([
+                'langueRequirements',
+                'villeRequirements',
+                'specialisationRequirements',
+                'modeTravailRequirements',
+                'domainExperienceRequirements',
+                'formationJuridiqueRequirements',
+            ])
             ->latest()
             ->get();
 
@@ -49,29 +59,14 @@ class OffreController extends Controller
     public function store(StoreOffreRequest $request): RedirectResponse
     {
         $recruteur = $request->user()->recruteur;
+        $offreData = OffreData::fromRequest($request);
 
         DB::beginTransaction();
         try {
-            $offre = $recruteur->offres()->create($request->validated());
+            /** @var Offre $offre */
+            $offre = $recruteur->offres()->create($offreData->toArray());
 
-            if ($request->has('requirements')) {
-                $requirements = collect($request->requirements)->map(function ($requirement) {
-                    $requirementsData = $requirement['requirements_data'] ?? [];
-
-                    if ($requirement['taxonomy_type'] === 'langue' && isset($requirement['niveau_langue_id'])) {
-                        $requirementsData['niveau_langue_id'] = (int) $requirement['niveau_langue_id'];
-                    }
-
-                    return [
-                        'taxonomy_id' => $requirement['taxonomy_id'],
-                        'taxonomy_type' => $requirement['taxonomy_type'],
-                        'importance' => $requirement['importance'],
-                        'requirements_data' => $requirementsData,
-                    ];
-                })->toArray();
-
-                $offre->requirements()->createMany($requirements);
-            }
+            $this->syncRequirements($offre, $offreData->requirements);
 
             DB::commit();
 
@@ -79,7 +74,7 @@ class OffreController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Erreur lors de la publication de l\'offre.');
+            return back()->with('error', 'Erreur lors de la publication de l\'offre : '.$e->getMessage());
         }
     }
 
@@ -90,7 +85,17 @@ class OffreController extends Controller
     {
         $this->authorize('view', $offre);
 
-        $offre->load(['poste', 'typeTravail', 'requirements.taxonomy']);
+        $offre->load([
+            'poste',
+            'typeTravail',
+            'langueRequirements.langue',
+            'langueRequirements.niveauLangue',
+            'specialisationRequirements.specialisation',
+            'villeRequirements.ville',
+            'modeTravailRequirements.modeTravail',
+            'domainExperienceRequirements.domaineExperience',
+            'formationJuridiqueRequirements.formationJuridique',
+        ]);
 
         return Inertia::render('Offres/Show', [
             'offre' => $offre,
@@ -104,10 +109,18 @@ class OffreController extends Controller
     {
         $this->authorize('update', $offre);
 
-        $offre->load(['requirements']);
+        $offre->load([
+            'langueRequirements',
+            'specialisationRequirements',
+            'villeRequirements',
+            'modeTravailRequirements',
+            'domainExperienceRequirements',
+            'formationJuridiqueRequirements',
+        ]);
 
         return Inertia::render('Offres/Edit', [
             'offre' => $offre,
+            'taxonomies' => TaxonomyRepository::getAll(),
         ]);
     }
 
@@ -117,33 +130,13 @@ class OffreController extends Controller
     public function update(StoreOffreRequest $request, Offre $offre): RedirectResponse
     {
         $this->authorize('update', $offre);
+        $offreData = OffreData::fromRequest($request);
 
         DB::beginTransaction();
         try {
-            $offre->update($request->validated());
+            $offre->update($offreData->toArray());
 
-            // Simple approach for requirements: delete then recreate
-            // This is clean as it's a single operation lifecycle
-            $offre->requirements()->delete();
-
-            if ($request->has('requirements')) {
-                $requirements = collect($request->requirements)->map(function ($requirement) {
-                    $requirementsData = $requirement['requirements_data'] ?? [];
-
-                    if ($requirement['taxonomy_type'] === 'langue' && isset($requirement['niveau_langue_id'])) {
-                        $requirementsData['niveau_langue_id'] = (int) $requirement['niveau_langue_id'];
-                    }
-
-                    return [
-                        'taxonomy_id' => $requirement['taxonomy_id'],
-                        'taxonomy_type' => $requirement['taxonomy_type'],
-                        'importance' => $requirement['importance'],
-                        'requirements_data' => $requirementsData,
-                    ];
-                })->toArray();
-
-                $offre->requirements()->createMany($requirements);
-            }
+            $this->syncRequirements($offre, $offreData->requirements);
 
             DB::commit();
 
@@ -168,6 +161,61 @@ class OffreController extends Controller
             return to_route('offres.index')->with('success', 'Offre supprimée avec succès.');
         } catch (\Exception $e) {
             return back()->with('error', 'Erreur lors de la suppression de l\'offre.');
+        }
+    }
+
+    /**
+     * Sync all requirement types for an offer.
+     *
+     * @param  RequirementData[]  $requirements
+     */
+    private function syncRequirements(Offre $offre, array $requirements): void
+    {
+        // Define relation mapping based on taxonomy_type from frontend
+        $relations = [
+            'ville' => 'villeRequirements',
+            'specialisation' => 'specialisationRequirements',
+            'langue' => 'langueRequirements',
+            'mode_travail' => 'modeTravailRequirements',
+            'domaine_experience' => 'domainExperienceRequirements',
+            'formation_juridique' => 'formationJuridiqueRequirements',
+        ];
+
+        // Group requirements by their respective relations
+        $grouped = [];
+        foreach ($requirements as $req) {
+            $relation = $relations[$req->taxonomy_type] ?? null;
+            if ($relation) {
+                $data = [
+                    'importance' => $req->importance,
+                ];
+
+                // Handle specific requirements data
+                if ($req->taxonomy_type === 'langue') {
+                    $data['langue_id'] = $req->taxonomy_id;
+                    $data['niveau_langue_id'] = $req->requirements_data['niveau_langue_id'] ?? null;
+                } elseif ($req->taxonomy_type === 'ville') {
+                    $data['ville_id'] = $req->taxonomy_id;
+                } elseif ($req->taxonomy_type === 'specialisation') {
+                    $data['specialisation_id'] = $req->taxonomy_id;
+                } elseif ($req->taxonomy_type === 'mode_travail') {
+                    $data['mode_travail_id'] = $req->taxonomy_id;
+                } elseif ($req->taxonomy_type === 'domaine_experience') {
+                    $data['domaine_experience_id'] = $req->taxonomy_id;
+                } elseif ($req->taxonomy_type === 'formation_juridique') {
+                    $data['formation_juridique_id'] = $req->taxonomy_id;
+                }
+
+                $grouped[$relation][] = $data;
+            }
+        }
+
+        // Clean up and recreate requirements for each relation type
+        foreach ($relations as $relation) {
+            $offre->$relation()->delete();
+            if (isset($grouped[$relation])) {
+                $offre->$relation()->createMany($grouped[$relation]);
+            }
         }
     }
 }
