@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OffreFormationJuridique extends Model
+class OffreFormationsJuridique extends Model
 {
     use HasFactory;
-
-    protected $table = 'offre_formations_juridiques';
 
     protected $fillable = [
         'offre_id',

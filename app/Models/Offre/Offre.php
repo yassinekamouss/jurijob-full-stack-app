@@ -61,7 +61,7 @@ class Offre extends Model
 
     public function formationJuridiqueRequirements(): HasMany
     {
-        return $this->hasMany(OffreFormationJuridique::class);
+        return $this->hasMany(OffreFormationsJuridique::class);
     }
 
     public function domainExperienceRequirements(): HasMany

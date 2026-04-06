@@ -35,7 +35,7 @@ export interface OffreDomainExperience extends Requirement {
     domaine_experience?: DomaineExperience;
 }
 
-export interface OffreFormationJuridique extends Requirement {
+export interface OffreFormationsJuridique extends Requirement {
     formation_juridique_id: number;
     formation_juridique?: FormationJuridique;
 }
@@ -51,20 +51,20 @@ export interface Offre {
     statut: 'ouvert' | 'fermé';
     created_at: string;
     updated_at: string;
-    
+
     // Relationships
     poste?: Poste;
     type_travail?: TypeTravail;
     niveau_experience?: NiveauExperience;
-    
+
     // Requirements (Symmetric)
     langue_requirements?: OffreLangue[];
     specialisation_requirements?: OffreSpecialisation[];
     ville_requirements?: OffreVille[];
     mode_travail_requirements?: OffreModeTravail[];
     domain_experience_requirements?: OffreDomainExperience[];
-    formation_juridique_requirements?: OffreFormationJuridique[];
-    
+    formation_juridique_requirements?: OffreFormationsJuridique[];
+
     // Counts
     langue_requirements_count?: number;
     ville_requirements_count?: number;
