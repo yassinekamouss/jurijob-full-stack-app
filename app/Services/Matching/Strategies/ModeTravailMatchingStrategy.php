@@ -2,9 +2,9 @@
 
 namespace App\Services\Matching\Strategies;
 
-use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ModeTravailMatchingStrategy extends AbstractMatchingStrategy
 {
@@ -17,50 +17,51 @@ class ModeTravailMatchingStrategy extends AbstractMatchingStrategy
 
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $indispensableModes = $offre->modeTravailRequirements()
+        $indispensableIds = $offre->modeTravailRequirements()
             ->where('importance', 'indispensable')
-            ->get();
+            ->pluck('mode_travail_id')
+            ->toArray();
 
-        foreach ($indispensableModes as $req) {
-            $query->whereHas('modeTravails', function ($q) use ($req) {
-                $q->where('mode_travail_id', $req->mode_travail_id);
-            });
+        if (empty($indispensableIds)) {
+            return $query;
         }
 
-        return $query;
+        return $query->whereIn('candidats.id', function ($q) use ($indispensableIds) {
+            $q->select('candidat_id')
+                ->from('candidat_mode_travails')
+                ->whereIn('mode_travail_id', $indispensableIds)
+                ->groupBy('candidat_id')
+                ->havingRaw('COUNT(DISTINCT mode_travail_id) = ?', [count($indispensableIds)]);
+        });
     }
 
-    public function getScoreQuery(Offre $offre): string
+    public function applyScoreJoin(Builder $query, Offre $offre): Builder
     {
         $requirements = $offre->modeTravailRequirements;
 
         if ($requirements->isEmpty()) {
-            return '0';
+            return $query;
         }
 
         $cases = $requirements->map(function ($req) {
             return 'WHEN mode_travail_id = '.(int) $req->mode_travail_id.' THEN '.$this->getWeight($req->importance);
         })->implode(' ');
 
-        return "(SELECT COALESCE(SUM(CASE $cases ELSE 0 END), 0) FROM candidat_mode_travails WHERE candidat_mode_travails.candidat_id = candidats.id)";
+        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
+                     FROM candidat_mode_travails 
+                     GROUP BY candidat_id";
+
+        return $query->leftJoin(
+            DB::raw("($subquery) as mode_scores"),
+            'mode_scores.candidat_id',
+            '=',
+            'candidats.id'
+        );
     }
 
-    public function calculateScore(Candidat $candidat, Offre $offre): int
+    public function getScoreColumn(Offre $offre): string
     {
-        $score = 0;
-        $requirements = $offre->modeTravailRequirements;
-
-        foreach ($requirements as $req) {
-            $match = $candidat->modeTravails->first(function ($cm) use ($req) {
-                return (int) $cm->mode_travail_id === (int) $req->mode_travail_id;
-            });
-
-            if ($match) {
-                $score += $this->getWeight($req->importance);
-            }
-        }
-
-        return $score;
+        return 'COALESCE(mode_scores.score, 0)';
     }
 
     public function getMaxScore(Offre $offre): int

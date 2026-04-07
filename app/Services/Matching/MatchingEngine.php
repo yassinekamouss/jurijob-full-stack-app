@@ -4,30 +4,17 @@ namespace App\Services\Matching;
 
 use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
-use App\Services\Matching\Strategies\CityMatchingStrategy;
-use App\Services\Matching\Strategies\ExperienceMatchingStrategy;
-use App\Services\Matching\Strategies\FormationMatchingStrategy;
-use App\Services\Matching\Strategies\LanguageMatchingStrategy;
-use App\Services\Matching\Strategies\ModeTravailMatchingStrategy;
-use App\Services\Matching\Strategies\SpecialisationMatchingStrategy;
+use App\Services\Matching\Contracts\MatchingStrategy;
 use App\Services\Matching\Strategies\TotalExperienceMatchingStrategy;
 use Illuminate\Support\Collection;
 
 class MatchingEngine
 {
-    protected array $strategies = [];
-
-    public function __construct()
+    /**
+     * @param  iterable<MatchingStrategy>  $strategies
+     */
+    public function __construct(protected iterable $strategies)
     {
-        $this->strategies = [
-            new LanguageMatchingStrategy,
-            new SpecialisationMatchingStrategy,
-            new CityMatchingStrategy,
-            new FormationMatchingStrategy,
-            new ExperienceMatchingStrategy,
-            new ModeTravailMatchingStrategy,
-            new TotalExperienceMatchingStrategy,
-        ];
     }
 
     /**
@@ -37,28 +24,39 @@ class MatchingEngine
     {
         $query = Candidat::query();
 
-        // 1. Strict Pre-filtering (Performance SQL)
+        // 1. Pre-filtering (General context)
         $query->where('poste_id', $offre->poste_id)
-            ->whereHas('typeTravails', function ($q) use ($offre) {
-                $q->where('type_travail_id', $offre->type_travail_id);
+            ->whereIn('candidats.id', function ($q) use ($offre) {
+                $q->select('candidat_id')
+                    ->from('candidat_type_travails')
+                    ->where('type_travail_id', $offre->type_travail_id);
             });
 
-        // 2. Set context and apply Filtering logic
+
+        // 2. Apply filtering and scoring joins
         foreach ($this->strategies as $strategy) {
             if ($strategy instanceof TotalExperienceMatchingStrategy) {
                 $strategy->setAllowOverqualified($allowOverqualified);
             }
+
+            // Filtering (Indispensable)
             $query = $strategy->apply($query, $offre);
+
+            // Scoring (Joins)
+            $query = $strategy->applyScoreJoin($query, $offre);
         }
 
-        // 3. Migration to SQL Scoring (Option A)
-        // We generate a virtual column 'total_score' by summing all strategy SQL fragments
+        // 3. Assemble total score expression
         $scoreFragments = [];
+        $maxPossibleScore = 0;
+
         foreach ($this->strategies as $strategy) {
-            $scoreFragments[] = '('.$strategy->getScoreQuery($offre).')';
+            $scoreFragments[] = $strategy->getScoreColumn($offre);
+            $maxPossibleScore += $strategy->getMaxScore($offre);
         }
 
         $scoreExpression = implode(' + ', $scoreFragments);
+
         $query->selectRaw("candidats.*, ($scoreExpression) as total_sql_score")
             ->orderBy('total_sql_score', 'desc')
             ->limit(100);
@@ -74,20 +72,14 @@ class MatchingEngine
         ])->get();
 
         // 5. Finalize relative Percentage Score (%)
-        $maxPossibleScore = 0;
-        foreach ($this->strategies as $strategy) {
-            $maxPossibleScore += $strategy->getMaxScore($offre);
-        }
-
         return $candidates->map(function ($candidate) use ($maxPossibleScore) {
             $totalScore = (int) $candidate->total_sql_score;
 
-            // Calculate percentage score (avoid division by zero)
             $candidate->matching_score = $maxPossibleScore > 0
                 ? (int) min(100, round(($totalScore / $maxPossibleScore) * 100))
                 : 0;
 
             return $candidate;
-        })->sortByDesc('matching_score')->values();
+        })->values();
     }
 }

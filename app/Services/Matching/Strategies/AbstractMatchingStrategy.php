@@ -2,7 +2,6 @@
 
 namespace App\Services\Matching\Strategies;
 
-use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use App\Services\Matching\Contracts\MatchingStrategy;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,19 +22,19 @@ abstract class AbstractMatchingStrategy implements MatchingStrategy
     ];
 
     /**
-     * Apply the matching logic to the query.
+     * Apply the matching logic to the query (Indispensable filtering).
      */
     abstract public function apply(Builder $query, Offre $offre): Builder;
 
     /**
-     * Get the SQL scoring fragment for this strategy.
+     * Apply the score calculation via Joins.
      */
-    abstract public function getScoreQuery(Offre $offre): string;
+    abstract public function applyScoreJoin(Builder $query, Offre $offre): Builder;
 
     /**
-     * Calculate a partial score for a candidate.
+     * Get the SQL column name or expression for the score in the final SELECT.
      */
-    abstract public function calculateScore(Candidat $candidat, Offre $offre): int;
+    abstract public function getScoreColumn(Offre $offre): string;
 
     /**
      * Get the maximum score for this strategy given an offer.

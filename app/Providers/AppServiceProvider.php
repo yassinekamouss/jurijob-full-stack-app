@@ -2,6 +2,27 @@
 
 namespace App\Providers;
 
+use App\Models\Taxonomy\DomaineExperience;
+use App\Models\Taxonomy\Ecole;
+use App\Models\Taxonomy\FormationJuridique;
+use App\Models\Taxonomy\Langue;
+use App\Models\Taxonomy\ModeTravail;
+use App\Models\Taxonomy\NiveauExperience;
+use App\Models\Taxonomy\NiveauLangue;
+use App\Models\Taxonomy\Poste;
+use App\Models\Taxonomy\Specialisation;
+use App\Models\Taxonomy\TailleEntreprise;
+use App\Models\Taxonomy\TypeOrganisation;
+use App\Models\Taxonomy\TypeTravail;
+use App\Models\Taxonomy\Ville;
+use App\Services\Matching\MatchingEngine;
+use App\Services\Matching\Strategies\CityMatchingStrategy;
+use App\Services\Matching\Strategies\ExperienceMatchingStrategy;
+use App\Services\Matching\Strategies\FormationMatchingStrategy;
+use App\Services\Matching\Strategies\LanguageMatchingStrategy;
+use App\Services\Matching\Strategies\ModeTravailMatchingStrategy;
+use App\Services\Matching\Strategies\SpecialisationMatchingStrategy;
+use App\Services\Matching\Strategies\TotalExperienceMatchingStrategy;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Date;
@@ -16,7 +37,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->tag([
+            LanguageMatchingStrategy::class,
+            SpecialisationMatchingStrategy::class,
+            CityMatchingStrategy::class,
+            FormationMatchingStrategy::class,
+            ExperienceMatchingStrategy::class,
+            ModeTravailMatchingStrategy::class,
+            TotalExperienceMatchingStrategy::class,
+        ], 'matching.strategies');
+
+        $this->app->bind(MatchingEngine::class, function ($app) {
+            return new MatchingEngine(
+                $app->tagged('matching.strategies')
+            );
+        });
     }
 
     /**
@@ -25,33 +60,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-        $this->configureMorphMap();
     }
 
     /**
      * Configure Eloquent Morph Map to avoid full namespaces in DB.
      */
-    protected function configureMorphMap(): void
-    {
-        Relation::morphMap([
-            'domaine_experience' => \App\Models\Taxonomy\DomaineExperience::class,
-            'ecole' => \App\Models\Taxonomy\Ecole::class,
-            'formation_juridique' => \App\Models\Taxonomy\FormationJuridique::class,
-            'langue' => \App\Models\Taxonomy\Langue::class,
-            'mode_travail' => \App\Models\Taxonomy\ModeTravail::class,
-            'niveau_experience' => \App\Models\Taxonomy\NiveauExperience::class,
-            'niveau_langue' => \App\Models\Taxonomy\NiveauLangue::class,
-            'poste' => \App\Models\Taxonomy\Poste::class,
-            'specialisation' => \App\Models\Taxonomy\Specialisation::class,
-            'taille_entreprise' => \App\Models\Taxonomy\TailleEntreprise::class,
-            'type_organisation' => \App\Models\Taxonomy\TypeOrganisation::class,
-            'type_travail' => \App\Models\Taxonomy\TypeTravail::class,
-            'ville' => \App\Models\Taxonomy\Ville::class,
-        ]);
-
-        // Optionnel mais recommandé pour la sécurité et la clarté
-        // Relation::enforceMorphMap(); 
-    }
 
     /**
      * Configure default behaviors for production-ready applications.
@@ -64,7 +77,8 @@ class AppServiceProvider extends ServiceProvider
             app()->isProduction(),
         );
 
-        Password::defaults(fn (): ?Password => app()->isProduction()
+        Password::defaults(
+            fn(): ?Password => app()->isProduction()
             ? Password::min(12)
                 ->mixedCase()
                 ->letters()

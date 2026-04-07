@@ -2,9 +2,9 @@
 
 namespace App\Services\Matching\Strategies;
 
-use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class LanguageMatchingStrategy extends AbstractMatchingStrategy
 {
@@ -21,22 +21,34 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
             ->where('importance', 'indispensable')
             ->get();
 
-        foreach ($indispensableLanguages as $req) {
-            $query->whereHas('langues', function ($q) use ($req) {
-                $q->where('langue_id', $req->langue_id)
-                    ->where('niveau_langue_id', '>=', $req->niveau_langue_id);
-            });
+        if ($indispensableLanguages->isEmpty()) {
+            return $query;
         }
 
-        return $query;
+        // Optimized filtering: Single JOIN with HAVING COUNT for all indispensable requirements
+        // We match candidate languages where level is >= required level
+        return $query->whereIn('candidats.id', function ($q) use ($indispensableLanguages) {
+            $q->select('candidat_id')
+                ->from('candidat_langues')
+                ->where(function ($sub) use ($indispensableLanguages) {
+                    foreach ($indispensableLanguages as $req) {
+                        $sub->orWhere(function ($s) use ($req) {
+                            $s->where('langue_id', $req->langue_id)
+                                ->where('niveau_langue_id', '>=', $req->niveau_langue_id);
+                        });
+                    }
+                })
+                ->groupBy('candidat_id')
+                ->havingRaw('COUNT(DISTINCT langue_id) = ?', [$indispensableLanguages->count()]);
+        });
     }
 
-    public function getScoreQuery(Offre $offre): string
+    public function applyScoreJoin(Builder $query, Offre $offre): Builder
     {
         $requirements = $offre->langueRequirements;
 
         if ($requirements->isEmpty()) {
-            return '0';
+            return $query;
         }
 
         $cases = $requirements->map(function ($req) {
@@ -49,36 +61,26 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
                    "WHEN langue_id = $langueId AND niveau_langue_id > $requiredLevelId THEN $bonusWeight";
         })->implode(' ');
 
-        return "(SELECT COALESCE(SUM(CASE $cases ELSE 0 END), 0) FROM candidat_langues WHERE candidat_langues.candidat_id = candidats.id)";
+        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
+                     FROM candidat_langues 
+                     GROUP BY candidat_id";
+
+        return $query->leftJoin(
+            DB::raw("($subquery) as lang_scores"),
+            'lang_scores.candidat_id',
+            '=',
+            'candidats.id'
+        );
     }
 
-    public function calculateScore(Candidat $candidat, Offre $offre): int
+    public function getScoreColumn(Offre $offre): string
     {
-        $score = 0;
-        $requirements = $offre->langueRequirements;
-
-        foreach ($requirements as $req) {
-            $match = $candidat->langues->first(function ($cl) use ($req) {
-                return $cl->langue_id === $req->langue_id && $cl->niveau_langue_id >= $req->niveau_langue_id;
-            });
-
-            if ($match) {
-                $weight = $this->getWeight($req->importance);
-
-                // Add 10% bonus if candidate level is strictly higher than required
-                if ($match->niveau_langue_id > $req->niveau_langue_id) {
-                    $weight = (int) ($weight * 1.1);
-                }
-
-                $score += $weight;
-            }
-        }
-
-        return $score;
+        return 'COALESCE(lang_scores.score, 0)';
     }
 
     public function getMaxScore(Offre $offre): int
     {
-        return $offre->langueRequirements->sum(fn ($req) => $this->getWeight($req->importance));
+        // Max score includes the 10% bonus for over-qualification to keep percentage <= 100%
+        return (int) $offre->langueRequirements->sum(fn ($req) => $this->getWeight($req->importance) * 1.1);
     }
 }

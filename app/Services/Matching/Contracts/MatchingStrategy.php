@@ -2,7 +2,6 @@
 
 namespace App\Services\Matching\Contracts;
 
-use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -14,14 +13,15 @@ interface MatchingStrategy
     public function apply(Builder $query, Offre $offre): Builder;
 
     /**
-     * Get the SQL expression to calculate the score for this strategy.
+     * Apply the score calculation via Joins.
      */
-    public function getScoreQuery(Offre $offre): string;
+    public function applyScoreJoin(Builder $query, Offre $offre): Builder;
 
     /**
-     * Calculate a partial score for a candidate (PHP fallback/Percentage calculation).
+     * Get the SQL column name or expression for the score in the final SELECT.
+     * Example: "COALESCE(lang_scores.score, 0)"
      */
-    public function calculateScore(Candidat $candidat, Offre $offre): int;
+    public function getScoreColumn(Offre $offre): string;
 
     /**
      * Get the maximum possible score for this strategy given an offer.

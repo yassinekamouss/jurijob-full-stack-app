@@ -2,7 +2,6 @@
 
 namespace App\Services\Matching\Strategies;
 
-use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -27,61 +26,48 @@ class TotalExperienceMatchingStrategy extends AbstractMatchingStrategy
 
     public function apply(Builder $query, Offre $offre): Builder
     {
-        if (! $offre->niveau_experience_id) {
-            return $query;
-        }
-
-        // Apply strict or flexible filtering based on $allowOverqualified
-        if ($this->allowOverqualified) {
-            return $query->where('niveau_experience_id', '>=', $offre->niveau_experience_id);
-        }
-
-        return $query->where('niveau_experience_id', '=', $offre->niveau_experience_id);
+        // We no longer filter by experience level to allow ranking instead of exclusion
+        return $query;
     }
 
-    public function getScoreQuery(Offre $offre): string
+    public function applyScoreJoin(Builder $query, Offre $offre): Builder
     {
-        if (! $offre->niveau_experience_id) {
+        // No join needed as niveau_experience_id is on the candidats table
+        return $query;
+    }
+
+    public function getScoreColumn(Offre $offre): string
+    {
+        if (!$offre->niveau_experience_id) {
             return '0';
         }
 
         $requiredLevel = (int) $offre->niveau_experience_id;
         $weight = $this->weights['important'];
         $bonusWeight = (int) ($weight * 1.1);
+        $baseScore = (int) ($weight * 0.1); // Score de base pour les sur-qualifiés si non autorisés
 
         if ($this->allowOverqualified) {
-            return 'CASE '.
-                   "WHEN niveau_experience_id = $requiredLevel THEN $weight ".
-                   "WHEN niveau_experience_id > $requiredLevel THEN $bonusWeight ".
-                   'ELSE 0 END';
+            return 'CASE ' .
+                "WHEN candidats.niveau_experience_id = $requiredLevel THEN $weight " .
+                "WHEN candidats.niveau_experience_id > $requiredLevel THEN $bonusWeight " .
+                'ELSE 0 END';
         }
 
-        return "CASE WHEN niveau_experience_id = $requiredLevel THEN $weight ELSE 0 END";
-    }
-
-    public function calculateScore(Candidat $candidat, Offre $offre): int
-    {
-        if (! $offre->niveau_experience_id || ! $candidat->niveau_experience_id) {
-            return 0;
-        }
-
-        $weight = $this->weights['important'];
-
-        // Exact match gets 100% score
-        if ((int) $candidat->niveau_experience_id === (int) $offre->niveau_experience_id) {
-            return $weight;
-        }
-
-        // Higher level (if allowed) gets a 10% bonus (you mentioned 80% or a bonus)
-        if ($this->allowOverqualified && (int) $candidat->niveau_experience_id > (int) $offre->niveau_experience_id) {
-            return (int) ($weight * 1.1); // Bonus for overqualification
-        }
-
-        return 0;
+        // If not explicitly allowing overqualified, give them a base score to rank them at the bottom
+        return 'CASE ' .
+            "WHEN candidats.niveau_experience_id = $requiredLevel THEN $weight " .
+            "WHEN candidats.niveau_experience_id > $requiredLevel THEN $baseScore " .
+            'ELSE 0 END';
     }
 
     public function getMaxScore(Offre $offre): int
     {
-        return $offre->niveau_experience_id ? $this->weights['important'] : 0;
+        if (!$offre->niveau_experience_id) {
+            return 0;
+        }
+
+        // Max possible score is with the 10% bonus
+        return (int) ($this->weights['important'] * 1.1);
     }
 }

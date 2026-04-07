@@ -2,9 +2,9 @@
 
 namespace App\Services\Matching\Strategies;
 
-use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class CityMatchingStrategy extends AbstractMatchingStrategy
 {
@@ -17,50 +17,51 @@ class CityMatchingStrategy extends AbstractMatchingStrategy
 
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $indispensableVilles = $offre->villeRequirements()
+        $indispensableIds = $offre->villeRequirements()
             ->where('importance', 'indispensable')
-            ->get();
+            ->pluck('ville_id')
+            ->toArray();
 
-        foreach ($indispensableVilles as $req) {
-            $query->whereHas('villeTravails', function ($q) use ($req) {
-                $q->where('ville_id', $req->ville_id);
-            });
+        if (empty($indispensableIds)) {
+            return $query;
         }
 
-        return $query;
+        return $query->whereIn('candidats.id', function ($q) use ($indispensableIds) {
+            $q->select('candidat_id')
+                ->from('candidat_ville_travails')
+                ->whereIn('ville_id', $indispensableIds)
+                ->groupBy('candidat_id')
+                ->havingRaw('COUNT(DISTINCT ville_id) = ?', [count($indispensableIds)]);
+        });
     }
 
-    public function getScoreQuery(Offre $offre): string
+    public function applyScoreJoin(Builder $query, Offre $offre): Builder
     {
         $requirements = $offre->villeRequirements;
 
         if ($requirements->isEmpty()) {
-            return '0';
+            return $query;
         }
 
         $cases = $requirements->map(function ($req) {
             return 'WHEN ville_id = '.(int) $req->ville_id.' THEN '.$this->getWeight($req->importance);
         })->implode(' ');
 
-        return "(SELECT COALESCE(SUM(CASE $cases ELSE 0 END), 0) FROM candidat_ville_travails WHERE candidat_ville_travails.candidat_id = candidats.id)";
+        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
+                     FROM candidat_ville_travails 
+                     GROUP BY candidat_id";
+
+        return $query->leftJoin(
+            DB::raw("($subquery) as city_scores"),
+            'city_scores.candidat_id',
+            '=',
+            'candidats.id'
+        );
     }
 
-    public function calculateScore(Candidat $candidat, Offre $offre): int
+    public function getScoreColumn(Offre $offre): string
     {
-        $score = 0;
-        $requirements = $offre->villeRequirements;
-
-        foreach ($requirements as $req) {
-            $match = $candidat->villeTravails->first(function ($cv) use ($req) {
-                return (int) $cv->ville_id === (int) $req->ville_id;
-            });
-
-            if ($match) {
-                $score += $this->getWeight($req->importance);
-            }
-        }
-
-        return $score;
+        return 'COALESCE(city_scores.score, 0)';
     }
 
     public function getMaxScore(Offre $offre): int
