@@ -11,6 +11,7 @@ use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
+use App\Http\Controllers\Offre\MatchingController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
@@ -64,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/recruteur/settings', [RecruiterSettingsController::class, 'index'])->name('recruteur.settings');
         Route::put('/recruteur/settings/profile', [RecruiterSettingsController::class, 'updateProfile'])->name('recruteur.settings.update-profile');
 
+        Route::get('/recruteur/offres/{offre}/matching', [MatchingController::class, 'index'])->name('offres.matching');
         Route::resource('/recruteur/offres', OffreController::class);
     });
 });

@@ -61,6 +61,10 @@ class FormationMatchingStrategy extends AbstractMatchingStrategy
 
     public function getScoreColumn(Offre $offre): string
     {
+        if ($offre->formationJuridiqueRequirements->isEmpty()) {
+            return '0';
+        }
+
         return 'COALESCE(form_scores.score, 0)';
     }
 

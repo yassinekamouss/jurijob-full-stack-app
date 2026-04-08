@@ -70,7 +70,7 @@ class OffreController extends Controller
 
             DB::commit();
 
-            return to_route('offres.index')->with('success', 'Offre publiée avec succès.');
+            return to_route('offres.matching', $offre)->with('success', 'Offre publiée avec succès.');
         } catch (\Exception $e) {
             DB::rollBack();
 

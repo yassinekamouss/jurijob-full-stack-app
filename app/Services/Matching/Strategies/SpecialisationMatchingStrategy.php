@@ -62,6 +62,10 @@ class SpecialisationMatchingStrategy extends AbstractMatchingStrategy
 
     public function getScoreColumn(Offre $offre): string
     {
+        if ($offre->specialisationRequirements->isEmpty()) {
+            return '0';
+        }
+
         return 'COALESCE(spec_scores.score, 0)';
     }
 

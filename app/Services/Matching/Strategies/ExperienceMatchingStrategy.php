@@ -61,6 +61,10 @@ class ExperienceMatchingStrategy extends AbstractMatchingStrategy
 
     public function getScoreColumn(Offre $offre): string
     {
+        if ($offre->domainExperienceRequirements->isEmpty()) {
+            return '0';
+        }
+
         return 'COALESCE(exp_scores.score, 0)';
     }
 

@@ -61,6 +61,10 @@ class ModeTravailMatchingStrategy extends AbstractMatchingStrategy
 
     public function getScoreColumn(Offre $offre): string
     {
+        if ($offre->modeTravailRequirements->isEmpty()) {
+            return '0';
+        }
+
         return 'COALESCE(mode_scores.score, 0)';
     }
 

@@ -61,6 +61,10 @@ class CityMatchingStrategy extends AbstractMatchingStrategy
 
     public function getScoreColumn(Offre $offre): string
     {
+        if ($offre->villeRequirements->isEmpty()) {
+            return '0';
+        }
+
         return 'COALESCE(city_scores.score, 0)';
     }
 

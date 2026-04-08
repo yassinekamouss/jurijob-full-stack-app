@@ -75,6 +75,10 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
 
     public function getScoreColumn(Offre $offre): string
     {
+        if ($offre->langueRequirements->isEmpty()) {
+            return '0';
+        }
+
         return 'COALESCE(lang_scores.score, 0)';
     }
 
