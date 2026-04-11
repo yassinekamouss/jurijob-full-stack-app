@@ -43,9 +43,14 @@ class HandleInertiaRequests extends Middleware
 
         'name' => config('app.name'),
 
-        'auth' => [
-            'user' => $user?->loadMissing(['candidat', 'recruteur']),
-            'admin' => $admin,
+    'auth' => [
+                'user' => $request->user() ? [
+                // On ne charge les relations que si l'user est une instance du modèle User
+                'data' => ($request->user() instanceof \App\Models\User) 
+                            ? $request->user()->loadMissing(['candidat', 'recruteur']) 
+                            : $request->user(),
+                    ] : null,
+                'admin' => $request->user('admin'), // Si vous utilisez un guard admin séparé
         ],
 
         'flash' => [
