@@ -3,47 +3,41 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Candidat;
-use App\Models\Recruteur;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        // 1. Totaux pour le Pie Chart
-        $statsTotales = [
-            'candidats' => Candidat::count(),
-            'recruteurs' => Recruteur::count(),
-        ];
+public function index()
+{
+    $count = \App\Models\User::count();
+    // dd($count);
+    // 1. Totaux simples (Plus fiable que le groupBy pour débugger)
+    $statsTotales = [
+        'candidats' => \App\Models\User::where('role', 'candidat')->count(),
+        'recruteurs' => \App\Models\User::where('role', 'recruteur')->count(),
+    ];
 
-        // 2. Croissance sur les 6 derniers mois (Compatible SQLite)
-        // On récupère le compte groupé par mois
-        $croissanceCandidats = Candidat::select(
-            DB::raw("strftime('%m', created_at) as month"), 
-            DB::raw("count(id) as total")
-        )
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+    // 2. Croissance : on récupère tout et on groupe en PHP pour éviter les soucis SQLite strftime
+    $allUsers = \App\Models\User::whereIn('role', ['candidat', 'recruteur'])->get();
 
-        $croissanceRecruteurs = Recruteur::select(
-            DB::raw("strftime('%m', created_at) as month"), 
-            DB::raw("count(user_id) as total")
-        )
-        ->groupBy('month')
-        ->orderBy('month')
-        ->get();
+    $growth = [
+        'candidats' => $allUsers->where('role', 'candidat')
+            ->groupBy(fn($u) => $u->created_at->format('m'))
+            ->map(fn($group, $month) => ['month' => $month, 'total' => $group->count()])
+            ->values(),
+        'recruteurs' => $allUsers->where('role', 'recruteur')
+            ->groupBy(fn($u) => $u->created_at->format('m'))
+            ->map(fn($group, $month) => ['month' => $month, 'total' => $group->count()])
+            ->values(),
+    ];
 
-        return Inertia::render('Admin/Dashboard', [
-            'chartData' => [
-                'totals' => $statsTotales,
-                'growth' => [
-                    'candidats' => $croissanceCandidats,
-                    'recruteurs' => $croissanceRecruteurs,
-                ]
-            ]
-        ]);
-    }
+    return \Inertia\Inertia::render('admin/Dashboard', [
+        'chartData' => [
+            'totals' => $statsTotales,
+            'growth' => $growth
+        ]
+    ]);
+}
 }

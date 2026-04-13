@@ -18,6 +18,8 @@ use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsContro
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CandidateController;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -78,7 +80,8 @@ Route::middleware('guest:admin')->group(function () {
 
 // Admin Protected Routes
 Route::middleware('auth:admin')->group(function () {
-    Route::get('/admin/dashboard', fn () => Inertia::render('admin/Dashboard'))->name('admin.dashboard');
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/candidats', [CandidateController::class, 'index'])->name('admin.candidates.index');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 

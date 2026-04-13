@@ -9,7 +9,7 @@ ChartJS.register(...registerables);
 export default function Dashboard({ auth, chartData = { totals: { candidats: 0, recruteurs: 0 }, growth: { candidats: [], recruteurs: [] } } }: any) {
     // ... reste du code
     // 1. Configuration du Pie Chart (Répartition)
-    console.log("Données reçues :", chartData); // Regardez dans la console F12 de votre navigateur
+    // console.log("Données reçues :", chartData); // Regardez dans la console F12 de votre navigateur
     const pieData = {
         labels: ['Candidats', 'Recruteurs'],
         datasets: [{
@@ -83,6 +83,42 @@ export default function Dashboard({ auth, chartData = { totals: { candidats: 0, 
                 >
                     Logout
                 </Link>
+
+                {/*boutton pour pages des utilisateurs candidats et recruteurs*/}
+
+                <Link
+                    href="/admin/candidats"
+                    as="button"
+                    style={{
+                        backgroundColor: '#3b82f6',
+                        color: 'white',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.375rem',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontWeight: '600'
+                    }}
+                >
+                    Candidats
+                </Link>
+
+                <Link
+                    href="/admin/Recruteurs"
+                    as="button"
+                    style={{
+                        backgroundColor: '#10b981',
+                        color: 'white',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '0.375rem',
+                        border: 'none',
+                        cursor: 'pointer',
+                        fontWeight: '600'
+                    }}
+                >
+                    Recruteurs
+                </Link>
+
+
             </div>
 
             {/* Charts Grid Section */}
