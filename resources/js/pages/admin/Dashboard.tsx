@@ -103,7 +103,7 @@ export default function Dashboard({ auth, chartData = { totals: { candidats: 0, 
                 </Link>
 
                 <Link
-                    href="/admin/Recruteurs"
+                    href="/admin/recruteurs"
                     as="button"
                     style={{
                         backgroundColor: '#10b981',
