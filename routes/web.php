@@ -84,6 +84,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/candidats', [CandidateController::class, 'index'])->name('admin.candidates.index');
     Route::get('/admin/recruteurs', [RecruiterController::class, 'index'])->name('admin.recruteurs.index');
+    Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 

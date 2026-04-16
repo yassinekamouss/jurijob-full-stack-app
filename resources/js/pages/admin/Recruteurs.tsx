@@ -12,13 +12,16 @@ export default function Recruteurs({ recruteurs }: any) {
                 </Link>
             </div>
 
-            <div style={{ backgroundColor: 'white', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <div style={{ backgroundColor: 'white', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '1000px' }}>
                     <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
                         <tr>
-                            <th style={{ padding: '1rem' }}>Nom & Prénom</th>
-                            <th style={{ padding: '1rem' }}>Email</th>
                             <th style={{ padding: '1rem' }}>Entreprise</th>
+                            <th style={{ padding: '1rem' }}>Contact (Email)</th>
+                            <th style={{ padding: '1rem' }}>Poste occupé</th>
+                            <th style={{ padding: '1rem' }}>Ville</th>
+                            <th style={{ padding: '1rem' }}>Type / Taille</th>
+                            <th style={{ padding: '1rem' }}>Site Web</th>
                             <th style={{ padding: '1rem' }}>Date d'inscription</th>
                             <th style={{ padding: '1rem' }}>Actions</th>
                         </tr>
@@ -26,10 +29,35 @@ export default function Recruteurs({ recruteurs }: any) {
                     <tbody>
                         {recruteurs.data.map((recruteur: any) => (
                             <tr key={recruteur.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                <td style={{ padding: '1rem' }}>{recruteur.nom} {recruteur.prenom}</td>
-                                <td style={{ padding: '1rem' }}>{recruteur.user?.email}</td>
-                                <td style={{ padding: '1rem' }}>{recruteur.entreprise || 'Non spécifié'}</td>
+                                {/* Nom Entreprise */}
+                                <td style={{ padding: '1rem', fontWeight: '600' }}>{recruteur.nom_entreprise}</td>
+
+                                {/* Email (via la relation User) */}
+                                <td style={{ padding: '1rem' }}>{recruteur.user?.email || 'N/A'}</td>
+
+                                {/* Poste */}
+                                <td style={{ padding: '1rem' }}>{recruteur.poste || '-'}</td>
+
+                                {/* Ville (via la relation Ville) */}
+                                <td style={{ padding: '1rem' }}>{recruteur.ville?.nom || 'Non définie'}</td>
+
+                                {/* Type et Taille */}
+                                <td style={{ padding: '1rem', fontSize: '0.875rem' }}>
+                                    <div>{recruteur.type_organisation?.nom || 'NC'}</div>
+                                    <div style={{ color: '#6b7280' }}>{recruteur.taille_entreprise?.nom || '-'}</div>
+                                </td>
+
+                                {/* Site Web */}
+                                <td style={{ padding: '1rem' }}>
+                                    {recruteur.site_web ? (
+                                        <a href={recruteur.site_web} target="_blank" style={{ color: '#3b82f6' }}>Lien</a>
+                                    ) : '-'}
+                                </td>
+
+                                {/* Date */}
                                 <td style={{ padding: '1rem' }}>{new Date(recruteur.created_at).toLocaleDateString()}</td>
+
+                                {/* Actions */}
                                 <td style={{ padding: '1rem' }}>
                                     <button style={{ color: '#ef4444', border: 'none', background: 'none', cursor: 'pointer' }}>
                                         Supprimer
