@@ -14,7 +14,8 @@ readonly class OffreData
         public string $description,
         public int $poste_id,
         public int $type_travail_id,
-        public ?int $niveau_experience_id = null,
+        public int $mode_travail_id,
+        public int $niveau_experience_id,
         public string $statut = 'ouvert',
         public array $requirements = []
     ) {}
@@ -31,7 +32,8 @@ readonly class OffreData
             description: $data['description'],
             poste_id: (int) $data['poste_id'],
             type_travail_id: (int) $data['type_travail_id'],
-            niveau_experience_id: isset($data['niveau_experience_id']) ? (int) $data['niveau_experience_id'] : null,
+            mode_travail_id: (int) $data['mode_travail_id'],
+            niveau_experience_id: (int) $data['niveau_experience_id'],
             statut: $data['statut'] ?? 'ouvert',
             requirements: collect($data['requirements'] ?? [])->map(fn ($req) => RequirementData::fromArray($req))->toArray(),
         );
@@ -44,6 +46,7 @@ readonly class OffreData
             'description' => $this->description,
             'poste_id' => $this->poste_id,
             'type_travail_id' => $this->type_travail_id,
+            'mode_travail_id' => $this->mode_travail_id,
             'niveau_experience_id' => $this->niveau_experience_id,
             'statut' => $this->statut,
         ];

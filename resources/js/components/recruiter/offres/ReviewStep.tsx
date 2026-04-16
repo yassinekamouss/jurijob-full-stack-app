@@ -40,6 +40,10 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
         return taxonomies.typeTravails.find((p: any) => p.id === Number(data.type_travail_id))?.nom || 'Non spécifié';
     };
 
+    const getNiveauExperienceName = () => {
+        return taxonomies.niveauExperiences.find((p: any) => p.id === Number(data.niveau_experience_id))?.nom || 'Non spécifié';
+    };
+
     return (
         <div className="space-y-10">
             <div className="flex items-start gap-4 p-4 rounded-xl bg-blue-50 border border-blue-100">
@@ -63,6 +67,7 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                             <div className="flex flex-wrap gap-2">
                                 <Badge variant="secondary" className="bg-gray-100 text-gray-900">{getPosteName()}</Badge>
                                 <Badge variant="secondary" className="bg-gray-100 text-gray-900">{getTypeTravailName()}</Badge>
+                                <Badge variant="secondary" className="bg-blue-100 text-blue-800">{getNiveauExperienceName()}</Badge>
                             </div>
                             <div className="prose prose-sm max-w-none text-gray-600 font-sans line-clamp-6">
                                 {data.description}

@@ -4,10 +4,13 @@ namespace App\Services\Matching\Strategies;
 
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class FormationMatchingStrategy extends AbstractMatchingStrategy
 {
+    private const SCORE_ALIAS = 'form_score';
+
+    private const TYPE = 'formation_juridique';
+
     protected array $weights = [
         'indispensable' => 100,
         'important' => 50,
@@ -15,61 +18,63 @@ class FormationMatchingStrategy extends AbstractMatchingStrategy
         'facultatif' => 5,
     ];
 
+    protected function getStrategyType(): string
+    {
+        return self::TYPE;
+    }
+
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $indispensableIds = $offre->formationJuridiqueRequirements()
-            ->where('importance', 'indispensable')
-            ->pluck('formation_juridique_id')
-            ->toArray();
+        $group = $this->getGroupForType($offre, self::TYPE);
 
-        if (empty($indispensableIds)) {
+        if (! $group) {
             return $query;
         }
 
-        return $query->whereIn('candidats.id', function ($q) use ($indispensableIds) {
-            $q->select('candidat_id')
-                ->from('candidat_formations')
-                ->whereIn('formation_juridique_id', $indispensableIds)
-                ->groupBy('candidat_id')
-                ->havingRaw('COUNT(DISTINCT formation_juridique_id) = ?', [count($indispensableIds)]);
-        });
-    }
+        $indispensables = $group->criteres->where('importance', 'indispensable');
 
-    public function applyScoreJoin(Builder $query, Offre $offre): Builder
-    {
-        $requirements = $offre->formationJuridiqueRequirements;
-
-        if ($requirements->isEmpty()) {
+        if ($indispensables->isEmpty()) {
             return $query;
         }
 
-        $cases = $requirements->map(function ($req) {
-            return 'WHEN formation_juridique_id = '.(int) $req->formation_juridique_id.' THEN '.$this->getWeight($req->importance);
-        })->implode(' ');
+        $ids = $indispensables->pluck('critere_id')->toArray();
 
-        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
-                     FROM candidat_formations 
-                     GROUP BY candidat_id";
-
-        return $query->leftJoin(
-            DB::raw("($subquery) as form_scores"),
-            'form_scores.candidat_id',
-            '=',
-            'candidats.id'
-        );
+        // Since it's a direct column, we filter candidats directly.
+        return $query->whereIn('candidats.formation_juridique_id', $ids);
     }
 
-    public function getScoreColumn(Offre $offre): string
+    public function getScoreSubquery(Offre $offre): string
     {
-        if ($offre->formationJuridiqueRequirements->isEmpty()) {
+        $group = $this->getGroupForType($offre, self::TYPE);
+
+        if (! $group || $group->criteres->isEmpty()) {
             return '0';
         }
 
-        return 'COALESCE(form_scores.score, 0)';
+        $cases = $group->criteres->map(function ($req) {
+            return 'WHEN candidats.formation_juridique_id = '.(int) $req->critere_id.' THEN '.$this->getWeight($req->importance);
+        })->implode(' ');
+
+        return "(CASE $cases ELSE 0 END)";
+    }
+
+    public function getScoreAlias(): string
+    {
+        return self::SCORE_ALIAS;
     }
 
     public function getMaxScore(Offre $offre): int
     {
-        return $offre->formationJuridiqueRequirements->sum(fn ($req) => $this->getWeight($req->importance));
+        $group = $this->getGroupForType($offre, self::TYPE);
+
+        if (! $group) {
+            return 0;
+        }
+
+        if ($group->operateur === 'OR') {
+            return (int) $group->criteres->max(fn ($c) => $this->getWeight($c->importance));
+        }
+
+        return (int) $group->criteres->sum(fn ($c) => $this->getWeight($c->importance));
     }
 }

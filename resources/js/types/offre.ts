@@ -1,43 +1,35 @@
 import { Poste, TypeTravail, NiveauExperience, Specialisation, Ville, ModeTravail, DomaineExperience, FormationJuridique, NiveauLangue, Langue } from './taxonomies';
 
 export interface Requirement {
+    taxonomy_id: number;
+    taxonomy_type: 'ville' | 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
+    label?: string;
+    importance: 'indispensable' | 'important' | 'souhaitable' | 'facultatif';
+    operator?: 'AND' | 'OR';
+    requirements_data?: {
+        niveau_langue_id?: number;
+        niveau_nom?: string;
+    };
+}
+
+export interface OffreCritere {
     id: number;
-    offre_id: number;
+    groupe_id: number;
+    critere_id: number;
+    valeur_id?: number;
     importance: 'indispensable' | 'important' | 'souhaitable' | 'facultatif';
     created_at: string;
     updated_at: string;
 }
 
-export interface OffreLangue extends Requirement {
-    langue_id: number;
-    niveau_langue_id: number;
-    langue?: Langue;
-    niveau_langue?: NiveauLangue;
-}
-
-export interface OffreSpecialisation extends Requirement {
-    specialisation_id: number;
-    specialisation?: Specialisation;
-}
-
-export interface OffreVille extends Requirement {
-    ville_id: number;
-    ville?: Ville;
-}
-
-export interface OffreModeTravail extends Requirement {
-    mode_travail_id: number;
-    mode_travail?: ModeTravail;
-}
-
-export interface OffreDomainExperience extends Requirement {
-    domaine_experience_id: number;
-    domaine_experience?: DomaineExperience;
-}
-
-export interface OffreFormationsJuridique extends Requirement {
-    formation_juridique_id: number;
-    formation_juridique?: FormationJuridique;
+export interface OffreCritereGroupe {
+    id: number;
+    offre_id: number;
+    type_critere: 'ville' | 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
+    operateur: 'AND' | 'OR';
+    created_at: string;
+    updated_at: string;
+    criteres?: OffreCritere[];
 }
 
 export interface Offre {
@@ -45,6 +37,7 @@ export interface Offre {
     recruteur_id: number;
     poste_id: number;
     type_travail_id: number;
+    mode_travail_id: number;
     niveau_experience_id: number;
     titre: string;
     description: string;
@@ -55,21 +48,15 @@ export interface Offre {
     // Relationships
     poste?: Poste;
     type_travail?: TypeTravail;
+    mode_travail?: ModeTravail;
     niveau_experience?: NiveauExperience;
 
-    // Requirements (Symmetric)
-    langue_requirements?: OffreLangue[];
-    specialisation_requirements?: OffreSpecialisation[];
-    ville_requirements?: OffreVille[];
-    mode_travail_requirements?: OffreModeTravail[];
-    domain_experience_requirements?: OffreDomainExperience[];
-    formation_juridique_requirements?: OffreFormationsJuridique[];
+    // Criteria (New Architecture)
+    critereGroupes?: OffreCritereGroupe[];
+
+    // Requirements (Frontend compatible format)
+    requirements?: Requirement[];
 
     // Counts
-    langue_requirements_count?: number;
-    ville_requirements_count?: number;
-    specialisation_requirements_count?: number;
-    mode_travail_requirements_count?: number;
-    domain_experience_requirements_count?: number;
-    formation_juridique_requirements_count?: number;
+    criteria_count?: number;
 }

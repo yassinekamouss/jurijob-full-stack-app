@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('recruteur_id')->constrained('recruteurs')->cascadeOnDelete();
             $table->foreignId('poste_id')->constrained('postes')->cascadeOnDelete();
             $table->foreignId('type_travail_id')->constrained('type_travails')->cascadeOnDelete();
-            $table->foreignId('niveau_experience_id')->constrained('niveau_experiences')->cascadeOnDelete();
+            $table->foreignId('mode_travail_id')->constrained('mode_travails')->cascadeOnDelete();
             $table->string('titre');
             $table->text('description');
             $table->string('statut')->default('ouvert'); // ouvert, fermé

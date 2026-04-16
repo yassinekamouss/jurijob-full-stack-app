@@ -2,19 +2,19 @@
 
 namespace App\Models\Offre;
 
-use App\Models\Taxonomy\DomaineExperience;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class OffreDomainExperience extends Model
+class OffreCritereGroupe extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'offre_id',
-        'domaine_experience_id',
-        'importance',
+        'type_critere',
+        'operateur',
     ];
 
     public function offre(): BelongsTo
@@ -22,8 +22,8 @@ class OffreDomainExperience extends Model
         return $this->belongsTo(Offre::class);
     }
 
-    public function domaineExperience(): BelongsTo
+    public function criteres(): HasMany
     {
-        return $this->belongsTo(DomaineExperience::class);
+        return $this->hasMany(OffreCritere::class, 'groupe_id');
     }
 }

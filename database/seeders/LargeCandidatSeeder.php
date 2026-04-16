@@ -18,11 +18,9 @@ class LargeCandidatSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. On récupère les LIBELLÉS (strings) au lieu des IDs pour les colonnes directes
-        // Note: J'utilise 'nom' ou 'libelle', ajuste selon tes tables taxonomies
-        $postes = DB::table('postes')->pluck('nom')->toArray(); 
-        $niveaux = DB::table('niveau_experiences')->pluck('nom')->toArray();
-        $formations = DB::table('formation_juridiques')->pluck('nom')->toArray();
+        $posteIds = DB::table('postes')->pluck('id')->toArray();
+        $niveauIds = DB::table('niveau_experiences')->pluck('id')->toArray();
+        $formationIds = DB::table('formation_juridiques')->pluck('id')->toArray();
 
         // 2. On garde les IDs pour les tables pivots (relations Many-to-Many)
         $specialisationIds = Specialisation::pluck('id')->toArray();
@@ -39,15 +37,21 @@ class LargeCandidatSeeder extends Seeder
         }
 
         $total = 1000; // Réduit à 1000 pour SQLite en local, 10k c'est très lourd pour ton PC
-        $batchSize = 100; 
+        $batchSize = 100;
         $password = Hash::make('password');
 
         $this->command->info("Seeding $total candidates...");
 
         for ($i = 0; $i < $total; $i += $batchSize) {
-            DB::transaction(function () use ($batchSize, $password, $specialisationIds, $villeIds, $modeTravailIds, $typeTravailIds, $postes, $niveaux, $formations, $domainIds, $langueIds, $niveauLangueIds) {
-                
-                $pivotData = ['specialisations' => [], 'villes' => [], 'modes' => [], 'types' => [], 'domains' => [], 'langues' => []];
+            DB::transaction(function () use ($batchSize, $password, $specialisationIds, $villeIds, $modeTravailIds, $typeTravailIds, $posteIds, $niveauIds, $formationIds, $domainIds, $langueIds, $niveauLangueIds) {
+                $pivotData = [
+                    'specialisations' => [],
+                    'villes' => [],
+                    'modes' => [],
+                    'types' => [],
+                    'domains' => [],
+                    'langues' => [],
+                ];
 
                 for ($j = 0; $j < $batchSize; $j++) {
                     // Création d'une date aléatoire sur les 6 derniers mois pour les GRAPHES
@@ -55,7 +59,7 @@ class LargeCandidatSeeder extends Seeder
 
                     $userId = DB::table('users')->insertGetId([
                         'telephone' => fake()->phoneNumber(),
-                        'email' => Str::random(5).'_'.fake()->unique()->safeEmail(),
+                        'email' => Str::random(5) . '_' . fake()->unique()->safeEmail(),
                         'password' => $password,
                         'role' => 'candidat',
                         'is_active' => true,
@@ -88,7 +92,7 @@ class LargeCandidatSeeder extends Seeder
                 DB::table('candidat_specialisations')->insert($pivotData['specialisations']);
                 // ... (ajoute les autres inserts de pivots ici comme dans ton code original)
             });
-            $this->command->info('Processed '.($i + $batchSize).' candidates...');
+            $this->command->info('Processed ' . ($i + $batchSize) . ' candidates...');
         }
         $this->command->info('Done!');
     }

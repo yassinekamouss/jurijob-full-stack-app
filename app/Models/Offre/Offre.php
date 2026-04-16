@@ -3,12 +3,15 @@
 namespace App\Models\Offre;
 
 use App\Models\Recruteur\Recruteur;
+use App\Models\Taxonomy\ModeTravail;
+use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\TypeTravail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Offre extends Model
 {
@@ -18,6 +21,7 @@ class Offre extends Model
         'recruteur_id',
         'poste_id',
         'type_travail_id',
+        'mode_travail_id',
         'niveau_experience_id',
         'titre',
         'description',
@@ -39,33 +43,29 @@ class Offre extends Model
         return $this->belongsTo(TypeTravail::class);
     }
 
-    public function modeTravailRequirements(): HasMany
+    public function modeTravail(): BelongsTo
     {
-        return $this->hasMany(OffreModeTravail::class);
+        return $this->belongsTo(ModeTravail::class);
     }
 
-    public function langueRequirements(): HasMany
+    public function niveauExperience(): BelongsTo
     {
-        return $this->hasMany(OffreLangue::class);
+        return $this->belongsTo(NiveauExperience::class);
     }
 
-    public function specialisationRequirements(): HasMany
+    /**
+     * Groupes de critères (Logique par type : AND/OR)
+     */
+    public function critereGroupes(): HasMany
     {
-        return $this->hasMany(OffreSpecialisation::class);
+        return $this->hasMany(OffreCritereGroupe::class);
     }
 
-    public function villeRequirements(): HasMany
+    /**
+     * Tous les critères de l'offre à travers les groupes.
+     */
+    public function criteres(): HasManyThrough
     {
-        return $this->hasMany(OffreVille::class);
-    }
-
-    public function formationJuridiqueRequirements(): HasMany
-    {
-        return $this->hasMany(OffreFormationsJuridique::class);
-    }
-
-    public function domainExperienceRequirements(): HasMany
-    {
-        return $this->hasMany(OffreDomainExperience::class);
+        return $this->hasManyThrough(OffreCritere::class, OffreCritereGroupe::class, 'offre_id', 'groupe_id');
     }
 }

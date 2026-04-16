@@ -81,7 +81,29 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                     <div>
-                        <Label htmlFor="niveau_experience_id" className="text-base font-bold text-gray-700">Niveau d'expérience requis</Label>
+                        <Label htmlFor="mode_travail_id" className="text-base font-bold text-gray-700">Mode de travail</Label>
+                        <div className="mt-2">
+                            <Select 
+                                value={String(data.mode_travail_id)} 
+                                onValueChange={(val) => setData('mode_travail_id', val)}
+                            >
+                                <SelectTrigger className="h-12 border-gray-200">
+                                    <SelectValue placeholder="Télétravail, Bureau..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {taxonomies.modeTravails.map((mode: any) => (
+                                        <SelectItem key={mode.id} value={String(mode.id)}>
+                                            {mode.nom}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        {errors.mode_travail_id && <p className="mt-1 text-sm text-red-500">{errors.mode_travail_id}</p>}
+                    </div>
+
+                    <div>
+                        <Label htmlFor="niveau_experience_id" className="text-base font-bold text-gray-700">Expérience requise</Label>
                         <div className="mt-2">
                             <Select 
                                 value={String(data.niveau_experience_id)} 
@@ -91,9 +113,9 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                                     <SelectValue placeholder="Junior, Senior..." />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {taxonomies.niveauExperiences.map((level: any) => (
-                                        <SelectItem key={level.id} value={String(level.id)}>
-                                            {level.nom}
+                                    {taxonomies.niveauExperiences.map((niveau: any) => (
+                                        <SelectItem key={niveau.id} value={String(niveau.id)}>
+                                            {niveau.nom}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -121,7 +143,7 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                 <Button 
                     type="submit" 
                     className="h-14 px-12 text-base font-bold bg-[#1a1f1e] text-white rounded-full hover:scale-105 transition-all shadow-xl shadow-[#1a1f1e]/10"
-                    disabled={!data.titre || !data.poste_id || !data.type_travail_id || !data.description}
+                    disabled={!data.titre || !data.poste_id || !data.type_travail_id || !data.mode_travail_id || !data.niveau_experience_id || !data.description}
                 >
                     Suivant : Définir les critères
                 </Button>

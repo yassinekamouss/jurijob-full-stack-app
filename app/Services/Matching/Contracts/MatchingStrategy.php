@@ -8,23 +8,31 @@ use Illuminate\Database\Eloquent\Builder;
 interface MatchingStrategy
 {
     /**
-     * Apply the matching logic to the query (Indispensable filtering).
+     * Apply indispensable filtering to the query (required criteria only).
      */
     public function apply(Builder $query, Offre $offre): Builder;
 
     /**
-     * Apply the score calculation via Joins.
+     * Get a SQL subquery that calculates the score for this strategy.
+     * Returns a subquery in the form: (SELECT SUM(...) as score FROM table WHERE ...) as alias_name
+     *
+     * @return string SQL subquery expression
      */
-    public function applyScoreJoin(Builder $query, Offre $offre): Builder;
+    public function getScoreSubquery(Offre $offre): string;
 
     /**
-     * Get the SQL column name or expression for the score in the final SELECT.
-     * Example: "COALESCE(lang_scores.score, 0)"
+     * Get the alias name used in getScoreSubquery().
+     * Example: "lang_scores" for language strategy
      */
-    public function getScoreColumn(Offre $offre): string;
+    public function getScoreAlias(): string;
 
     /**
      * Get the maximum possible score for this strategy given an offer.
      */
     public function getMaxScore(Offre $offre): int;
+
+    /**
+     * Check if this strategy is active for the given offer (has criteria).
+     */
+    public function isActive(Offre $offre): bool;
 }

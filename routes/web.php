@@ -12,6 +12,7 @@ use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
 use App\Http\Controllers\Offre\MatchingController;
+use App\Http\Controllers\Offre\MatchingTestController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
@@ -22,6 +23,12 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CandidateController;
 
 Route::inertia('/', 'Home')->name('home');
+
+// API Routes for Testing (k6, performance testing, etc.)
+// These routes are public for load testing purposes
+Route::prefix('api/test')->group(function () {
+    Route::get('/matching/{offre}', [MatchingTestController::class, 'testMatching'])->name('api.test.matching');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

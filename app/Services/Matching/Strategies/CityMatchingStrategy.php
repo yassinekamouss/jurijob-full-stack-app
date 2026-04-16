@@ -4,10 +4,13 @@ namespace App\Services\Matching\Strategies;
 
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class CityMatchingStrategy extends AbstractMatchingStrategy
 {
+    private const SCORE_ALIAS = 'city_score';
+
+    private const TYPE = 'ville';
+
     protected array $weights = [
         'indispensable' => 80,
         'important' => 40,
@@ -15,61 +18,61 @@ class CityMatchingStrategy extends AbstractMatchingStrategy
         'facultatif' => 5,
     ];
 
+    protected function getStrategyType(): string
+    {
+        return self::TYPE;
+    }
+
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $indispensableIds = $offre->villeRequirements()
-            ->where('importance', 'indispensable')
-            ->pluck('ville_id')
-            ->toArray();
+        $group = $this->getGroupForType($offre, self::TYPE);
 
-        if (empty($indispensableIds)) {
+        if (! $group) {
             return $query;
         }
 
-        return $query->whereIn('candidats.id', function ($q) use ($indispensableIds) {
-            $q->select('candidat_id')
-                ->from('candidat_ville_travails')
-                ->whereIn('ville_id', $indispensableIds)
-                ->groupBy('candidat_id')
-                ->havingRaw('COUNT(DISTINCT ville_id) = ?', [count($indispensableIds)]);
-        });
+        return $this->applyIndispensableFilter($query, $group, 'candidat_ville_travails', 'ville_id');
     }
 
-    public function applyScoreJoin(Builder $query, Offre $offre): Builder
+    public function getScoreSubquery(Offre $offre): string
     {
-        $requirements = $offre->villeRequirements;
+        $group = $this->getGroupForType($offre, self::TYPE);
 
-        if ($requirements->isEmpty()) {
-            return $query;
-        }
-
-        $cases = $requirements->map(function ($req) {
-            return 'WHEN ville_id = '.(int) $req->ville_id.' THEN '.$this->getWeight($req->importance);
-        })->implode(' ');
-
-        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
-                     FROM candidat_ville_travails 
-                     GROUP BY candidat_id";
-
-        return $query->leftJoin(
-            DB::raw("($subquery) as city_scores"),
-            'city_scores.candidat_id',
-            '=',
-            'candidats.id'
-        );
-    }
-
-    public function getScoreColumn(Offre $offre): string
-    {
-        if ($offre->villeRequirements->isEmpty()) {
+        if (! $group || $group->criteres->isEmpty()) {
             return '0';
         }
 
-        return 'COALESCE(city_scores.score, 0)';
+        $ids = $group->criteres->pluck('critere_id')->implode(',');
+
+        $cases = $group->criteres->map(function ($req) {
+            return 'WHEN ville_id = '.(int) $req->critere_id.' THEN '.$this->getWeight($req->importance);
+        })->implode(' ');
+
+        $aggregator = $group->operateur === 'OR' ? 'MAX' : 'SUM';
+
+        return "(SELECT COALESCE($aggregator(CASE $cases ELSE 0 END), 0) 
+                  FROM candidat_ville_travails 
+                  WHERE ville_id IN ($ids) 
+                  AND candidat_id = candidats.id)";
+    }
+
+    public function getScoreAlias(): string
+    {
+        return self::SCORE_ALIAS;
     }
 
     public function getMaxScore(Offre $offre): int
     {
-        return $offre->villeRequirements->sum(fn ($req) => $this->getWeight($req->importance));
+        $group = $this->getGroupForType($offre, self::TYPE);
+
+        if (! $group) {
+            return 0;
+        }
+
+        if ($group->operateur === 'OR') {
+            return (int) $group->criteres->max(fn ($c) => $this->getWeight($c->importance));
+        }
+
+        return (int) $group->criteres->sum(fn ($c) => $this->getWeight($c->importance));
     }
 }

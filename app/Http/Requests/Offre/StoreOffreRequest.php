@@ -28,6 +28,7 @@ class StoreOffreRequest extends FormRequest
             'description' => 'required|string',
             'poste_id' => 'required|exists:postes,id',
             'type_travail_id' => 'required|exists:type_travails,id',
+            'mode_travail_id' => 'required|exists:mode_travails,id',
             'niveau_experience_id' => 'required|exists:niveau_experiences,id',
             'statut' => 'nullable|string|in:ouvert,fermé',
             'requirements' => 'nullable|array',
@@ -37,6 +38,7 @@ class StoreOffreRequest extends FormRequest
                 'required',
                 Rule::in(['indispensable', 'important', 'souhaitable', 'facultatif']),
             ],
+            'requirements.*.operator' => 'nullable|string|in:AND,OR',
             'requirements.*.requirements_data' => 'nullable|array',
         ];
     }
