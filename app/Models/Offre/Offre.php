@@ -7,6 +7,7 @@ use App\Models\Taxonomy\ModeTravail;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\TypeTravail;
+use App\Models\Taxonomy\Ville;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +23,7 @@ class Offre extends Model
         'poste_id',
         'type_travail_id',
         'mode_travail_id',
+        'ville_id',
         'niveau_experience_id',
         'titre',
         'description',
@@ -46,6 +48,11 @@ class Offre extends Model
     public function modeTravail(): BelongsTo
     {
         return $this->belongsTo(ModeTravail::class);
+    }
+
+    public function ville(): BelongsTo
+    {
+        return $this->belongsTo(Ville::class);
     }
 
     public function niveauExperience(): BelongsTo

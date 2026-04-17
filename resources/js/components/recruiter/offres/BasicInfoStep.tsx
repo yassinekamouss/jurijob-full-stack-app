@@ -102,6 +102,29 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                         {errors.mode_travail_id && <p className="mt-1 text-sm text-red-500">{errors.mode_travail_id}</p>}
                     </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <Label htmlFor="ville_id" className="text-base font-bold text-gray-700">Lieu de travail</Label>
+                        <div className="mt-2">
+                            <Select 
+                                value={String(data.ville_id)} 
+                                onValueChange={(val) => setData('ville_id', val)}
+                            >
+                                <SelectTrigger className="h-12 border-gray-200">
+                                    <SelectValue placeholder="Sélectionnez une ville" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {taxonomies.villes.map((ville: any) => (
+                                        <SelectItem key={ville.id} value={String(ville.id)}>
+                                            {ville.nom}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        {errors.ville_id && <p className="mt-1 text-sm text-red-500">{errors.ville_id}</p>}
+                    </div>
+
                     <div>
                         <Label htmlFor="niveau_experience_id" className="text-base font-bold text-gray-700">Expérience requise</Label>
                         <div className="mt-2">
@@ -124,6 +147,7 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                         {errors.niveau_experience_id && <p className="mt-1 text-sm text-red-500">{errors.niveau_experience_id}</p>}
                     </div>
                 </div>
+                </div>
 
                 <div>
                     <Label htmlFor="description" className="text-base font-bold text-gray-700">Description de l'offre</Label>
@@ -143,7 +167,7 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                 <Button 
                     type="submit" 
                     className="h-14 px-12 text-base font-bold bg-[#1a1f1e] text-white rounded-full hover:scale-105 transition-all shadow-xl shadow-[#1a1f1e]/10"
-                    disabled={!data.titre || !data.poste_id || !data.type_travail_id || !data.mode_travail_id || !data.niveau_experience_id || !data.description}
+                    disabled={!data.titre || !data.poste_id || !data.type_travail_id || !data.mode_travail_id || !data.ville_id || !data.niveau_experience_id || !data.description}
                 >
                     Suivant : Définir les critères
                 </Button>

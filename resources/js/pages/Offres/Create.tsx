@@ -22,6 +22,7 @@ export default function Create({ taxonomies }: Props) {
         poste_id: '',
         type_travail_id: '',
         mode_travail_id: '',
+        ville_id: '',
         niveau_experience_id: '',
         requirements: [] as any[],
     });

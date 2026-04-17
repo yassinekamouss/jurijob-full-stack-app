@@ -2,7 +2,7 @@ import { Poste, TypeTravail, NiveauExperience, Specialisation, Ville, ModeTravai
 
 export interface Requirement {
     taxonomy_id: number;
-    taxonomy_type: 'ville' | 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
+    taxonomy_type: 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
     label?: string;
     importance: 'indispensable' | 'important' | 'souhaitable' | 'facultatif';
     operator?: 'AND' | 'OR';
@@ -25,7 +25,7 @@ export interface OffreCritere {
 export interface OffreCritereGroupe {
     id: number;
     offre_id: number;
-    type_critere: 'ville' | 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
+    type_critere: 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
     operateur: 'AND' | 'OR';
     created_at: string;
     updated_at: string;
@@ -38,6 +38,7 @@ export interface Offre {
     poste_id: number;
     type_travail_id: number;
     mode_travail_id: number;
+    ville_id: number;
     niveau_experience_id: number;
     titre: string;
     description: string;
@@ -49,6 +50,7 @@ export interface Offre {
     poste?: Poste;
     type_travail?: TypeTravail;
     mode_travail?: ModeTravail;
+    ville?: Ville;
     niveau_experience?: NiveauExperience;
 
     // Criteria (New Architecture)

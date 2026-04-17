@@ -20,7 +20,6 @@ interface Props {
 }
 
 const categories = [
-    { label: 'Localisations', key: 'villes', type: 'ville' },
     { label: 'Spécialisations', key: 'specialisations', type: 'specialisation' },
     { label: 'Langues souhaitées', key: 'langues', type: 'langue' },
     { label: 'Domaines d\'expérience', key: 'domaineExperiences', type: 'domaine_experience' },

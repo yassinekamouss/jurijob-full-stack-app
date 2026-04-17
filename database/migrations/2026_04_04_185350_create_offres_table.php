@@ -17,10 +17,15 @@ return new class extends Migration
             $table->foreignId('poste_id')->constrained('postes')->cascadeOnDelete();
             $table->foreignId('type_travail_id')->constrained('type_travails')->cascadeOnDelete();
             $table->foreignId('mode_travail_id')->constrained('mode_travails')->cascadeOnDelete();
+            $table->foreignId('ville_id')->constrained('villes')->cascadeOnDelete();
+            $table->foreignId('niveau_experience_id')->constrained('niveau_experiences')->cascadeOnDelete();
             $table->string('titre');
             $table->text('description');
             $table->string('statut')->default('ouvert'); // ouvert, fermé
             $table->timestamps();
+
+            // Index for city matching elimination filter
+            $table->index('ville_id', 'idx_offre_ville_id');
         });
     }
 
