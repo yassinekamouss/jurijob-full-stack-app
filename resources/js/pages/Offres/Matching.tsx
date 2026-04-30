@@ -70,22 +70,7 @@ export default function Matching({ offre, candidates, filters }: Props) {
                         </p>
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="flex items-center gap-4 bg-white/50 backdrop-blur-md p-4 rounded-[24px] border border-[#1a1f1e]/5"
-                    >
-                        <div className="flex flex-col">
-                            <span className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40">Options</span>
-                            <span className="text-sm font-bold text-[#1a1f1e]">Inclure les profils sur-qualifiés</span>
-                        </div>
-                        <button
-                            onClick={() => handleToggleOverqualified(!isOverqualified)}
-                            className={`relative h-6 w-11 rounded-full transition-colors duration-200 focus:outline-none ${isOverqualified ? 'bg-[#1a1f1e]' : 'bg-[#1a1f1e]/10'}`}
-                        >
-                            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${isOverqualified ? 'translate-x-6' : 'translate-x-1'}`} />
-                        </button>
-                    </motion.div>
+
                 </div>
 
                 {/* Content Section with Deferred Loading */}
@@ -162,7 +147,7 @@ function CandidateCard({ candidate, index }: { candidate: Candidate; index: numb
             className="group relative bg-white rounded-[32px] border border-[#1a1f1e]/5 p-8 shadow-sm hover:shadow-2xl hover:shadow-[#1a1f1e]/5 transition-all duration-500 overflow-hidden"
         >
             <div className="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#1a1f1e]/[0.02] transition-transform group-hover:scale-150" />
-            
+
             <div className="flex items-start justify-between mb-8">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1a1f1e] text-white shadow-xl shadow-[#1a1f1e]/20 group-hover:scale-110 transition-transform duration-500">
                     <User className="h-8 w-8" />
@@ -191,7 +176,7 @@ function CandidateCard({ candidate, index }: { candidate: Candidate; index: numb
                         {candidate.matching_score >= 80 ? 'Excellent profil' : candidate.matching_score >= 50 ? 'Profil pertinent' : 'Profil à vérifier'}
                     </span>
                 </div>
-                
+
                 <button className="flex h-12 w-full items-center justify-center rounded-xl bg-[#1a1f1e] text-[10px] font-black text-white uppercase tracking-[0.2em] hover:bg-[#1a1f1e]/90 transition-all active:scale-95">
                     Voir le profil <ChevronRight className="ml-2 h-3.5 w-3.5" />
                 </button>

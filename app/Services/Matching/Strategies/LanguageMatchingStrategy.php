@@ -4,10 +4,13 @@ namespace App\Services\Matching\Strategies;
 
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class LanguageMatchingStrategy extends AbstractMatchingStrategy
 {
+    private const SCORE_ALIAS = 'lang_score';
+
+    private const TYPE = 'langue';
+
     protected array $weights = [
         'indispensable' => 100,
         'important' => 50,
@@ -15,76 +18,90 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
         'facultatif' => 5,
     ];
 
+    protected function getStrategyType(): string
+    {
+        return self::TYPE;
+    }
+
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $indispensableLanguages = $offre->langueRequirements()
-            ->where('importance', 'indispensable')
-            ->get();
+        $group = $this->getGroupForType($offre, self::TYPE);
 
-        if ($indispensableLanguages->isEmpty()) {
+        if (! $group) {
             return $query;
         }
 
-        // Optimized filtering: Single JOIN with HAVING COUNT for all indispensable requirements
-        // We match candidate languages where level is >= required level
-        return $query->whereIn('candidats.id', function ($q) use ($indispensableLanguages) {
+        $indispensables = $group->criteres->where('importance', 'indispensable');
+
+        if ($indispensables->isEmpty()) {
+            return $query;
+        }
+
+        $aggregator = $group->operateur === 'OR' ? 'orWhere' : 'where';
+
+        return $query->whereIn('candidats.id', function ($q) use ($indispensables, $group) {
             $q->select('candidat_id')
                 ->from('candidat_langues')
-                ->where(function ($sub) use ($indispensableLanguages) {
-                    foreach ($indispensableLanguages as $req) {
-                        $sub->orWhere(function ($s) use ($req) {
-                            $s->where('langue_id', $req->langue_id)
-                                ->where('niveau_langue_id', '>=', $req->niveau_langue_id);
+                ->where(function ($sub) use ($indispensables, $group) {
+                    foreach ($indispensables as $req) {
+                        $method = ($group->operateur === 'OR') ? 'orWhere' : 'where';
+                        $sub->$method(function ($s) use ($req) {
+                            $s->where('langue_id', $req->critere_id)
+                                ->where('niveau_langue_id', '>=', $req->valeur_id);
                         });
                     }
-                })
-                ->groupBy('candidat_id')
-                ->havingRaw('COUNT(DISTINCT langue_id) = ?', [$indispensableLanguages->count()]);
+                });
+
+            if ($group->operateur === 'AND') {
+                $q->groupBy('candidat_id')
+                    ->havingRaw('COUNT candidat_id = candidats.id(DISTINCT langue_id) = ?', [$indispensables->count()]);
+            }
         });
     }
 
-    public function applyScoreJoin(Builder $query, Offre $offre): Builder
+    public function getScoreSubquery(Offre $offre): string
     {
-        $requirements = $offre->langueRequirements;
+        $group = $this->getGroupForType($offre, self::TYPE);
 
-        if ($requirements->isEmpty()) {
-            return $query;
+        if (! $group || $group->criteres->isEmpty()) {
+            return '0';
         }
 
-        $cases = $requirements->map(function ($req) {
-            $langueId = (int) $req->langue_id;
-            $requiredLevelId = (int) $req->niveau_langue_id;
+        $ids = $group->criteres->pluck('critere_id')->implode(',');
+
+        $cases = $group->criteres->map(function ($req) {
+            $langueId = (int) $req->critere_id;
+            $requiredLevelId = (int) $req->valeur_id;
             $weight = $this->getWeight($req->importance);
             $bonusWeight = (int) ($weight * 1.1);
 
             return "WHEN langue_id = $langueId AND niveau_langue_id = $requiredLevelId THEN $weight ".
-                   "WHEN langue_id = $langueId AND niveau_langue_id > $requiredLevelId THEN $bonusWeight";
+                "WHEN langue_id = $langueId AND niveau_langue_id > $requiredLevelId THEN $bonusWeight";
         })->implode(' ');
 
-        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
-                     FROM candidat_langues 
-                     GROUP BY candidat_id";
+        $aggregator = $group->operateur === 'OR' ? 'MAX' : 'SUM';
 
-        return $query->leftJoin(
-            DB::raw("($subquery) as lang_scores"),
-            'lang_scores.candidat_id',
-            '=',
-            'candidats.id'
-        );
+        return "(SELECT COALESCE($aggregator(CASE $cases ELSE 0 END), 0) 
+                  FROM candidat_langues 
+                  WHERE langue_id IN ($ids) 
+                  AND candidat_id = candidats.id)";
     }
 
-    public function getScoreColumn(Offre $offre): string
+    public function getScoreAlias(): string
     {
-        if ($offre->langueRequirements->isEmpty()) {
-            return '0';
-        }
-
-        return 'COALESCE(lang_scores.score, 0)';
+        return self::SCORE_ALIAS;
     }
 
     public function getMaxScore(Offre $offre): int
     {
-        // Max score includes the 10% bonus for over-qualification to keep percentage <= 100%
-        return (int) $offre->langueRequirements->sum(fn ($req) => $this->getWeight($req->importance) * 1.1);
+        $group = $this->getGroupForType($offre, self::TYPE);
+
+        if (! $group) {
+            return 0;
+        }
+
+        $sumFunc = $group->operateur === 'OR' ? 'max' : 'sum';
+
+        return (int) $group->criteres->$sumFunc(fn ($req) => $this->getWeight($req->importance) * 1.1);
     }
 }

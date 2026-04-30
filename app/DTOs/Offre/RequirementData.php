@@ -8,6 +8,7 @@ readonly class RequirementData
         public int $taxonomy_id,
         public string $taxonomy_type,
         public string $importance,
+        public string $operator = 'OR',
         public array $requirements_data = []
     ) {}
 
@@ -17,6 +18,7 @@ readonly class RequirementData
             taxonomy_id: (int) $data['taxonomy_id'],
             taxonomy_type: $data['taxonomy_type'],
             importance: $data['importance'],
+            operator: $data['operator'] ?? 'OR',
             requirements_data: $data['requirements_data'] ?? [],
         );
     }
@@ -27,6 +29,7 @@ readonly class RequirementData
             'taxonomy_id' => $this->taxonomy_id,
             'taxonomy_type' => $this->taxonomy_type,
             'importance' => $this->importance,
+            'operator' => $this->operator,
             'requirements_data' => $this->requirements_data,
         ];
     }

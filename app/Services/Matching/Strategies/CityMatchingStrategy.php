@@ -4,10 +4,15 @@ namespace App\Services\Matching\Strategies;
 
 use App\Models\Offre\Offre;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 
 class CityMatchingStrategy extends AbstractMatchingStrategy
 {
+    private const REMOTE_MODE_ID = 2; // Télétravail
+
+    private const SCORE_ALIAS = 'city_score';
+
+    private const TYPE = 'ville';
+
     protected array $weights = [
         'indispensable' => 80,
         'important' => 40,
@@ -15,61 +20,70 @@ class CityMatchingStrategy extends AbstractMatchingStrategy
         'facultatif' => 5,
     ];
 
+    protected function getStrategyType(): string
+    {
+        return self::TYPE;
+    }
+
+    public function isActive(Offre $offre): bool
+    {
+        // Only active if the offer is NOT in remote mode
+        return $offre->mode_travail_id !== self::REMOTE_MODE_ID;
+    }
+
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $indispensableIds = $offre->villeRequirements()
-            ->where('importance', 'indispensable')
-            ->pluck('ville_id')
-            ->toArray();
-
-        if (empty($indispensableIds)) {
+        // If remote work mode, don't filter by city
+        if ($offre->mode_travail_id === self::REMOTE_MODE_ID) {
             return $query;
         }
 
-        return $query->whereIn('candidats.id', function ($q) use ($indispensableIds) {
+        $villeId = $offre->ville_id;
+
+        if (! $villeId) {
+            return $query;
+        }
+
+        // Filter candidates who are willing to work in this city
+        return $query->whereIn('candidats.id', function ($q) use ($villeId) {
             $q->select('candidat_id')
                 ->from('candidat_ville_travails')
-                ->whereIn('ville_id', $indispensableIds)
-                ->groupBy('candidat_id')
-                ->havingRaw('COUNT(DISTINCT ville_id) = ?', [count($indispensableIds)]);
+                ->where('ville_id', $villeId);
         });
     }
 
-    public function applyScoreJoin(Builder $query, Offre $offre): Builder
+    public function getScoreSubquery(Offre $offre): string
     {
-        $requirements = $offre->villeRequirements;
-
-        if ($requirements->isEmpty()) {
-            return $query;
-        }
-
-        $cases = $requirements->map(function ($req) {
-            return 'WHEN ville_id = '.(int) $req->ville_id.' THEN '.$this->getWeight($req->importance);
-        })->implode(' ');
-
-        $subquery = "SELECT candidat_id, SUM(CASE $cases ELSE 0 END) as score 
-                     FROM candidat_ville_travails 
-                     GROUP BY candidat_id";
-
-        return $query->leftJoin(
-            DB::raw("($subquery) as city_scores"),
-            'city_scores.candidat_id',
-            '=',
-            'candidats.id'
-        );
-    }
-
-    public function getScoreColumn(Offre $offre): string
-    {
-        if ($offre->villeRequirements->isEmpty()) {
+        // If remote work mode, no scoring for city
+        if ($offre->mode_travail_id === self::REMOTE_MODE_ID) {
             return '0';
         }
 
-        return 'COALESCE(city_scores.score, 0)';
+        $villeId = (int) $offre->ville_id;
+
+        if (! $villeId) {
+            return '0';
+        }
+
+        // Award points if candidate is willing to work in this city
+        return "(SELECT CASE WHEN EXISTS(
+                    SELECT 1 FROM candidat_ville_travails 
+                    WHERE ville_id = $villeId AND candidat_id = candidats.id
+                ) THEN 60 ELSE 0 END)";
+    }
+
+    public function getScoreAlias(): string
+    {
+        return self::SCORE_ALIAS;
     }
 
     public function getMaxScore(Offre $offre): int
     {
-        return $offre->villeRequirements->sum(fn ($req) => $this->getWeight($req->importance));
+        // If remote mode, no city score
+        if ($offre->mode_travail_id === self::REMOTE_MODE_ID) {
+            return 0;
+        }
+
+        return $offre->ville_id ? 60 : 0;
     }
 }

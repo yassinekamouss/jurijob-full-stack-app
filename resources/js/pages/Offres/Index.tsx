@@ -75,14 +75,6 @@ export default function Index({ offres }: Props) {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {offres.map((offre, idx) => {
-                            const totalRequirements = 
-                                (offre.langue_requirements_count || 0) +
-                                (offre.ville_requirements_count || 0) +
-                                (offre.specialisation_requirements_count || 0) +
-                                (offre.mode_travail_requirements_count || 0) +
-                                (offre.domain_experience_requirements_count || 0) +
-                                (offre.formation_juridique_requirements_count || 0);
-
                             return (
                                 <motion.div
                                     key={offre.id}
@@ -109,10 +101,12 @@ export default function Index({ offres }: Props) {
                                     <div className="flex items-center gap-4 text-sm font-bold text-[#1a1f1e]/40 mb-8">
                                         <span className="flex items-center gap-1.5">
                                             <Search className="h-3.5 w-3.5" />
-                                            {totalRequirements} critères
+                                            {offre.criteria_count || 0} critères
                                         </span>
                                         <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/10" />
                                         <span>{offre.type_travail?.nom}</span>
+                                        <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/10" />
+                                        <span>{offre.niveau_experience?.nom}</span>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4 pt-6 border-t border-[#1a1f1e]/5">
