@@ -12,7 +12,6 @@ use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
 use App\Http\Controllers\Offre\MatchingController;
-use App\Http\Controllers\Offre\MatchingTestController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
@@ -22,14 +21,9 @@ use Inertia\Inertia;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\RecruiterController;
+use App\Http\Controllers\Admin\OffreController as AdminOffreController;
 
 Route::inertia('/', 'Home')->name('home');
-
-// API Routes for Testing (k6, performance testing, etc.)
-// These routes are public for load testing purposes
-Route::prefix('api/test')->group(function () {
-    Route::get('/matching/{offre}', [MatchingTestController::class, 'testMatching'])->name('api.test.matching');
-});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -92,6 +86,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/candidats', [CandidateController::class, 'index'])->name('admin.candidates.index');
     Route::get('/admin/recruteurs', [RecruiterController::class, 'index'])->name('admin.recruteurs.index');
     Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications');
+    Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 

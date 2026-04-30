@@ -24,6 +24,7 @@ export default function Recruteurs({ recruteurs }: any) {
                             <th style={{ padding: '1rem' }}>Site Web</th>
                             <th style={{ padding: '1rem' }}>Date d'inscription</th>
                             <th style={{ padding: '1rem' }}>Actions</th>
+                            <th style={{ padding: '1rem' }} > Les demandes </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,6 +63,14 @@ export default function Recruteurs({ recruteurs }: any) {
                                     <button style={{ color: '#ef4444', border: 'none', background: 'none', cursor: 'pointer' }}>
                                         Supprimer
                                     </button>
+                                </td>
+                                <td style={{ padding: '1rem' }}>
+                                    <Link
+                                        href={`/admin/recruteurs/${recruteur.id}/offres`}
+                                        className="px-4 py-2 bg-blue-500 text-white rounded shadow"
+                                    >
+                                        Voir les demandes
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
