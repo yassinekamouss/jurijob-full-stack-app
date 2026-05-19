@@ -29,7 +29,11 @@ class StoreOffreRequest extends FormRequest
             'poste_id' => 'required|exists:postes,id',
             'type_travail_id' => 'required|exists:type_travails,id',
             'mode_travail_id' => 'required|exists:mode_travails,id',
-            'ville_id' => 'required|exists:villes,id',
+            'ville_id' => [
+                Rule::requiredIf(fn () => (string) $this->mode_travail_id !== '2'),
+                'nullable',
+                'exists:villes,id',
+            ],
             'niveau_experience_id' => 'required|exists:niveau_experiences,id',
             'statut' => 'nullable|string|in:ouvert,fermé',
             'requirements' => 'nullable|array',

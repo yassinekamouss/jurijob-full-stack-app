@@ -3,11 +3,9 @@
 namespace App\Providers;
 
 use App\Services\Matching\MatchingEngine;
-use App\Services\Matching\Strategies\CityMatchingStrategy;
 use App\Services\Matching\Strategies\ExperienceMatchingStrategy;
 use App\Services\Matching\Strategies\FormationMatchingStrategy;
 use App\Services\Matching\Strategies\LanguageMatchingStrategy;
-use App\Services\Matching\Strategies\ModeTravailMatchingStrategy;
 use App\Services\Matching\Strategies\SpecialisationMatchingStrategy;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
@@ -25,10 +23,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->tag([
             LanguageMatchingStrategy::class,
             SpecialisationMatchingStrategy::class,
-            CityMatchingStrategy::class,
             FormationMatchingStrategy::class,
             ExperienceMatchingStrategy::class,
-            ModeTravailMatchingStrategy::class,
         ], 'matching.strategies');
 
         $this->app->bind(MatchingEngine::class, function ($app) {
