@@ -27,7 +27,7 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
     {
         $group = $this->getGroupForType($offre, self::TYPE);
 
-        if (!$group) {
+        if (! $group) {
             return $query;
         }
 
@@ -54,7 +54,7 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
 
             if ($group->operateur === 'AND') {
                 $q->groupBy('candidat_id')
-                    ->havingRaw('COUNT candidat_id = candidats.id(DISTINCT langue_id) = ?', [$indispensables->count()]);
+                    ->havingRaw('COUNT(DISTINCT langue_id) = ?', [$indispensables->count()]);
             }
         });
     }
@@ -63,7 +63,7 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
     {
         $group = $this->getGroupForType($offre, self::TYPE);
 
-        if (!$group || $group->criteres->isEmpty()) {
+        if (! $group || $group->criteres->isEmpty()) {
             return '0';
         }
 
@@ -75,7 +75,7 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
             $weight = $this->getWeight($req->importance);
             $bonusWeight = (int) ($weight * 1.1);
 
-            return "WHEN langue_id = $langueId AND niveau_langue_id = $requiredLevelId THEN $weight " .
+            return "WHEN langue_id = $langueId AND niveau_langue_id = $requiredLevelId THEN $weight ".
                 "WHEN langue_id = $langueId AND niveau_langue_id > $requiredLevelId THEN $bonusWeight";
         })->implode(' ');
 
@@ -96,12 +96,12 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
     {
         $group = $this->getGroupForType($offre, self::TYPE);
 
-        if (!$group) {
+        if (! $group) {
             return 0;
         }
 
         $sumFunc = $group->operateur === 'OR' ? 'max' : 'sum';
 
-        return (int) $group->criteres->$sumFunc(fn($req) => $this->getWeight($req->importance) * 1.1);
+        return (int) $group->criteres->$sumFunc(fn ($req) => $this->getWeight($req->importance) * 1.1);
     }
 }
