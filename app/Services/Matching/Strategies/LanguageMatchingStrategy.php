@@ -54,7 +54,7 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
 
             if ($group->operateur === 'AND') {
                 $q->groupBy('candidat_id')
-                    ->havingRaw('COUNT candidat_id = candidats.id(DISTINCT langue_id) = ?', [$indispensables->count()]);
+                    ->havingRaw('COUNT(DISTINCT langue_id) = ?', [$indispensables->count()]);
             }
         });
     }

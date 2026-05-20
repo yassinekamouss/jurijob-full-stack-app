@@ -12,7 +12,6 @@ use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\Langue;
 use App\Models\Taxonomy\NiveauLangue;
 use App\Models\Taxonomy\Specialisation;
-use App\Models\Taxonomy\Ville;
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -175,9 +174,7 @@ class OffreController extends Controller
      */
     private function syncRequirements(Offre $offre, array $requirements): void
     {
-        // Define type mapping from frontend to type_critere
         $typeMapping = [
-            'ville' => 'ville',
             'specialisation' => 'specialisation',
             'langue' => 'langue',
             'domaine_experience' => 'domaine_experience',
@@ -228,7 +225,6 @@ class OffreController extends Controller
     {
         $requirements = [];
         $typeMapping = [
-            'ville' => 'ville',
             'specialisation' => 'specialisation',
             'langue' => 'langue',
             'domaine_experience' => 'domaine_experience',
@@ -236,7 +232,6 @@ class OffreController extends Controller
         ];
 
         $taxonomyModels = [
-            'ville' => Ville::class,
             'specialisation' => Specialisation::class,
             'langue' => Langue::class,
             'domaine_experience' => DomaineExperience::class,

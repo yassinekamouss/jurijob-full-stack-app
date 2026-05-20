@@ -35,12 +35,23 @@ class MatchingEngine
 
         $query = Candidat::query()->select('candidats.id', 'candidats.user_id');
 
-        // 1. Pre-filtering: Keep only candidates matching the base post and allowed working types.
+        // 1. Pre-filtering: Keep only candidates matching the base criteria (eliminatory).
         $query->where('candidats.poste_id', $offre->poste_id)
             ->where('candidats.niveau_experience_id', '=', $offre->niveau_experience_id)
             ->whereHas('typeTravails', function ($q) use ($offre) {
                 $q->where('type_travail_id', $offre->type_travail_id);
+            })
+            ->whereHas('modeTravails', function ($q) use ($offre) {
+                $q->where('mode_travail_id', $offre->mode_travail_id);
             });
+
+        // 1b. City filtering is eliminatory unless it's remote work (ID 2 usually)
+        // We use the ID from CityMatchingStrategy or hardcode it if it's a standard in the app.
+        if ($offre->mode_travail_id !== 2) { // 2 = Télétravail
+            $query->whereHas('villeTravails', function ($q) use ($offre) {
+                $q->where('ville_id', $offre->ville_id);
+            });
+        }
 
         // 2. Filter to only active strategies (those with criteria defined for this offer).
         $activeStrategies = $this->getActiveStrategies($offre);
