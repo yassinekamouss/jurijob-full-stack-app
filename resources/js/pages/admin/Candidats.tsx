@@ -1,79 +1,131 @@
 import { Head, Link } from '@inertiajs/react';
+import AdminLayout from '@/layouts/admin-layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Trash2, ExternalLink } from 'lucide-react';
+
+const breadcrumbs = [
+    { title: 'Admin', href: '/admin/dashboard' },
+    { title: 'Candidats', href: '/admin/candidats' },
+];
 
 export default function Candidats({ candidates }: any) {
     return (
-        <div style={{ padding: '2rem' }}>
+        <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestion des Candidats" />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                <h1>Liste des Candidats ({candidates.total})</h1>
-                <Link href="/admin/dashboard" style={{ textDecoration: 'none', color: '#3b82f6' }}>
-                    ← Retour au Dashboard
-                </Link>
-            </div>
+            <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight">Candidats</h1>
+                        <p className="text-muted-foreground mt-1">
+                            Gérez les profils des candidats inscrits ({candidates.total} au total).
+                        </p>
+                    </div>
+                </div>
 
-            <div style={{ backgroundColor: 'white', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-                        <tr>
-                            <th style={{ padding: '1rem' }}>Nom & Prénom</th>
-                            <th style={{ padding: '1rem' }}>Email</th>
-                            <th style={{ padding: '1rem' }}>Poste</th>
-                            <th style={{ padding: '1rem' }}>Date d'inscription</th>
-                            <th style={{ padding: '1rem' }}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {candidates.data.map((candidat: any) => (
-                            <tr key={candidat.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                <td style={{ padding: '1rem' }}>{candidat.nom} {candidat.prenom}</td>
-                                <td style={{ padding: '1rem' }}>{candidat.user?.email}</td>
-                                <td style={{ padding: '1rem' }}>{candidat.poste_id || 'Non spécifié'}</td>
-                                <td style={{ padding: '1rem' }}>{new Date(candidat.created_at).toLocaleDateString()}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <button style={{ color: '#ef4444', border: 'none', background: 'none', cursor: 'pointer' }}>
-                                        Supprimer
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                <Card>
+                    <CardContent className="p-0">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead className="bg-muted/50 border-b">
+                                    <tr>
+                                        <th className="px-6 py-4 text-left font-semibold">Candidat</th>
+                                        <th className="px-6 py-4 text-left font-semibold">Contact</th>
+                                        <th className="px-6 py-4 text-left font-semibold">Poste</th>
+                                        <th className="px-6 py-4 text-left font-semibold">Inscription</th>
+                                        <th className="px-6 py-4 text-right font-semibold">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y">
+                                    {candidates.data.map((candidat: any) => (
+                                        <tr key={candidat.id} className="hover:bg-muted/30 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div className="font-medium">{candidat.nom} {candidat.prenom}</div>
+                                                <div className="text-xs text-muted-foreground">ID: {candidat.id}</div>
+                                            </td>
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {candidat.user?.email}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <Badge variant="secondary" className="font-normal">
+                                                    {candidat.poste_id || 'Non spécifié'}
+                                                </Badge>
+                                            </td>
+                                            <td className="px-6 py-4 text-muted-foreground">
+                                                {new Date(candidat.created_at).toLocaleDateString('fr-FR', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                })}
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex justify-end gap-2">
+                                                    <Button variant="ghost" size="icon" title="Voir le profil">
+                                                        <ExternalLink className="h-4 w-4" />
+                                                    </Button>
+                                                    <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </CardContent>
+                </Card>
 
-            {/* Pagination sécurisée */}
-            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                {candidates.links.map((link: any, index: number) => (
-                    link.url ? (
-                        <Link
-                            key={index}
-                            href={link.url}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                borderRadius: '0.25rem',
-                                backgroundColor: link.active ? '#3b82f6' : 'white',
-                                color: link.active ? 'white' : '#374151',
-                                textDecoration: 'none',
-                                border: '1px solid #d1d5db'
-                            }}
-                        />
-                    ) : (
-                        <span
-                            key={index}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                borderRadius: '0.25rem',
-                                backgroundColor: '#f3f4f6',
-                                color: '#9ca3af',
-                                border: '1px solid #e5e7eb',
-                                cursor: 'not-allowed'
-                            }}
-                        />
-                    )
-                ))}
+                {/* Professional Pagination */}
+                <div className="flex items-center justify-between px-2">
+                    <p className="text-sm text-muted-foreground">
+                        Affichage de {candidates.from} à {candidates.to} sur {candidates.total} candidats
+                    </p>
+                    <div className="flex gap-2">
+                        {candidates.links.map((link: any, index: number) => {
+                            if (link.label.includes('Previous')) {
+                                return (
+                                    <Button
+                                        key={index}
+                                        variant="outline"
+                                        size="sm"
+                                        asChild={!!link.url}
+                                        disabled={!link.url}
+                                    >
+                                        {link.url ? <Link href={link.url}>Précédent</Link> : <span>Précédent</span>}
+                                    </Button>
+                                );
+                            }
+                            if (link.label.includes('Next')) {
+                                return (
+                                    <Button
+                                        key={index}
+                                        variant="outline"
+                                        size="sm"
+                                        asChild={!!link.url}
+                                        disabled={!link.url}
+                                    >
+                                        {link.url ? <Link href={link.url}>Suivant</Link> : <span>Suivant</span>}
+                                    </Button>
+                                );
+                            }
+                            if (!link.url || isNaN(Number(link.label))) return null;
+                            return (
+                                <Button
+                                    key={index}
+                                    variant={link.active ? "default" : "outline"}
+                                    size="sm"
+                                    asChild
+                                >
+                                    <Link href={link.url}>{link.label}</Link>
+                                </Button>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
-        </div>
+        </AdminLayout>
     );
 }

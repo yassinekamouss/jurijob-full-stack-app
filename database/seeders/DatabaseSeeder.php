@@ -14,8 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             OffreTestDataSeeder::class,
-            LargeCandidatSeeder::class,
-            TaxonomySeeder::class,
         ]);
 
     }
