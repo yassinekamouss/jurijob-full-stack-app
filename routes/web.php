@@ -11,6 +11,7 @@ use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
+use App\Http\Controllers\Candidate\DomaineExperienceController;
 use App\Http\Controllers\Offre\MatchingController;
 use App\Http\Controllers\Offre\MatchingTestController;
 use App\Http\Controllers\Offre\OffreController;
@@ -62,6 +63,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('experiences', ExperienceController::class)->only(['store', 'update', 'destroy']);
         Route::resource('formations', FormationController::class)->only(['store', 'update', 'destroy']);
         Route::resource('specialisations', SpecialisationController::class)->only(['store', 'update', 'destroy']);
+        Route::resource('domaine-experiences', DomaineExperienceController::class)->only(['store', 'update', 'destroy'])
+            ->parameters(['domaine-experiences' => 'domaine_experience']);
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
     });
 

@@ -30,6 +30,7 @@ import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
+import DomaineExperienceSection from '@/components/candidate/settings/DomaineExperienceSection';
 import LanguageSection from '@/components/candidate/settings/LanguageSection';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
@@ -41,6 +42,7 @@ interface Props {
     experiences?: any[];
     formations?: any[];
     specialisations?: any[];
+    domainExperiences?: any[];
     langues?: any[];
 }
 
@@ -50,6 +52,7 @@ type TabType =
     | 'experiences'
     | 'formations'
     | 'specialisations'
+    | 'domaine-experiences'
     | 'langues'
     | 'security';
 
@@ -59,6 +62,7 @@ export default function Settings({
     experiences,
     formations,
     specialisations,
+    domainExperiences,
     langues,
 }: Props) {
     const { flash } = usePage().props as any;
@@ -131,6 +135,7 @@ export default function Settings({
                 'experiences',
                 'formations',
                 'specialisations',
+                'domaine-experiences',
                 'langues',
                 'security',
             ].includes(tab)
@@ -312,6 +317,17 @@ export default function Settings({
                             >
                                 <Folder className="h-4 w-4" />
                                 Spécialisations
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('domaine-experiences')}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                                    activeTab === 'domaine-experiences'
+                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                }`}
+                            >
+                                <Briefcase className="h-4 w-4" />
+                                Domaines d'expérience
                             </button>
                             <button
                                 onClick={() => setActiveTab('langues')}
@@ -663,6 +679,26 @@ export default function Settings({
                                         <SpecialisationSection
                                             specialisations={
                                                 specialisations || []
+                                            }
+                                        />
+                                    </Deferred>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'domaine-experiences' && (
+                                <motion.div
+                                    key="domaine-experiences"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                >
+                                    <Deferred
+                                        data="domainExperiences"
+                                        fallback={<SectionSkeleton />}
+                                    >
+                                        <DomaineExperienceSection
+                                            domainExperiences={
+                                                domainExperiences || []
                                             }
                                         />
                                     </Deferred>

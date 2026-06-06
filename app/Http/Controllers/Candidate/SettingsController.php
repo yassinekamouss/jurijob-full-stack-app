@@ -29,6 +29,7 @@ class SettingsController extends Controller
             'experiences' => $candidat->experiences,
             'formations' => $candidat->formations,
             'specialisations' => $candidat->specialisations,
+            'domainExperiences' => $candidat->domainExperiences,
             'langues' => $candidat->langues,
         ]);
     }

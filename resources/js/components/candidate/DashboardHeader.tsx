@@ -87,12 +87,12 @@ export default function DashboardHeader() {
                     <div className="flex items-center gap-3">
                         <div className="hidden text-right lg:block">
                             <p className="text-sm font-semibold text-[#1a1f1e]">
-                                {auth.user.email.split('@')[0]}
+                                {auth?.user?.email?.split('@')[0]}
                             </p>
                             <p className="text-xs text-[#1a1f1e]/40 font-medium">Candidate</p>
                         </div>
                         <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 bg-white">
-                            {auth.user.candidat?.image_url ? (
+                            {auth?.user?.candidat?.image_url ? (
                                 <img
                                     src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${auth.user.candidat.id}`}
                                     alt="Profile"
