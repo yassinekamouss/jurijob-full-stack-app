@@ -34,3 +34,6 @@ yarn-error.log
 /database/*.sqlite-journa
 
 /jurijob_next/
+
+
+docker-compose.yml  

@@ -8,6 +8,7 @@ interface Props {
     onSubmit: (e: React.FormEvent) => void;
     onPrev: () => void;
     taxonomies: any;
+    isEdit?: boolean;
 }
 
 const importanceLevels: { [key: string]: { label: string, color: string } } = {
@@ -17,7 +18,7 @@ const importanceLevels: { [key: string]: { label: string, color: string } } = {
     facultatif: { label: 'Facultatif', color: 'bg-gray-100 text-gray-700' },
 };
 
-export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonomies }: Props) {
+export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonomies, isEdit = false }: Props) {
     const getTaxonomyName = (taxId: number, type: string) => {
         const keyMap: { [key: string]: string } = {
             ville: 'villes',
@@ -122,7 +123,7 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                         disabled={processing}
                         className="h-16 px-14 text-lg font-serif font-bold bg-[#1a1f1e] text-white rounded-full shadow-2xl shadow-[#1a1f1e]/20 hover:scale-105 active:scale-95 transition-all italic"
                     >
-                        {processing ? 'Publication...' : 'Publier mon Offre'}
+                        {processing ? (isEdit ? 'Mise à jour...' : 'Publication...') : (isEdit ? "Mettre à jour l'Offre" : 'Publier mon Offre')}
                     </Button>
                 </div>
             </div>

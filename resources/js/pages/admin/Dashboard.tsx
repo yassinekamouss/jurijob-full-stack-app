@@ -1,45 +1,62 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { Pie, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
+import AdminLayout from '@/layouts/admin-layout';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Users, Building2, TrendingUp, PieChart as PieChartIcon } from 'lucide-react';
 
-// Enregistrement des composants Chart.js
 ChartJS.register(...registerables);
 
-// On définit des valeurs par défaut pour éviter le "undefined"
-export default function Dashboard({ auth, chartData = { totals: { candidats: 0, recruteurs: 0 }, growth: { candidats: [], recruteurs: [] } } }: any) {
-    // ... reste du code
-    // 1. Configuration du Pie Chart (Répartition)
-    // console.log("Données reçues :", chartData); // Regardez dans la console F12 de votre navigateur
+interface DashboardProps {
+    auth: any;
+    chartData?: {
+        totals: { candidats: number; recruteurs: number };
+        growth: {
+            candidats: { total: number; month: number }[];
+            recruteurs: { total: number; month: number }[];
+        };
+    };
+}
+
+const breadcrumbs = [
+    { title: 'Admin', href: '/admin/dashboard' },
+    { title: 'Dashboard', href: '/admin/dashboard' },
+];
+
+export default function Dashboard({ auth, chartData = { totals: { candidats: 0, recruteurs: 0 }, growth: { candidats: [], recruteurs: [] } } }: DashboardProps) {
     const pieData = {
         labels: ['Candidats', 'Recruteurs'],
         datasets: [{
             data: [chartData.totals.candidats, chartData.totals.recruteurs],
-            backgroundColor: ['#3b82f6', '#10b981'],
-            hoverOffset: 4,
-            borderWidth: 1,
+            backgroundColor: ['oklch(0.6 0.118 184.704)', 'oklch(0.205 0 0)'], // Consistent with project colors
+            hoverOffset: 12,
+            borderWidth: 0,
+            borderRadius: 8,
         }],
     };
 
-    // 2. Configuration du Line Chart (Croissance)
-    // Note : On utilise les données réelles reçues du backend
     const lineData = {
         labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
         datasets: [
             {
                 label: 'Candidats',
                 data: chartData.growth.candidats.map((d: any) => d.total),
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderColor: 'oklch(0.6 0.118 184.704)',
+                backgroundColor: 'rgba(96, 165, 250, 0.1)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
             },
             {
                 label: 'Recruteurs',
                 data: chartData.growth.recruteurs.map((d: any) => d.total),
-                borderColor: '#10b981',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                borderColor: 'oklch(0.205 0 0)',
+                backgroundColor: 'rgba(31, 41, 55, 0.1)',
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
             }
         ],
     };
@@ -50,103 +67,120 @@ export default function Dashboard({ auth, chartData = { totals: { candidats: 0, 
         plugins: {
             legend: {
                 position: 'bottom' as const,
+                labels: {
+                    usePointStyle: true,
+                    padding: 20,
+                    font: { family: 'Instrument Sans' }
+                }
             },
+            tooltip: {
+                backgroundColor: '#1f2937',
+                padding: 12,
+                titleFont: { size: 14, weight: 'bold' },
+                bodyFont: { size: 13 },
+                cornerRadius: 8,
+            }
         },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            },
+            x: {
+                grid: { display: false },
+            }
+        }
     };
 
     return (
-        <div style={{ padding: '2rem' }}>
-            <Head title="Admin Dashboard" />
+        <AdminLayout breadcrumbs={breadcrumbs}>
+            <Head title="Dashboard Admin" />
 
-            {/* Header Section */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <div className="flex flex-col gap-8">
+                {/* Header Section */}
                 <div>
-                    <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold' }}>
-                        Welcome to the Admin Panel, {auth.user.name}
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                        Bienvenue, {auth.user.name}
                     </h1>
-                    <p style={{ color: '#6b7280' }}>You are logged in via the Admin Guard.</p>
+                    <p className="text-muted-foreground mt-1">
+                        Voici un aperçu de l'activité sur JuriJob.
+                    </p>
                 </div>
 
-                <Link
-                    href="/admin/logout"
-                    method="post"
-                    as="button"
-                    style={{
-                        backgroundColor: '#ef4444',
-                        color: 'white',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '0.375rem',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontWeight: '600'
-                    }}
-                >
-                    Logout
-                </Link>
-
-                {/*boutton pour pages des utilisateurs candidats et recruteurs*/}
-
-                <Link
-                    href="/admin/candidats"
-                    as="button"
-                    style={{
-                        backgroundColor: '#3b82f6',
-                        color: 'white',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '0.375rem',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontWeight: '600'
-                    }}
-                >
-                    Candidats
-                </Link>
-
-                <Link
-                    href="/admin/recruteurs"
-                    as="button"
-                    style={{
-                        backgroundColor: '#10b981',
-                        color: 'white',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '0.375rem',
-                        border: 'none',
-                        cursor: 'pointer',
-                        fontWeight: '600'
-                    }}
-                >
-                    Recruteurs
-                </Link>
-
-
-            </div>
-
-            {/* Charts Grid Section */}
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '1.5rem'
-            }}>
-                {/* Card Répartition */}
-                <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '1rem' }}>
-                        Répartition des utilisateurs
-                    </h3>
-                    <div style={{ height: '300px' }}>
-                        <Pie data={pieData} options={chartOptions} />
-                    </div>
+                {/* Stats Grid */}
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <Card className="hover:shadow-md transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Total Candidats</CardTitle>
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{chartData.totals.candidats}</div>
+                            <p className="text-xs text-muted-foreground">Inscrits sur la plateforme</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="hover:shadow-md transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Total Recruteurs</CardTitle>
+                            <Building2 className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{chartData.totals.recruteurs}</div>
+                            <p className="text-xs text-muted-foreground">Entreprises & Cabinets</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="hover:shadow-md transition-shadow">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">Utilisateurs Global</CardTitle>
+                            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{chartData.totals.candidats + chartData.totals.recruteurs}</div>
+                            <p className="text-xs text-muted-foreground">Activité totale</p>
+                        </CardContent>
+                    </Card>
                 </div>
 
-                {/* Card Croissance */}
-                <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 'bold', marginBottom: '1rem' }}>
-                        Croissance des inscriptions
-                    </h3>
-                    <div style={{ height: '300px' }}>
-                        <Line data={lineData} options={chartOptions} />
-                    </div>
+                {/* Charts Section */}
+                <div className="grid gap-6 md:grid-cols-7">
+                    <Card className="md:col-span-4">
+                        <CardHeader>
+                            <CardTitle>Croissance des Utilisateurs</CardTitle>
+                            <CardDescription>Évolution des inscriptions mensuelles</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="h-[350px] w-full">
+                                <Line data={lineData} options={chartOptions} />
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="md:col-span-3">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <PieChartIcon className="h-4 w-4" />
+                                Répartition
+                            </CardTitle>
+                            <CardDescription>Candidats vs Recruteurs</CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex justify-center flex-col items-center">
+                            <div className="h-[300px] w-full">
+                                <Pie data={pieData} options={chartOptions} />
+                            </div>
+                            <div className="mt-4 space-y-2 w-full">
+                                <div className="flex items-center justify-between text-sm">
+                                    <span className="flex items-center gap-2"><div className="size-3 rounded-full bg-[oklch(0.6_0.118_184.704)]" /> Candidats</span>
+                                    <span className="font-semibold">{chartData.totals.candidats}</span>
+                                </div>
+                                <div className="flex items-center justify-between text-sm">
+                                    <span className="flex items-center gap-2"><div className="size-3 rounded-full bg-[oklch(0.205_0_0)]" /> Recruteurs</span>
+                                    <span className="font-semibold">{chartData.totals.recruteurs}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
-        </div>
+        </AdminLayout>
     );
 }
