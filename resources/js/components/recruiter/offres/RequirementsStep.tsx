@@ -187,8 +187,9 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
 
                                 {/* Add button */}
                                 <Select onValueChange={(val) => addRequirement(Number(val), group.type)}>
-                                    <SelectTrigger className="h-7 w-7 p-0 border-slate-200 bg-white rounded-md [&>svg]:hidden flex items-center justify-center hover:bg-slate-50 transition-colors">
+                                    <SelectTrigger className="h-8 px-3 text-xs font-medium border-slate-200 bg-white rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 [&>svg]:hidden text-slate-700 shadow-sm">
                                         <Plus className="h-3.5 w-3.5 text-slate-500" />
+                                        <span>Ajouter</span>
                                     </SelectTrigger>
                                     <SelectContent className="rounded-lg max-h-64">
                                         {availableItems(group.key, group.type).length === 0 ? (
@@ -293,9 +294,13 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
 
                         {/* Empty state inside expanded group */}
                         {expandedGroups[group.key] && group.items.length === 0 && (
-                            <div className="px-4 py-3 text-center">
-                                <p className="text-xs text-slate-400">
-                                    Aucun critère — utilisez <Plus className="h-3 w-3 inline -mt-0.5" /> pour ajouter
+                            <div className="px-4 py-8 text-center bg-slate-50/50">
+                                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 mb-3">
+                                    <Plus className="h-5 w-5 text-slate-400" />
+                                </div>
+                                <h3 className="text-sm font-medium text-slate-900 mb-1">Aucun critère ajouté</h3>
+                                <p className="text-xs text-slate-500">
+                                    Cliquez sur le bouton "Ajouter" en haut à droite pour ajouter {group.label.toLowerCase()}
                                 </p>
                             </div>
                         )}
