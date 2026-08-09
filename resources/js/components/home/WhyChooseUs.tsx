@@ -1,31 +1,31 @@
-import { Scale, CheckCircle, Shield, Clock } from 'lucide-react';
 import Reveal from '@/components/home/Reveal';
+import { Scale, CheckCircle, Shield, Clock } from 'lucide-react';
 
 export default function WhyChooseUs() {
     const features = [
         {
-            icon: Scale,
-            title: 'Adapté au secteur juridique',
+            symbol: <Scale />,
+            title: 'Une expertise terrain',
             description:
-                'Une plateforme conçue spécifiquement pour les besoins uniques des professionnels du droit et des cabinets.',
+                'Chaque short-list est validée par un ex-Directeur juridique ayant lui-même recruté des dizaines de juristes au Maroc et en Afrique. La sélection comprend les codes du métier.',
         },
         {
-            icon: CheckCircle,
-            title: 'Profils vérifiés',
+            symbol: <CheckCircle />,
+            title: 'Confidentialité absolue',
             description:
-                'Chaque profil fait l’objet d’une validation rigoureuse pour garantir la qualité et l’authenticité des candidats.',
+                'Hébergement sécurisé, accès aux profils strictly limité aux paiements confirmés, aucune diffusion publique. Conforme à la loi marocaine 09-08.',
         },
         {
-            icon: Shield,
-            title: 'Gratuit pour les diplômés',
+            symbol: <Shield />,
+            title: 'Sélection sur mesure',
             description:
-                'Aucun coût pour les diplômés en droit souhaitant rejoindre la plateforme et se connecter à des employeurs.',
+                'Spécialisations, langues, séniorité, formation : chaque critère est pris en compte. Une short-list courte et qualifiée, pas un déluge de CV.',
         },
         {
-            icon: Clock,
-            title: 'Accès efficace aux CV',
+            symbol: <Clock />,
+            title: '100% juridique',
             description:
-                'Gagnez du temps grâce à un processus rationalisé qui vous présente rapidement des candidats préqualifiés.',
+                "Juristes d'entreprise, juristes en cabinet, notaires, compliance officers, fiscalistes. Aucune dilution dans un catalogue généraliste.",
         },
     ];
 
@@ -41,19 +41,25 @@ export default function WhyChooseUs() {
                 <div className="mb-20 grid items-end gap-12 md:mb-32 md:grid-cols-2">
                     <Reveal direction="up">
                         <h2
-                            className="mb-4 text-5xl leading-[1.1] tracking-tight md:text-7xl"
+                            className="mb-3 text-5xl leading-[1.1] tracking-tight md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
                             Pourquoi <br />
                             <span className="text-[#C06041] italic">
-                                choisir Jurijob?
+                                JURIJOB ?
                             </span>
                         </h2>
+                        <p className="text-xs uppercase tracking-widest text-[#C06041] font-medium">
+                            Une alternative aux plateformes RH généralistes.
+                        </p>
                     </Reveal>
                     <Reveal direction="up" delay={0.1}>
                         <p className="border-b border-[#FDFCF8]/20 pb-4 text-lg leading-relaxed font-light text-[#FDFCF8]/60 md:text-xl">
                             Construire la confiance grâce à la qualité, la
                             sécurité et l'efficacité au service du droit.
+                        </p>
+                        <p className="border-b border-[#FDFCF8]/20 pb-4 text-lg leading-relaxed font-light text-[#FDFCF8]/80 md:text-xl">
+                            Pensée par et pour les juristes, JURIJOB s'appuie sur 24 ans d'expérience en direction juridique et sur le réseau d'un leader des juristes d'entreprise au Maroc, riche de plusieurs dizaines de milliers de contacts professionnels.
                         </p>
                     </Reveal>
                 </div>
@@ -71,12 +77,9 @@ export default function WhyChooseUs() {
                                     <div className="h-[1px] flex-grow bg-[#FDFCF8]/20 transition-colors duration-500 group-hover:bg-[#C06041]"></div>
                                 </div>
 
-                                {/* Icône avec effet minimal */}
-                                <div className="mb-6">
-                                    <feature.icon
-                                        className="h-8 w-8 text-[#FDFCF8] transition-transform duration-500 group-hover:-translate-y-1"
-                                        strokeWidth={1}
-                                    />
+                                {/* Symbol */}
+                                <div className="mb-6 text-3xl text-[#C06041] font-serif transition-transform duration-500 group-hover:-translate-y-1">
+                                    {feature.symbol}
                                 </div>
 
                                 <h3
@@ -88,7 +91,7 @@ export default function WhyChooseUs() {
                                     {feature.title}
                                 </h3>
 
-                                <p className="text-sm leading-relaxed font-light text-[#FDFCF8]/60">
+                                <p className="text-sm leading-relaxed font-light text-[#FDFCF8]/70">
                                     {feature.description}
                                 </p>
                             </div>
