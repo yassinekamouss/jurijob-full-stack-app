@@ -29,7 +29,6 @@ class SettingsController extends Controller
             'experiences' => $candidat->experiences,
             'formations' => $candidat->formations,
             'specialisations' => $candidat->specialisations,
-            'domainExperiences' => $candidat->domainExperiences,
             'langues' => $candidat->langues,
         ]);
     }
@@ -69,7 +68,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $data = $request->validated();
 
-        if (isset($data['password']) && ! empty($data['password'])) {
+        if (isset($data['password']) && !empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
@@ -90,7 +89,7 @@ class SettingsController extends Controller
         $candidat = $user->candidat;
 
         $file = $request->file('image');
-        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
         $path = $file->storeAs('candidat_profiles', $filename, 'private');
 
         $candidat->update([

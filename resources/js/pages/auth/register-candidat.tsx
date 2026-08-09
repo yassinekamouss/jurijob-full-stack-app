@@ -5,6 +5,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
+import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
 import CandidatDetails from '@/components/signup/CandidatDetails';
 import {
     UserFormData,
@@ -572,16 +573,24 @@ export default function RegisterCandidat() {
                                     </FormNavigator>
                                 )}
 
-                                <div className="mt-10 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-8">
-                                    <p className="text-sm font-medium text-[#1a1f1e]/50">
-                                        Déjà un compte ?
-                                    </p>
-                                    <a
-                                        href="/login"
-                                        className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
-                                    >
-                                        Se connecter
-                                    </a>
+                                <div className="mt-8 border-t border-[#1a1f1e]/5 pt-8 space-y-4">
+                                    <div className="relative flex items-center">
+                                        <div className="flex-1 border-t border-[#1a1f1e]/10" />
+                                        <span className="mx-4 shrink-0 text-xs font-semibold tracking-widest text-gray-400 uppercase">ou inscription rapide</span>
+                                        <div className="flex-1 border-t border-[#1a1f1e]/10" />
+                                    </div>
+                                    <SocialAuthButtons role="candidat" label="S'inscrire" />
+                                    <div className="flex items-center justify-center gap-2 pt-2">
+                                        <p className="text-sm font-medium text-[#1a1f1e]/50">
+                                            Déjà un compte ?
+                                        </p>
+                                        <a
+                                            href="/login"
+                                            className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
+                                        >
+                                            Se connecter
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </section>

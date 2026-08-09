@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RecruiterController;
 use App\Http\Controllers\Auth\CheckEmailController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
 use App\Http\Controllers\Candidate\DiplomaController;
@@ -105,6 +106,20 @@ Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recrut
     'taxonomies' => fn () => TaxonomyRepository::getAll(),
 ]))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
+
+// Social OAuth Routes
+Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirectToProvider'])
+    ->middleware('guest')
+    ->name('social.redirect')
+    ->where('provider', 'google|linkedin-openid');
+
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback'])
+    ->name('social.callback')
+    ->where('provider', 'google|linkedin-openid');
+
+// Fallback: complete registration when role was not pre-selected
+Route::post('/auth/social/complete-registration', [SocialAuthController::class, 'completeRegistration'])
+    ->name('social.complete-registration');
 
 // Guest Email Verification Route (Overrides Fortify's default)
 Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)

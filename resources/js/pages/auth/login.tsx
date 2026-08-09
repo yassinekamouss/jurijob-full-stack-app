@@ -2,6 +2,7 @@ import { Form, Head } from '@inertiajs/react';
 import { useEffect } from 'react';
 import Reveal from '@/components/home/Reveal';
 import InputError from '@/components/input-error';
+import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import PasswordInput from '@/components/password-input';
@@ -87,7 +88,16 @@ export default function Login({
                             </div>
 
                             {status && (
-                                <div className="mb-6 border border-green-200 bg-green-50 p-4 text-center text-sm font-medium text-green-800">
+                                <div
+                                    className={`mb-6 border p-4 text-center text-sm font-medium ${
+                                        status.includes('Candidat ou Recruteur')
+                                            ? 'border-amber-200 bg-amber-50 text-amber-800'
+                                            : 'border-green-200 bg-green-50 text-green-800'
+                                    }`}
+                                >
+                                    {status.includes('Candidat ou Recruteur') && (
+                                        <span className="mr-2">⚠️</span>
+                                    )}
                                     {status}
                                 </div>
                             )}
@@ -185,6 +195,15 @@ export default function Login({
                                                 )}
                                                 Se connecter
                                             </Button>
+
+                                            {/* Social Login Divider */}
+                                            <div className="relative my-2 flex items-center">
+                                                <div className="flex-1 border-t border-[#1a1f1e]/10" />
+                                                <span className="mx-4 shrink-0 text-xs font-semibold tracking-widest text-gray-400 uppercase">ou</span>
+                                                <div className="flex-1 border-t border-[#1a1f1e]/10" />
+                                            </div>
+
+                                            <SocialAuthButtons />
                                         </div>
 
                                         {canRegister && (

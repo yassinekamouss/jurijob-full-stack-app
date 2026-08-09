@@ -60,7 +60,6 @@ export default function Settings({
     experiences,
     formations,
     specialisations,
-    domainExperiences,
     langues,
 }: Props) {
     const { flash } = usePage().props as any;
@@ -212,33 +211,33 @@ export default function Settings({
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0];
-            if (file) {
-                // 2. Créer une URL temporaire pour l'affichage immédiat
-                const localUrl = URL.createObjectURL(file);
-                setPreviewUrl(localUrl);
+        const file = e.target.files?.[0];
+        if (file) {
+            // 2. Créer une URL temporaire pour l'affichage immédiat
+            const localUrl = URL.createObjectURL(file);
+            setPreviewUrl(localUrl);
 
-                router.post(
-                    updateImageRoute.url(),
-                    { _method: 'POST', image: file },
-                    {
-                        forceFormData: true,
-                        preserveScroll: true,
-                        onFinish: () => {
-                            // Optionnel : nettoyer l'URL locale pour éviter les fuites mémoire
-                            // URL.revokeObjectURL(localUrl);
-                        }
+            router.post(
+                updateImageRoute.url(),
+                { _method: 'POST', image: file },
+                {
+                    forceFormData: true,
+                    preserveScroll: true,
+                    onFinish: () => {
+                        // Optionnel : nettoyer l'URL locale pour éviter les fuites mémoire
+                        // URL.revokeObjectURL(localUrl);
                     }
-                );
-            }
-        };
+                }
+            );
+        }
+    };
 
 
-        const currentImageSrc = previewUrl 
-    ? previewUrl 
-    : (candidat?.image_url 
-        ? `${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}` 
-        : "/images/default_profile_image.avif");
+    const currentImageSrc = previewUrl
+        ? previewUrl
+        : (candidat?.image_url
+            ? `${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`
+            : "/images/default_profile_image.avif");
 
 
     return (
@@ -273,77 +272,70 @@ export default function Settings({
                         <nav className="flex gap-2 rounded-2xl bg-[#1a1f1e]/5 p-1 lg:flex-col">
                             <button
                                 onClick={() => setActiveTab('profile')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'profile'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'profile'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <User className="h-4 w-4" />
                                 Profil Général
                             </button>
                             <button
                                 onClick={() => setActiveTab('experiences')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'experiences'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'experiences'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <LayoutGrid className="h-4 w-4" />
                                 Expériences
                             </button>
                             <button
                                 onClick={() => setActiveTab('formations')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'formations'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'formations'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <GraduationCap className="h-4 w-4" />
                                 Formations
                             </button>
                             <button
                                 onClick={() => setActiveTab('specialisations')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'specialisations'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'specialisations'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <Folder className="h-4 w-4" />
                                 Spécialisations
                             </button>
                             <button
                                 onClick={() => setActiveTab('langues')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'langues'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'langues'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <Languages className="h-4 w-4" />
                                 Langues
                             </button>
                             <button
                                 onClick={() => setActiveTab('account')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'account'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'account'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <Lock className="h-4 w-4" />
                                 Compte & Sécurité
                             </button>
                             <button
                                 onClick={() => setActiveTab('security')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'security'
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
                                         ? 'bg-white text-[#1a1f1e] shadow-sm'
                                         : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                    }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />
                                 2FA (Bientôt)
@@ -525,7 +517,7 @@ export default function Settings({
                                                                         {opt.nom}
                                                                     </option>
                                                                 )
-                                                        ))}
+                                                            ))}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
@@ -560,15 +552,15 @@ export default function Settings({
                                                                         <option
                                                                             key={
                                                                                 opt.id
-                                                                        }
-                                                                        value={
-                                                                            opt.id
-                                                                        }
-                                                                    >
-                                                                        {opt.nom}
-                                                                    </option>
-                                                                )
-                                                            ))}
+                                                                            }
+                                                                            value={
+                                                                                opt.id
+                                                                            }
+                                                                        >
+                                                                            {opt.nom}
+                                                                        </option>
+                                                                    )
+                                                                ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -773,13 +765,13 @@ export default function Settings({
                                                 </div>
                                                 {accountForm.errors
                                                     .telephone && (
-                                                    <p className="ml-1 text-xs font-bold text-red-500">
-                                                        {
-                                                            accountForm.errors
-                                                                .telephone
-                                                        }
-                                                    </p>
-                                                )}
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {
+                                                                accountForm.errors
+                                                                    .telephone
+                                                            }
+                                                        </p>
+                                                    )}
                                             </div>
 
                                             <div className="border-t border-[#1a1f1e]/5 pt-6">
