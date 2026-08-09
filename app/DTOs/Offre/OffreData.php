@@ -22,7 +22,7 @@ readonly class OffreData
         public ?int $urgence_id,
         public ?string $notes_complementaires,
         public int $nombre_cv,
-        public string $statut = 'ouvert',
+        public string $statut = 'EN_TRAITEMENT',
         public array $requirements = []
     ) {}
 
@@ -49,7 +49,7 @@ readonly class OffreData
             urgence_id: isset($data['urgence_id']) && $data['urgence_id'] !== '' ? (int) $data['urgence_id'] : null,
             notes_complementaires: $data['notes_complementaires'] ?? null,
             nombre_cv: (int) ($data['nombre_cv'] ?? 1),
-            statut: $data['statut'] ?? 'ouvert',
+            statut: $data['statut'] ?? 'EN_TRAITEMENT',
             requirements: collect($data['requirements'] ?? [])->map(fn ($req) => RequirementData::fromArray($req))->toArray(),
         );
     }

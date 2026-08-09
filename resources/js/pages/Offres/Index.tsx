@@ -137,9 +137,24 @@ export default function Index({ offres }: Props) {
                                     <div className="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#1a1f1e]/[0.02] transition-transform group-hover:scale-150" />
                                     
                                     <div className="justify-between flex items-center mb-6">
-                                        <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
-                                            {offre.poste?.nom || 'Poste'}
-                                        </Badge>
+                                        <div className="flex gap-2 items-center">
+                                            <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
+                                                {offre.poste?.nom || 'Poste'}
+                                            </Badge>
+                                            <Badge className={`border-none text-[9px] uppercase font-black tracking-wider ${
+                                                offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-100 text-amber-700' : 
+                                                offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-100 text-orange-700' : 
+                                                offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-100 text-blue-700' : 
+                                                offre.statut === 'CV_ENVOYES' ? 'bg-emerald-100 text-emerald-700' : 
+                                                'bg-slate-100 text-slate-700'
+                                            }`}>
+                                                {offre.statut === 'EN_TRAITEMENT' ? 'Traitement' : 
+                                                 offre.statut === 'ATTENTE_PAIEMENT' ? 'Paiement' : 
+                                                 offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification' : 
+                                                 offre.statut === 'CV_ENVOYES' ? 'Envoyés' : 
+                                                 'Archivé'}
+                                            </Badge>
+                                        </div>
                                         <span className="text-xs font-bold text-[#1a1f1e]/30">
                                             {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                         </span>

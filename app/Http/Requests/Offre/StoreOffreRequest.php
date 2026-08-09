@@ -40,7 +40,7 @@ class StoreOffreRequest extends FormRequest
             'urgence_id' => 'nullable|exists:urgences,id',
             'notes_complementaires' => 'nullable|string|max:2000',
             'nombre_cv' => 'required|integer|min:1',
-            'statut' => 'nullable|string|in:ouvert,fermé',
+            'statut' => 'nullable|string|in:EN_TRAITEMENT,ATTENTE_PAIEMENT,VERIFICATION_PAIEMENT,CV_ENVOYES,ARCHIVE',
             'requirements' => 'nullable|array',
             'requirements.*.taxonomy_id' => 'required|integer',
             'requirements.*.taxonomy_type' => 'required|string|in:LANGUE,SPECIALISATION',

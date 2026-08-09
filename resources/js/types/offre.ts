@@ -22,7 +22,7 @@ export interface Offre {
     description: string;
     notes_complementaires: string | null;
     nombre_cv: number;
-    statut: 'ouvert' | 'fermé';
+    statut: 'EN_TRAITEMENT' | 'ATTENTE_PAIEMENT' | 'VERIFICATION_PAIEMENT' | 'CV_ENVOYES' | 'ARCHIVE';
     created_at: string;
     updated_at: string;
 

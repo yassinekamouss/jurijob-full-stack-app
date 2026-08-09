@@ -75,6 +75,7 @@ class RegistrationService
                     'role' => 'recruteur',
                     'is_active' => true,
                     'is_archived' => false,
+                    'email_verified_at' => now(),
                 ]);
 
                 $profile = RecruteurProfile::fromArray($data);

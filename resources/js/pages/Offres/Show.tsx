@@ -89,9 +89,17 @@ return [];
                         <div className="flex flex-wrap gap-2 items-center">
                             <Badge className={cn(
                                 "h-7 px-4 rounded-full font-black uppercase tracking-widest text-[9px] border-none shadow-sm",
-                                offre.statut === 'ouvert' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
+                                offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-500 text-white' : 
+                                offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-500 text-white' : 
+                                offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-500 text-white' : 
+                                offre.statut === 'CV_ENVOYES' ? 'bg-emerald-500 text-white' : 
+                                'bg-slate-500 text-white'
                             )}>
-                                {offre.statut === 'ouvert' ? 'Active • Recrutement en cours' : 'Offre Archivée'}
+                                {offre.statut === 'EN_TRAITEMENT' ? 'En traitement' : 
+                                 offre.statut === 'ATTENTE_PAIEMENT' ? 'En attente de paiement' : 
+                                 offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification de paiement' : 
+                                 offre.statut === 'CV_ENVOYES' ? 'CV Envoyés' : 
+                                 'Offre Archivée'}
                             </Badge>
                             <span className="h-1 w-1 rounded-full bg-slate-300 mx-1" />
                             <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1.5 uppercase tracking-widest">
@@ -290,7 +298,7 @@ return [];
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
                                                 <div className="h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
-                                                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80">Statut: En Ligne</span>
+                                                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80">Statut: {offre.statut === 'EN_TRAITEMENT' ? 'En traitement' : offre.statut === 'ATTENTE_PAIEMENT' ? 'En attente de paiement' : offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification de paiement' : offre.statut === 'CV_ENVOYES' ? 'CV Envoyés' : 'Archivée'}</span>
                                             </div>
                                             <Badge variant="outline" className="text-[10px] font-black uppercase tracking-widest border-white/10 text-white">
                                                 ID: #{offre.id}
