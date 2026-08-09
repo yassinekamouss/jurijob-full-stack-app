@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CandidateController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\RecruiterController;
 use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
@@ -11,7 +14,6 @@ use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
-use App\Http\Controllers\Candidate\DomaineExperienceController;
 use App\Http\Controllers\Offre\MatchingController;
 use App\Http\Controllers\Offre\MatchingTestController;
 use App\Http\Controllers\Offre\OffreController;
@@ -20,9 +22,6 @@ use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsContro
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\CandidateController;
-use App\Http\Controllers\Admin\RecruiterController;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -63,8 +62,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('experiences', ExperienceController::class)->only(['store', 'update', 'destroy']);
         Route::resource('formations', FormationController::class)->only(['store', 'update', 'destroy']);
         Route::resource('specialisations', SpecialisationController::class)->only(['store', 'update', 'destroy']);
-        Route::resource('domaine-experiences', DomaineExperienceController::class)->only(['store', 'update', 'destroy'])
-            ->parameters(['domaine-experiences' => 'domaine_experience']);
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
     });
 

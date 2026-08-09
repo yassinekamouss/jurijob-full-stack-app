@@ -7,8 +7,6 @@ use App\DTOs\Offre\RequirementData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Offre\StoreOffreRequest;
 use App\Models\Offre\Offre;
-use App\Models\Taxonomy\DomaineExperience;
-use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\Langue;
 use App\Models\Taxonomy\NiveauLangue;
 use App\Models\Taxonomy\Specialisation;
@@ -31,15 +29,11 @@ class OffreController extends Controller
         auth()->user()->loadMissing('recruteur');
 
         $offres = auth()->user()->recruteur->offres()
-            ->with(['poste', 'typeTravail', 'modeTravail', 'niveauExperience', 'critereGroupes'])
+            ->with(['poste', 'typeTravail', 'modeTravail', 'niveauExperience', 'criteresMultiples'])
             ->latest()
             ->get()
             ->map(function (Offre $offre) {
-                // Count total criteria across all groups
-                $totalCriteria = $offre->critereGroupes
-                    ->reduce(fn ($sum, $groupe) => $sum + $groupe->criteres->count(), 0);
-
-                $offre->setAttribute('criteria_count', $totalCriteria);
+                $offre->setAttribute('criteria_count', $offre->criteresMultiples->count());
 
                 return $offre;
             });
@@ -72,15 +66,18 @@ class OffreController extends Controller
             /** @var Offre $offre */
             $offre = $recruteur->offres()->create($offreData->toArray());
 
-            $this->syncRequirements($offre, $offreData->requirements);
+            $this->syncCriteresMultiples($offre, $offreData->requirements);
 
             DB::commit();
 
-            return to_route('offres.matching', $offre)->with('success', 'Offre publiée avec succès.');
+            $nomEntreprise = $recruteur->nom_entreprise;
+            $nombreCv = $offreData->nombre_cv;
+
+            return to_route('offres.index')->with('success', "Merci, {$nomEntreprise} !\nVotre demande a été transmise à l'équipe JURIJOB.\n\nVotre short-list de {$nombreCv} CV vous sera communiquée sous 48h ouvrées. Vous pouvez suivre son statut depuis votre tableau de bord.");
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Erreur lors de la publication de l\'offre : '.$e->getMessage());
+            return back()->with('error', "Erreur lors de la publication de l'offre : ".$e->getMessage());
         }
     }
 
@@ -96,11 +93,14 @@ class OffreController extends Controller
             'typeTravail',
             'modeTravail',
             'niveauExperience',
-            'critereGroupes.criteres',
+            'formationJuridique',
+            'salaire',
+            'urgence',
+            'criteresMultiples',
         ]);
 
         $offreData = array_merge($offre->toArray(), [
-            'requirements' => $this->transformCritereGroupesToRequirements($offre),
+            'requirements' => $this->transformCriteresMultiplesToRequirements($offre),
         ]);
 
         return Inertia::render('Offres/Show', [
@@ -115,10 +115,10 @@ class OffreController extends Controller
     {
         $this->authorize('update', $offre);
 
-        $offre->load(['critereGroupes.criteres']);
+        $offre->load(['criteresMultiples']);
 
         $offreData = array_merge($offre->toArray(), [
-            'requirements' => $this->transformCritereGroupesToRequirements($offre),
+            'requirements' => $this->transformCriteresMultiplesToRequirements($offre),
         ]);
 
         return Inertia::render('Offres/Edit', [
@@ -139,7 +139,7 @@ class OffreController extends Controller
         try {
             $offre->update($offreData->toArray());
 
-            $this->syncRequirements($offre, $offreData->requirements);
+            $this->syncCriteresMultiples($offre, $offreData->requirements);
 
             DB::commit();
 
@@ -147,7 +147,7 @@ class OffreController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Erreur lors de la mise à jour de l\'offre.');
+            return back()->with('error', "Erreur lors de la mise à jour de l'offre.");
         }
     }
 
@@ -163,106 +163,63 @@ class OffreController extends Controller
 
             return to_route('offres.index')->with('success', 'Offre supprimée avec succès.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur lors de la suppression de l\'offre.');
+            return back()->with('error', "Erreur lors de la suppression de l'offre.");
         }
     }
 
     /**
-     * Sync all requirement types for an offer using the new critereGroupes architecture.
+     * Sync multiple-choice criteria (Langues and Spécialisations) for an offer.
      *
      * @param  RequirementData[]  $requirements
      */
-    private function syncRequirements(Offre $offre, array $requirements): void
+    private function syncCriteresMultiples(Offre $offre, array $requirements): void
     {
-        $typeMapping = [
-            'specialisation' => 'specialisation',
-            'langue' => 'langue',
-            'domaine_experience' => 'domaine_experience',
-            'formation_juridique' => 'formation_juridique',
-        ];
+        $offre->criteresMultiples()->delete();
 
-        // Group requirements by type_critere
-        $grouped = [];
         foreach ($requirements as $req) {
-            $typeCritere = $typeMapping[$req->taxonomy_type] ?? null;
-            if (! $typeCritere) {
-                continue;
-            }
-
-            if (! isset($grouped[$typeCritere])) {
-                $grouped[$typeCritere] = [];
-            }
-
-            $grouped[$typeCritere][] = [
+            $offre->criteresMultiples()->create([
+                'type_critere' => $req->taxonomy_type,
                 'critere_id' => $req->taxonomy_id,
-                'valeur_id' => $req->requirements_data['niveau_langue_id'] ?? null,
-                'importance' => $req->importance,
-                'operator' => $req->operator ?? 'OR',
-            ];
-        }
-
-        // Delete existing critereGroupes for this offre
-        $offre->critereGroupes()->delete();
-
-        // Create new critereGroupes with their criteres
-        foreach ($grouped as $typeCritere => $items) {
-            $groupe = $offre->critereGroupes()->create([
-                'type_critere' => $typeCritere,
-                'operateur' => $items[0]['operator'] ?? 'OR',
+                'metadata' => empty($req->metadata) ? null : $req->metadata,
             ]);
-
-            foreach ($items as $item) {
-                unset($item['operator']);
-                $groupe->criteres()->create($item);
-            }
         }
     }
 
     /**
-     * Transform critereGroupes back to requirements format for frontend compatibility.
+     * Transform criteresMultiples back to requirements format for frontend compatibility.
+     *
+     * @return array<int, array<string, mixed>>
      */
-    private function transformCritereGroupesToRequirements(Offre $offre): array
+    private function transformCriteresMultiplesToRequirements(Offre $offre): array
     {
         $requirements = [];
-        $typeMapping = [
-            'specialisation' => 'specialisation',
-            'langue' => 'langue',
-            'domaine_experience' => 'domaine_experience',
-            'formation_juridique' => 'formation_juridique',
-        ];
 
-        $taxonomyModels = [
-            'specialisation' => Specialisation::class,
-            'langue' => Langue::class,
-            'domaine_experience' => DomaineExperience::class,
-            'formation_juridique' => FormationJuridique::class,
-        ];
+        $langueIds = $offre->criteresMultiples->where('type_critere', 'LANGUE')->pluck('critere_id');
+        $specialisationIds = $offre->criteresMultiples->where('type_critere', 'SPECIALISATION')->pluck('critere_id');
 
-        foreach ($offre->critereGroupes as $groupe) {
-            $modelClass = $taxonomyModels[$groupe->type_critere] ?? null;
-            $items = $modelClass ? $modelClass::whereIn('id', $groupe->criteres->pluck('critere_id'))->get()->keyBy('id') : collect();
+        $langues = Langue::whereIn('id', $langueIds)->get()->keyBy('id');
+        $specialisations = Specialisation::whereIn('id', $specialisationIds)->get()->keyBy('id');
+        $niveauLangues = NiveauLangue::all()->keyBy('id');
 
-            foreach ($groupe->criteres as $critere) {
-                $taxonomyType = $typeMapping[$groupe->type_critere] ?? $groupe->type_critere;
+        foreach ($offre->criteresMultiples as $critere) {
+            $label = match ($critere->type_critere) {
+                'LANGUE' => $langues[$critere->critere_id]?->nom ?? 'Inconnu',
+                'SPECIALISATION' => $specialisations[$critere->critere_id]?->nom ?? 'Inconnu',
+                default => 'Inconnu',
+            };
 
-                $requirementData = [];
-                if ($groupe->type_critere === 'langue' && $critere->valeur_id) {
-                    $requirementData['niveau_langue_id'] = $critere->valeur_id;
-                    $niveau = NiveauLangue::find($critere->valeur_id);
-                    if ($niveau) {
-                        $requirementData['niveau_nom'] = $niveau->nom;
-                    }
-                }
+            $metadata = $critere->metadata ?? [];
 
-                $requirements[] = [
-                    'taxonomy_id' => $critere->critere_id,
-                    'taxonomy_type' => $taxonomyType,
-                    'label' => $items[$critere->critere_id]->nom ?? 'Inconnu',
-                    'importance' => $critere->importance,
-                    'operator' => $groupe->operateur,
-                    'requirements_data' => $requirementData,
-                ];
+            if ($critere->type_critere === 'LANGUE' && isset($metadata['niveau_langue_id'])) {
+                $metadata['niveau_nom'] = $niveauLangues[$metadata['niveau_langue_id']]?->nom ?? null;
             }
+
+            $requirements[] = [
+                'taxonomy_id' => $critere->critere_id,
+                'taxonomy_type' => $critere->type_critere,
+                'label' => $label,
+                'metadata' => $metadata,
+            ];
         }
 
         return $requirements;

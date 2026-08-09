@@ -117,11 +117,6 @@ class RegistrationService
             $candidat->specialisations()->createMany($specialisations);
         }
 
-        if (! empty($data['domain_experiences'])) {
-            $domainExperiences = array_map(fn ($item) => ['domaine_experience_id' => $item['domain_experience_id']], $data['domain_experiences']);
-            $candidat->domainExperiences()->createMany($domainExperiences);
-        }
-
         if (! empty($data['langues'])) {
             $langues = array_map(function ($item) {
                 return LanguageData::fromArray($item)->toArray();

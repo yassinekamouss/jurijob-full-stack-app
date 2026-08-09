@@ -33,11 +33,6 @@ class Candidat extends Model
         return $this->hasMany(CandidatSpecialisation::class);
     }
 
-    public function domainExperiences(): HasMany
-    {
-        return $this->hasMany(CandidatDomainExperience::class);
-    }
-
     public function langues(): HasMany
     {
         return $this->hasMany(CandidatLangue::class);

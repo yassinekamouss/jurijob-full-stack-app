@@ -1,9 +1,3 @@
-import DashboardHeader from '@/components/recruiter/DashboardHeader';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { index as offresIndex, edit as offresEdit, matching as offresMatching } from '@/routes/offres';
-import { Offre } from '@/types/offre';
 import { Head, Link } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -22,18 +16,21 @@ import {
     LayoutDashboard
 } from 'lucide-react';
 import { useMemo } from 'react';
+import DashboardHeader from '@/components/recruiter/DashboardHeader';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { index as offresIndex, edit as offresEdit, matching as offresMatching } from '@/routes/offres';
+import type { Offre } from '@/types/offre';
 
 interface Props {
     offre: Offre;
 }
 
 const CATEGORIES = [
-    { label: 'Localisations', type: 'ville', icon: MapPin, color: 'text-emerald-600 bg-emerald-50' },
-    { label: 'Spécialisations', type: 'specialisation', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50' },
-    { label: 'Langues souhaitées', type: 'langue', icon: Globe, color: 'text-sky-600 bg-sky-50' },
-    { label: 'Domaines d\'expérience', type: 'domaine_experience', icon: Briefcase, color: 'text-amber-600 bg-amber-50' },
-    { label: 'Formations Juridiques', type: 'formation_juridique', icon: GraduationCap, color: 'text-rose-600 bg-rose-50' },
+    { label: 'Spécialisations', type: 'SPECIALISATION', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50' },
+    { label: 'Langues souhaitées', type: 'LANGUE', icon: Globe, color: 'text-sky-600 bg-sky-50' },
 ];
 
 const IMPORTANCE_LEVELS = {
@@ -46,7 +43,9 @@ const IMPORTANCE_LEVELS = {
 export default function Show({ offre }: Props) {
     // Group requirements by their category label
     const groupedRequirements = useMemo(() => {
-        if (!offre.requirements) return [];
+        if (!offre.requirements) {
+return [];
+}
 
         return CATEGORIES.map(cat => ({
             ...cat,
@@ -203,20 +202,20 @@ export default function Show({ offre }: Props) {
                                                     </div>
                                                 </div>
 
-                                                {/* Logic Display */}
+                                                {/* Item count */}
                                                 {group.items.length > 1 && (
-                                                    <Badge variant="outline" className={cn(
-                                                        "h-8 px-4 rounded-full font-black text-[10px] uppercase tracking-widest shadow-sm",
-                                                        (group.items[0] as any).operator === 'AND' ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-slate-900 text-white border-slate-900'
-                                                    )}>
-                                                        MODIFICATEUR LOGIQUE : {(group.items[0] as any).operator === 'AND' ? 'TOUS REQUIS (AND)' : 'AU MOINS UN (OR)'}
+                                                    <Badge variant="outline" className="h-8 px-4 rounded-full font-black text-[10px] uppercase tracking-widest shadow-sm bg-slate-900 text-white border-slate-900">
+                                                        {group.items.length} critères
                                                     </Badge>
                                                 )}
                                             </div>
 
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                 {group.items.map((req, reqIdx) => {
-                                                    const importance = IMPORTANCE_LEVELS[req.importance as keyof typeof IMPORTANCE_LEVELS];
+                                                    const importanceValue = (req.metadata?.importance || 'important') as keyof typeof IMPORTANCE_LEVELS;
+                                                    const importance = IMPORTANCE_LEVELS[importanceValue] ?? IMPORTANCE_LEVELS.important;
+                                                    const niveauNom = req.metadata?.niveau_nom;
+
                                                     return (
                                                         <div
                                                             key={reqIdx}
@@ -224,22 +223,22 @@ export default function Show({ offre }: Props) {
                                                         >
                                                             <div className="min-w-0 pr-4">
                                                                 <p className="font-bold text-slate-900 line-clamp-1">{req.label}</p>
-                                                                {req.requirements_data?.niveau_nom ? (
-                                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Niveau: {req.requirements_data.niveau_nom}</p>
-                                                                ) : req.requirements_data?.niveau_langue_id && (
-                                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Niveau ID: {req.requirements_data.niveau_langue_id}</p>
+                                                                {niveauNom && (
+                                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Niveau: {niveauNom}</p>
                                                                 )}
                                                             </div>
-                                                            <Badge className={cn("flex-shrink-0 h-6 px-3 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border shadow-sm", importance.color)}>
-                                                                {importance.label}
-                                                            </Badge>
+                                                            {req.taxonomy_type === 'LANGUE' && (
+                                                                <Badge className={cn("flex-shrink-0 h-6 px-3 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border shadow-sm", importance.color)}>
+                                                                    {importance.label}
+                                                                </Badge>
+                                                            )}
                                                         </div>
                                                     );
                                                 })}
                                             </div>
 
-                                            {/* Decorative connector for AND logic */}
-                                            {group.items.length > 1 && (group.items[0] as any).operator === 'AND' && (
+                                            {/* Decorative connector */}
+                                            {group.items.length > 1 && (
                                                 <div className="absolute left-1/2 -bottom-3 transform -translate-x-1/2 flex items-center justify-center p-1 bg-white border border-indigo-100 rounded-full text-indigo-400 shadow-sm">
                                                     <CheckCircle2 className="h-4 w-4" />
                                                 </div>

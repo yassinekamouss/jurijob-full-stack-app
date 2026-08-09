@@ -24,6 +24,11 @@ export default function Create({ taxonomies }: Props) {
         mode_travail_id: '',
         ville_id: '',
         niveau_experience_id: '',
+        formation_juridique_id: '',
+        salaire_id: '',
+        urgence_id: '',
+        notes_complementaires: '',
+        nombre_cv: 1,
         requirements: [] as any[],
     });
 

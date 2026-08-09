@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Info, Award } from 'lucide-react';
+import { ArrowLeft, Info, Award, Users, AlertTriangle } from 'lucide-react';
 
 interface Props {
     data: any;
@@ -22,28 +22,24 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
     const getTaxonomyName = (taxId: number, type: string) => {
         const keyMap: { [key: string]: string } = {
             ville: 'villes',
-            specialisation: 'specialisations',
-            langue: 'langues',
+            SPECIALISATION: 'specialisations',
+            LANGUE: 'langues',
             mode_travail: 'modeTravails',
-            domaine_experience: 'domaineExperiences',
             formation_juridique: 'formationJuridiques',
+            salaire: 'salaires',
+            urgence: 'urgences',
         };
         const key = keyMap[type];
         const item = taxonomies[key]?.find((t: any) => t.id === taxId);
         return item?.nom || 'Inconnu';
     };
 
-    const getPosteName = () => {
-        return taxonomies.postes.find((p: any) => p.id === Number(data.poste_id))?.nom || 'Non spécifié';
-    };
-
-    const getTypeTravailName = () => {
-        return taxonomies.typeTravails.find((p: any) => p.id === Number(data.type_travail_id))?.nom || 'Non spécifié';
-    };
-
-    const getNiveauExperienceName = () => {
-        return taxonomies.niveauExperiences.find((p: any) => p.id === Number(data.niveau_experience_id))?.nom || 'Non spécifié';
-    };
+    const getPosteName = () => taxonomies.postes?.find((p: any) => p.id === Number(data.poste_id))?.nom || 'Non spécifié';
+    const getTypeTravailName = () => taxonomies.typeTravails?.find((p: any) => p.id === Number(data.type_travail_id))?.nom || 'Non spécifié';
+    const getNiveauExperienceName = () => taxonomies.niveauExperiences?.find((p: any) => p.id === Number(data.niveau_experience_id))?.nom || 'Non spécifié';
+    const getFormationJuridiqueName = () => data.formation_juridique_id ? taxonomies.formationJuridiques?.find((p: any) => p.id === Number(data.formation_juridique_id))?.nom : null;
+    const getSalaireName = () => data.salaire_id ? taxonomies.salaires?.find((p: any) => p.id === Number(data.salaire_id))?.nom : 'Confidentiel';
+    const getUrgenceName = () => data.urgence_id ? taxonomies.urgences?.find((p: any) => p.id === Number(data.urgence_id))?.nom : 'Non spécifié';
 
     return (
         <div className="space-y-10">
@@ -69,8 +65,40 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                                 <Badge variant="secondary" className="bg-gray-100 text-gray-900">{getPosteName()}</Badge>
                                 <Badge variant="secondary" className="bg-gray-100 text-gray-900">{getTypeTravailName()}</Badge>
                                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">{getNiveauExperienceName()}</Badge>
+                                {getFormationJuridiqueName() && (
+                                    <Badge variant="secondary" className="bg-purple-100 text-purple-800">{getFormationJuridiqueName()}</Badge>
+                                )}
                             </div>
-                            <div className="prose prose-sm max-w-none text-gray-600 font-sans line-clamp-6">
+                            
+                            <div className="flex flex-col gap-2 mt-4 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-slate-500 font-medium">Salaire proposé :</span>
+                                    <span className="font-semibold text-slate-800">{getSalaireName()}</span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-slate-500 font-medium">Degré d'urgence :</span>
+                                    <span className="font-semibold flex items-center gap-1.5 text-slate-800">
+                                        <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
+                                        {getUrgenceName()}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="text-slate-500 font-medium">Nombre de CV souhaité :</span>
+                                    <span className="font-semibold flex items-center gap-1.5 text-slate-800">
+                                        <Users className="h-3.5 w-3.5 text-indigo-500" />
+                                        {data.nombre_cv || 1} CV(s)
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            {data.notes_complementaires && (
+                                <div className="mt-4 p-4 bg-yellow-50/50 border border-yellow-100 rounded-lg">
+                                    <h4 className="text-xs font-bold text-yellow-800 uppercase tracking-wider mb-1">Notes pour l'équipe</h4>
+                                    <p className="text-sm text-yellow-900/80">{data.notes_complementaires}</p>
+                                </div>
+                            )}
+
+                            <div className="prose prose-sm max-w-none text-gray-600 font-sans line-clamp-6 mt-4">
                                 {data.description}
                             </div>
                         </div>
@@ -81,16 +109,22 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                     <div>
                         <h3 className="text-xs uppercase tracking-widest font-bold text-muted-foreground mb-4">Critères de Matching</h3>
                         <div className="space-y-3">
-                                {data.requirements.map((req: any, index: number) => {
-                                    const importance = importanceLevels[req.importance];
-                                    const levelName = req.taxonomy_type === 'langue' 
-                                        ? taxonomies.niveauLangues.find((l: any) => l.id === Number(req.requirements_data?.niveau_langue_id))?.nom 
+                            {data.requirements.length === 0 ? (
+                                <div className="p-4 rounded-lg border border-dashed border-gray-200 text-center text-sm text-gray-500">
+                                    Aucun critère spécifique défini
+                                </div>
+                            ) : (
+                                data.requirements.map((req: any, index: number) => {
+                                    const importanceValue = req.metadata?.importance || 'important';
+                                    const importance = importanceLevels[importanceValue] || importanceLevels.important;
+                                    const levelName = req.taxonomy_type === 'LANGUE' 
+                                        ? taxonomies.niveauLangues?.find((l: any) => l.id === Number(req.metadata?.niveau_langue_id))?.nom 
                                         : null;
 
                                     return (
-                                    <div key={index} className="flex items-center justify-between p-3 rounded-lg border border-gray-50 bg-white">
+                                        <div key={index} className="flex items-center justify-between p-3 rounded-lg border border-gray-50 bg-white">
                                             <div className="flex items-center gap-3">
-                                                <Award className={`h-4 w-4 ${req.importance === 'indispensable' ? 'text-red-500' : 'text-gray-300'}`} />
+                                                <Award className={`h-4 w-4 ${importanceValue === 'indispensable' ? 'text-red-500' : 'text-gray-300'}`} />
                                                 <div className="flex flex-col">
                                                     <span className="font-sans font-medium text-gray-800 text-sm">
                                                         {getTaxonomyName(req.taxonomy_id, req.taxonomy_type)}
@@ -107,7 +141,8 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                                             </Badge>
                                         </div>
                                     );
-                                })}
+                                })
+                            )}
                         </div>
                     </div>
                 </div>

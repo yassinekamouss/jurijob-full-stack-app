@@ -1,18 +1,69 @@
+import { Head, Link, usePage } from '@inertiajs/react';
+import { motion } from 'framer-motion';
+import { Briefcase, Plus, Search, CheckCircle2 } from 'lucide-react';
+import { useEffect } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 import { create as offresCreate, show as offresShow, edit as offresEdit } from '@/routes/offres';
-import { Offre } from '@/types/offre';
-import { Head, Link } from '@inertiajs/react';
-import { motion } from 'framer-motion';
-import { Briefcase, Plus, Search } from 'lucide-react';
+import type { Offre } from '@/types/offre';
 
 interface Props {
     offres: Offre[];
 }
 
 export default function Index({ offres }: Props) {
+    const { flash } = usePage().props as any;
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.custom(
+                (t) => (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className={`${
+                            t.visible ? 'animate-enter' : 'animate-leave'
+                        } max-w-md w-full bg-[#1a1f1e] shadow-2xl rounded-2xl pointer-events-auto flex flex-col p-5 border border-white/10`}
+                    >
+                        <div className="flex items-start gap-4">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <CheckCircle2 className="h-6 w-6 text-[#4ade80]" />
+                            </div>
+                            <div className="flex-1 w-0">
+                                <p className="text-sm font-medium text-white whitespace-pre-line leading-relaxed">
+                                    {flash.success}
+                                </p>
+                            </div>
+                            <div className="flex-shrink-0 ml-4 flex">
+                                <button
+                                    onClick={() => toast.dismiss(t.id)}
+                                    className="bg-[#1a1f1e] rounded-md inline-flex text-white/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-colors"
+                                >
+                                    <span className="sr-only">Fermer</span>
+                                    <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                ),
+                { duration: 8000, id: 'flash-success' }
+            );
+        }
+
+        if (flash?.error) {
+            toast.error(flash.error, {
+                duration: 5000,
+            });
+        }
+    }, [flash]);
+
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Mes Offres - Jurijob" />
+            <Toaster position="top-right" />
 
             {/* Grain Texture Overlay */}
             <div

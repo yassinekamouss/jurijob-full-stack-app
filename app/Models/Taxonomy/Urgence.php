@@ -4,12 +4,12 @@ namespace App\Models\Taxonomy;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Specialisation extends Model
+class Urgence extends Model
 {
     public $timestamps = false;
 
     protected $fillable = [
         'nom',
-        'domaine',
+        'code',
     ];
 }

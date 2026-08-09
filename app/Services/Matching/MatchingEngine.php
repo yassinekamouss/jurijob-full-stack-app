@@ -31,7 +31,7 @@ class MatchingEngine
     public function getMatches(Offre $offre): Collection
     {
         // 0. Eager load only the necessary data for matching strategies to avoid N+1 queries.
-        $offre->loadMissing(['critereGroupes.criteres']);
+        $offre->loadMissing(['criteresMultiples']);
 
         $query = Candidat::query()->select('candidats.id', 'candidats.user_id');
 

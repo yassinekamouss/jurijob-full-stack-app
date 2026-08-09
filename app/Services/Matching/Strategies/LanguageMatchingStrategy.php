@@ -9,7 +9,7 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
 {
     private const SCORE_ALIAS = 'lang_score';
 
-    private const TYPE = 'langue';
+    private const TYPE = 'LANGUE';
 
     protected array $weights = [
         'indispensable' => 50,
@@ -25,63 +25,56 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
 
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
-
-        if (!$group) {
-            return $query;
-        }
-
-        $indispensables = $group->criteres->where('importance', 'indispensable');
+        $criteres = $this->getCriteres($offre);
+        $indispensables = $criteres->filter(fn ($c) => ($c->metadata['importance'] ?? '') === 'indispensable');
 
         if ($indispensables->isEmpty()) {
             return $query;
         }
 
-        $aggregator = $group->operateur === 'OR' ? 'orWhere' : 'where';
-
-        return $query->whereIn('candidats.id', function ($q) use ($indispensables, $group) {
+        return $query->whereIn('candidats.id', function ($q) use ($indispensables) {
             $q->select('candidat_id')
                 ->from('candidat_langues')
-                ->where(function ($sub) use ($indispensables, $group) {
+                ->where(function ($sub) use ($indispensables) {
                     foreach ($indispensables as $req) {
-                        $method = ($group->operateur === 'OR') ? 'orWhere' : 'where';
-                        $sub->$method(function ($s) use ($req) {
-                            $s->where('langue_id', $req->critere_id)
-                                ->where('niveau_langue_id', '>=', $req->valeur_id);
+                        $niveauId = $req->metadata['niveau_langue_id'] ?? null;
+                        $sub->orWhere(function ($s) use ($req, $niveauId) {
+                            $s->where('langue_id', $req->critere_id);
+                            if ($niveauId) {
+                                $s->where('niveau_langue_id', '>=', $niveauId);
+                            }
                         });
                     }
                 });
-
-            if ($group->operateur === 'AND') {
-                $q->groupBy('candidat_id')
-                    ->havingRaw('COUNT(DISTINCT langue_id) = ?', [$indispensables->count()]);
-            }
         });
     }
 
     public function getScoreSubquery(Offre $offre): string
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
+        $criteres = $this->getCriteres($offre);
 
-        if (!$group || $group->criteres->isEmpty()) {
+        if ($criteres->isEmpty()) {
             return '0';
         }
 
-        $ids = $group->criteres->pluck('critere_id')->implode(',');
+        $ids = $criteres->pluck('critere_id')->implode(',');
 
-        $cases = $group->criteres->map(function ($req) {
+        $cases = $criteres->map(function ($req) {
             $langueId = (int) $req->critere_id;
-            $requiredLevelId = (int) $req->valeur_id;
-            $weight = $this->getWeight($req->importance);
+            $importance = $req->metadata['importance'] ?? 'facultatif';
+            $requiredLevelId = (int) ($req->metadata['niveau_langue_id'] ?? 0);
+            $weight = $this->getWeight($importance);
             $bonusWeight = (int) ($weight * 1.1);
 
-            return "WHEN langue_id = $langueId AND niveau_langue_id = $requiredLevelId THEN $weight " .
-                "WHEN langue_id = $langueId AND niveau_langue_id > $requiredLevelId THEN $bonusWeight";
+            if ($requiredLevelId > 0) {
+                return "WHEN langue_id = $langueId AND niveau_langue_id = $requiredLevelId THEN $weight ".
+                    "WHEN langue_id = $langueId AND niveau_langue_id > $requiredLevelId THEN $bonusWeight";
+            }
+
+            return "WHEN langue_id = $langueId THEN $weight";
         })->implode(' ');
 
-        $aggregator = $group->operateur === 'OR' ? 'MAX' : 'SUM';
-
-        return "(SELECT COALESCE($aggregator(CASE $cases ELSE 0 END), 0) 
+        return "(SELECT COALESCE(SUM(CASE $cases ELSE 0 END), 0) 
                   FROM candidat_langues 
                   WHERE langue_id IN ($ids) 
                   AND candidat_id = candidats.id)";
@@ -94,14 +87,12 @@ class LanguageMatchingStrategy extends AbstractMatchingStrategy
 
     public function getMaxScore(Offre $offre): int
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
+        $criteres = $this->getCriteres($offre);
 
-        if (!$group) {
+        if ($criteres->isEmpty()) {
             return 0;
         }
 
-        $sumFunc = $group->operateur === 'OR' ? 'max' : 'sum';
-
-        return (int) $group->criteres->$sumFunc(fn($req) => $this->getWeight($req->importance) * 1.1);
+        return (int) $criteres->sum(fn ($c) => $this->getWeight($c->metadata['importance'] ?? 'facultatif') * 1.1);
     }
 }

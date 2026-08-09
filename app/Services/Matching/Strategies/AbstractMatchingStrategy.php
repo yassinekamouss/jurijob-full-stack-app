@@ -3,14 +3,15 @@
 namespace App\Services\Matching\Strategies;
 
 use App\Models\Offre\Offre;
-use App\Models\Offre\OffreCritereGroupe;
+use App\Models\Offre\OffreCritereMultiple;
 use App\Services\Matching\Contracts\MatchingStrategy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 abstract class AbstractMatchingStrategy implements MatchingStrategy
 {
     /**
-     * Default weights for importance levels (Indispensable, Important, Souhaitable, Facultatif).
+     * Default weights for importance levels.
      *
      * @var array<string, int>
      */
@@ -54,9 +55,7 @@ abstract class AbstractMatchingStrategy implements MatchingStrategy
      */
     public function isActive(Offre $offre): bool
     {
-        $group = $this->getGroupForType($offre, $this->getStrategyType());
-
-        return $group !== null && $group->criteres->isNotEmpty();
+        return $this->getCriteres($offre)->isNotEmpty();
     }
 
     /**
@@ -65,30 +64,31 @@ abstract class AbstractMatchingStrategy implements MatchingStrategy
     abstract protected function getStrategyType(): string;
 
     /**
-     * Helper to retrieve the criteria group for a specific type.
+     * Retrieve all criteria for this strategy's type from the flat table.
+     *
+     * @return Collection<int, OffreCritereMultiple>
      */
-    protected function getGroupForType(Offre $offre, string $type): ?OffreCritereGroupe
+    protected function getCriteres(Offre $offre): Collection
     {
-        return $offre->critereGroupes
-            ->where('type_critere', $type)
-            ->first();
+        return $offre->criteresMultiples
+            ->where('type_critere', $this->getStrategyType())
+            ->values();
     }
 
     /**
-     * Build filters for indispensable criteria based on group operator (AND/OR).
+     * Build filters for indispensable criteria.
      *
-     * @param  Builder  $query  The candidate query.
-     * @param  OffreCritereGroupe  $group  The criteria group.
-     * @param  string  $pivotTable  The name of the candidate pivot table.
-     * @param  string  $pivotColumn  The name of the foreign key column in the pivot table.
+     * @param  Collection<int, OffreCritereMultiple>  $criteres
      */
     protected function applyIndispensableFilter(
         Builder $query,
-        OffreCritereGroupe $group,
+        Collection $criteres,
         string $pivotTable,
         string $pivotColumn
     ): Builder {
-        $indispensables = $group->criteres->where('importance', 'indispensable');
+        $indispensables = $criteres->filter(
+            fn (OffreCritereMultiple $c) => ($c->metadata['importance'] ?? '') === 'indispensable'
+        );
 
         if ($indispensables->isEmpty()) {
             return $query;
@@ -96,22 +96,13 @@ abstract class AbstractMatchingStrategy implements MatchingStrategy
 
         $ids = $indispensables->pluck('critere_id')->toArray();
 
-        // AND Login: Candidate must possess ALL requested indispensable criteria.
-        if ($group->operateur === 'AND') {
-            return $query->whereIn('candidats.id', function ($q) use ($pivotTable, $pivotColumn, $ids) {
-                $q->select('candidat_id')
-                    ->from($pivotTable)
-                    ->whereIn($pivotColumn, $ids)
-                    ->groupBy('candidat_id')
-                    ->havingRaw("COUNT(DISTINCT $pivotColumn) = ?", [count($ids)]);
-            });
-        }
-
-        // OR Logic: Candidate must possess at least ONE of the requested indispensable criteria.
+        // AND Logic: Candidate must possess ALL requested indispensable criteria.
         return $query->whereIn('candidats.id', function ($q) use ($pivotTable, $pivotColumn, $ids) {
             $q->select('candidat_id')
                 ->from($pivotTable)
-                ->whereIn($pivotColumn, $ids);
+                ->whereIn($pivotColumn, $ids)
+                ->groupBy('candidat_id')
+                ->havingRaw("COUNT(DISTINCT $pivotColumn) = ?", [count($ids)]);
         });
     }
 }
