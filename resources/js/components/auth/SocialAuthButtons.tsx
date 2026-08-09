@@ -31,7 +31,7 @@ const LinkedInIcon = () => (
 );
 
 export default function SocialAuthButtons({ role, label = 'Continuer' }: Props) {
-    const buildUrl = (provider: 'google' | 'linkedin') => {
+    const buildUrl = (provider: 'google' | 'linkedin-openid') => {
         const base = `/auth/${provider}/redirect`;
         return role ? `${base}?role=${role}` : base;
     };
