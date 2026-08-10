@@ -2,7 +2,6 @@ import { Head, Link } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ArrowLeft,
-    Calendar,
     MapPin,
     Briefcase,
     GraduationCap,
@@ -11,17 +10,15 @@ import {
     CheckCircle2,
     Clock,
     Layers,
-    Target,
-    Settings,
-    LayoutDashboard
+    LayoutDashboard,
+    Info
 } from 'lucide-react';
 import { useMemo } from 'react';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { index as offresIndex, edit as offresEdit, matching as offresMatching } from '@/routes/offres';
+import { index as offresIndex } from '@/routes/offres';
 import type { Offre } from '@/types/offre';
 
 interface Props {
@@ -52,6 +49,22 @@ export default function Show({ offre }: Props) {
             items: (offre.requirements || []).filter(r => r.taxonomy_type === cat.type)
         })).filter(g => g.items.length > 0);
     }, [offre.requirements]);
+
+    // Count ALL criteria: base fields on offres table + multi-criteria from offre_criteres_multiples
+    const totalCriteres = useMemo(() => {
+        const baseCriteria = [
+            offre.poste,
+            offre.type_travail,
+            offre.mode_travail,
+            offre.ville,
+            offre.niveau_experience,
+            offre.formation_juridique,
+            offre.salaire,
+            offre.urgence,
+        ].filter(Boolean).length;
+
+        return baseCriteria + (offre.requirements?.length ?? 0);
+    }, [offre]);
 
     return (
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
@@ -102,23 +115,7 @@ export default function Show({ offre }: Props) {
                         </div>
                     </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="flex items-center gap-3"
-                    >
-                        <Link href={offresMatching({ offre: offre.id }).url}>
-                            <Button className="h-14 px-8 rounded-2xl bg-[#1a1f1e] text-white font-black hover:scale-[1.03] active:scale-95 transition-all shadow-xl shadow-[#1a1f1e]/20 group">
-                                <Target className="mr-2 h-5 w-5 group-hover:animate-pulse" />
-                                Trouver des Talents
-                            </Button>
-                        </Link>
-                        <Link href={offresEdit({ offre: offre.id }).url}>
-                            <Button variant="outline" className="h-14 px-6 rounded-2xl border-slate-200 bg-white font-black hover:bg-slate-50 transition-all">
-                                <Settings className="h-5 w-5" />
-                            </Button>
-                        </Link>
-                    </motion.div>
+
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -264,60 +261,54 @@ export default function Show({ offre }: Props) {
                                     <div className="space-y-4">
                                         <div className="flex items-center gap-3">
                                             <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-sm">
-                                                <Target className="h-5 w-5 text-white" />
+                                                <Info className="h-5 w-5 text-white" />
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Outil de Matching</p>
-                                                <h3 className="text-xl font-bold tracking-tight">Recrutement Ciblé</h3>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Informations</p>
+                                                <h3 className="text-xl font-bold tracking-tight">Statut de l'offre</h3>
                                             </div>
                                         </div>
                                         <p className="text-sm text-white/60 leading-relaxed font-sans font-medium">
-                                            Notre algorithme a détecté plusieurs candidats potentiels correspondant à vos {offre.requirements?.length || 0} critères de recherche.
+                                        Votre offre a été soumise avec succès. Notre équipe prend en charge le processus de matching et vous contactera avec les profils correspondants.
                                         </p>
                                     </div>
 
-                                    <div className="space-y-3">
-                                        <Link href={offresMatching({ offre: offre.id }).url}>
-                                            <Button className="h-14 w-full rounded-2xl bg-white text-slate-900 font-black hover:scale-[1.03] active:scale-95 transition-all shadow-xl shadow-white/10">
-                                                Lancer le Matching
-                                            </Button>
-                                        </Link>
-                                        <p className="text-[10px] text-center font-bold uppercase tracking-widest text-white/30">
-                                            Analyse en temps réel de 500+ profils
-                                        </p>
-                                    </div>
-
-                                    <div className="pt-8 border-t border-white/10 space-y-6">
+                                    <div className="pt-6 border-t border-white/10 space-y-5">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3">
-                                                <div className="h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
-                                                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80">Statut: {offre.statut === 'EN_TRAITEMENT' ? 'En traitement' : offre.statut === 'ATTENTE_PAIEMENT' ? 'En attente de paiement' : offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification de paiement' : offre.statut === 'CV_ENVOYES' ? 'CV Envoyés' : 'Archivée'}</span>
+                                                <div className={cn(
+                                                    "h-3 w-3 rounded-full",
+                                                    offre.statut === 'CV_ENVOYES' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
+                                                )} />
+                                                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80">
+                                                    {offre.statut === 'EN_TRAITEMENT' ? 'En traitement'
+                                                        : offre.statut === 'ATTENTE_PAIEMENT' ? 'Attente de paiement'
+                                                        : offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification du paiement'
+                                                        : offre.statut === 'CV_ENVOYES' ? 'CV Envoyés'
+                                                        : 'Archivée'}
+                                                </span>
                                             </div>
                                             <Badge variant="outline" className="text-[10px] font-black uppercase tracking-widest border-white/10 text-white">
-                                                ID: #{offre.id}
+                                                #{offre.id}
                                             </Badge>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="rounded-2xl bg-white/5 p-4 space-y-1">
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Critères</p>
+                                                <p className="text-2xl font-black text-white">{totalCriteres}</p>
+                                            </div>
+                                            <div className="rounded-2xl bg-white/5 p-4 space-y-1">
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Publié le</p>
+                                                <p className="text-sm font-black text-white leading-tight">
+                                                    {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </Card>
                         </motion.div>
-
-                        <div className="px-8 space-y-6">
-                            <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">Métriques de l'offre</h4>
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-bold text-slate-500">Complexité Matching</span>
-                                    <span className="text-xs font-black text-slate-900">HAUTE</span>
-                                </div>
-                                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: '85%' }}
-                                        className="h-full bg-indigo-600 rounded-full"
-                                    />
-                                </div>
-                            </div>
-                        </div>
                     </aside>
                 </div>
             </main>

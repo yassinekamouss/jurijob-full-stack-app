@@ -1,4 +1,4 @@
-import { Poste, TypeTravail, NiveauExperience, Specialisation, Ville, ModeTravail, FormationJuridique, NiveauLangue, Langue } from './taxonomies';
+import { Poste, TypeTravail, NiveauExperience, Ville, ModeTravail, FormationJuridique, Salaire, Urgence } from './taxonomies';
 
 export interface Requirement {
     taxonomy_id: number;
@@ -32,6 +32,9 @@ export interface Offre {
     mode_travail?: ModeTravail;
     ville?: Ville;
     niveau_experience?: NiveauExperience;
+    formation_juridique?: FormationJuridique;
+    salaire?: Salaire;
+    urgence?: Urgence;
 
     // Requirements (Frontend compatible format)
     requirements?: Requirement[];

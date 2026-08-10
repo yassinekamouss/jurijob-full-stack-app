@@ -33,7 +33,18 @@ class OffreController extends Controller
             ->latest()
             ->get()
             ->map(function (Offre $offre) {
-                $offre->setAttribute('criteria_count', $offre->criteresMultiples->count());
+                $baseCriteriaCount = collect([
+                    $offre->poste_id,
+                    $offre->type_travail_id,
+                    $offre->mode_travail_id,
+                    $offre->ville_id,
+                    $offre->niveau_experience_id,
+                    $offre->formation_juridique_id,
+                    $offre->salaire_id,
+                    $offre->urgence_id,
+                ])->filter()->count();
+
+                $offre->setAttribute('criteria_count', $baseCriteriaCount + $offre->criteresMultiples->count());
 
                 return $offre;
             });
