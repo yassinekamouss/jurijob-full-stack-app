@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>@yield('title', 'JuriJob - Smart Recrutement Juridique')</title>
+    <meta name="description" content="@yield('meta_description', 'Plateforme de recrutement spécialisée dans le secteur juridique au Maroc.')">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}?v=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v=1">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('android-chrome-192x192.png') }}?v=1">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('android-chrome-512x512.png') }}?v=1">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v=1">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}?v=1">
+
+    @vite(['resources/css/app.css','resources/js/app.tsx'])
+</head>
+
+<body class="font-sans antialiased bg-[#FDFCF8] text-[#1a1f1e] selection:bg-[#C06041] selection:text-white">
+    <div class="min-h-screen bg-[#FDFCF8] text-[#1a1f1e] flex flex-col w-full" style="font-family: 'Outfit', sans-serif;">
+        <!-- Header / Navbar -->
+        <header id="site-header" class="sticky top-0 z-50 border-b border-[#1a1f1e]/10 bg-[#FDFCF8]/90 backdrop-blur-xl">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-20 items-center justify-between">
+                    <!-- Logo -->
+                    <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="Accueil JuriJob">
+                        <img src="/images/logo_jurijob.png" alt="JuriJob - Logo" width="100" height="100" class="w-auto h-32" />
+                    </a>
+
+                    <!-- Navigation Desktop -->
+                    <nav class="hidden space-x-12 md:flex" aria-label="Navigation principale">
+                        <a href="/#home" class="text-gray-700 transition-colors hover:text-black">Accueil</a>
+                        <a href="/services" class="text-gray-700 transition-colors hover:text-black">Services</a>
+                        <a href="/#how-it-works" class="text-gray-700 transition-colors hover:text-black">Comment ça marche</a>
+                        <a href="/#about" class="text-gray-700 transition-colors hover:text-black">À propos</a>
+                        <a href="/#pricing" class="text-gray-700 transition-colors hover:text-black">Tarifs</a>
+                        <a href="/faq" class="text-gray-700 transition-colors hover:text-black">FAQ</a>
+                    </nav>
+
+                    <!-- Actions -->
+                    <div class="flex items-center space-x-6">
+                        <a href="/login" class="px-2 py-2 text-sm font-medium text-[#1a1f1e] transition-opacity hover:opacity-70">
+                            Connexion
+                        </a>
+                        <div class="relative group">
+                            <button class="flex items-center gap-2 bg-[#1a1f1e] px-6 py-2.5 text-sm font-medium text-[#FDFCF8] transition-all hover:bg-[#343a38]">
+                                Inscription
+                                <svg class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            <div class="absolute right-0 z-50 mt-1 hidden w-56 border border-[#1a1f1e]/10 bg-[#FDFCF8] py-1 shadow-2xl group-hover:block">
+                                <a href="/register/recruteur" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5">
+                                    <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                    En tant que Recruteur
+                                </a>
+                                <a href="/register/candidat" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5">
+                                    <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                                    </svg>
+                                    En tant que Candidat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full">
+            @yield('content')
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-[#1a1f1e]/10 bg-[#FDFCF8] py-16 text-[#1a1f1e]">
+            <div class="mx-auto max-w-7xl px-8 md:px-16">
+                <div class="grid gap-12 md:grid-cols-4">
+                    <div class="md:col-span-2">
+                        <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="Accueil JuriJob">
+                            <img src="/images/logo_jurijob.png" alt="JuriJob - Logo" width="100" height="100" class="w-auto h-32" />
+                        </a>
+                        <p class="my-6 max-w-sm text-sm leading-relaxed font-light text-[#1a1f1e]/70">
+                            L'écosystème de référence au Maroc qui connecte l'élite des Juristes aux Cabinets d'avocats et entreprises.
+                        </p>
+                        <div class="flex items-center gap-2 text-xs font-medium tracking-widest text-[#C06041] uppercase">
+                            <span>Spécialisé dans les carrières juridiques</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-10">
+                        <h4 class="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">Navigation</h4>
+                        <ul class="space-y-4 text-sm font-light text-[#1a1f1e]/70">
+                            <li><a href="/#about" class="transition-colors hover:text-[#C06041]">Notre Vision</a></li>
+                            <li><a href="/services" class="transition-colors hover:text-[#C06041]">Nos Prestations</a></li>
+                            <li><a href="/faq" class="transition-colors hover:text-[#C06041]">Foire Aux Questions (FAQ)</a></li>
+                            <li class="pt-2">
+                                <a href="mailto:recrutement@sentissilegal.com" class="inline-block transition-colors text-[#C06041]">
+                                    recrutement@sentissilegal.com
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-10">
+                        <h4 class="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">Légal</h4>
+                        <ul class="space-y-4 text-sm font-light text-[#1a1f1e]/70">
+                            <li><a href="/mentions-legales" class="transition-colors hover:text-[#C06041]">Mentions Légales</a></li>
+                            <li><a href="/cgu" class="transition-colors hover:text-[#C06041]">Conditions d'Utilisation (CGU)</a></li>
+                            <li><a href="/cgv" class="transition-colors hover:text-[#C06041]">Conditions de Vente (CGV)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-16 flex flex-col items-center justify-between border-t border-[#1a1f1e]/10 pt-8 text-xs font-light tracking-widest text-[#1a1f1e]/50 uppercase md:flex-row">
+                    <p>&copy; 2026 — Smart Recrutement Juridique. Tous droits réservés.</p>
+                    <p class="mt-4 md:mt-0">Casablanca, Maroc</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @stack('scripts')
+</body>
+
+</html>

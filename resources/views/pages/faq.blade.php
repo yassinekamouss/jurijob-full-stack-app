@@ -1,4 +1,4 @@
-@extends('layouts.legal')
+@extends('layouts.guest-blade')
 
 @section('title', 'Foire aux questions - JURIJOB')
 @section('meta_description', 'Tout ce que vous devez savoir sur JURIJOB : notre approche, nos tarifs, nos délais et notre méthode.')
