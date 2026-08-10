@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,9 +19,9 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
+        $userId = DB::table('users')->insertGetId([
             'email' => 'recruteur@example.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'password' => Hash::make('password'),
             'role' => 'recruteur',
             'is_active' => true,
             'is_archived' => false,
@@ -27,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        \Illuminate\Support\Facades\DB::table('recruteurs')->insert([
+        DB::table('recruteurs')->insert([
             'user_id' => $userId,
             'nom_entreprise' => 'Example Company',
             'poste' => 'HR Manager',
@@ -35,6 +37,27 @@ class DatabaseSeeder extends Seeder
             'taille_entreprise_id' => 1,
             'site_web' => 'https://example.com',
             'ville_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $candidatUserId = DB::table('users')->insertGetId([
+            'email' => 'candidat@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'candidat',
+            'is_active' => true,
+            'is_archived' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('candidats')->insert([
+            'user_id' => $candidatUserId,
+            'nom' => 'Dupont',
+            'prenom' => 'Jean',
+            'poste_id' => 1,
+            'niveau_experience_id' => 1,
+            'formation_juridique_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
