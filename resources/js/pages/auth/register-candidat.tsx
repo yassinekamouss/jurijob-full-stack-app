@@ -552,7 +552,7 @@ export default function RegisterCandidat() {
 
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
-                            <div className="relative z-10 mx-auto w-full max-w-2xl rounded-[40px] border border-[#1a1f1e]/10 bg-white p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
+                            <div className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/10 bg-white/50 p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
                                 {auth.user ? (
                                     <AlreadyAuthenticatedCard user={auth.user} />
                                 ) : (
