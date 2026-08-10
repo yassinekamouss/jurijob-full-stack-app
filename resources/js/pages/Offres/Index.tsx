@@ -4,7 +4,7 @@ import { Briefcase, Plus, Search, CheckCircle2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
-import { create as offresCreate, show as offresShow, edit as offresEdit } from '@/routes/offres';
+import { create as offresCreate, show as offresShow } from '@/routes/offres';
 import type { Offre } from '@/types/offre';
 
 interface Props {
@@ -164,18 +164,12 @@ export default function Index({ offres }: Props) {
                                         <span>{offre.niveau_experience?.nom}</span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-[#1a1f1e]/5">
+                                    <div className="pt-6 border-t border-[#1a1f1e]/5">
                                         <Link
                                             href={offresShow({ offre: offre.id }).url}
-                                            className="inline-flex h-10 items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
+                                            className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
                                         >
-                                            Détails
-                                        </Link>
-                                        <Link
-                                            href={offresEdit({ offre: offre.id }).url}
-                                            className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-50 text-xs font-black text-blue-600 uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all"
-                                        >
-                                            Modifier
+                                            Voir les détails
                                         </Link>
                                     </div>
                                 </motion.div>

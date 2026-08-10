@@ -5,27 +5,26 @@ import { dashboard as recruiterDashboard, settings as recruiterSettings } from '
 import { index as offresIndex, create as offresCreate } from '@/routes/offres';
 import { Briefcase, Plus } from 'lucide-react';
 
-// --- Sous-composant Brand ---
+
 const Brand = () => (
     <Link
         href="/"
         className="flex items-center tracking-tight"
         aria-label="Accueil JuriJob"
     >
-        <div
-            className="bg-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#FDFCF8]"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-        >
-            JURI
-        </div>
-        <div
-            className="border border-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#1a1f1e]"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-        >
-            JOB
-        </div>
+        <img
+            src="/images/logo_jurijob.png"
+            alt="JuriJob - Logo"
+            width={100}
+            height={100}
+            className="w-auto h-32"
+        />
     </Link>
 );
+
+
+
+
 
 export default function DashboardHeader() {
     const { auth } = usePage().props as any;

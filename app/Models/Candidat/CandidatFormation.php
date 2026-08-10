@@ -2,6 +2,9 @@
 
 namespace App\Models\Candidat;
 
+use App\Models\Taxonomy\Ecole;
+use App\Models\Taxonomy\FormationJuridique;
+use App\Models\Taxonomy\Specialisation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,17 +31,17 @@ class CandidatFormation extends Model
 
     public function specialisation(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Taxonomy\Specialisation::class);
+        return $this->belongsTo(Specialisation::class);
     }
 
     public function formationJuridique(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Taxonomy\FormationJuridique::class);
+        return $this->belongsTo(FormationJuridique::class);
     }
 
     public function ecole(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Taxonomy\Ecole::class);
+        return $this->belongsTo(Ecole::class);
     }
 
     /**

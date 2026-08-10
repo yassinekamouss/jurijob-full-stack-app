@@ -2,18 +2,18 @@
 
 namespace App\Models\Candidat;
 
-use App\Models\Taxonomy\TypeTravail;
+use App\Models\Taxonomy\DomaineExperience;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CandidatTypeTravail extends Model
+class CandidatDomainExperience extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'candidat_id',
-        'type_travail_id',
+        'domaine_experience_id',
     ];
 
     public function candidat(): BelongsTo
@@ -21,8 +21,8 @@ class CandidatTypeTravail extends Model
         return $this->belongsTo(Candidat::class);
     }
 
-    public function typeTravail(): BelongsTo
+    public function domaineExperience(): BelongsTo
     {
-        return $this->belongsTo(TypeTravail::class);
+        return $this->belongsTo(DomaineExperience::class);
     }
 }
