@@ -99,28 +99,28 @@ export default function Footer() {
                             </h4>
                             <ul className="space-y-4 text-sm font-light text-[#1a1f1e]/70">
                                 <li>
-                                    <Link
+                                    <a
                                         href="/mentions-legales"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
                                         Mentions Légales
-                                    </Link>
+                                    </a>
                                 </li>
                                 <li>
-                                    <Link
+                                    <a
                                         href="/cgu"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
                                         Conditions d'Utilisation (CGU)
-                                    </Link>
+                                    </a>
                                 </li>
                                 <li>
-                                    <Link
+                                    <a
                                         href="/cgv"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
                                         Conditions de Vente (CGV)
-                                    </Link>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

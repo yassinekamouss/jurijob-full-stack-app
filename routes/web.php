@@ -25,9 +25,9 @@ use Inertia\Inertia;
 Route::inertia('/', 'Home')->name('home');
 Route::inertia('/services', 'Services')->name('services');
 Route::inertia('/faq', 'Faq')->name('faq');
-Route::inertia('/mentions-legales', 'MentionsLegales')->name('mentions-legales');
-Route::inertia('/cgu', 'Cgu')->name('cgu');
-Route::inertia('/cgv', 'Cgv')->name('cgv');
+Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legales');
+Route::view('/cgu', 'pages.cgu')->name('cgu');
+Route::view('/cgv', 'pages.cgv')->name('cgv');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {

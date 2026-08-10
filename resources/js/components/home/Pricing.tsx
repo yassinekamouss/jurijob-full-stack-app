@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import { cgv } from '@/routes';
 import Reveal from '@/components/home/Reveal';
 
 export default function Pricing() {
@@ -161,12 +160,12 @@ export default function Pricing() {
                             </a>
 
                             <div className="mt-6 text-center">
-                                <Link
-                                    href={cgv().url}
+                                <a
+                                    href="/cgv"
                                     className="text-xs font-light text-[#FDFCF8]/50 underline underline-offset-4 transition-colors hover:text-[#C06041]"
                                 >
                                     Consulter nos Conditions Générales de Vente (CGV)
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </Reveal>
