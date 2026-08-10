@@ -1,16 +1,24 @@
+import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Check, X, GraduationCap, Briefcase, Globe, Clock, MapPin, Phone, Mail, Archive } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Check, X, GraduationCap, Briefcase, Globe, Clock, MapPin, Phone, Mail, Archive, Search } from 'lucide-react';
 
 const breadcrumbs = [
     { title: 'Admin', href: '/admin/dashboard' },
     { title: 'Candidats', href: '/admin/candidats' },
 ];
 
-export default function Candidats({ candidates, currentStatus }: any) {
+export default function Candidats({ candidates, currentStatus, filters }: any) {
+    const [search, setSearch] = useState(filters?.search || '');
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        router.get('/admin/candidats', { status: currentStatus, search }, { preserveState: true, preserveScroll: true });
+    };
     const handleApprove = (id: number) => {
         router.post(`/admin/candidats/${id}/approve`, {}, { preserveScroll: true });
     };
@@ -32,37 +40,50 @@ export default function Candidats({ candidates, currentStatus }: any) {
             <Head title="Gestion des Candidats" />
 
             <div className="flex flex-col gap-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Candidats</h1>
                         <p className="text-muted-foreground mt-1">
                             Gérez les profils des candidats inscrits ({candidates.total} au total).
                         </p>
                     </div>
+                    <form onSubmit={handleSearch} className="flex items-center gap-2 w-full sm:max-w-sm">
+                        <div className="relative w-full">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="text"
+                                placeholder="Rechercher par nom ou email..."
+                                className="pl-9 bg-background"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                        </div>
+                        <Button type="submit" variant="secondary">Chercher</Button>
+                    </form>
                 </div>
 
-                <div className="flex border-b">
+                <div className="flex border-b overflow-x-auto">
                     <Link
-                        href="/admin/candidats?status=en_attente"
-                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${currentStatus === 'en_attente' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+                        href={`/admin/candidats?status=en_attente${search ? `&search=${search}` : ''}`}
+                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${currentStatus === 'en_attente' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                     >
                         En attente
                     </Link>
                     <Link
-                        href="/admin/candidats?status=accepte"
-                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${currentStatus === 'accepte' || !currentStatus ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+                        href={`/admin/candidats?status=accepte${search ? `&search=${search}` : ''}`}
+                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${currentStatus === 'accepte' || !currentStatus ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                     >
                         Acceptés
                     </Link>
                     <Link
-                        href="/admin/candidats?status=refuse"
-                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${currentStatus === 'refuse' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+                        href={`/admin/candidats?status=refuse${search ? `&search=${search}` : ''}`}
+                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${currentStatus === 'refuse' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                     >
                         Refusés
                     </Link>
                     <Link
-                        href="/admin/candidats?status=archive"
-                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${currentStatus === 'archive' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
+                        href={`/admin/candidats?status=archive${search ? `&search=${search}` : ''}`}
+                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${currentStatus === 'archive' ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
                     >
                         Archivés
                     </Link>
@@ -73,39 +94,41 @@ export default function Candidats({ candidates, currentStatus }: any) {
                         <Card key={candidat.id} className="relative overflow-hidden bg-card/50 backdrop-blur-sm border-muted shadow-sm hover:shadow-md transition-shadow">
                             <CardContent className="p-6">
                                 {/* Top Layout: Avatar, Info, Actions */}
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-lg">
-                                        {getInitials(candidat.nom, candidat.prenom)}
+                                <div className="flex items-start mb-6 w-full">
+                                    <div className="flex-1 flex justify-start">
+                                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary font-bold text-lg shrink-0">
+                                            {getInitials(candidat.nom, candidat.prenom)}
+                                        </div>
                                     </div>
-                                    
-                                    <div className="flex-1 text-center px-4">
+
+                                    <div className="flex-[2] text-center px-4">
                                         <h3 className="text-xl font-bold text-foreground">
                                             {candidat.prenom} {candidat.nom}
                                         </h3>
                                         <div className="flex flex-wrap items-center justify-center gap-2 mt-2 text-sm text-muted-foreground">
-                                            {candidat.poste?.name && <span>{candidat.poste.name}</span>}
+                                            {candidat.poste?.nom && <span>{candidat.poste.nom}</span>}
                                             {candidat.ville_travails?.length > 0 && (
                                                 <>
                                                     <span className="text-muted-foreground/50">•</span>
-                                                    <span>{candidat.ville_travails.map((v: any) => v.ville?.name).join(', ')}</span>
+                                                    <span>{candidat.ville_travails.map((v: any) => v.ville?.nom).join(', ')}</span>
                                                 </>
                                             )}
-                                            {candidat.formation_juridique?.name && (
+                                            {candidat.formation_juridique?.nom && (
                                                 <>
                                                     <span className="text-muted-foreground/50">•</span>
-                                                    <span>{candidat.formation_juridique.name}</span>
+                                                    <span>{candidat.formation_juridique.nom}</span>
                                                 </>
                                             )}
-                                            {candidat.niveau_experience?.name && (
+                                            {candidat.niveau_experience?.nom && (
                                                 <>
                                                     <span className="text-muted-foreground/50">•</span>
-                                                    <span>{candidat.niveau_experience.name}</span>
+                                                    <span>{candidat.niveau_experience.nom}</span>
                                                 </>
                                             )}
                                         </div>
                                     </div>
-                                    
-                                    <div className="flex items-center gap-2">
+
+                                    <div className="flex-1 flex justify-end items-start gap-2 flex-wrap">
                                         {currentStatus === 'en_attente' && (
                                             <>
                                                 <Button onClick={() => handleApprove(candidat.id)} variant="outline" size="sm" className="text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200">
@@ -151,7 +174,7 @@ export default function Candidats({ candidates, currentStatus }: any) {
                                         <div className="space-y-1">
                                             {candidat.formations.map((form: any) => (
                                                 <p key={form.id} className="text-sm text-muted-foreground">
-                                                    {form.formation_juridique?.name} — {form.ecole?.name} ({form.annee_fin})
+                                                    {form.formation_juridique?.nom} — {form.ecole?.nom} ({form.annee_fin})
                                                 </p>
                                             ))}
                                         </div>
@@ -168,7 +191,7 @@ export default function Candidats({ candidates, currentStatus }: any) {
                                         <div className="space-y-1">
                                             {candidat.experiences.map((exp: any) => (
                                                 <p key={exp.id} className="text-sm text-muted-foreground">
-                                                    {exp.poste?.name} — {exp.entreprise} ({exp.debut} – {exp.fin || 'Présent'})
+                                                    {exp.poste?.nom} — {exp.entreprise} ({exp.debut} – {exp.fin || 'Présent'})
                                                 </p>
                                             ))}
                                         </div>
@@ -179,12 +202,7 @@ export default function Candidats({ candidates, currentStatus }: any) {
                                 <div className="flex flex-wrap justify-center gap-2 mb-6">
                                     {candidat.specialisations?.map((spec: any) => (
                                         <Badge key={spec.id} variant="secondary" className="bg-secondary/40 text-secondary-foreground font-normal px-3 py-1">
-                                            {spec.specialisation?.name}
-                                        </Badge>
-                                    ))}
-                                    {candidat.domain_experiences?.map((dom: any) => (
-                                        <Badge key={dom.id} variant="secondary" className="bg-secondary/40 text-secondary-foreground font-normal px-3 py-1">
-                                            {dom.domaine_experience?.name}
+                                            {spec.specialisation?.nom}
                                         </Badge>
                                     ))}
                                 </div>
@@ -194,19 +212,19 @@ export default function Candidats({ candidates, currentStatus }: any) {
                                     {candidat.langues?.length > 0 && (
                                         <div className="flex items-center gap-1">
                                             <Globe className="h-4 w-4 text-blue-500" />
-                                            <span>{candidat.langues.map((l: any) => l.langue?.name).join(', ')}</span>
+                                            <span>{candidat.langues.map((l: any) => l.langue?.nom).join(', ')}</span>
                                         </div>
                                     )}
                                     {candidat.type_travails?.length > 0 && (
                                         <div className="flex items-center gap-1">
                                             <Clock className="h-4 w-4 text-orange-500" />
-                                            <span>{candidat.type_travails.map((t: any) => t.type_travail?.name).join(', ')}</span>
+                                            <span>{candidat.type_travails.map((t: any) => t.type_travail?.nom).join(', ')}</span>
                                         </div>
                                     )}
                                     {candidat.mode_travails?.length > 0 && (
                                         <div className="flex items-center gap-1">
                                             <MapPin className="h-4 w-4 text-teal-500" />
-                                            <span>{candidat.mode_travails.map((m: any) => m.mode_travail?.name).join(' / ')}</span>
+                                            <span>{candidat.mode_travails.map((m: any) => m.mode_travail?.nom).join(' / ')}</span>
                                         </div>
                                     )}
                                 </div>
@@ -227,7 +245,7 @@ export default function Candidats({ candidates, currentStatus }: any) {
                             </CardContent>
                         </Card>
                     ))}
-                    
+
                     {candidates.data.length === 0 && (
                         <div className="text-center py-12 text-muted-foreground">
                             Aucun candidat trouvé pour ce statut.

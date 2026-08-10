@@ -11,14 +11,14 @@ class CandidateController extends Controller
     public function index()
     {
         $status = request()->query('status', 'accepte');
+        $search = request()->query('search');
 
-        $candidates = Candidat::with([
+        $query = Candidat::with([
             'user',
             'poste',
             'niveauExperience',
             'formationJuridique',
             'specialisations.specialisation',
-            'domainExperiences.domaineExperience',
             'langues.langue',
             'langues.niveauLangue',
             'typeTravails.typeTravail',
@@ -30,14 +30,26 @@ class CandidateController extends Controller
             'experiences.poste',
             'experiences.typeTravail',
         ])
-            ->where('status', $status)
-            ->orderBy('created_at', 'desc')
+            ->where('status', $status);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nom', 'like', "%{$search}%")
+                  ->orWhere('prenom', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($q) use ($search) {
+                      $q->where('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        $candidates = $query->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
         return Inertia::render('admin/Candidats', [
             'candidates' => $candidates,
             'currentStatus' => $status,
+            'filters' => request()->only(['search']),
         ]);
     }
 

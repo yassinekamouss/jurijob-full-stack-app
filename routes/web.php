@@ -10,7 +10,6 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
 use App\Http\Controllers\Candidate\DiplomaController;
-use App\Http\Controllers\Candidate\DomaineExperienceController;
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
@@ -90,7 +89,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/admin/candidats/{candidate}/reject', [CandidateController::class, 'reject'])->name('admin.candidates.reject');
     Route::post('/admin/candidats/{candidate}/archive', [CandidateController::class, 'archive'])->name('admin.candidates.archive');
     Route::get('/admin/recruteurs', [RecruiterController::class, 'index'])->name('admin.recruteurs.index');
-    Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications');
+    // Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications'); // TODO: Create/Import ApplicationsController
     Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
