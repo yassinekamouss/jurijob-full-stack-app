@@ -99,17 +99,9 @@ export default function Settings({ recruteur, user }: Props) {
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Paramètres Recruteur - Jurijob" />
 
-            {/* Grain Texture */}
-            <div
-                className="pointer-events-none fixed inset-0 z-[100] opacity-[0.25] mix-blend-multiply"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                }}
-            />
 
             <DashboardHeader />
-            
+
             <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
                 <div className="mb-12">
                     <Link
@@ -135,8 +127,8 @@ export default function Settings({ recruteur, user }: Props) {
                             <button
                                 onClick={() => setActiveTab('profile')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'profile'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <Building className="h-4 w-4" />
@@ -145,8 +137,8 @@ export default function Settings({ recruteur, user }: Props) {
                             <button
                                 onClick={() => setActiveTab('security')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />

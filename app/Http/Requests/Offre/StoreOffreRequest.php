@@ -35,16 +35,16 @@ class StoreOffreRequest extends FormRequest
                 'exists:villes,id',
             ],
             'niveau_experience_id' => 'required|exists:niveau_experiences,id',
-            'statut' => 'nullable|string|in:ouvert,fermé',
+            'formation_juridique_id' => 'nullable|exists:formation_juridiques,id',
+            'salaire_id' => 'nullable|exists:salaires,id',
+            'urgence_id' => 'nullable|exists:urgences,id',
+            'notes_complementaires' => 'nullable|string|max:2000',
+            'nombre_cv' => 'required|integer|min:1',
+            'statut' => 'nullable|string|in:EN_TRAITEMENT,ATTENTE_PAIEMENT,VERIFICATION_PAIEMENT,CV_ENVOYES,ARCHIVE',
             'requirements' => 'nullable|array',
             'requirements.*.taxonomy_id' => 'required|integer',
-            'requirements.*.taxonomy_type' => 'required|string',
-            'requirements.*.importance' => [
-                'required',
-                Rule::in(['indispensable', 'important', 'souhaitable', 'facultatif']),
-            ],
-            'requirements.*.operator' => 'nullable|string|in:AND,OR',
-            'requirements.*.requirements_data' => 'nullable|array',
+            'requirements.*.taxonomy_type' => 'required|string|in:LANGUE,SPECIALISATION',
+            'requirements.*.metadata' => 'nullable|array',
         ];
     }
 }

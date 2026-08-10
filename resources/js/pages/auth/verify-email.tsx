@@ -18,7 +18,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
             {/* Intégration du Logo */}
             <div className="flex justify-center mb-6">
                 <img
-                    src="/images/logo_jurijob.jpg"
+                    src="/images/logo_jurijob.png"
                     alt="Logo JuriJob"
                     className="h-20 w-auto object-contain"
                 />

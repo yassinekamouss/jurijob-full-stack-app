@@ -75,6 +75,7 @@ class RegistrationService
                     'role' => 'recruteur',
                     'is_active' => true,
                     'is_archived' => false,
+                    'email_verified_at' => now(),
                 ]);
 
                 $profile = RecruteurProfile::fromArray($data);
@@ -115,11 +116,6 @@ class RegistrationService
                 return SpecialisationData::fromArray($item)->toArray();
             }, $data['specialisations']);
             $candidat->specialisations()->createMany($specialisations);
-        }
-
-        if (! empty($data['domain_experiences'])) {
-            $domainExperiences = array_map(fn ($item) => ['domaine_experience_id' => $item['domain_experience_id']], $data['domain_experiences']);
-            $candidat->domainExperiences()->createMany($domainExperiences);
         }
 
         if (! empty($data['langues'])) {

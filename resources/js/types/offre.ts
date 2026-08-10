@@ -1,35 +1,10 @@
-import { Poste, TypeTravail, NiveauExperience, Specialisation, Ville, ModeTravail, DomaineExperience, FormationJuridique, NiveauLangue, Langue } from './taxonomies';
+import { Poste, TypeTravail, NiveauExperience, Ville, ModeTravail, FormationJuridique, Salaire, Urgence } from './taxonomies';
 
 export interface Requirement {
     taxonomy_id: number;
-    taxonomy_type: 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
+    taxonomy_type: 'SPECIALISATION' | 'LANGUE';
     label?: string;
-    importance: 'indispensable' | 'important' | 'souhaitable' | 'facultatif';
-    operator?: 'AND' | 'OR';
-    requirements_data?: {
-        niveau_langue_id?: number;
-        niveau_nom?: string;
-    };
-}
-
-export interface OffreCritere {
-    id: number;
-    groupe_id: number;
-    critere_id: number;
-    valeur_id?: number;
-    importance: 'indispensable' | 'important' | 'souhaitable' | 'facultatif';
-    created_at: string;
-    updated_at: string;
-}
-
-export interface OffreCritereGroupe {
-    id: number;
-    offre_id: number;
-    type_critere: 'specialisation' | 'langue' | 'domaine_experience' | 'formation_juridique';
-    operateur: 'AND' | 'OR';
-    created_at: string;
-    updated_at: string;
-    criteres?: OffreCritere[];
+    metadata?: any;
 }
 
 export interface Offre {
@@ -40,9 +15,14 @@ export interface Offre {
     mode_travail_id: number;
     ville_id: number;
     niveau_experience_id: number;
+    formation_juridique_id: number | null;
+    salaire_id: number | null;
+    urgence_id: number | null;
     titre: string;
     description: string;
-    statut: 'ouvert' | 'fermé';
+    notes_complementaires: string | null;
+    nombre_cv: number;
+    statut: 'EN_TRAITEMENT' | 'ATTENTE_PAIEMENT' | 'VERIFICATION_PAIEMENT' | 'CV_ENVOYES' | 'ARCHIVE';
     created_at: string;
     updated_at: string;
 
@@ -52,9 +32,9 @@ export interface Offre {
     mode_travail?: ModeTravail;
     ville?: Ville;
     niveau_experience?: NiveauExperience;
-
-    // Criteria (New Architecture)
-    critereGroupes?: OffreCritereGroupe[];
+    formation_juridique?: FormationJuridique;
+    salaire?: Salaire;
+    urgence?: Urgence;
 
     // Requirements (Frontend compatible format)
     requirements?: Requirement[];

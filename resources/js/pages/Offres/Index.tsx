@@ -1,27 +1,70 @@
-import DashboardHeader from '@/components/recruiter/DashboardHeader';
-import { create as offresCreate, show as offresShow, edit as offresEdit } from '@/routes/offres';
-import { Offre } from '@/types/offre';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { Briefcase, Plus, Search } from 'lucide-react';
+import { Briefcase, Plus, Search, CheckCircle2 } from 'lucide-react';
+import { useEffect } from 'react';
+import { Toaster, toast } from 'react-hot-toast';
+import DashboardHeader from '@/components/recruiter/DashboardHeader';
+import { create as offresCreate, show as offresShow } from '@/routes/offres';
+import type { Offre } from '@/types/offre';
 
 interface Props {
     offres: Offre[];
 }
 
 export default function Index({ offres }: Props) {
+    const { flash } = usePage().props as any;
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.custom(
+                (t) => (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className={`${t.visible ? 'animate-enter' : 'animate-leave'
+                            } max-w-md w-full bg-[#1a1f1e] shadow-2xl rounded-2xl pointer-events-auto flex flex-col p-5 border border-white/10`}
+                    >
+                        <div className="flex items-start gap-4">
+                            <div className="flex-shrink-0 pt-0.5">
+                                <CheckCircle2 className="h-6 w-6 text-[#4ade80]" />
+                            </div>
+                            <div className="flex-1 w-0">
+                                <p className="text-sm font-medium text-white whitespace-pre-line leading-relaxed">
+                                    {flash.success}
+                                </p>
+                            </div>
+                            <div className="flex-shrink-0 ml-4 flex">
+                                <button
+                                    onClick={() => toast.dismiss(t.id)}
+                                    className="bg-[#1a1f1e] rounded-md inline-flex text-white/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20 transition-colors"
+                                >
+                                    <span className="sr-only">Fermer</span>
+                                    <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                ),
+                { duration: 10000, id: 'flash-success' }
+            );
+        }
+
+        if (flash?.error) {
+            toast.error(flash.error, {
+                duration: 7000,
+            });
+        }
+    }, [flash]);
+
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Mes Offres - Jurijob" />
+            <Toaster position="top-right" />
 
-            {/* Grain Texture Overlay */}
-            <div
-                className="pointer-events-none fixed inset-0 z-[100] opacity-[0.25] mix-blend-multiply"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                }}
-            />
+
 
             <DashboardHeader />
 
@@ -53,7 +96,7 @@ export default function Index({ offres }: Props) {
                 </motion.div>
 
                 {offres.length === 0 ? (
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         className="flex flex-col items-center justify-center py-24 bg-white rounded-[40px] border border-[#1a1f1e]/5 shadow-sm"
@@ -84,11 +127,25 @@ export default function Index({ offres }: Props) {
                                     className="group relative bg-white rounded-[32px] border border-[#1a1f1e]/5 p-8 shadow-sm hover:shadow-2xl hover:shadow-[#1a1f1e]/5 transition-all duration-500 overflow-hidden"
                                 >
                                     <div className="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#1a1f1e]/[0.02] transition-transform group-hover:scale-150" />
-                                    
+
                                     <div className="justify-between flex items-center mb-6">
-                                        <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
-                                            {offre.poste?.nom || 'Poste'}
-                                        </Badge>
+                                        <div className="flex gap-2 items-center">
+                                            <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
+                                                {offre.poste?.nom || 'Poste'}
+                                            </Badge>
+                                            <Badge className={`border-none text-[9px] uppercase font-black tracking-wider ${offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-100 text-amber-700' :
+                                                offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-100 text-orange-700' :
+                                                    offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-100 text-blue-700' :
+                                                        offre.statut === 'CV_ENVOYES' ? 'bg-emerald-100 text-emerald-700' :
+                                                            'bg-slate-100 text-slate-700'
+                                                }`}>
+                                                {offre.statut === 'EN_TRAITEMENT' ? 'Traitement' :
+                                                    offre.statut === 'ATTENTE_PAIEMENT' ? 'Paiement' :
+                                                        offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification' :
+                                                            offre.statut === 'CV_ENVOYES' ? 'Envoyés' :
+                                                                'Archivé'}
+                                            </Badge>
+                                        </div>
                                         <span className="text-xs font-bold text-[#1a1f1e]/30">
                                             {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                         </span>
@@ -109,18 +166,12 @@ export default function Index({ offres }: Props) {
                                         <span>{offre.niveau_experience?.nom}</span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4 pt-6 border-t border-[#1a1f1e]/5">
-                                        <Link 
-                                            href={offresShow({ offre: offre.id }).url} 
-                                            className="inline-flex h-10 items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
+                                    <div className="pt-6 border-t border-[#1a1f1e]/5">
+                                        <Link
+                                            href={offresShow({ offre: offre.id }).url}
+                                            className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
                                         >
-                                            Détails
-                                        </Link>
-                                        <Link 
-                                            href={offresEdit({ offre: offre.id }).url} 
-                                            className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-50 text-xs font-black text-blue-600 uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all"
-                                        >
-                                            Modifier
+                                            Voir les détails
                                         </Link>
                                     </div>
                                 </motion.div>

@@ -7,21 +7,28 @@ import Reveal from '@/components/home/Reveal'; // Import du composant global
 const Brand = () => (
     <Link
         href="/"
-        className="flex items-center tracking-tight"
+        className="flex items-center tracking-tight hover:opacity-90 transition-opacity"
         aria-label="Accueil JuriJob"
     >
-        <div
+        {/* <div
             className="bg-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#FDFCF8]"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
         >
             JURI
         </div>
         <div
-            className="border border-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#1a1f1e]"
+            className="flex items-center gap-1.5 border border-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#1a1f1e]"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
         >
             JOB
-        </div>
+        </div> */}
+        <img
+            src="/images/logo_jurijob.png"
+            alt="JuriJob - Logo"
+            width={100}
+            height={100}
+            className="w-auto h-32"
+        />
     </Link>
 );
 
@@ -31,10 +38,12 @@ export default function Header() {
 
     const nav = [
         { href: '/#home', label: 'Accueil' },
+        { href: '/services', label: 'Services' },
         { href: '/#how-it-works', label: 'Comment ça marche' },
         { href: '/#about', label: 'À propos' },
-        { href: '/#contact', label: 'Contact' },
         { href: '/#pricing', label: 'Tarifs' },
+        { href: '/faq', label: 'FAQ' },
+        { href: '/#contact', label: 'Contact' },
     ];
 
     const handleNavClick = (e: React.MouseEvent<Element>, href: string) => {

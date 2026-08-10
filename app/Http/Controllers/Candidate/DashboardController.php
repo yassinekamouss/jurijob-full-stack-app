@@ -14,7 +14,6 @@ class DashboardController extends Controller
         $user = $request->user();
         $candidat = $user->candidat()->with([
             'specialisations',
-            'domainExperiences',
             'langues',
             'typeTravails',
             'modeTravails',

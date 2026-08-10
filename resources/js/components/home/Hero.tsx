@@ -11,59 +11,63 @@ export default function Hero() {
         <div className="grid lg:grid-cols-12 gap-16 items-center">
           
           {/* Texte - Colonne Gauche */}
-          <Reveal direction="left" duration={1} delay={0.2} className="lg:col-span-7 space-y-10">
+          <Reveal direction="left" duration={1} delay={0.2} className="lg:col-span-8 space-y-10">
             <div className="space-y-8">
               <Reveal direction="up" duration={0.8} delay={0.4}>
                 <div className="inline-flex items-center space-x-3 border-b border-[#1a1f1e]/20 pb-2">
                   <span className="w-1.5 h-1.5 bg-[#C06041] block"></span>
                   <span className="text-xs uppercase tracking-widest font-medium text-[#1a1f1e]/70">
-                    Plateforme juridique n°1 au Maroc
+                    Recrutement juridique · Maroc & Afrique francophone
                   </span>
                 </div>
               </Reveal>
 
               <Reveal direction="up" duration={1} delay={0.6}>
-                <h1 className="text-6xl lg:text-8xl text-[#1a1f1e] leading-[1.05] tracking-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  <span className="block italic text-[#C06041] font-light">Relier</span>
-                  <span className="block font-medium">les talents</span>
-                  <span className="block font-medium">juridiques</span>
-                  <span className="block relative inline-block mt-2">
-                    aux opportunités
-                    <Reveal direction="left" delay={1.5} duration={1}>
-                      <div className="absolute bottom-2 left-0 h-[3px] bg-[#1a1f1e] w-full" />
-                    </Reveal>
-                  </span>
+                <h1 className="text-5xl lg:text-7xl text-[#1a1f1e] leading-[1.1] tracking-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  <span className="block font-medium">Le recrutement juridique,</span>
+                  <span className="block italic text-[#C06041] font-light mt-2">à la hauteur de vos exigences.</span>
                 </h1>
               </Reveal>
 
               <Reveal direction="up" duration={0.8} delay={0.8}>
-                <p className="text-lg text-[#1a1f1e]/80 leading-relaxed max-w-md font-light">
-                  Jurijob est l'écosystème de référence qui comble le fossé entre 
-                  l'ambition des jeunes diplômés et la vision des recruteurs au Maroc.
+                <p className="text-lg text-[#1a1f1e]/80 leading-relaxed max-w-lg font-light">
+                  JURIJOB identifie les meilleurs profils juridiques pour les directions juridiques et RH des grandes structures, au Maroc et en Afrique francophone. Discrétion, expertise, sélection sur mesure.
                 </p>
               </Reveal>
             </div>
 
-            {/* Boutons CTA */}
-            <div className="flex flex-col sm:flex-row gap-5 pt-4">
-              <Link 
-                href="/register/candidat"
-                className="bg-[#1a1f1e] text-[#FDFCF8] hover:bg-[#343a38] px-8 py-4 text-sm uppercase tracking-wide transition-all text-center flex items-center justify-center gap-3 group"
-              >
-                Je suis diplômé(e)
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </Link>
-              <Link 
-                href="/register/recruteur"
-                className="border border-[#1a1f1e] text-[#1a1f1e] hover:bg-[#1a1f1e]/5 px-8 py-4 text-sm uppercase tracking-wide transition-all text-center flex items-center justify-center gap-3"
-              >
-                Je suis recruteur
-              </Link>
-            </div>
+            <div className="flex flex-row gap-4 pt-4 w-full">
+  <Link
+    href="/register/candidat"
+    className="flex-[0.9] bg-[#1a1f1e] text-[#FDFCF8]
+               hover:bg-[#343a38] px-5 py-4
+               text-xs md:text-sm uppercase tracking-wide
+               transition-all text-center flex items-center
+               justify-center gap-2 group whitespace-nowrap"
+  >
+    <span>Je suis juriste</span>
+    <span className="group-hover:translate-x-1 transition-transform">→</span>
+    <span>Créer mon profil</span>
+  </Link>
+
+  <Link
+    href="/register/recruteur"
+    className="flex-[1.1] border border-[#1a1f1e]
+               text-[#1a1f1e] hover:bg-[#1a1f1e]/5
+               px-5 py-4
+               text-xs md:text-sm uppercase tracking-wide
+               transition-all text-center flex items-center
+               justify-center gap-2 group whitespace-nowrap"
+  >
+    <span>Je recrute un juriste</span>
+    <span className="group-hover:translate-x-1 transition-transform">→</span>
+    <span>Déposer une demande</span>
+  </Link>
+</div>
           </Reveal>
 
           {/* Image - Colonne Droite */}
-          <Reveal direction="right" duration={1} delay={0.4} className="lg:col-span-5 relative h-full">
+          <Reveal direction="right" duration={1} delay={0.4} className="lg:col-span-4 relative h-full">
             <div className="relative aspect-[4/5] w-full md:w-5/6 ml-auto">
               <div className="absolute top-8 -left-8 w-full h-full bg-[#1a1f1e] z-0" />
               <div className="relative h-full z-10 overflow-hidden bg-zinc-200">

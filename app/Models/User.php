@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Candidat\Candidat;
+use App\Models\Recruteur\Recruteur;
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use App\Models\Candidat\Candidat;
-use App\Models\Recruteur\Recruteur;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -26,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'is_active',
         'is_archived',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -54,5 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function candidat(): HasOne
     {
         return $this->hasOne(Candidat::class);
+    }
+
+    public function socialAccounts(): HasMany
+    {
+        return $this->hasMany(SocialAccount::class);
     }
 }

@@ -12,15 +12,15 @@ const breadcrumbs = [
 
 export default function Candidats({ candidates, currentStatus }: any) {
     const handleApprove = (id: number) => {
-        router.post(route('admin.candidates.approve', id), {}, { preserveScroll: true });
+        router.post(`/admin/candidats/${id}/approve`, {}, { preserveScroll: true });
     };
 
     const handleReject = (id: number) => {
-        router.post(route('admin.candidates.reject', id), {}, { preserveScroll: true });
+        router.post(`/admin/candidats/${id}/reject`, {}, { preserveScroll: true });
     };
 
     const handleArchive = (id: number) => {
-        router.post(route('admin.candidates.archive', id), {}, { preserveScroll: true });
+        router.post(`/admin/candidats/${id}/archive`, {}, { preserveScroll: true });
     };
 
     const getInitials = (nom: string, prenom: string) => {

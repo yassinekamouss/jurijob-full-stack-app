@@ -30,7 +30,6 @@ import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
-import DomaineExperienceSection from '@/components/candidate/settings/DomaineExperienceSection';
 import LanguageSection from '@/components/candidate/settings/LanguageSection';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
@@ -52,7 +51,6 @@ type TabType =
     | 'experiences'
     | 'formations'
     | 'specialisations'
-    | 'domaine-experiences'
     | 'langues'
     | 'security';
 
@@ -62,7 +60,6 @@ export default function Settings({
     experiences,
     formations,
     specialisations,
-    domainExperiences,
     langues,
 }: Props) {
     const { flash } = usePage().props as any;
@@ -135,7 +132,6 @@ export default function Settings({
                 'experiences',
                 'formations',
                 'specialisations',
-                'domaine-experiences',
                 'langues',
                 'security',
             ].includes(tab)
@@ -215,47 +211,40 @@ export default function Settings({
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const file = e.target.files?.[0];
-            if (file) {
-                // 2. Créer une URL temporaire pour l'affichage immédiat
-                const localUrl = URL.createObjectURL(file);
-                setPreviewUrl(localUrl);
+        const file = e.target.files?.[0];
+        if (file) {
+            // 2. Créer une URL temporaire pour l'affichage immédiat
+            const localUrl = URL.createObjectURL(file);
+            setPreviewUrl(localUrl);
 
-                router.post(
-                    updateImageRoute.url(),
-                    { _method: 'POST', image: file },
-                    {
-                        forceFormData: true,
-                        preserveScroll: true,
-                        onFinish: () => {
-                            // Optionnel : nettoyer l'URL locale pour éviter les fuites mémoire
-                            // URL.revokeObjectURL(localUrl);
-                        }
+            router.post(
+                updateImageRoute.url(),
+                { _method: 'POST', image: file },
+                {
+                    forceFormData: true,
+                    preserveScroll: true,
+                    onFinish: () => {
+                        // Optionnel : nettoyer l'URL locale pour éviter les fuites mémoire
+                        // URL.revokeObjectURL(localUrl);
                     }
-                );
-            }
-        };
+                }
+            );
+        }
+    };
 
 
-        const currentImageSrc = previewUrl 
-    ? previewUrl 
-    : (candidat?.image_url 
-        ? `${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}` 
-        : "/images/default_profile_image.avif");
+    const currentImageSrc = previewUrl
+        ? previewUrl
+        : (candidat?.image_url
+            ? `${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`
+            : "/images/default_profile_image.avif");
 
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Paramètres - Jurijob" />
 
-            {/* Grain Texture */}
-            <div
-                className="pointer-events-none fixed inset-0 z-[100] opacity-[0.25] mix-blend-multiply"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                }}
-            />
+
 
             <DashboardHeader />
 
@@ -276,88 +265,70 @@ export default function Settings({
                         <nav className="flex gap-2 rounded-2xl bg-[#1a1f1e]/5 p-1 lg:flex-col">
                             <button
                                 onClick={() => setActiveTab('profile')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'profile'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'profile'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <User className="h-4 w-4" />
                                 Profil Général
                             </button>
                             <button
                                 onClick={() => setActiveTab('experiences')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'experiences'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'experiences'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <LayoutGrid className="h-4 w-4" />
                                 Expériences
                             </button>
                             <button
                                 onClick={() => setActiveTab('formations')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'formations'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'formations'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <GraduationCap className="h-4 w-4" />
                                 Formations
                             </button>
                             <button
                                 onClick={() => setActiveTab('specialisations')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'specialisations'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'specialisations'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <Folder className="h-4 w-4" />
                                 Spécialisations
                             </button>
                             <button
-                                onClick={() => setActiveTab('domaine-experiences')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'domaine-experiences'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
-                            >
-                                <Briefcase className="h-4 w-4" />
-                                Domaines d'expérience
-                            </button>
-                            <button
                                 onClick={() => setActiveTab('langues')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'langues'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'langues'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <Languages className="h-4 w-4" />
                                 Langues
                             </button>
                             <button
                                 onClick={() => setActiveTab('account')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'account'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'account'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <Lock className="h-4 w-4" />
                                 Compte & Sécurité
                             </button>
                             <button
                                 onClick={() => setActiveTab('security')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${
-                                    activeTab === 'security'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                }`}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />
                                 2FA (Bientôt)
@@ -539,7 +510,7 @@ export default function Settings({
                                                                         {opt.nom}
                                                                     </option>
                                                                 )
-                                                        ))}
+                                                            ))}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
@@ -574,15 +545,15 @@ export default function Settings({
                                                                         <option
                                                                             key={
                                                                                 opt.id
-                                                                        }
-                                                                        value={
-                                                                            opt.id
-                                                                        }
-                                                                    >
-                                                                        {opt.nom}
-                                                                    </option>
-                                                                )
-                                                            ))}
+                                                                            }
+                                                                            value={
+                                                                                opt.id
+                                                                            }
+                                                                        >
+                                                                            {opt.nom}
+                                                                        </option>
+                                                                    )
+                                                                ))}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -679,26 +650,6 @@ export default function Settings({
                                         <SpecialisationSection
                                             specialisations={
                                                 specialisations || []
-                                            }
-                                        />
-                                    </Deferred>
-                                </motion.div>
-                            )}
-
-                            {activeTab === 'domaine-experiences' && (
-                                <motion.div
-                                    key="domaine-experiences"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                >
-                                    <Deferred
-                                        data="domainExperiences"
-                                        fallback={<SectionSkeleton />}
-                                    >
-                                        <DomaineExperienceSection
-                                            domainExperiences={
-                                                domainExperiences || []
                                             }
                                         />
                                     </Deferred>
@@ -807,13 +758,13 @@ export default function Settings({
                                                 </div>
                                                 {accountForm.errors
                                                     .telephone && (
-                                                    <p className="ml-1 text-xs font-bold text-red-500">
-                                                        {
-                                                            accountForm.errors
-                                                                .telephone
-                                                        }
-                                                    </p>
-                                                )}
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {
+                                                                accountForm.errors
+                                                                    .telephone
+                                                            }
+                                                        </p>
+                                                    )}
                                             </div>
 
                                             <div className="border-t border-[#1a1f1e]/5 pt-6">

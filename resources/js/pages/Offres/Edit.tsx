@@ -27,6 +27,11 @@ export default function Edit({ offre, taxonomies }: Props) {
         mode_travail_id: offre.mode_travail_id || '',
         ville_id: offre.ville_id || '',
         niveau_experience_id: offre.niveau_experience_id || '',
+        formation_juridique_id: offre.formation_juridique_id || '',
+        salaire_id: offre.salaire_id || '',
+        urgence_id: offre.urgence_id || '',
+        notes_complementaires: offre.notes_complementaires || '',
+        nombre_cv: offre.nombre_cv || 1,
         requirements: offre.requirements || [],
     });
 

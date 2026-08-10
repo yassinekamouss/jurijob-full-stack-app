@@ -9,7 +9,7 @@ class SpecialisationMatchingStrategy extends AbstractMatchingStrategy
 {
     private const SCORE_ALIAS = 'spec_score';
 
-    private const TYPE = 'specialisation';
+    private const TYPE = 'SPECIALISATION';
 
     protected array $weights = [
         'indispensable' => 100,
@@ -25,32 +25,32 @@ class SpecialisationMatchingStrategy extends AbstractMatchingStrategy
 
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
+        $criteres = $this->getCriteres($offre);
 
-        if (! $group) {
+        if ($criteres->isEmpty()) {
             return $query;
         }
 
-        return $this->applyIndispensableFilter($query, $group, 'candidat_specialisations', 'specialisation_id');
+        return $this->applyIndispensableFilter($query, $criteres, 'candidat_specialisations', 'specialisation_id');
     }
 
     public function getScoreSubquery(Offre $offre): string
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
+        $criteres = $this->getCriteres($offre);
 
-        if (! $group || $group->criteres->isEmpty()) {
+        if ($criteres->isEmpty()) {
             return '0';
         }
 
-        $ids = $group->criteres->pluck('critere_id')->implode(',');
+        $ids = $criteres->pluck('critere_id')->implode(',');
 
-        $cases = $group->criteres->map(function ($req) {
-            return 'WHEN specialisation_id = '.(int) $req->critere_id.' THEN '.$this->getWeight($req->importance);
+        $cases = $criteres->map(function ($req) {
+            $importance = $req->metadata['importance'] ?? 'facultatif';
+
+            return 'WHEN specialisation_id = '.(int) $req->critere_id.' THEN '.$this->getWeight($importance);
         })->implode(' ');
 
-        $aggregator = $group->operateur === 'OR' ? 'MAX' : 'SUM';
-
-        return "(SELECT COALESCE($aggregator(CASE $cases ELSE 0 END), 0) 
+        return "(SELECT COALESCE(SUM(CASE $cases ELSE 0 END), 0) 
                   FROM candidat_specialisations 
                   WHERE specialisation_id IN ($ids) 
                   AND candidat_id = candidats.id)";
@@ -63,16 +63,12 @@ class SpecialisationMatchingStrategy extends AbstractMatchingStrategy
 
     public function getMaxScore(Offre $offre): int
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
+        $criteres = $this->getCriteres($offre);
 
-        if (! $group) {
+        if ($criteres->isEmpty()) {
             return 0;
         }
 
-        if ($group->operateur === 'OR') {
-            return (int) $group->criteres->max(fn ($c) => $this->getWeight($c->importance));
-        }
-
-        return (int) $group->criteres->sum(fn ($c) => $this->getWeight($c->importance));
+        return (int) $criteres->sum(fn ($c) => $this->getWeight($c->metadata['importance'] ?? 'facultatif'));
     }
 }

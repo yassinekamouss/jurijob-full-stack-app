@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             TaxonomySeeder::class,
+
         ]);
 
         $userId = \Illuminate\Support\Facades\DB::table('users')->insertGetId([
@@ -39,16 +40,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            OffreTestDataSeeder::class,
-        ]);
 
-        \Illuminate\Support\Facades\DB::table('admins')->insertOrIgnore([
-            'name' => 'Admin',
-            'email' => 'admin@jurijob.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'super_admin' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
+            OffreTestDataSeeder::class,
+            LargeCandidatSeeder::class,
         ]);
 
     }

@@ -14,17 +14,15 @@ export default function HowItWorks() {
                             className="text-5xl leading-[1] tracking-tight md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Comment <br />
-                            <span className="font-light text-[#C06041] italic">
-                                ça marche
+                            Notre
+                            <span className="font-light text-[#C06041] italic ml-4">
+                                approche
                             </span>
                         </h2>
                     </Reveal>
                     <Reveal direction="up" delay={0.1}>
-                        <p className="max-w-sm text-lg leading-relaxed font-light text-[#1a1f1e]/70">
-                            L'excellence de recrutement simplifiée en trois
-                            étapes, pour connecter les meilleurs talents aux
-                            cabinets prestigieux.
+                        <p className="max-w-sm text-lg leading-relaxed font-light text-[#1a1f1e]/70 md:text-xl">
+                            Un processus simple et supervisé.
                         </p>
                     </Reveal>
                 </div>
@@ -32,7 +30,7 @@ export default function HowItWorks() {
                 {/* Steps Container */}
                 <div className="relative">
                     <div className="relative z-10 grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-12">
-                        {/* Step 1: Create Profile */}
+                        {/* Step 1 */}
                         <div className="flex flex-col border border-[#1a1f1e] bg-white p-8 shadow-[8px_8px_0_0_rgba(26,31,30,1)] md:p-10">
                             <Reveal direction="up" delay={0.2}>
                                 <div className="mb-6 text-sm font-medium tracking-widest text-[#C06041]">
@@ -44,17 +42,15 @@ export default function HowItWorks() {
                                         fontFamily: 'Cormorant Garamond, serif',
                                     }}
                                 >
-                                    Créez votre profil
+                                    Vous déposez votre demande
                                 </h3>
                                 <p className="text-sm leading-relaxed font-light text-[#1a1f1e]/70">
-                                    Préparez votre dossier. Remplissez vos
-                                    informations clés et mettez en avant vos
-                                    compétences techniques et académiques.
+                                    Critères précis : spécialisation, niveau, langues, diplôme. Quelques minutes suffisent.
                                 </p>
                             </Reveal>
                         </div>
 
-                        {/* Step 2: Algorithm Match */}
+                        {/* Step 2 */}
                         <div className="flex translate-y-0 transform flex-col border border-[#1a1f1e] bg-[#1a1f1e] p-8 text-[#FDFCF8] shadow-[8px_8px_0_0_rgba(192,96,65,1)] md:translate-y-8 md:p-10">
                             <Reveal direction="up" delay={0.3}>
                                 <div className="mb-6 text-sm font-medium tracking-widest text-[#C06041]">
@@ -66,17 +62,15 @@ export default function HowItWorks() {
                                         fontFamily: 'Cormorant Garamond, serif',
                                     }}
                                 >
-                                    Analyse & Matching
+                                    Notre équipe sélectionne
                                 </h3>
                                 <p className="text-sm leading-relaxed font-light text-[#FDFCF8]/70">
-                                    Notre technologie effectue un filtrage
-                                    chirurgical pour vous proposer les
-                                    opportunités les plus adaptées.
+                                    Recherche dans la CVthèque et le réseau professionnel. Évaluation manuelle de chaque profil.
                                 </p>
                             </Reveal>
                         </div>
 
-                        {/* Step 3: Career Boost */}
+                        {/* Step 3 */}
                         <div className="flex flex-col border border-[#1a1f1e] bg-white p-8 shadow-[8px_8px_0_0_rgba(26,31,30,1)] md:p-10">
                             <Reveal direction="up" delay={0.4}>
                                 <div className="mb-6 text-sm font-medium tracking-widest text-[#C06041]">
@@ -88,12 +82,10 @@ export default function HowItWorks() {
                                         fontFamily: 'Cormorant Garamond, serif',
                                     }}
                                 >
-                                    Boostez votre carrière
+                                    Vous recevez votre short-list
                                 </h3>
                                 <p className="text-sm leading-relaxed font-light text-[#1a1f1e]/70">
-                                    Accédez à des offres exclusives et débutez
-                                    votre parcours professionnel dans les
-                                    meilleures conditions possibles.
+                                    Sous 48 heures ouvrées. Profils qualifiés et coordonnées complètes après confirmation du paiement.
                                 </p>
                             </Reveal>
                         </div>

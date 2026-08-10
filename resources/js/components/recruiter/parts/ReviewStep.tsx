@@ -1,6 +1,6 @@
+import { ArrowLeft, Info, Award } from 'lucide-react';
 import { Badge } from '../../ui/badge';
 import { Button } from '../../ui/button';
-import { ArrowLeft, Info, Award } from 'lucide-react';
 
 interface Props {
     data: any;
@@ -21,14 +21,14 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
     const getTaxonomyName = (taxId: number, type: string) => {
         const keyMap: { [key: string]: string } = {
             ville: 'villes',
-            specialisation: 'specialisations',
-            langue: 'langues',
+            SPECIALISATION: 'specialisations',
+            LANGUE: 'langues',
             mode_travail: 'modeTravails',
-            domaine_experience: 'domaineExperiences',
             formation_juridique: 'formationJuridiques',
         };
         const key = keyMap[type];
         const item = taxonomies[key]?.find((t: any) => t.id === taxId);
+
         return item?.nom || 'Inconnu';
     };
 
@@ -84,7 +84,11 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                                 return (
                                     <div key={index} className="flex items-center justify-between p-3 rounded-lg border border-gray-50 bg-white">
                                         <div className="flex items-center gap-3">
-                                            <Award className={`h-4 w-4 ${req.importance === 'indispensable' ? 'text-red-500' : 'text-gray-300'}`} />
+                                            {req.taxonomy_type === 'LANGUE' ? (
+                                                <Award className={`h-4 w-4 ${req.importance === 'indispensable' ? 'text-red-500' : 'text-gray-300'}`} />
+                                            ) : (
+                                                <span className="h-2 w-2 rounded-full bg-[#1a1f1e]/20" />
+                                            )}
                                             <div className="flex flex-col">
                                                 <span className="font-sans font-medium text-gray-800 text-sm">
                                                     {getTaxonomyName(req.taxonomy_id, req.taxonomy_type)}
@@ -96,9 +100,11 @@ export default function ReviewStep({ data, processing, onSubmit, onPrev, taxonom
                                                 )}
                                             </div>
                                         </div>
-                                        <Badge className={`text-[10px] font-bold ${importance.color} border-none`}>
-                                            {importance.label}
-                                        </Badge>
+                                        {req.taxonomy_type === 'LANGUE' && (
+                                            <Badge className={`text-[10px] font-bold ${importance.color} border-none`}>
+                                                {importance.label}
+                                            </Badge>
+                                        )}
                                     </div>
                                 );
                             })}

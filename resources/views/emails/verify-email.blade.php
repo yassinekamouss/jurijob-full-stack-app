@@ -34,7 +34,7 @@
             <table role="presentation" cellpadding="0" cellspacing="0" align="center">
               <tr>
                 <td align="center" style="padding-bottom:18px;">
-                  <img src="{{ config('app.email_asset_url') }}/images/logo_jurijob.jpg"
+                  <img src="{{ config('app.email_asset_url') }}/images/logo_jurijob.png"
                        width="52" height="52" alt="Jurijob"
                        style="display:block;border-radius:6px;border:0;-ms-interpolation-mode:bicubic;" />
                 </td>

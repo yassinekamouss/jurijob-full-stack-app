@@ -6,10 +6,11 @@ export interface TaxonomyItem {
 export interface Poste extends TaxonomyItem {}
 export interface TypeTravail extends TaxonomyItem {}
 export interface NiveauExperience extends TaxonomyItem {}
-export interface Specialisation extends TaxonomyItem {}
+export interface Specialisation extends TaxonomyItem { domaine?: string; }
 export interface Ville extends TaxonomyItem {}
 export interface ModeTravail extends TaxonomyItem {}
-export interface DomaineExperience extends TaxonomyItem {}
 export interface FormationJuridique extends TaxonomyItem {}
 export interface NiveauLangue extends TaxonomyItem {}
 export interface Langue extends TaxonomyItem {}
+export interface Salaire extends TaxonomyItem {}
+export interface Urgence extends TaxonomyItem { code: string; }

@@ -4,7 +4,7 @@ namespace App\Models\Taxonomy;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DomaineExperience extends Model
+class Salaire extends Model
 {
     public $timestamps = false;
 

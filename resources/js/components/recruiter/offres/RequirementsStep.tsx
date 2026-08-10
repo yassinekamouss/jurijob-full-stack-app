@@ -1,12 +1,12 @@
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Trash2, Plus, ChevronDown, ChevronRight, X, GripVertical } from 'lucide-react';
+import { useState, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Trash2, Plus, ChevronDown, ChevronRight, X, GripVertical } from 'lucide-react';
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Requirement } from '@/types/offre';
+import type { Requirement } from '@/types/offre';
 
 interface Props {
     data: {
@@ -21,10 +21,8 @@ interface Props {
 }
 
 const categories = [
-    { label: 'Spécialisations', key: 'specialisations', type: 'specialisation', icon: '⚖️' },
-    { label: 'Langues', key: 'langues', type: 'langue', icon: '🌐' },
-    { label: 'Domaines d\'expérience', key: 'domaineExperiences', type: 'domaine_experience', icon: '📂' },
-    { label: 'Formations Juridiques', key: 'formationJuridiques', type: 'formation_juridique', icon: '🎓' },
+    { label: 'Spécialisations', key: 'specialisations', type: 'SPECIALISATION', icon: '⚖️' },
+    { label: 'Langues', key: 'langues', type: 'LANGUE', icon: '🌐' },
 ];
 
 const importanceLevels = [
@@ -37,7 +35,10 @@ const importanceLevels = [
 export default function RequirementsStep({ data, setData, errors, onNext, onPrev, taxonomies, isEditMode }: Props) {
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(() => {
         const initial: Record<string, boolean> = {};
-        categories.forEach(cat => { initial[cat.key] = true; });
+        categories.forEach(cat => {
+ initial[cat.key] = true; 
+});
+
         return initial;
     });
 
@@ -46,17 +47,13 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
             return;
         }
 
-        const existingForType = data.requirements.find(r => r.taxonomy_type === taxType);
-        const operator = existingForType?.operator || 'OR';
-
         const newReq: Requirement = {
             taxonomy_id: taxId,
             taxonomy_type: taxType as any,
-            importance: 'important',
-            operator: operator as 'AND' | 'OR',
-            requirements_data: taxType === 'langue'
-                ? { niveau_langue_id: taxonomies.niveauLangues[0]?.id || null }
-                : {}
+            metadata: taxType === 'LANGUE' ? {
+                importance: 'important',
+                niveau_langue_id: taxonomies.niveauLangues[0]?.id || null
+            } : {}
         };
 
         setData('requirements', [...data.requirements, newReq]);
@@ -69,29 +66,30 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
     const updateImportance = (taxId: number, taxType: string, importance: string) => {
         setData('requirements', data.requirements.map((r: any) =>
             (r.taxonomy_id === taxId && r.taxonomy_type === taxType)
-            ? { ...r, importance }
+            ? { ...r, metadata: { ...r.metadata, importance } }
             : r
-        ));
-    };
-
-    const updateOperator = (taxType: string, operator: 'AND' | 'OR') => {
-        setData('requirements', data.requirements.map((r: any) =>
-            r.taxonomy_type === taxType ? { ...r, operator } : r
         ));
     };
 
     const updateLevel = (taxId: number, taxType: string, niveauId: number) => {
         setData('requirements', data.requirements.map((r: any) =>
             (r.taxonomy_id === taxId && r.taxonomy_type === taxType)
-            ? { ...r, requirements_data: { ...r.requirements_data, niveau_langue_id: niveauId } }
+            ? { ...r, metadata: { ...r.metadata, niveau_langue_id: niveauId } }
             : r
         ));
     };
 
     const getTaxonomyName = (taxId: number, categoryKey: string) => {
         const item = taxonomies[categoryKey]?.find((t: any) => t.id === taxId);
+
         return item?.nom || 'Inconnu';
     };
+    
+    const getTaxonomyDomaine = (taxId: number, categoryKey: string) => {
+        const item = taxonomies[categoryKey]?.find((t: any) => t.id === taxId);
+
+        return item?.domaine || null;
+    }
 
     const toggleGroup = (key: string) => {
         setExpandedGroups(prev => ({ ...prev, [key]: !prev[key] }));
@@ -121,8 +119,12 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
                         {importanceLevels.map(level => {
-                            const count = data.requirements.filter(r => r.importance === level.value).length;
-                            if (count === 0) return null;
+                            const count = data.requirements.filter(r => r.metadata?.importance === level.value).length;
+
+                            if (count === 0) {
+return null;
+}
+
                             return (
                                 <span key={level.value} className="flex items-center gap-1 text-xs text-slate-500">
                                     <span className={cn("h-2 w-2 rounded-full", level.dot)} />
@@ -164,31 +166,11 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
                             </button>
 
                             <div className="flex items-center gap-2 ml-3">
-                                {/* Operator toggle — compact */}
-                                {group.items.length > 1 && (
-                                    <div className="inline-flex p-0.5 rounded-md bg-slate-100 border border-slate-200">
-                                        {(['OR', 'AND'] as const).map((op) => (
-                                            <button
-                                                key={op}
-                                                type="button"
-                                                onClick={() => updateOperator(group.type, op)}
-                                                className={cn(
-                                                    "px-2 py-0.5 rounded text-[10px] font-bold tracking-wide transition-all",
-                                                    group.items[0]?.operator === op
-                                                    ? "bg-white text-slate-900 shadow-sm"
-                                                    : "text-slate-400 hover:text-slate-600"
-                                                )}
-                                            >
-                                                {op}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-
                                 {/* Add button */}
                                 <Select onValueChange={(val) => addRequirement(Number(val), group.type)}>
-                                    <SelectTrigger className="h-7 w-7 p-0 border-slate-200 bg-white rounded-md [&>svg]:hidden flex items-center justify-center hover:bg-slate-50 transition-colors">
+                                    <SelectTrigger className="h-8 px-3 text-xs font-medium border-slate-200 bg-white rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 [&>svg]:hidden text-slate-700 shadow-sm">
                                         <Plus className="h-3.5 w-3.5 text-slate-500" />
+                                        <span>Ajouter</span>
                                     </SelectTrigger>
                                     <SelectContent className="rounded-lg max-h-64">
                                         {availableItems(group.key, group.type).length === 0 ? (
@@ -196,11 +178,40 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
                                                 Toutes les valeurs sont déjà ajoutées
                                             </div>
                                         ) : (
-                                            availableItems(group.key, group.type).map((item: any) => (
-                                                <SelectItem key={item.id} value={String(item.id)} className="text-sm">
-                                                    {item.nom}
-                                                </SelectItem>
-                                            ))
+                                            // Group available items by domaine if available
+                                            (() => {
+                                                const items = availableItems(group.key, group.type);
+
+                                                if (group.type === 'SPECIALISATION') {
+                                                    const byDomaine: Record<string, any[]> = {};
+                                                    items.forEach((item: any) => {
+                                                        const d = item.domaine || 'Autre';
+
+                                                        if (!byDomaine[d]) {
+byDomaine[d] = [];
+}
+
+                                                        byDomaine[d].push(item);
+                                                    });
+                                                    
+                                                    return Object.entries(byDomaine).map(([domaine, grpItems]) => (
+                                                        <div key={domaine}>
+                                                            <div className="px-2 py-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50">{domaine}</div>
+                                                            {grpItems.map(item => (
+                                                                <SelectItem key={item.id} value={String(item.id)} className="text-sm pl-4">
+                                                                    {item.nom}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </div>
+                                                    ));
+                                                }
+
+                                                return items.map((item: any) => (
+                                                    <SelectItem key={item.id} value={String(item.id)} className="text-sm">
+                                                        {item.nom}
+                                                    </SelectItem>
+                                                ));
+                                            })()
                                         )}
                                     </SelectContent>
                                 </Select>
@@ -219,24 +230,36 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
                                 >
                                     <div className="divide-y divide-slate-50">
                                         {group.items.map((req) => {
-                                            const importance = getImportanceLevel(req.importance);
+                                            const importanceValue = req.metadata?.importance || 'important';
+                                            const importance = getImportanceLevel(importanceValue);
+                                            const domaine = getTaxonomyDomaine(req.taxonomy_id, group.key);
+                                            
                                             return (
                                                 <div
                                                     key={`${req.taxonomy_type}-${req.taxonomy_id}`}
                                                     className="flex items-center gap-3 px-4 py-2 hover:bg-slate-50/50 transition-colors group/row"
                                                 >
                                                     {/* Importance dot */}
-                                                    <span className={cn("h-2 w-2 rounded-full shrink-0", importance?.dot)} />
+                                                    {req.taxonomy_type === 'LANGUE' && (
+                                                        <span className={cn("h-2 w-2 rounded-full shrink-0", importance?.dot)} />
+                                                    )}
 
                                                     {/* Name */}
-                                                    <span className="text-sm font-medium text-slate-800 flex-1 min-w-0 truncate">
-                                                        {getTaxonomyName(req.taxonomy_id, group.key)}
-                                                    </span>
+                                                    <div className="flex flex-col flex-1 min-w-0">
+                                                        <span className="text-sm font-medium text-slate-800 truncate">
+                                                            {getTaxonomyName(req.taxonomy_id, group.key)}
+                                                        </span>
+                                                        {domaine && (
+                                                            <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider truncate">
+                                                                {domaine}
+                                                            </span>
+                                                        )}
+                                                    </div>
 
                                                     {/* Language level selector */}
-                                                    {req.taxonomy_type === 'langue' && (
+                                                    {req.taxonomy_type === 'LANGUE' && (
                                                         <Select
-                                                            value={String(req.requirements_data?.niveau_langue_id)}
+                                                            value={String(req.metadata?.niveau_langue_id)}
                                                             onValueChange={(val) => updateLevel(req.taxonomy_id, req.taxonomy_type, Number(val))}
                                                         >
                                                             <SelectTrigger className="h-7 w-[90px] text-[11px] font-medium rounded-md bg-slate-50 border-slate-200 px-2">
@@ -253,27 +276,29 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
                                                     )}
 
                                                     {/* Importance selector */}
-                                                    <Select
-                                                        value={req.importance}
-                                                        onValueChange={(val) => updateImportance(req.taxonomy_id, req.taxonomy_type, val)}
-                                                    >
-                                                        <SelectTrigger className={cn(
-                                                            "h-7 w-[110px] text-[11px] font-semibold rounded-md border px-2",
-                                                            importance?.badge
-                                                        )}>
-                                                            <SelectValue />
-                                                        </SelectTrigger>
-                                                        <SelectContent className="rounded-lg">
-                                                            {importanceLevels.map((level) => (
-                                                                <SelectItem key={level.value} value={level.value} className="text-xs">
-                                                                    <span className="flex items-center gap-1.5">
-                                                                        <span className={cn("h-1.5 w-1.5 rounded-full", level.dot)} />
-                                                                        {level.label}
-                                                                    </span>
-                                                                </SelectItem>
-                                                            ))}
-                                                        </SelectContent>
-                                                    </Select>
+                                                    {req.taxonomy_type === 'LANGUE' && (
+                                                        <Select
+                                                            value={importanceValue}
+                                                            onValueChange={(val) => updateImportance(req.taxonomy_id, req.taxonomy_type, val)}
+                                                        >
+                                                            <SelectTrigger className={cn(
+                                                                "h-7 w-[110px] text-[11px] font-semibold rounded-md border px-2",
+                                                                importance?.badge
+                                                            )}>
+                                                                <SelectValue />
+                                                            </SelectTrigger>
+                                                            <SelectContent className="rounded-lg">
+                                                                {importanceLevels.map((level) => (
+                                                                    <SelectItem key={level.value} value={level.value} className="text-xs">
+                                                                        <span className="flex items-center gap-1.5">
+                                                                            <span className={cn("h-1.5 w-1.5 rounded-full", level.dot)} />
+                                                                            {level.label}
+                                                                        </span>
+                                                                    </SelectItem>
+                                                                ))}
+                                                            </SelectContent>
+                                                        </Select>
+                                                    )}
 
                                                     {/* Remove */}
                                                     <button
@@ -293,9 +318,13 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
 
                         {/* Empty state inside expanded group */}
                         {expandedGroups[group.key] && group.items.length === 0 && (
-                            <div className="px-4 py-3 text-center">
-                                <p className="text-xs text-slate-400">
-                                    Aucun critère — utilisez <Plus className="h-3 w-3 inline -mt-0.5" /> pour ajouter
+                            <div className="px-4 py-8 text-center bg-slate-50/50">
+                                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 mb-3">
+                                    <Plus className="h-5 w-5 text-slate-400" />
+                                </div>
+                                <h3 className="text-sm font-medium text-slate-900 mb-1">Aucun critère ajouté</h3>
+                                <p className="text-xs text-slate-500">
+                                    Cliquez sur le bouton "Ajouter" en haut à droite pour ajouter {group.label.toLowerCase()}
                                 </p>
                             </div>
                         )}

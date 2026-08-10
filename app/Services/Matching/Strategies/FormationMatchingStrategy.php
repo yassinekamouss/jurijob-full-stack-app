@@ -9,8 +9,6 @@ class FormationMatchingStrategy extends AbstractMatchingStrategy
 {
     private const SCORE_ALIAS = 'form_score';
 
-    private const TYPE = 'formation_juridique';
-
     protected array $weights = [
         'indispensable' => 100,
         'important' => 50,
@@ -20,42 +18,32 @@ class FormationMatchingStrategy extends AbstractMatchingStrategy
 
     protected function getStrategyType(): string
     {
-        return self::TYPE;
+        // Formation juridique is now a direct field on offres, not a critere multiple.
+        // This strategy matches based on offre->formation_juridique_id vs candidat->formation_juridique_id.
+        return '__formation_not_a_critere_multiple__';
+    }
+
+    public function isActive(Offre $offre): bool
+    {
+        return $offre->formation_juridique_id !== null;
     }
 
     public function apply(Builder $query, Offre $offre): Builder
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
-
-        if (! $group) {
-            return $query;
-        }
-
-        $indispensables = $group->criteres->where('importance', 'indispensable');
-
-        if ($indispensables->isEmpty()) {
-            return $query;
-        }
-
-        $ids = $indispensables->pluck('critere_id')->toArray();
-
-        // Since it's a direct column, we filter candidats directly.
-        return $query->whereIn('candidats.formation_juridique_id', $ids);
+        // Not eliminatory — we only award points, no hard filter.
+        return $query;
     }
 
     public function getScoreSubquery(Offre $offre): string
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
-
-        if (! $group || $group->criteres->isEmpty()) {
+        if (! $offre->formation_juridique_id) {
             return '0';
         }
 
-        $cases = $group->criteres->map(function ($req) {
-            return 'WHEN candidats.formation_juridique_id = '.(int) $req->critere_id.' THEN '.$this->getWeight($req->importance);
-        })->implode(' ');
+        $formationId = (int) $offre->formation_juridique_id;
+        $weight = $this->getWeight('important');
 
-        return "(CASE $cases ELSE 0 END)";
+        return "(CASE WHEN candidats.formation_juridique_id = $formationId THEN $weight ELSE 0 END)";
     }
 
     public function getScoreAlias(): string
@@ -65,16 +53,10 @@ class FormationMatchingStrategy extends AbstractMatchingStrategy
 
     public function getMaxScore(Offre $offre): int
     {
-        $group = $this->getGroupForType($offre, self::TYPE);
-
-        if (! $group) {
+        if (! $offre->formation_juridique_id) {
             return 0;
         }
 
-        if ($group->operateur === 'OR') {
-            return (int) $group->criteres->max(fn ($c) => $this->getWeight($c->importance));
-        }
-
-        return (int) $group->criteres->sum(fn ($c) => $this->getWeight($c->importance));
+        return $this->getWeight('important');
     }
 }

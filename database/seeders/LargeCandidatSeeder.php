@@ -28,7 +28,6 @@ class LargeCandidatSeeder extends Seeder
         $posteIds = DB::table('postes')->pluck('id')->toArray();
         $niveauIds = DB::table('niveau_experiences')->pluck('id')->toArray();
         $formationIds = DB::table('formation_juridiques')->pluck('id')->toArray();
-        $domainIds = DB::table('domaine_experiences')->pluck('id')->toArray();
         $langueIds = Langue::pluck('id')->toArray();
         $niveauLangueIds = NiveauLangue::pluck('id')->toArray();
 
@@ -39,7 +38,7 @@ class LargeCandidatSeeder extends Seeder
         }
 
         $total = 10000;
-        $batchSize = 250; // Smaller batch size for more complex relations
+        $batchSize = 250;
         $password = Hash::make('password');
 
         $this->command->info("Seeding $total candidates...");
@@ -55,7 +54,6 @@ class LargeCandidatSeeder extends Seeder
                 $posteIds,
                 $niveauIds,
                 $formationIds,
-                $domainIds,
                 $langueIds,
                 $niveauLangueIds
             ) {
@@ -64,7 +62,6 @@ class LargeCandidatSeeder extends Seeder
                     'villes' => [],
                     'modes' => [],
                     'types' => [],
-                    'domains' => [],
                     'langues' => [],
                 ];
 
@@ -133,19 +130,6 @@ class LargeCandidatSeeder extends Seeder
                         ];
                     }
 
-                    // Random 1-2 domains
-                    if (! empty($domainIds)) {
-                        $randomDomains = (array) array_rand(array_flip($domainIds), rand(1, 2));
-                        foreach ($randomDomains as $domainId) {
-                            $pivotData['domains'][] = [
-                                'candidat_id' => $candidateId,
-                                'domaine_experience_id' => $domainId,
-                                'created_at' => now(),
-                                'updated_at' => now(),
-                            ];
-                        }
-                    }
-
                     // Random 1-2 languages
                     if (! empty($langueIds)) {
                         $randomLangues = (array) array_rand(array_flip($langueIds), rand(1, 2));
@@ -166,7 +150,6 @@ class LargeCandidatSeeder extends Seeder
                 DB::table('candidat_ville_travails')->insert($pivotData['villes']);
                 DB::table('candidat_mode_travails')->insert($pivotData['modes']);
                 DB::table('candidat_type_travails')->insert($pivotData['types']);
-                DB::table('candidat_domain_experiences')->insert($pivotData['domains']);
                 DB::table('candidat_langues')->insert($pivotData['langues']);
             });
 
