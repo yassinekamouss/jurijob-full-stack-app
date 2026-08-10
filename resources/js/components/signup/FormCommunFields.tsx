@@ -54,25 +54,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
         return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
     };
 
-    const validateAndSetImage = (file: File | undefined | null) => {
-        if (!file) {
-            onFieldChange('image_file', null);
-            setLocalImgError(null);
-            return;
-        }
-        const allowed = ['image/jpeg', 'image/png', 'image/webp'];
-        const maxBytes = 3 * 1024 * 1024;
-        if (!allowed.includes(file.type)) {
-            setLocalImgError('Formats acceptés: JPG, PNG, WebP');
-            return;
-        }
-        if (file.size > maxBytes) {
-            setLocalImgError('La taille maximale est 3 MB');
-            return;
-        }
-        setLocalImgError(null);
-        onFieldChange('image_file', file);
-    };
+
 
     const inputClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-400";
     const labelClasses = "block text-sm font-semibold text-slate-700 mb-1.5";
@@ -84,49 +66,6 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                 <p className="text-sm text-slate-500">Renseignez vos informations de base pour créer votre compte</p>
             </div>
 
-            {/* --- PROFILE IMAGE --- */}
-            {!isRecruiter && (
-                <div className="flex flex-col">
-                    <label className={labelClasses}>Photo de profil</label>
-                    <div
-                        onDrop={(e) => { e.preventDefault(); setDragActive(false); validateAndSetImage(e.dataTransfer.files?.[0]); }}
-                        onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
-                        onDragLeave={(e) => { e.preventDefault(); setDragActive(false); }}
-                        className={`relative w-full rounded-xl border-2 transition-all ${dragActive ? 'border-slate-900 bg-slate-50' : 'border-dashed border-slate-200 bg-white hover:border-slate-300'}`}
-                    >
-                        <div className="flex items-center gap-4 p-4">
-                            <div className="h-16 w-16 rounded-full overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center flex-shrink-0">
-                                {formData.image_file ? (
-                                    <img src={URL.createObjectURL(formData.image_file)} alt="Aperçu" className="h-full w-full object-cover" />
-                                ) : (
-                                    <Icon name="UserRound" size={28} className="text-slate-400" />
-                                )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm font-bold text-slate-900">Glissez-déposez une image ici</p>
-                                <p className="text-xs text-slate-500">PNG, JPG, WebP – max 3MB</p>
-                                {formData.image_file && (
-                                    <p className="mt-1 text-xs text-slate-600 font-medium truncate">
-                                        {formData.image_file.name} · {formatBytes(formData.image_file.size)}
-                                    </p>
-                                )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <button type="button" onClick={() => inputRef.current?.click()} className="inline-flex items-center gap-2 rounded-lg bg-slate-900 text-white px-3 py-2 text-sm font-medium hover:bg-slate-800 transition">
-                                    <Icon name="Camera" size={16} /> Choisir
-                                </button>
-                                {formData.image_file && (
-                                    <button type="button" onClick={() => validateAndSetImage(null)} className="inline-flex items-center gap-2 rounded-lg bg-slate-100 text-slate-700 px-3 py-2 text-sm font-medium hover:bg-slate-200 transition">
-                                        <Icon name="Trash2" size={16} />
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                        <input ref={inputRef} type="file" accept="image/png,image/jpeg,image/webp" onChange={(e) => validateAndSetImage(e.target.files?.[0])} className="hidden" />
-                    </div>
-                    {(errors.image_file || localImgError) && <p className="text-xs text-red-500 mt-2 font-medium">{localImgError || errors.image_file}</p>}
-                </div>
-            )}
 
             {/* --- NOM / PRENOM --- */}
             {!isRecruiter && (
@@ -154,10 +93,10 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
             {/* --- TELEPHONE --- */}
             <div>
                 <label className={labelClasses}>Téléphone</label>
-                <input 
-                    type="tel" 
-                    placeholder="+212600000000" 
-                    value={formData.telephone || ''} 
+                <input
+                    type="tel"
+                    placeholder="+212600000000"
+                    value={formData.telephone || ''}
                     onChange={(e) => {
                         const val = e.target.value;
                         onFieldChange('telephone', val);
@@ -166,8 +105,8 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                         } else {
                             setLocalPhoneError(null);
                         }
-                    }} 
-                    className={`${inputClasses} ${localPhoneError ? 'border-red-300 ring-red-50' : ''}`} 
+                    }}
+                    className={`${inputClasses} ${localPhoneError ? 'border-red-300 ring-red-50' : ''}`}
                 />
                 {(errors.telephone || localPhoneError) && (
                     <p className="text-xs text-red-500 mt-1.5 font-medium">

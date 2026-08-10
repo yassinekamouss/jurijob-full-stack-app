@@ -103,19 +103,11 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
 
                                     <div className="relative flex flex-col items-center text-center">
                                         <div className="mb-6 h-24 w-24 overflow-hidden rounded-[24px] border-4 border-[#FDFCF8]/10 bg-[#FDFCF8] shadow-inner p-1">
-                                            {candidat?.image_url ? (
-                                                <img
-                                                    src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`}
-                                                    alt="Profile"
-                                                    className="h-full w-full rounded-[18px] object-cover"
-                                                />
-                                            ) : (
-                                                <img
-                                                    src="/images/default_profile_image.avif"
-                                                    alt="Default Profile"
-                                                    className="h-full w-full rounded-[18px] object-cover"
-                                                />
-                                            )}
+                                            <img
+                                                src="/images/default_profile_image.avif"
+                                                alt="Profile"
+                                                className="h-full w-full rounded-[18px] object-cover"
+                                            />
                                         </div>
 
                                         <h3 className="text-2xl font-bold font-serif italic mb-1">

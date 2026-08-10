@@ -28,11 +28,6 @@ class RegistrationService
     {
         return DB::transaction(function () use ($data) {
             try {
-                $imageUrl = $this->handleFileUpload(
-                    $data['image_file'] ?? null,
-                    'candidat_profiles'
-                );
-
                 $user = User::create([
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
@@ -44,10 +39,7 @@ class RegistrationService
 
                 $profile = CandidateProfile::fromArray($data);
 
-                $candidat = $user->candidat()->create(array_merge(
-                    $profile->toArray(),
-                    ['image_url' => $imageUrl]
-                ));
+                $candidat = $user->candidat()->create($profile->toArray());
 
                 $this->syncCandidatRelations($candidat, $data);
 
@@ -58,6 +50,7 @@ class RegistrationService
             }
         });
     }
+
 
     /**
      * Register a new recruteur and their profile.

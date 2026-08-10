@@ -45,23 +45,7 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                 <p className="text-sm text-slate-500">Relisez vos informations une dernière fois avant de valider</p>
             </div>
 
-            {/* Profile image preview */}
-            {!isRecruiter && formData.user.image_file && (
-                <div className="flex flex-col items-center">
-                    <div className="relative">
-                        <img
-                            src={URL.createObjectURL(formData.user.image_file)}
-                            alt="Photo de profil"
-                            className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-xl"
-                        />
-                        <div className="absolute -bottom-1 -right-1 bg-slate-900 text-white p-1.5 rounded-full shadow-lg">
-                            <Icon name="UserRound" size={14} />
-                        </div>
-                    </div>
-                    <span className="mt-3 text-xs font-bold text-slate-400 uppercase tracking-widest">Ma photo</span>
-                </div>
-            )}
-
+           
             <div className="grid gap-6">
                 {/* User info */}
                 <div className="border border-slate-100 rounded-[24px] p-6 bg-slate-50/50">

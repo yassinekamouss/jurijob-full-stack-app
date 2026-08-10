@@ -5,7 +5,6 @@ import {
     Mail,
     Phone,
     Lock,
-    Camera,
     ShieldCheck,
     ShieldAlert,
     CheckCircle2,
@@ -24,7 +23,6 @@ import { useState, useEffect } from 'react';
 import {
     updateProfile as updateProfileRoute,
     updateAccount as updateAccountRoute,
-    updateImage as updateImageRoute,
 } from '@/routes/candidate/settings';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
@@ -193,11 +191,6 @@ export default function Settings({
         password_confirmation: '',
     });
 
-    // Image Form
-    const imageForm = useForm({
-        image: null as File | null,
-    });
-
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         profileForm.put(updateProfileRoute.url(), {
@@ -213,38 +206,6 @@ export default function Settings({
                 accountForm.reset('password', 'password_confirmation'),
         });
     };
-
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            // 2. Créer une URL temporaire pour l'affichage immédiat
-            const localUrl = URL.createObjectURL(file);
-            setPreviewUrl(localUrl);
-
-            router.post(
-                updateImageRoute.url(),
-                { _method: 'POST', image: file },
-                {
-                    forceFormData: true,
-                    preserveScroll: true,
-                    onFinish: () => {
-                        // Optionnel : nettoyer l'URL locale pour éviter les fuites mémoire
-                        // URL.revokeObjectURL(localUrl);
-                    }
-                }
-            );
-        }
-    };
-
-
-    const currentImageSrc = previewUrl
-        ? previewUrl
-        : (candidat?.image_url
-            ? `${import.meta.env.VITE_APP_URL}/candidate/profile-image/${candidat.id}`
-            : "/images/default_profile_image.avif");
-
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
@@ -359,49 +320,6 @@ export default function Settings({
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-10"
                                 >
-                                    {/* Photo Section */}
-                                    <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
-                                        <div className="flex flex-col items-center gap-8 sm:flex-row">
-                                            <div className="group relative">
-                                                <div className="h-24 w-24 overflow-hidden rounded-[28px] border-4 border-[#1a1f1e]/5 bg-[#1a1f1e]/5 ring-1 ring-[#1a1f1e]/10">
-                                                    {currentImageSrc && (
-                                                        <img
-                                                            src={currentImageSrc}
-                                                            alt="Avatar"
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                    )}
-                                                </div>
-                                                <label className="absolute -right-2 -bottom-2 flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-[#1a1f1e] text-white shadow-lg transition-transform hover:scale-110">
-                                                    <Camera className="h-5 w-5" />
-                                                    <input
-                                                        type="file"
-                                                        className="hidden"
-                                                        accept="image/*"
-                                                        onChange={
-                                                            handleImageChange
-                                                        }
-                                                        disabled={
-                                                            imageForm.processing
-                                                        }
-                                                    />
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <h3 className="mb-1 font-serif text-xl font-bold italic">
-                                                    Photo de profil
-                                                </h3>
-                                                <p className="mb-3 text-sm font-medium text-[#1a1f1e]/50">
-                                                    Une photo professionnelle
-                                                    aide à établir la confiance.
-                                                </p>
-                                                <div className="text-[10px] font-black tracking-widest text-[#1a1f1e]/30 uppercase">
-                                                    JPG, PNG or WebP • Max 2MB
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-
                                     {/* Info Form */}
                                     <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
                                         <form

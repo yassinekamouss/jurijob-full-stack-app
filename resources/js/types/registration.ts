@@ -8,7 +8,6 @@ export type UserFormData = {
     prenom: string;
     telephone: string;
     email: string;
-    image_file: File | null;
     password: string;
     password_confirmation: string;
 };
@@ -37,7 +36,6 @@ export type CandidatFormData = {
     formation_juridique_id: string | number;
     poste_id: string | number;
     specialisations: (string | number)[];
-    domain_experiences: (string | number)[];
     type_travails: (string | number)[];
     mode_travails: (string | number)[];
     ville_travails: (string | number)[];

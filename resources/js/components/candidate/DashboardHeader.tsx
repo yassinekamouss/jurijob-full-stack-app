@@ -88,19 +88,11 @@ export default function DashboardHeader() {
                             <p className="text-xs text-[#1a1f1e]/40 font-medium">Candidate</p>
                         </div>
                         <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 bg-white">
-                            {auth?.user?.candidat?.image_url ? (
-                                <img
-                                    src={`${import.meta.env.VITE_APP_URL}/candidate/profile-image/${auth.user.candidat.id}`}
-                                    alt="Profile"
-                                    className="h-full w-full object-cover"
-                                />
-                            ) : (
-                                <img
-                                    src="/images/default_profile_image.avif"
-                                    alt="Default Profile"
-                                    className="h-full w-full object-cover"
-                                />
-                            )}
+                            <img
+                                src="/images/default_profile_image.avif"
+                                alt="Profile"
+                                className="h-full w-full object-cover"
+                            />
                         </div>
                     </div>
                 </div>

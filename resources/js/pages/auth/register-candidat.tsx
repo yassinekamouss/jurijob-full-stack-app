@@ -47,7 +47,6 @@ export default function RegisterCandidat() {
             prenom: '',
             telephone: '',
             email: '',
-            image_file: null,
             password: '',
             password_confirmation: '',
         },
@@ -56,7 +55,6 @@ export default function RegisterCandidat() {
             formation_juridique_id: '',
             specialisations: [],
             langues: [],
-            domain_experiences: [],
             type_travails: [],
             ville_travails: [],
             mode_travails: [],
@@ -121,9 +119,7 @@ export default function RegisterCandidat() {
         payload.append('password_confirmation', user.password_confirmation);
         payload.append('role', 'candidat');
 
-        if (user.image_file) {
-            payload.append('image_file', user.image_file);
-        }
+     
 
         // --- Candidat fields ---
         payload.append('poste_id', String(candidat.poste_id));
@@ -133,9 +129,7 @@ export default function RegisterCandidat() {
         candidat.specialisations.forEach((s: string | number, i: number) =>
             payload.append(`specialisations[${i}][specialisation_id]`, String(s)),
         );
-        candidat.domain_experiences.forEach((d: string | number, i: number) =>
-            payload.append(`domain_experiences[${i}][domain_experience_id]`, String(d)),
-        );
+       
         candidat.type_travails.forEach((t: string | number, i: number) =>
             payload.append(`type_travails[${i}][type_travail_id]`, String(t)),
         );
@@ -322,7 +316,6 @@ export default function RegisterCandidat() {
                 'formation_juridique_id',
                 'specialisations',
                 'langues',
-                'domain_experiences',
                 'poste_id',
                 'type_travails',
                 'ville_travails',

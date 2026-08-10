@@ -1,57 +1,12 @@
 <?php
 
-use App\Models\Candidat;
-use App\Models\CandidatFormation;
+use App\Models\Candidat\CandidatFormation;
+use App\Models\Candidat\Candidat;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     Storage::fake('private');
-});
-
-test('candidate can view their own profile image', function () {
-    $user = User::factory()->create(['role' => 'candidat']);
-    $candidat = Candidat::factory()->create([
-        'user_id' => $user->id,
-        'image_url' => 'candidat_profiles/test.jpg',
-    ]);
-
-    Storage::disk('private')->put('candidat_profiles/test.jpg', 'fake content');
-
-    $response = $this->actingAs($user)->get(route('candidate.profile-image', $candidat));
-
-    $response->assertStatus(200);
-});
-
-test('candidate cannot view another candidate profile image', function () {
-    $user1 = User::factory()->create(['role' => 'candidat']);
-    $user2 = User::factory()->create(['role' => 'candidat']);
-
-    $candidat2 = Candidat::factory()->create([
-        'user_id' => $user2->id,
-        'image_url' => 'candidat_profiles/test.jpg',
-    ]);
-
-    Storage::disk('private')->put('candidat_profiles/test.jpg', 'fake content');
-
-    $response = $this->actingAs($user1)->get(route('candidate.profile-image', $candidat2));
-
-    $response->assertStatus(403);
-});
-
-test('admin can view any profile image', function () {
-    $admin = User::factory()->create(['role' => 'admin']);
-    $user = User::factory()->create(['role' => 'candidat']);
-    $candidat = Candidat::factory()->create([
-        'user_id' => $user->id,
-        'image_url' => 'candidat_profiles/test.jpg',
-    ]);
-
-    Storage::disk('private')->put('candidat_profiles/test.jpg', 'fake content');
-
-    $response = $this->actingAs($admin)->get(route('candidate.profile-image', $candidat));
-
-    $response->assertStatus(200);
 });
 
 test('candidate can download their own diploma', function () {
@@ -87,14 +42,15 @@ test('candidate cannot download another candidate diploma', function () {
     $response->assertStatus(403);
 });
 
-test('unauthenticated user cannot access any private file', function () {
+test('unauthenticated user cannot access diploma', function () {
     $user = User::factory()->create(['role' => 'candidat']);
-    $candidat = Candidat::factory()->create([
-        'user_id' => $user->id,
-        'image_url' => 'candidat_profiles/test.jpg',
+    $candidat = Candidat::factory()->create(['user_id' => $user->id]);
+    $formation = CandidatFormation::factory()->create([
+        'candidat_id' => $candidat->id,
+        'diploma_file' => 'candidat_diplomas/diploma.pdf',
     ]);
 
-    $response = $this->get(route('candidate.profile-image', $candidat));
+    $response = $this->get(route('candidate.diploma', $formation));
 
     $response->assertRedirect(route('login'));
 });

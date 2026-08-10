@@ -55,7 +55,7 @@ const CheckboxGroup = ({ options, selected, onChange, error, loading = false }: 
 );
 
 const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange, errors = {}, className = '' }) => {
-    const { specialisations, domaineExperiences, typeTravails, modeTravails, villes, langues, niveauExperiences, formationJuridiques, postes, niveauLangues } = useTaxonomies();
+    const { specialisations,  typeTravails, modeTravails, villes, langues, niveauExperiences, formationJuridiques, postes, niveauLangues } = useTaxonomies();
     
     const selectClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all";
     const labelClasses = "block text-sm font-semibold text-slate-700 mb-1.5";
@@ -116,11 +116,7 @@ const FormCandidat: React.FC<CandidateFieldsProps> = ({ formData, onFieldChange,
                 <CheckboxGroup options={specialisations} selected={formData.specialisations || []} onChange={(v) => onFieldChange('specialisations', v)} error={errors.specialisations} loading={useLoadingTaxonomy(specialisations)} />
             </div>
 
-            {/* Domaine d'expérience */}
-            <div>
-                <label className={labelClasses}>Domaine d'expérience *</label>
-                <CheckboxGroup options={domaineExperiences} selected={formData.domain_experiences || []} onChange={(v) => onFieldChange('domain_experiences', v)} error={errors.domain_experiences} loading={useLoadingTaxonomy(domaineExperiences)} />
-            </div>
+           
 
             {/* Type de travail */}
             <div>

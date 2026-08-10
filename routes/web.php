@@ -13,7 +13,6 @@ use App\Http\Controllers\Candidate\DiplomaController;
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
-use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
 use App\Http\Controllers\Offre\MatchingController;
@@ -51,10 +50,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/candidate/settings', [SettingsController::class, 'index'])->name('candidate.settings');
     Route::put('/candidate/settings/profile', [SettingsController::class, 'updateProfile'])->name('candidate.settings.update-profile');
     Route::put('/candidate/settings/account', [SettingsController::class, 'updateAccount'])->name('candidate.settings.update-account');
-    Route::post('/candidate/settings/image', [SettingsController::class, 'updateImage'])->name('candidate.settings.update-image');
 
     // Secure File Access
-    Route::get('/candidate/profile-image/{candidat}', ProfileImageController::class)->name('candidate.profile-image');
     Route::get('/candidate/diploma/{formation}', DiplomaController::class)->name('candidate.diploma');
 
     // Candidate Profile Relations (CRUD)

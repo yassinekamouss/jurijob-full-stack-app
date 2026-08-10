@@ -170,7 +170,6 @@ class SocialAuthController extends Controller
                 $user->candidat()->create([
                     'prenom' => $prenom,
                     'nom' => $nom,
-                    'image_url' => $socialUser->getAvatar(),
                 ]);
 
                 Auth::login($user);
@@ -268,7 +267,6 @@ class SocialAuthController extends Controller
                 $user->candidat()->create([
                     'prenom' => $prenom,
                     'nom' => $nom,
-                    'image_url' => $socialData['provider_avatar'],
                 ]);
 
                 Auth::login($user);

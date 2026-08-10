@@ -48,7 +48,6 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
             'telephone' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9]*$/'],
-            'image_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
 
             // Candidat rules
             'nom' => ['required', 'string', 'max:255'],

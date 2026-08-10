@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class Candidat extends Model
 {
@@ -24,7 +23,6 @@ class Candidat extends Model
         'poste_id',
         'niveau_experience_id',
         'formation_juridique_id',
-        'image_url',
     ];
 
     public function user(): BelongsTo
@@ -136,16 +134,5 @@ class Candidat extends Model
      */
     protected static function booted(): void
     {
-        static::updating(function ($candidat) {
-            if ($candidat->isDirty('image_url') && $candidat->getOriginal('image_url')) {
-                Storage::disk('private')->delete($candidat->getOriginal('image_url'));
-            }
-        });
-
-        static::deleting(function ($candidat) {
-            if ($candidat->image_url) {
-                Storage::disk('private')->delete($candidat->image_url);
-            }
-        });
     }
 }
