@@ -88,6 +88,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/admin/candidats/{candidate}/archive', [CandidateController::class, 'archive'])->name('admin.candidates.archive');
     Route::get('/admin/recruteurs', [RecruiterController::class, 'index'])->name('admin.recruteurs.index');
     // Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications'); // TODO: Create/Import ApplicationsController
+   
+    Route::get('/admin/recruteurs/{recruteur}/applications', [RecruiterController::class, 'showApplications'])->name('admin.recruteurs.applications');
     Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
@@ -121,5 +123,3 @@ Route::post('/auth/social/complete-registration', [SocialAuthController::class, 
 Route::get('/email/verify/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
-
-require __DIR__.'/settings.php';
