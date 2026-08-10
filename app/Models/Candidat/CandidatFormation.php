@@ -5,6 +5,7 @@ namespace App\Models\Candidat;
 use App\Models\Taxonomy\Ecole;
 use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\Specialisation;
+use Database\Factories\CandidatFormationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,6 +13,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CandidatFormation extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return CandidatFormationFactory::new();
+    }
 
     protected $fillable = [
         'candidat_id',

@@ -20,9 +20,9 @@ class CandidatFactory extends Factory
             'status' => 'en_attente',
             'nom' => $this->faker->lastName(),
             'prenom' => $this->faker->firstName(),
-            'poste_id' => Poste::inRandomOrder()->first()?->id ?? Poste::factory(),
-            'niveau_experience_id' => NiveauExperience::inRandomOrder()->first()?->id ?? NiveauExperience::factory(),
-            'formation_juridique_id' => FormationJuridique::inRandomOrder()->first()?->id ?? FormationJuridique::factory(),
+            'poste_id' => Poste::firstOrCreate(['nom' => 'Avocat'])->id,
+            'niveau_experience_id' => NiveauExperience::firstOrCreate(['nom' => 'Junior'])->id,
+            'formation_juridique_id' => FormationJuridique::firstOrCreate(['nom' => 'Master'])->id,
         ];
     }
 

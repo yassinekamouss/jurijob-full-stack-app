@@ -6,6 +6,7 @@ use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\Poste;
 use App\Models\User;
+use Database\Factories\CandidatFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Candidat extends Model
 {
     use HasFactory;
+
+    protected static function newFactory()
+    {
+        return CandidatFactory::new();
+    }
 
     protected $fillable = [
         'user_id',
