@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Taxonomy\TailleEntreprise;
+use App\Models\Taxonomy\TypeOrganisation;
+use App\Models\Taxonomy\Ville;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,19 +30,19 @@ return new class extends Migration
         Schema::table('recruteurs', function (Blueprint $table) {
             // Add foreign key columns
             $table->foreignId('type_organisation_id')
-                  ->nullable()
-                  ->constrained('type_organisations')
-                  ->cascadeOnDelete();
-            
+                ->nullable()
+                ->constrained('type_organisations')
+                ->cascadeOnDelete();
+
             $table->foreignId('taille_entreprise_id')
-                  ->nullable()
-                  ->constrained('taille_entreprises')
-                  ->cascadeOnDelete();
-            
+                ->nullable()
+                ->constrained('taille_entreprises')
+                ->cascadeOnDelete();
+
             $table->foreignId('ville_id')
-                  ->nullable()
-                  ->constrained('villes')
-                  ->cascadeOnDelete();
+                ->nullable()
+                ->constrained('villes')
+                ->cascadeOnDelete();
         });
     }
 
@@ -49,10 +52,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('recruteurs', function (Blueprint $table) {
-            $table->dropForeignIdFor(\App\Models\Taxonomy\TypeOrganisation::class);
-            $table->dropForeignIdFor(\App\Models\Taxonomy\TailleEntreprise::class);
-            $table->dropForeignIdFor(\App\Models\Taxonomy\Ville::class);
-            
+            $table->dropForeignIdFor(TypeOrganisation::class);
+            $table->dropForeignIdFor(TailleEntreprise::class);
+            $table->dropForeignIdFor(Ville::class);
+
             // Re-add string columns
             $table->string('type_organisation')->nullable();
             $table->string('taille_entreprise')->nullable();

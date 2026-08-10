@@ -19,7 +19,7 @@ class OffreTestDataSeeder extends Seeder
         // Check if a recruteur exists, if not create one.
         $recruteurId = DB::table('recruteurs')->first()?->id;
 
-        if (!$recruteurId) {
+        if (! $recruteurId) {
             $userId = DB::table('users')->insertGetId([
                 'telephone' => '0600000000',
                 'email' => 'recruteur@jurijob.com',
@@ -62,11 +62,11 @@ class OffreTestDataSeeder extends Seeder
 
         $importances = ['indispensable', 'important', 'souhaitable', 'facultatif'];
 
-        $this->command->info('Seeding 50 offers for recruiter ' . $recruteurId . '...');
+        $this->command->info('Seeding 50 offers for recruiter '.$recruteurId.'...');
 
         for ($i = 0; $i < 50; $i++) {
             $modeId = $modeIds[array_rand($modeIds)];
-            $villeId = ($modeId == 2) ? null : (!empty($villeIds) ? $villeIds[array_rand($villeIds)] : null); // 2 is Remote
+            $villeId = ($modeId == 2) ? null : (! empty($villeIds) ? $villeIds[array_rand($villeIds)] : null); // 2 is Remote
 
             $posteId = $posteIds[array_rand($posteIds)];
             $posteNom = DB::table('postes')->where('id', $posteId)->value('nom');
@@ -78,10 +78,10 @@ class OffreTestDataSeeder extends Seeder
                 'mode_travail_id' => $modeId,
                 'ville_id' => $villeId,
                 'niveau_experience_id' => $niveauIds[array_rand($niveauIds)],
-                'formation_juridique_id' => !empty($formationIds) ? (rand(0, 1) ? $formationIds[array_rand($formationIds)] : null) : null,
-                'salaire_id' => !empty($salaireIds) ? (rand(0, 1) ? $salaireIds[array_rand($salaireIds)] : null) : null,
-                'urgence_id' => !empty($urgenceIds) ? $urgenceIds[array_rand($urgenceIds)] : null,
-                'titre' => $posteNom . ' ' . fake()->jobTitle() . ' (' . fake()->city() . ')',
+                'formation_juridique_id' => ! empty($formationIds) ? (rand(0, 1) ? $formationIds[array_rand($formationIds)] : null) : null,
+                'salaire_id' => ! empty($salaireIds) ? (rand(0, 1) ? $salaireIds[array_rand($salaireIds)] : null) : null,
+                'urgence_id' => ! empty($urgenceIds) ? $urgenceIds[array_rand($urgenceIds)] : null,
+                'titre' => $posteNom.' '.fake()->jobTitle().' ('.fake()->city().')',
                 'description' => fake()->paragraphs(3, true),
                 'notes_complementaires' => rand(0, 1) ? fake()->sentence() : null,
                 'nombre_cv' => rand(1, 5),
@@ -116,7 +116,7 @@ class OffreTestDataSeeder extends Seeder
                         'importance' => $importances[array_rand($importances)],
                     ];
 
-                    if ($type === 'LANGUE' && !empty($niveauLangueIds)) {
+                    if ($type === 'LANGUE' && ! empty($niveauLangueIds)) {
                         $metadata['niveau_langue_id'] = $niveauLangueIds[array_rand($niveauLangueIds)];
                     }
 
