@@ -24,7 +24,7 @@ use Inertia\Inertia;
 
 Route::inertia('/', 'Home')->name('home');
 Route::inertia('/services', 'Services')->name('services');
-Route::inertia('/faq', 'Faq')->name('faq');
+Route::view('/faq', 'pages.faq')->name('faq');
 Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legales');
 Route::view('/cgu', 'pages.cgu')->name('cgu');
 Route::view('/cgv', 'pages.cgv')->name('cgv');
