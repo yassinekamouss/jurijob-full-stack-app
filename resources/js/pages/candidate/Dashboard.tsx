@@ -25,8 +25,6 @@ export default function Dashboard({ candidat, user }: Props) {
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
             <Head title="Espace Candidat - Jurijob" />
 
-
-
             <DashboardHeader />
 
             <main className="mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8 relative z-10">

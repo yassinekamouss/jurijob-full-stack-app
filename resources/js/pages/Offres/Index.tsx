@@ -64,8 +64,6 @@ export default function Index({ offres }: Props) {
             <Head title="Mes Offres - Jurijob" />
             <Toaster position="top-right" />
 
-
-
             <DashboardHeader />
 
             <main className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">

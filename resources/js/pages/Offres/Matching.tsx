@@ -40,8 +40,6 @@ export default function Matching({ offre, candidates, filters }: Props) {
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
             <Head title={`Matching : ${offre.titre} - Jurijob`} />
 
-
-
             <DashboardHeader />
 
             <main className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">

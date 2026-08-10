@@ -115,7 +115,7 @@ export default function RequirementsStep({ data, setData, errors, onNext, onPrev
     return (
         <div className="space-y-6">
             {/* Compact summary bar */}
-            <div className="flex items-center justify-between px-4 py-3 bg-slate-50 rounded-xl border border-slate-100">
+            <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border border-slate-100">
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-1.5">
                         {importanceLevels.map(level => {
@@ -141,7 +141,7 @@ return null;
             </div>
 
             {/* All categories in a single compact list */}
-            <div className="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-100">
+            <div className="border border-slate-200 overflow-hidden divide-y divide-slate-100">
                 {groupedRequirements.map((group) => (
                     <div key={group.key} className="bg-white">
                         {/* Category header — always visible */}
@@ -345,7 +345,7 @@ byDomaine[d] = [];
                     <Button
                         type="button"
                         onClick={onNext}
-                        className="h-11 px-8 text-sm font-semibold bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all shadow-md shadow-slate-900/10 disabled:opacity-50"
+                        className="h-11 px-8 text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-md shadow-slate-900/10 disabled:opacity-50"
                         disabled={data.requirements.length === 0}
                     >
                         Suivant : Récapitulatif

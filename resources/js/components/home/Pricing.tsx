@@ -80,7 +80,7 @@ export default function Pricing() {
                             </ul>
 
                             <Link
-                                href="/register?type=candidate"
+                                href="/register/candidat"
                                 className="w-full bg-[#1a1f1e] py-5 text-center text-xs font-medium tracking-widest text-[#FDFCF8] uppercase transition-colors duration-500 hover:bg-[#C06041]"
                             >
                                 Rejoindre la plateforme
@@ -131,12 +131,13 @@ export default function Pricing() {
                                 ))}
                             </ul>
 
-                            <Link
-                                href="/contact"
+                            {/* mailto : [EMAIL_ADDRESS] */}
+                            <a
+                                href="mailto:[recrutement@sentissilegal.com]"
                                 className="w-full border border-[#FDFCF8] py-5 text-center text-xs font-medium tracking-widest text-[#FDFCF8] uppercase transition-colors duration-500 hover:bg-[#FDFCF8] hover:text-[#1a1f1e]"
                             >
                                 Contacter l'équipe
-                            </Link>
+                            </a>
                         </div>
                     </Reveal>
                 </div>

@@ -99,7 +99,6 @@ export default function Settings({ recruteur, user }: Props) {
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Paramètres Recruteur - Jurijob" />
 
-
             <DashboardHeader />
 
             <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">

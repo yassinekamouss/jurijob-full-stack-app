@@ -152,7 +152,7 @@ export default function Header() {
                                                 className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
                                             >
                                                 <GraduationCap className="h-4 w-4 text-[#C06041]" />
-                                                En tant que Diplômé
+                                                En tant que Candidat
                                             </Link>
                                         </div>
                                     )}
