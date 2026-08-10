@@ -102,7 +102,7 @@ export default function Header() {
                                     direction="down"
                                 >
                                     <div className="group relative">
-                                        <Link
+                                        <a
                                             href={item.href}
                                             onClick={(e) =>
                                                 handleNavClick(e, item.href)
@@ -110,7 +110,7 @@ export default function Header() {
                                             className="text-gray-700 transition-colors hover:text-black"
                                         >
                                             {item.label}
-                                        </Link>
+                                        </a>
                                         <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-black transition-all duration-300 group-hover:w-full" />
                                     </div>
                                 </Reveal>
