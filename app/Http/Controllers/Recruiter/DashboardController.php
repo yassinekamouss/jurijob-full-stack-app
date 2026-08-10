@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Recruiter;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\TaxonomyRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -17,7 +18,7 @@ class DashboardController extends Controller
         return Inertia::render('recruiter/Dashboard', [
             'recruteur' => $recruteur,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
-            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
+            'taxonomies' => TaxonomyRepository::getAll(),
         ]);
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Models\Recruteur;
 
-
 use App\Models\Offre\Offre;
+use App\Models\Taxonomy\TailleEntreprise;
+use App\Models\Taxonomy\TypeOrganisation;
+use App\Models\Taxonomy\Ville;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,17 +33,17 @@ class Recruteur extends Model
 
     public function typeOrganisation(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Taxonomy\TypeOrganisation::class);
+        return $this->belongsTo(TypeOrganisation::class);
     }
 
     public function tailleEntreprise(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Taxonomy\TailleEntreprise::class);
+        return $this->belongsTo(TailleEntreprise::class);
     }
 
     public function ville(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\Taxonomy\Ville::class);
+        return $this->belongsTo(Ville::class);
     }
 
     public function offres(): HasMany

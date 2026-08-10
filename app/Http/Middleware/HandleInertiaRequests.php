@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use App\Repositories\TaxonomyRepository;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -33,35 +36,35 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
- public function share(Request $request): array
-{
-    $user = $request->user();
-    $admin = $request->user('admin');
+    public function share(Request $request): array
+    {
+        $user = $request->user();
+        $admin = $request->user('admin');
 
-    return [
-        ...parent::share($request),
+        return [
+            ...parent::share($request),
 
-        'name' => config('app.name'),
+            'name' => config('app.name'),
 
-    'auth' => [
+            'auth' => [
                 'user' => $request->user() ? [
-                // On ne charge les relations que si l'user est une instance du modèle User
-                'data' => ($request->user() instanceof \App\Models\User) 
-                            ? $request->user()->loadMissing(['candidat', 'recruteur']) 
-                            : $request->user(),
-                    ] : null,
+                    // On ne charge les relations que si l'user est une instance du modèle User
+                    'data' => ($request->user() instanceof User)
+                                ? $request->user()->loadMissing(['candidat', 'recruteur'])
+                                : $request->user(),
+                ] : null,
                 'admin' => $request->user('admin'), // Si vous utilisez un guard admin séparé
-        ],
+            ],
 
-        'flash' => [
-            'success' => $request->session()->get('success'),
-            'error' => $request->session()->get('error'),
-        ],
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
 
-        'taxonomies' => \Inertia\Inertia::lazy(fn () => \App\Repositories\TaxonomyRepository::getAll()),
+            'taxonomies' => Inertia::lazy(fn () => TaxonomyRepository::getAll()),
 
-        'sidebarOpen' => ! $request->hasCookie('sidebar_state')
-            || $request->cookie('sidebar_state') === 'true',
-    ];
-}
+            'sidebarOpen' => ! $request->hasCookie('sidebar_state')
+                || $request->cookie('sidebar_state') === 'true',
+        ];
+    }
 }

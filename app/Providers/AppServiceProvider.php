@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Services\Matching\MatchingEngine;
-use App\Services\Matching\Strategies\ExperienceMatchingStrategy;
 use App\Services\Matching\Strategies\FormationMatchingStrategy;
 use App\Services\Matching\Strategies\LanguageMatchingStrategy;
 use App\Services\Matching\Strategies\SpecialisationMatchingStrategy;
@@ -24,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
             LanguageMatchingStrategy::class,
             SpecialisationMatchingStrategy::class,
             FormationMatchingStrategy::class,
-            ExperienceMatchingStrategy::class,
         ], 'matching.strategies');
 
         $this->app->bind(MatchingEngine::class, function ($app) {

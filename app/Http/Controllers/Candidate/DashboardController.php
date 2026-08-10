@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\TaxonomyRepository;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -25,8 +26,8 @@ class DashboardController extends Controller
         return Inertia::render('candidate/Dashboard', [
             'candidat' => $candidat,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
-            'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
             'profileCompletion' => $candidat?->profileCompletion(),
+            'taxonomies' => TaxonomyRepository::getAll(),
         ]);
     }
 }

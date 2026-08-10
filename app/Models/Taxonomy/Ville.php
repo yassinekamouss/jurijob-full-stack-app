@@ -8,7 +8,7 @@ class Ville extends Model
 {
     public $timestamps = false;
 
-        protected $fillable = [
+    protected $fillable = [
         'nom',
     ];
 }
