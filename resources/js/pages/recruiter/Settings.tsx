@@ -49,7 +49,11 @@ export default function Settings({ recruteur, user }: Props) {
 
     // 2FA logic
     const { auth } = usePage().props as any;
-    const isTwoFactorEnabled = !!user?.two_factor_confirmed_at;
+    const isTwoFactorEnabled = !!(
+        auth?.user?.data?.two_factor_confirmed_at ||
+        auth?.user?.two_factor_confirmed_at ||
+        user?.two_factor_confirmed_at
+    );
 
     const {
         qrCodeSvg,

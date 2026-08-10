@@ -13,7 +13,7 @@ export default function FounderMessage() {
                     <Reveal direction="left" duration={1} className="lg:col-span-5">
                         <div className="relative aspect-[4/5] w-full overflow-hidden border border-[#1a1f1e] shadow-[12px_12px_0_0_rgba(26,31,30,1)]">
                             <img
-                                src="/images/founder.jpeg"
+                                src="/images/1777241420351.jpeg"
                                 alt="Mohammed Sentissi - Fondateur Jurijob"
                                 className="h-full w-full object-cover object-center grayscale transition-all duration-700 hover:grayscale-0"
                             />

@@ -109,12 +109,13 @@ export default function Recruteurs({ recruteurs }: any) {
                                     border: '1px solid #e5e7eb',
                                     cursor: 'not-allowed'
                                 }}
-                            />
+                            >
+                                {link.label}
+                            </span>
                         )
                     ))}
                 </div>
-
-                </div>
+            </div>
         </AdminLayout>
     );
 }

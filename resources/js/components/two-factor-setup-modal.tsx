@@ -178,6 +178,7 @@ function TwoFactorVerificationStep({
                                 id="otp"
                                 name="code"
                                 maxLength={OTP_MAX_LENGTH}
+                                value={code}
                                 onChange={setCode}
                                 disabled={processing}
                                 pattern={REGEXP_ONLY_DIGITS}
@@ -194,9 +195,11 @@ function TwoFactorVerificationStep({
                                     )}
                                 </InputOTPGroup>
                             </InputOTP>
+                            <input type="hidden" name="code" value={code} />
                             <InputError
                                 message={
-                                    errors?.confirmTwoFactorAuthentication?.code
+                                    errors?.confirmTwoFactorAuthentication?.code ||
+                                    (errors as any)?.code
                                 }
                             />
                         </div>

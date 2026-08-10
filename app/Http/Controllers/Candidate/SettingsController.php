@@ -25,7 +25,7 @@ class SettingsController extends Controller
 
         return Inertia::render('candidate/Settings', [
             'candidat' => $candidat,
-            'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
+            'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active', 'two_factor_confirmed_at']),
             'taxonomies' => TaxonomyRepository::getAll(),
             'experiences' => $candidat->experiences,
             'formations' => $candidat->formations,
@@ -70,7 +70,7 @@ class SettingsController extends Controller
         $user = $request->user();
         $data = $request->validated();
 
-        if (isset($data['password']) && !empty($data['password'])) {
+        if (isset($data['password']) && ! empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
@@ -79,5 +79,26 @@ class SettingsController extends Controller
         $user->update($data);
 
         return back()->with('success', 'Informations de compte mises à jour.');
+    }
+
+
+    public function updateImage(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        $user = $request->user();
+        $candidat = $user->candidat;
+
+        $file = $request->file('image');
+        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+        $path = $file->storeAs('candidat_profiles', $filename, 'private');
+
+        $candidat->update([
+            'image_url' => $path,
+        ]);
+
+        return back()->with('success', 'Photo de profil mise à jour.');
     }
 }

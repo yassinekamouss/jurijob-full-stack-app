@@ -76,7 +76,9 @@ export default function Settings({
     // 2FA logic
     const { auth } = usePage().props as any;
     const isTwoFactorEnabled = !!(
-        auth?.user?.two_factor_confirmed_at || user?.two_factor_confirmed_at
+        auth?.user?.data?.two_factor_confirmed_at ||
+        auth?.user?.two_factor_confirmed_at ||
+        user?.two_factor_confirmed_at
     );
 
     const {
