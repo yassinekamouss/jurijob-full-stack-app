@@ -42,8 +42,7 @@ export default function Header() {
         { href: '/#how-it-works', label: 'Comment ça marche' },
         { href: '/#about', label: 'À propos' },
         { href: '/#pricing', label: 'Tarifs' },
-        { href: '/faq', label: 'FAQ' },
-        { href: '/#contact', label: 'Contact' },
+        { href: '/faq', label: 'FAQ' }
     ];
 
     const handleNavClick = (e: React.MouseEvent<Element>, href: string) => {
