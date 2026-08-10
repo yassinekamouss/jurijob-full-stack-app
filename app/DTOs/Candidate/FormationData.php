@@ -12,12 +12,11 @@ readonly class FormationData
         public int $ecole_id,
         public string $annee_debut,
         public ?string $annee_fin = null,
-        public ?string $diploma_file = null,
     ) {}
 
-    public static function fromRequest(StoreFormationRequest $request, ?string $diplomaPath = null): self
+    public static function fromRequest(StoreFormationRequest $request): self
     {
-        return self::fromArray(array_merge($request->validated(), ['diploma_file' => $diplomaPath]));
+        return self::fromArray($request->validated());
     }
 
     public static function fromArray(array $data): self
@@ -28,7 +27,6 @@ readonly class FormationData
             ecole_id: (int) $data['ecole_id'],
             annee_debut: $data['annee_debut'],
             annee_fin: $data['annee_fin'] ?? null,
-            diploma_file: $data['diploma_file'] ?? null,
         );
     }
 
@@ -40,7 +38,6 @@ readonly class FormationData
             'ecole_id' => $this->ecole_id,
             'annee_debut' => $this->annee_debut,
             'annee_fin' => $this->annee_fin,
-            'diploma_file' => $this->diploma_file,
         ], fn ($value) => $value !== null);
     }
 }

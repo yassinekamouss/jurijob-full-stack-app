@@ -18,7 +18,6 @@ class CandidateController extends Controller
             'niveauExperience',
             'formationJuridique',
             'specialisations.specialisation',
-            'domainExperiences.domaineExperience',
             'langues.langue',
             'langues.niveauLangue',
             'typeTravails.typeTravail',

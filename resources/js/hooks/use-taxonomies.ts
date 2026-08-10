@@ -3,6 +3,7 @@ import { usePage } from '@inertiajs/react';
 interface Taxonomy {
     id: number;
     nom: string;
+    domaine?: string;
 }
 
 interface Taxonomies {

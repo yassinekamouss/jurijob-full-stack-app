@@ -60,8 +60,6 @@ class CreateNewUser implements CreatesNewUsers
             'specialisations' => ['nullable', 'array'],
             'specialisations.*.specialisation_id' => ['required_with:specialisations', 'integer'],
 
-            'domain_experiences' => ['nullable', 'array'],
-            'domain_experiences.*.domain_experience_id' => ['required_with:domain_experiences', 'integer'],
 
             'langues' => ['nullable', 'array'],
             'langues.*.langue_id' => ['required_with:langues', 'integer'],
@@ -89,7 +87,6 @@ class CreateNewUser implements CreatesNewUsers
             'formations.*.formation_juridique_id' => ['required_with:formations', 'integer'],
             'formations.*.specialisation_id' => ['required_with:formations', 'integer'],
             'formations.*.ecole_id' => ['required_with:formations', 'integer'],
-            'formations.*.diploma_file' => ['required_with:formations', 'file', 'mimes:pdf,jpg,png,jpeg', 'max:5120'],
         ], [
             'telephone.regex' => 'Le numéro de téléphone doit contenir uniquement des chiffres et éventuellement un + au début.',
             'experiences.*.fin.after_or_equal' => 'La date de fin de l\'expérience doit être postérieure ou égale à la date de début.',

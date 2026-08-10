@@ -9,7 +9,6 @@ use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
-use App\Http\Controllers\Candidate\DiplomaController;
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
@@ -50,9 +49,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/candidate/settings', [SettingsController::class, 'index'])->name('candidate.settings');
     Route::put('/candidate/settings/profile', [SettingsController::class, 'updateProfile'])->name('candidate.settings.update-profile');
     Route::put('/candidate/settings/account', [SettingsController::class, 'updateAccount'])->name('candidate.settings.update-account');
-
-    // Secure File Access
-    Route::get('/candidate/diploma/{formation}', DiplomaController::class)->name('candidate.diploma');
 
     // Candidate Profile Relations (CRUD)
     Route::prefix('candidate')->name('candidate.')->group(function () {

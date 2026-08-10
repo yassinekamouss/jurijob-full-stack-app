@@ -45,7 +45,7 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
                         <React.Fragment key={step.id}>
                             <div className="relative flex flex-col items-center">
                                 <div
-                                    className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 shadow-sm ${getStepClasses(status)}`}
+                                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-500 sm:h-12 sm:w-12 ${getStepClasses(status)}`}
                                 >
                                     {status === 'completed' ? (
                                         <Icon name="Check" size={20} />
@@ -53,9 +53,9 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
                                         <Icon name={step.icon as any} size={20} />
                                     )}
                                 </div>
-                                <div className="absolute top-14 w-32 flex justify-center">
+                                <div className="absolute top-14 w-20 flex justify-center sm:w-24">
                                     <span
-                                        className={`text-[10px] font-black uppercase tracking-widest transition-colors duration-500 text-center ${
+                                        className={`text-[9px] font-black uppercase tracking-widest transition-colors duration-500 text-center sm:text-[10px] ${
                                             status === 'current'
                                                 ? 'text-slate-900'
                                                 : status === 'completed'
@@ -69,8 +69,8 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
                             </div>
 
                             {!isLast && (
-                                <div className="flex-1 mx-4">
-                                    <div className={`transition-all duration-700 rounded-full ${getConnectorClasses(step.id)}`} />
+                                <div className="mx-1 flex-1 sm:mx-3">
+                                    <div className={`rounded-full transition-all duration-700 ${getConnectorClasses(step.id)}`} />
                                 </div>
                             )}
                         </React.Fragment>

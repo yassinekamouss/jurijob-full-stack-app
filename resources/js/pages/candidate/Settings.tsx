@@ -42,7 +42,6 @@ interface Props {
     experiences?: any[];
     formations?: any[];
     specialisations?: any[];
-    domainExperiences?: any[];
     langues?: any[];
     profileCompletion?: ProfileCompletion;
 }

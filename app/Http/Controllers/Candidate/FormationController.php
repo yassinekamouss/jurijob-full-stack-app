@@ -9,7 +9,6 @@ use App\Models\Candidat\CandidatFormation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class FormationController extends Controller
 {
@@ -18,15 +17,7 @@ class FormationController extends Controller
     public function store(StoreFormationRequest $request): RedirectResponse
     {
         $candidat = $request->user()->candidat;
-        $diplomaPath = null;
-
-        if ($request->hasFile('diploma_file')) {
-            $file = $request->file('diploma_file');
-            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-            $diplomaPath = $file->storeAs('candidat_diplomas', $filename, 'private');
-        }
-
-        $dto = FormationData::fromRequest($request, $diplomaPath);
+        $dto = FormationData::fromRequest($request);
 
         try {
             $candidat->formations()->create($dto->toArray());
@@ -43,20 +34,7 @@ class FormationController extends Controller
     {
         $this->authorize('update', $formation);
 
-        $diplomaPath = $formation->diploma_file;
-
-        if ($request->hasFile('diploma_file')) {
-            $file = $request->file('diploma_file');
-            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-            $diplomaPath = $file->storeAs('candidat_diplomas', $filename, 'private');
-        }
-
-        $dto = FormationData::fromRequest($request, $diplomaPath);
-
-        Log::info('Updating formation', [
-            'id' => $formation->id,
-            'data' => $dto->toArray(),
-        ]);
+        $dto = FormationData::fromRequest($request);
 
         try {
             $formation->update($dto->toArray());

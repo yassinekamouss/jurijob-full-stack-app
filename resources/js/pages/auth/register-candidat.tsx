@@ -15,19 +15,39 @@ import {
     FullCandidatFormData
 } from '@/types';
 import FormCandidat from '@/components/signup/FormCandidat';
+import FormCandidatPreferences from '@/components/signup/FormCandidatPreferences';
+import FormCandidatSpecialisations from '@/components/signup/FormCandidatSpecialisations';
 import FormCommunFields from '@/components/signup/FormCommunFields';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import FormNavigator from '@/components/signup/FormNavigator';
 import Icon from '@/components/signup/FormularIcons';
 
-
-
 const candidatSteps = [
-    { id: 1, label: 'Informations', icon: 'FileText' },
+    { id: 1, label: 'Infos', icon: 'FileText' },
     { id: 2, label: 'Profil', icon: 'Settings' },
-    { id: 3, label: 'Détails', icon: 'GraduationCap' },
-    { id: 4, label: 'Confirmation', icon: 'ClipboardCheck' },
+    { id: 3, label: 'Expertise', icon: 'Layers' },
+    { id: 4, label: 'Parcours', icon: 'GraduationCap' },
+    { id: 5, label: 'Préférences', icon: 'MapPin' },
+    { id: 6, label: 'Confirmation', icon: 'ClipboardCheck' },
 ];
+
+const createEmptyFormation = (): Formation => ({
+    id: crypto.randomUUID(),
+    annee_debut: '',
+    annee_fin: '',
+    formation_juridique_id: '',
+    specialisation_id: '',
+    ecole_id: '',
+});
+
+const createEmptyExperience = (): Experience => ({
+    id: crypto.randomUUID(),
+    debut: '',
+    fin: '',
+    type_travail_id: '',
+    entreprise: '',
+    poste_id: '',
+});
 
 export default function RegisterCandidat() {
     const { auth } = usePage().props as any;
@@ -59,27 +79,8 @@ export default function RegisterCandidat() {
             ville_travails: [],
             mode_travails: [],
             poste_id: '',
-            formations: [
-                {
-                    id: Math.random().toString(36).substr(2, 9),
-                    annee_debut: '',
-                    annee_fin: '',
-                    formation_juridique_id: '',
-                    specialisation_id: '',
-                    ecole_id: '',
-                    diploma_file: null,
-                },
-            ],
-            experiences: [
-                {
-                    id: Math.random().toString(36).substr(2, 9),
-                    debut: '',
-                    fin: '',
-                    type_travail_id: '',
-                    entreprise: '',
-                    poste_id: '',
-                },
-            ],
+            formations: [createEmptyFormation()],
+            experiences: [createEmptyExperience()],
         },
     });
 
@@ -153,10 +154,6 @@ export default function RegisterCandidat() {
             payload.append(`formations[${i}][formation_juridique_id]`, String(f.formation_juridique_id));
             payload.append(`formations[${i}][specialisation_id]`, String(f.specialisation_id));
             payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
-
-            if (f.diploma_file) {
-                payload.append(`formations[${i}][diploma_file]`, f.diploma_file);
-            }
         });
 
         candidat.experiences.forEach((e: Experience, i: number) => {
@@ -314,12 +311,8 @@ export default function RegisterCandidat() {
             const requiredFields: (keyof CandidatFormData)[] = [
                 'niveau_experience_id',
                 'formation_juridique_id',
-                'specialisations',
-                'langues',
                 'poste_id',
                 'type_travails',
-                'ville_travails',
-                'mode_travails',
             ];
             requiredFields.forEach((field) => {
                 const value = formData.candidat[field];
@@ -336,6 +329,13 @@ export default function RegisterCandidat() {
             });
         } else if (step === 3) {
             section = 'candidat';
+
+            if ((formData.candidat.specialisations || []).length === 0) {
+                newErrors.specialisations = 'Veuillez sélectionner au moins une spécialisation.';
+                valid = false;
+            }
+        } else if (step === 4) {
+            section = 'candidat';
             const { formations = [], experiences = [] } = formData.candidat;
 
             if (formations.length === 0) {
@@ -349,12 +349,11 @@ export default function RegisterCandidat() {
                         !f.annee_fin ||
                         !f.formation_juridique_id ||
                         !f.specialisation_id ||
-                        !f.ecole_id ||
-                        !f.diploma_file,
+                        !f.ecole_id,
                 )
             ) {
                 newErrors.formations =
-                    'Veuillez remplir tous les champs de chaque formation, y compris le diplôme PDF.';
+                    'Veuillez remplir tous les champs de chaque formation.';
                 valid = false;
             }
 
@@ -376,7 +375,6 @@ export default function RegisterCandidat() {
                     'Veuillez remplir tous les champs de chaque expérience.';
                 valid = false;
             } else {
-                // Specific date/year logic (after or equal)
                 formations.forEach((f: Formation, i: number) => {
                     if (f.annee_debut && f.annee_fin && f.annee_fin < f.annee_debut) {
                         (newErrors as any)[`formations.${i}.annee_fin`] = "L'année de fin doit être postérieure ou égale à l'année de début.";
@@ -390,6 +388,35 @@ export default function RegisterCandidat() {
                         valid = false;
                     }
                 });
+            }
+        } else if (step === 5) {
+            section = 'candidat';
+            const requiredFields: (keyof CandidatFormData)[] = [
+                'ville_travails',
+                'mode_travails',
+                'langues',
+            ];
+
+            requiredFields.forEach((field) => {
+                const value = formData.candidat[field];
+
+                if (
+                    value === undefined ||
+                    value === null ||
+                    (Array.isArray(value) && value.length === 0)
+                ) {
+                    (newErrors as any)[field] = 'Ce champ est obligatoire';
+                    valid = false;
+                }
+            });
+
+            if (
+                (formData.candidat.langues || []).some(
+                    (langue) => !langue.langue_id || !langue.niveau_langue_id,
+                )
+            ) {
+                newErrors.langues = 'Veuillez indiquer le niveau pour chaque langue sélectionnée.';
+                valid = false;
             }
         }
 
@@ -427,7 +454,7 @@ export default function RegisterCandidat() {
                 );
             case 3:
                 return (
-                    <CandidatDetails
+                    <FormCandidatSpecialisations
                         formData={formData.candidat}
                         onFieldChange={(field, value) =>
                             onFieldChange('candidat', field as string, value)
@@ -436,6 +463,26 @@ export default function RegisterCandidat() {
                     />
                 );
             case 4:
+                return (
+                    <CandidatDetails
+                        formData={formData.candidat}
+                        onFieldChange={(field, value) =>
+                            onFieldChange('candidat', field as string, value)
+                        }
+                        errors={errors.candidat || {}}
+                    />
+                );
+            case 5:
+                return (
+                    <FormCandidatPreferences
+                        formData={formData.candidat}
+                        onFieldChange={(field, value) =>
+                            onFieldChange('candidat', field as string, value)
+                        }
+                        errors={errors.candidat || {}}
+                    />
+                );
+            case 6:
                 return (
                     <FormConfirmation
                         formData={formData}

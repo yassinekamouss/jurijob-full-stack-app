@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { GraduationCap, Plus, Trash2, FileText, Calendar } from 'lucide-react';
+import { GraduationCap, Plus, Trash2, Calendar } from 'lucide-react';
 import Icon from '@/components/signup/FormularIcons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
@@ -21,7 +21,6 @@ export default function FormationSection({ formations }: Props) {
     ecole_id: '',
     annee_debut: '',
     annee_fin: '',
-    diploma_file: null as File | null,
   });
 
   const resetForm = () => {
@@ -37,7 +36,6 @@ export default function FormationSection({ formations }: Props) {
       ecole_id: formItem.ecole_id,
       annee_debut: formItem.annee_debut,
       annee_fin: formItem.annee_fin || '',
-      diploma_file: null,
     });
     setEditingId(formItem.id);
     setIsAdding(false);
@@ -51,19 +49,11 @@ export default function FormationSection({ formations }: Props) {
     }
 
     if (editingId) {
-      form.transform((data) => ({ 
-        ...data, 
-        _method: 'put' 
-      }));
-      form.post(update(editingId).url, {
-        forceFormData: true,
+      form.put(update(editingId).url, {
         onSuccess: () => resetForm(),
       });
     } else {
-      // Clear transform to avoid _method: 'put' in store requests if the user edits then adds
-      form.transform((data) => data); 
       form.post(store().url, {
-        forceFormData: true,
         onSuccess: () => resetForm(),
       });
     }
@@ -189,27 +179,6 @@ export default function FormationSection({ formations }: Props) {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Diplôme (PDF, JPG, PNG)</label>
-                <div className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-[#1a1f1e]/10 bg-[#FDFCF8]">
-                  <FileText className="h-8 w-8 text-[#1a1f1e]/20" />
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      id="diploma"
-                      className="hidden"
-                      onChange={e => form.setData('diploma_file', e.target.files?.[0] || null)}
-                      accept=".pdf,.jpg,.jpeg,.png"
-                    />
-                    <label htmlFor="diploma" className="text-xs font-bold text-[#1a1f1e] hover:underline cursor-pointer">
-                      {form.data.diploma_file ? form.data.diploma_file.name : 'Choisir un fichier'}
-                    </label>
-                    <p className="text-[10px] text-[#1a1f1e]/40 uppercase font-black">Max 5Mo</p>
-                  </div>
-                </div>
-                {form.errors.diploma_file && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.diploma_file}</p>}
-              </div>
-
               <div className="flex items-center justify-end gap-4 pt-4 border-t border-[#1a1f1e]/5">
                 <button type="button" onClick={resetForm} className="px-6 py-3 text-sm font-bold text-[#1a1f1e]/40 hover:text-[#1a1f1e]">Annuler</button>
                 <button type="submit" disabled={form.processing || !form.isDirty} className="bg-[#1a1f1e] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest flex items-center gap-2 disabled:opacity-50">
@@ -239,16 +208,6 @@ export default function FormationSection({ formations }: Props) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    {f.diploma_file && (
-                      <a
-                        href={`/candidate/diploma/${f.id}`}
-                        target="_blank"
-                        className="p-2 rounded-xl border border-[#1a1f1e]/10 text-emerald-600 hover:bg-emerald-50 transition-all"
-                        title="Voir le diplôme"
-                      >
-                        <Icon name="Download" size={16} />
-                      </a>
-                    )}
                     <button onClick={() => handleEdit(f)} className="p-2 rounded-xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5">
                         <Icon name="Pencil" size={16} />
                     </button>
