@@ -1,17 +1,21 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CandidateController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OffreController as AdminOffreController;
+use App\Http\Controllers\Admin\RecruiterController;
 use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
 use App\Http\Controllers\Candidate\DiplomaController;
+use App\Http\Controllers\Candidate\DomaineExperienceController;
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
-use App\Http\Controllers\Candidate\DomaineExperienceController;
 use App\Http\Controllers\Offre\MatchingController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
@@ -19,10 +23,6 @@ use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsContro
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\CandidateController;
-use App\Http\Controllers\Admin\RecruiterController;
-use App\Http\Controllers\Admin\OffreController as AdminOffreController;
 
 Route::inertia('/', 'Home')->name('home');
 
@@ -87,6 +87,9 @@ Route::middleware('guest:admin')->group(function () {
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/candidats', [CandidateController::class, 'index'])->name('admin.candidates.index');
+    Route::post('/admin/candidats/{candidate}/approve', [CandidateController::class, 'approve'])->name('admin.candidates.approve');
+    Route::post('/admin/candidats/{candidate}/reject', [CandidateController::class, 'reject'])->name('admin.candidates.reject');
+    Route::post('/admin/candidats/{candidate}/archive', [CandidateController::class, 'archive'])->name('admin.candidates.archive');
     Route::get('/admin/recruteurs', [RecruiterController::class, 'index'])->name('admin.recruteurs.index');
     Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications');
     Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');

@@ -2,6 +2,9 @@
 
 namespace App\Models\Candidat;
 
+use App\Models\Taxonomy\FormationJuridique;
+use App\Models\Taxonomy\NiveauExperience;
+use App\Models\Taxonomy\Poste;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +18,7 @@ class Candidat extends Model
 
     protected $fillable = [
         'user_id',
+        'status',
         'nom',
         'prenom',
         'poste_id',
@@ -66,6 +70,21 @@ class Candidat extends Model
     public function experiences(): HasMany
     {
         return $this->hasMany(CandidatExperience::class);
+    }
+
+    public function poste(): BelongsTo
+    {
+        return $this->belongsTo(Poste::class);
+    }
+
+    public function niveauExperience(): BelongsTo
+    {
+        return $this->belongsTo(NiveauExperience::class);
+    }
+
+    public function formationJuridique(): BelongsTo
+    {
+        return $this->belongsTo(FormationJuridique::class);
     }
 
     /**
