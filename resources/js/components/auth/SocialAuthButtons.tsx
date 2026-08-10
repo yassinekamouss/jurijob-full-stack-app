@@ -4,7 +4,7 @@ type Props = {
 };
 
 const GoogleIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path
             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
             fill="#4285F4"
@@ -25,7 +25,7 @@ const GoogleIcon = () => (
 );
 
 const LinkedInIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2" xmlns="http://www.w3.org/2000/svg">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
 );
@@ -36,20 +36,21 @@ export default function SocialAuthButtons({ role, label = 'Continuer' }: Props) 
         return role ? `${base}?role=${role}` : base;
     };
 
+    const baseButtonClass =
+        'flex h-11 w-full items-center justify-center gap-3 rounded-xl border bg-white px-4 text-sm font-semibold transition-all';
+
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2.5">
             <a
                 href={buildUrl('google')}
-                id={`social-login-google${role ? `-${role}` : ''}`}
-                className="flex h-12 w-full items-center justify-center gap-3 rounded-none border border-[#1a1f1e]/20 bg-white px-5 text-sm font-semibold text-[#1a1f1e] transition-all hover:border-[#1a1f1e]/50 hover:bg-[#1a1f1e]/5"
+                className={`${baseButtonClass} border-[#1a1f1e]/12 text-[#1a1f1e] hover:border-[#1a1f1e]/30 hover:bg-[#1a1f1e]/5`}
             >
                 <GoogleIcon />
                 {label} avec Google
             </a>
             <a
                 href={buildUrl('linkedin-openid')}
-                id={`social-login-linkedin${role ? `-${role}` : ''}`}
-                className="flex h-12 w-full items-center justify-center gap-3 rounded-none border border-[#0A66C2]/20 bg-[#0A66C2]/5 px-5 text-sm font-semibold text-[#0A66C2] transition-all hover:border-[#0A66C2]/50 hover:bg-[#0A66C2]/10"
+                className={`${baseButtonClass} border-[#0A66C2]/20 text-[#0A66C2] hover:border-[#0A66C2]/40 hover:bg-[#0A66C2]/10`}
             >
                 <LinkedInIcon />
                 {label} avec LinkedIn

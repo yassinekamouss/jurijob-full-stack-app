@@ -5,7 +5,7 @@ import { Toaster, toast } from 'react-hot-toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
-import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
+import RegisterSocialPrompt from '@/components/auth/RegisterSocialPrompt';
 import CandidatDetails from '@/components/signup/CandidatDetails';
 import {
     UserFormData,
@@ -587,11 +587,22 @@ export default function RegisterCandidat() {
                                         </p>
                                     </div>
                                 </div>
+
+                                {!auth.user && (
+                                    <RegisterSocialPrompt role="candidat" />
+                                )}
                             </div>
                         </aside>
 
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
+                            {!auth.user && (
+                                <RegisterSocialPrompt
+                                    role="candidat"
+                                    className="mb-6 rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm lg:hidden"
+                                />
+                            )}
+
                             <div className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/10 bg-white/50 p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
                                 {auth.user ? (
                                     <AlreadyAuthenticatedCard user={auth.user} />
@@ -604,24 +615,16 @@ export default function RegisterCandidat() {
                                     </FormNavigator>
                                 )}
 
-                                <div className="mt-8 border-t border-[#1a1f1e]/5 pt-8 space-y-4">
-                                    <div className="relative flex items-center">
-                                        <div className="flex-1 border-t border-[#1a1f1e]/10" />
-                                        <span className="mx-4 shrink-0 text-xs font-semibold tracking-widest text-gray-400 uppercase">ou inscription rapide</span>
-                                        <div className="flex-1 border-t border-[#1a1f1e]/10" />
-                                    </div>
-                                    <SocialAuthButtons role="candidat" label="S'inscrire" />
-                                    <div className="flex items-center justify-center gap-2 pt-2">
-                                        <p className="text-sm font-medium text-[#1a1f1e]/50">
-                                            Déjà un compte ?
-                                        </p>
-                                        <a
-                                            href="/login"
-                                            className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
-                                        >
-                                            Se connecter
-                                        </a>
-                                    </div>
+                                <div className="mt-8 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-6">
+                                    <p className="text-sm font-medium text-[#1a1f1e]/50">
+                                        Déjà un compte ?
+                                    </p>
+                                    <a
+                                        href="/login"
+                                        className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
+                                    >
+                                        Se connecter
+                                    </a>
                                 </div>
                             </div>
                         </section>
