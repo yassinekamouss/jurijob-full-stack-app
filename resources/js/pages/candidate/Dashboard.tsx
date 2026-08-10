@@ -1,15 +1,15 @@
 import { Head } from '@inertiajs/react';
 import DashboardHeader from '@/components/candidate/DashboardHeader';
+import PendingVerificationBanner, {
+    type ProfileCompletion,
+} from '@/components/candidate/PendingVerificationBanner';
 import StatusCard from '@/components/candidate/StatusCard';
 import ProfileGrid from '@/components/candidate/ProfileGrid';
 import {
-    User,
     Mail,
     Phone,
     MapPin,
     ExternalLink,
-    LayoutGrid,
-    Folder,
     BookOpen,
     Search
 } from 'lucide-react';
@@ -18,9 +18,11 @@ import { motion } from 'framer-motion';
 interface Props {
     candidat: any;
     user: any;
+    profileCompletion?: ProfileCompletion;
 }
 
-export default function Dashboard({ candidat, user }: Props) {
+export default function Dashboard({ candidat, user, profileCompletion }: Props) {
+    const isPending = candidat?.status === 'en_attente';
     return (
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
             <Head title="Espace Candidat - Jurijob" />
@@ -41,10 +43,10 @@ export default function Dashboard({ candidat, user }: Props) {
                         >
                             <div className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 backdrop-blur-sm px-4 py-1.5 text-[10px] font-black uppercase tracking-widest text-[#1a1f1e] shadow-sm">
                                 <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                    <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isPending ? 'bg-amber-400' : 'bg-emerald-400'}`}></span>
+                                    <span className={`relative inline-flex h-2 w-2 rounded-full ${isPending ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>
                                 </span>
-                                Tableau de bord professionnel
+                                {isPending ? 'Validation en cours' : 'Tableau de bord professionnel'}
                             </div>
 
                             <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl font-serif italic">
@@ -52,14 +54,21 @@ export default function Dashboard({ candidat, user }: Props) {
                             </h1>
 
                             <p className="max-w-xl text-lg font-medium text-[#1a1f1e]/50 leading-relaxed">
-                                Votre profil est l'atout majeur de votre carrière juridique.
-                                Gérez votre visibilité et gardez vos informations à jour
-                                pour les recruteurs.
+                                {isPending
+                                    ? 'Complétez votre dossier pour qu’il soit examiné par notre équipe et intégré au matching.'
+                                    : "Votre profil est l'atout majeur de votre carrière juridique. Gérez votre visibilité et gardez vos informations à jour pour les recruteurs."}
                             </p>
                         </motion.div>
 
+                        {isPending && (
+                            <PendingVerificationBanner
+                                profileCompletion={profileCompletion}
+                                showSettingsLink
+                            />
+                        )}
+
                         {/* STATUS CARD */}
-                        <StatusCard isActive={user.is_active} />
+                        {!isPending && <StatusCard isActive={user.is_active} />}
 
                         {/* PROFILE GRID */}
                         <div className="space-y-8">

@@ -26,6 +26,7 @@ class DashboardController extends Controller
             'candidat' => $candidat,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
             'taxonomies' => \App\Repositories\TaxonomyRepository::getAll(),
+            'profileCompletion' => $candidat?->profileCompletion(),
         ]);
     }
 }

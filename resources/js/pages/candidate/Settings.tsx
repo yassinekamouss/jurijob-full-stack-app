@@ -31,6 +31,9 @@ import ExperienceSection from '@/components/candidate/settings/ExperienceSection
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
 import LanguageSection from '@/components/candidate/settings/LanguageSection';
+import PendingVerificationBanner, {
+    type ProfileCompletion,
+} from '@/components/candidate/PendingVerificationBanner';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
@@ -43,6 +46,7 @@ interface Props {
     specialisations?: any[];
     domainExperiences?: any[];
     langues?: any[];
+    profileCompletion?: ProfileCompletion;
 }
 
 type TabType =
@@ -61,8 +65,10 @@ export default function Settings({
     formations,
     specialisations,
     langues,
+    profileCompletion,
 }: Props) {
     const { flash } = usePage().props as any;
+    const isPending = candidat?.status === 'en_attente';
     const { postes, niveauExperiences, formationJuridiques } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [visibleFlash, setVisibleFlash] = useState<{
@@ -256,6 +262,14 @@ export default function Settings({
                         votre accès.
                     </p>
                 </div>
+
+                {isPending && (
+                    <div className="mb-12">
+                        <PendingVerificationBanner
+                            profileCompletion={profileCompletion}
+                        />
+                    </div>
+                )}
 
                 <div className="flex flex-col gap-12 lg:flex-row">
                     {/* Sidebar Tabs */}

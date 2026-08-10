@@ -22,6 +22,8 @@ class SettingsController extends Controller
         $user = $request->user();
         $candidat = $user->candidat()->first();
 
+        $candidat->load(['experiences', 'formations', 'specialisations', 'langues']);
+
         return Inertia::render('candidate/Settings', [
             'candidat' => $candidat,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
@@ -30,6 +32,7 @@ class SettingsController extends Controller
             'formations' => $candidat->formations,
             'specialisations' => $candidat->specialisations,
             'langues' => $candidat->langues,
+            'profileCompletion' => $candidat->profileCompletion(),
         ]);
     }
 
