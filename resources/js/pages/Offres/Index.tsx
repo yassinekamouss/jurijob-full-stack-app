@@ -22,9 +22,8 @@ export default function Index({ offres }: Props) {
                         initial={{ opacity: 0, y: -20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className={`${
-                            t.visible ? 'animate-enter' : 'animate-leave'
-                        } max-w-md w-full bg-[#1a1f1e] shadow-2xl rounded-2xl pointer-events-auto flex flex-col p-5 border border-white/10`}
+                        className={`${t.visible ? 'animate-enter' : 'animate-leave'
+                            } max-w-md w-full bg-[#1a1f1e] shadow-2xl rounded-2xl pointer-events-auto flex flex-col p-5 border border-white/10`}
                     >
                         <div className="flex items-start gap-4">
                             <div className="flex-shrink-0 pt-0.5">
@@ -49,13 +48,13 @@ export default function Index({ offres }: Props) {
                         </div>
                     </motion.div>
                 ),
-                { duration: 8000, id: 'flash-success' }
+                { duration: 10000, id: 'flash-success' }
             );
         }
 
         if (flash?.error) {
             toast.error(flash.error, {
-                duration: 5000,
+                duration: 7000,
             });
         }
     }, [flash]);
@@ -65,14 +64,7 @@ export default function Index({ offres }: Props) {
             <Head title="Mes Offres - Jurijob" />
             <Toaster position="top-right" />
 
-            {/* Grain Texture Overlay */}
-            <div
-                className="pointer-events-none fixed inset-0 z-[100] opacity-[0.25] mix-blend-multiply"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                }}
-            />
+
 
             <DashboardHeader />
 
@@ -104,7 +96,7 @@ export default function Index({ offres }: Props) {
                 </motion.div>
 
                 {offres.length === 0 ? (
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         className="flex flex-col items-center justify-center py-24 bg-white rounded-[40px] border border-[#1a1f1e]/5 shadow-sm"
@@ -135,24 +127,23 @@ export default function Index({ offres }: Props) {
                                     className="group relative bg-white rounded-[32px] border border-[#1a1f1e]/5 p-8 shadow-sm hover:shadow-2xl hover:shadow-[#1a1f1e]/5 transition-all duration-500 overflow-hidden"
                                 >
                                     <div className="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#1a1f1e]/[0.02] transition-transform group-hover:scale-150" />
-                                    
+
                                     <div className="justify-between flex items-center mb-6">
                                         <div className="flex gap-2 items-center">
                                             <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
                                                 {offre.poste?.nom || 'Poste'}
                                             </Badge>
-                                            <Badge className={`border-none text-[9px] uppercase font-black tracking-wider ${
-                                                offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-100 text-amber-700' : 
-                                                offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-100 text-orange-700' : 
-                                                offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-100 text-blue-700' : 
-                                                offre.statut === 'CV_ENVOYES' ? 'bg-emerald-100 text-emerald-700' : 
-                                                'bg-slate-100 text-slate-700'
-                                            }`}>
-                                                {offre.statut === 'EN_TRAITEMENT' ? 'Traitement' : 
-                                                 offre.statut === 'ATTENTE_PAIEMENT' ? 'Paiement' : 
-                                                 offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification' : 
-                                                 offre.statut === 'CV_ENVOYES' ? 'Envoyés' : 
-                                                 'Archivé'}
+                                            <Badge className={`border-none text-[9px] uppercase font-black tracking-wider ${offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-100 text-amber-700' :
+                                                offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-100 text-orange-700' :
+                                                    offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-100 text-blue-700' :
+                                                        offre.statut === 'CV_ENVOYES' ? 'bg-emerald-100 text-emerald-700' :
+                                                            'bg-slate-100 text-slate-700'
+                                                }`}>
+                                                {offre.statut === 'EN_TRAITEMENT' ? 'Traitement' :
+                                                    offre.statut === 'ATTENTE_PAIEMENT' ? 'Paiement' :
+                                                        offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification' :
+                                                            offre.statut === 'CV_ENVOYES' ? 'Envoyés' :
+                                                                'Archivé'}
                                             </Badge>
                                         </div>
                                         <span className="text-xs font-bold text-[#1a1f1e]/30">
@@ -176,14 +167,14 @@ export default function Index({ offres }: Props) {
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4 pt-6 border-t border-[#1a1f1e]/5">
-                                        <Link 
-                                            href={offresShow({ offre: offre.id }).url} 
+                                        <Link
+                                            href={offresShow({ offre: offre.id }).url}
                                             className="inline-flex h-10 items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
                                         >
                                             Détails
                                         </Link>
-                                        <Link 
-                                            href={offresEdit({ offre: offre.id }).url} 
+                                        <Link
+                                            href={offresEdit({ offre: offre.id }).url}
                                             className="inline-flex h-10 items-center justify-center rounded-xl bg-blue-50 text-xs font-black text-blue-600 uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all"
                                         >
                                             Modifier

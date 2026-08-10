@@ -244,14 +244,7 @@ export default function Settings({
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Paramètres - Jurijob" />
 
-            {/* Grain Texture */}
-            <div
-                className="pointer-events-none fixed inset-0 z-[100] opacity-[0.25] mix-blend-multiply"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                }}
-            />
+
 
             <DashboardHeader />
 
@@ -273,8 +266,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('profile')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'profile'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <User className="h-4 w-4" />
@@ -283,8 +276,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('experiences')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'experiences'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <LayoutGrid className="h-4 w-4" />
@@ -293,8 +286,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('formations')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'formations'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <GraduationCap className="h-4 w-4" />
@@ -303,8 +296,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('specialisations')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'specialisations'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <Folder className="h-4 w-4" />
@@ -313,8 +306,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('langues')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'langues'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <Languages className="h-4 w-4" />
@@ -323,8 +316,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('account')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'account'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <Lock className="h-4 w-4" />
@@ -333,8 +326,8 @@ export default function Settings({
                             <button
                                 onClick={() => setActiveTab('security')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
-                                        ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                        : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
                                     }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />

@@ -44,8 +44,8 @@ export default function Show({ offre }: Props) {
     // Group requirements by their category label
     const groupedRequirements = useMemo(() => {
         if (!offre.requirements) {
-return [];
-}
+            return [];
+        }
 
         return CATEGORIES.map(cat => ({
             ...cat,
@@ -57,14 +57,7 @@ return [];
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
             <Head title={`${offre.titre} - Détails de l'offre`} />
 
-            {/* Background Texture Overlay */}
-            <div
-                className="pointer-events-none fixed inset-0 z-0 opacity-[0.15] mix-blend-multiply"
-                style={{
-                    backgroundImage:
-                        'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
-                }}
-            />
+
 
             <DashboardHeader />
 
@@ -89,17 +82,17 @@ return [];
                         <div className="flex flex-wrap gap-2 items-center">
                             <Badge className={cn(
                                 "h-7 px-4 rounded-full font-black uppercase tracking-widest text-[9px] border-none shadow-sm",
-                                offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-500 text-white' : 
-                                offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-500 text-white' : 
-                                offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-500 text-white' : 
-                                offre.statut === 'CV_ENVOYES' ? 'bg-emerald-500 text-white' : 
-                                'bg-slate-500 text-white'
+                                offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-500 text-white' :
+                                    offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-500 text-white' :
+                                        offre.statut === 'VERIFICATION_PAIEMENT' ? 'bg-blue-500 text-white' :
+                                            offre.statut === 'CV_ENVOYES' ? 'bg-emerald-500 text-white' :
+                                                'bg-slate-500 text-white'
                             )}>
-                                {offre.statut === 'EN_TRAITEMENT' ? 'En traitement' : 
-                                 offre.statut === 'ATTENTE_PAIEMENT' ? 'En attente de paiement' : 
-                                 offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification de paiement' : 
-                                 offre.statut === 'CV_ENVOYES' ? 'CV Envoyés' : 
-                                 'Offre Archivée'}
+                                {offre.statut === 'EN_TRAITEMENT' ? 'En traitement' :
+                                    offre.statut === 'ATTENTE_PAIEMENT' ? 'En attente de paiement' :
+                                        offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification de paiement' :
+                                            offre.statut === 'CV_ENVOYES' ? 'CV Envoyés' :
+                                                'Offre Archivée'}
                             </Badge>
                             <span className="h-1 w-1 rounded-full bg-slate-300 mx-1" />
                             <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1.5 uppercase tracking-widest">
