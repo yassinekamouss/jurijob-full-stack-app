@@ -99,7 +99,6 @@ export default function Settings({ recruteur, user }: Props) {
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
             <Head title="Paramètres Recruteur - Jurijob" />
 
-
             <DashboardHeader />
 
             <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
@@ -111,7 +110,7 @@ export default function Settings({ recruteur, user }: Props) {
                         <ArrowLeft className="h-4 w-4" />
                         Retour au tableau de bord
                     </Link>
-                    <h1 className="mb-2 font-serif text-4xl font-bold text-blue-900 italic">
+                    <h1 className="font-serif text-4xl font-bold tracking-tight italic md:text-5xl">
                         Paramètres de l'entreprise
                     </h1>
                     <p className="font-medium text-[#1a1f1e]/50">
@@ -158,7 +157,7 @@ export default function Settings({ recruteur, user }: Props) {
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-10"
                                 >
-                                    <section className="relative overflow-hidden rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                    <section className="relative overflow-hidden rounded-xl border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
                                         <form
                                             onSubmit={submit}
                                             className="relative z-10 space-y-8"

@@ -84,7 +84,7 @@ export default function Footer() {
                                 <li className="pt-2">
                                     <a 
                                         href="mailto:recrutement@sentissilegal.com"
-                                        className="inline-block transition-colors hover:text-[#C06041]"
+                                        className="inline-block transition-colors text-[#C06041]"
                                     >
                                         recrutement@sentissilegal.com
                                     </a>

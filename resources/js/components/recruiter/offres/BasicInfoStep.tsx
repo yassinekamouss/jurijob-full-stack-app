@@ -248,7 +248,7 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                         onChange={(e) => setData('description', e.target.value)}
                         rows={6}
                         placeholder="Présentez les missions, le profil recherché et l'entreprise..."
-                        className="mt-1.5 flex w-full rounded-md border border-slate-200 bg-slate-50/50 px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50 transition-colors"
+                        className="mt-1.5 flex w-full border border-slate-200 bg-slate-50/50 px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50 transition-colors"
                     />
                     {errors.description && <p className="mt-1.5 text-sm text-red-500">{errors.description}</p>}
                 </div>
@@ -261,7 +261,7 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                         onChange={(e) => setData('notes_complementaires', e.target.value)}
                         rows={3}
                         placeholder="Ex: Nous cherchons idéalement quelqu'un disponible de suite..."
-                        className="mt-1.5 flex w-full rounded-md border border-slate-200 bg-slate-50/50 px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50 transition-colors"
+                        className="mt-1.5 flex w-full border border-slate-200 bg-slate-50/50 px-4 py-3 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-slate-50 transition-colors"
                     />
                     {errors.notes_complementaires && <p className="mt-1.5 text-sm text-red-500">{errors.notes_complementaires}</p>}
                 </div>
@@ -271,7 +271,7 @@ export default function BasicInfoStep({ data, setData, errors, onNext, taxonomie
                 <div className="flex justify-end pt-8">
                     <Button 
                         type="submit" 
-                        className="h-12 px-8 text-sm font-bold bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all shadow-md shadow-slate-900/10"
+                        className="h-12 px-8 text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 transition-all shadow-md shadow-slate-900/10"
                         disabled={!data.titre || !data.poste_id || !data.type_travail_id || !data.mode_travail_id || (data.mode_travail_id !== '2' && !data.ville_id) || !data.niveau_experience_id || !data.description || !data.urgence_id}
                     >
                         Suivant : Définir les critères

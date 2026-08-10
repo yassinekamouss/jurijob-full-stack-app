@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Check } from 'lucide-react';
+import { cgv } from '@/routes';
 import Reveal from '@/components/home/Reveal';
 
 export default function Pricing() {
@@ -80,7 +80,7 @@ export default function Pricing() {
                             </ul>
 
                             <Link
-                                href="/register?type=candidate"
+                                href="/register/candidat"
                                 className="w-full bg-[#1a1f1e] py-5 text-center text-xs font-medium tracking-widest text-[#FDFCF8] uppercase transition-colors duration-500 hover:bg-[#C06041]"
                             >
                                 Rejoindre la plateforme
@@ -95,7 +95,7 @@ export default function Pricing() {
                                 <h3 className="mb-4 text-sm font-medium tracking-widest text-[#C06041] uppercase">
                                     Cabinets & Recruteurs
                                 </h3>
-                                <div className="mt-4 flex items-baseline gap-2">
+                                <div className="mt-4 flex flex-col gap-1">
                                     <span
                                         className="text-5xl md:text-6xl"
                                         style={{
@@ -105,19 +105,40 @@ export default function Pricing() {
                                     >
                                         Élite
                                     </span>
+                                    <div className="mt-3 flex flex-wrap items-baseline gap-2">
+                                        <span className="text-xs uppercase tracking-wider text-[#C06041]">
+                                            À partir de
+                                        </span>
+                                        <span
+                                            className="text-3xl text-[#FDFCF8] md:text-4xl"
+                                            style={{
+                                                fontFamily:
+                                                    'Cormorant Garamond, serif',
+                                            }}
+                                        >
+                                            1 490 MAD HT
+                                        </span>
+                                        <span className="text-sm font-light text-[#FDFCF8]/60 italic">
+                                            / profil
+                                        </span>
+                                    </div>
+                                    <span className="text-xs font-light text-[#FDFCF8]/50 italic">
+                                        (soit 1 788 MAD TTC)
+                                    </span>
                                 </div>
                                 <p className="mt-6 text-sm leading-relaxed font-light text-[#FDFCF8]/60">
-                                    Une tarification personnalisée pour répondre
-                                    à vos exigences de volume et de qualité.
+                                    Une tarification transparente et ajustée
+                                    selon vos volumes de recrutement, garantie
+                                    par l'œil de nos experts.
                                 </p>
                             </div>
 
                             <ul className="mb-12 flex-grow space-y-5">
                                 {[
+                                    "Sélection rigoureuse par nos experts juridiques (+20 ans d'expérience)",
+                                    "Garantie d'une short-list 100% sur-mesure",
                                     'Accès exclusif à notre vivier certifié',
-                                    'Filtrage hybride (IA + Experts)',
-                                    'Recherche multicritère avancée',
-                                    'Accompagnement marque employeur',
+                                    'Accompagnement marque employeur & suivi dédié',
                                 ].map((item, i) => (
                                     <li
                                         key={i}
@@ -131,12 +152,22 @@ export default function Pricing() {
                                 ))}
                             </ul>
 
-                            <Link
-                                href="/contact"
+                            {/* mailto : [EMAIL_ADDRESS] */}
+                            <a
+                                href="mailto:[recrutement@sentissilegal.com]"
                                 className="w-full border border-[#FDFCF8] py-5 text-center text-xs font-medium tracking-widest text-[#FDFCF8] uppercase transition-colors duration-500 hover:bg-[#FDFCF8] hover:text-[#1a1f1e]"
                             >
                                 Contacter l'équipe
-                            </Link>
+                            </a>
+
+                            <div className="mt-6 text-center">
+                                <Link
+                                    href={cgv().url}
+                                    className="text-xs font-light text-[#FDFCF8]/50 underline underline-offset-4 transition-colors hover:text-[#C06041]"
+                                >
+                                    Consulter nos Conditions Générales de Vente (CGV)
+                                </Link>
+                            </div>
                         </div>
                     </Reveal>
                 </div>

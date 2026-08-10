@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
 
 class Candidat extends Model
 {
@@ -24,7 +23,6 @@ class Candidat extends Model
         'poste_id',
         'niveau_experience_id',
         'formation_juridique_id',
-        'image_url',
     ];
 
     public function user(): BelongsTo
@@ -82,21 +80,59 @@ class Candidat extends Model
         return $this->belongsTo(FormationJuridique::class);
     }
 
+    public function isPendingVerification(): bool
+    {
+        return $this->status === 'en_attente';
+    }
+
+    /**
+     * @return array{
+     *     profile: bool,
+     *     experiences: bool,
+     *     formations: bool,
+     *     specialisations: bool,
+     *     langues: bool,
+     *     is_complete: bool
+     * }
+     */
+    public function profileCompletion(): array
+    {
+        $profile = filled($this->poste_id)
+            && filled($this->niveau_experience_id)
+            && filled($this->formation_juridique_id)
+            && filled($this->nom)
+            && filled($this->prenom);
+
+        $experiences = $this->relationLoaded('experiences')
+            ? $this->experiences->isNotEmpty()
+            : $this->experiences()->exists();
+
+        $formations = $this->relationLoaded('formations')
+            ? $this->formations->isNotEmpty()
+            : $this->formations()->exists();
+
+        $specialisations = $this->relationLoaded('specialisations')
+            ? $this->specialisations->isNotEmpty()
+            : $this->specialisations()->exists();
+
+        $langues = $this->relationLoaded('langues')
+            ? $this->langues->isNotEmpty()
+            : $this->langues()->exists();
+
+        return [
+            'profile' => $profile,
+            'experiences' => $experiences,
+            'formations' => $formations,
+            'specialisations' => $specialisations,
+            'langues' => $langues,
+            'is_complete' => $profile && $experiences && $formations && $specialisations && $langues,
+        ];
+    }
+
     /**
      * The "booted" method of the model.
      */
     protected static function booted(): void
     {
-        static::updating(function ($candidat) {
-            if ($candidat->isDirty('image_url') && $candidat->getOriginal('image_url')) {
-                Storage::disk('private')->delete($candidat->getOriginal('image_url'));
-            }
-        });
-
-        static::deleting(function ($candidat) {
-            if ($candidat->image_url) {
-                Storage::disk('private')->delete($candidat->image_url);
-            }
-        });
     }
 }

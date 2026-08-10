@@ -158,7 +158,7 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                             </div>
                         </div>
                         <Select
-                            value={String(data.salaire_id || '')}
+                            value={data.salaire_id ? String(data.salaire_id) : 'confidentiel'}
                             onValueChange={(val) => setData('salaire_id', val === 'confidentiel' ? '' : val)}
                         >
                             <SelectTrigger className="h-12 w-full rounded-2xl border-slate-200 bg-[#FCFCFB] text-sm focus:ring-[#C06041]/20 sm:text-[15px]">

@@ -9,11 +9,9 @@ use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
-use App\Http\Controllers\Candidate\DiplomaController;
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
-use App\Http\Controllers\Candidate\ProfileImageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
 use App\Http\Controllers\Offre\MatchingController;
@@ -25,6 +23,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::inertia('/', 'Home')->name('home');
+Route::inertia('/services', 'Services')->name('services');
+Route::inertia('/faq', 'Faq')->name('faq');
+Route::inertia('/mentions-legales', 'MentionsLegales')->name('mentions-legales');
+Route::inertia('/cgu', 'Cgu')->name('cgu');
+Route::inertia('/cgv', 'Cgv')->name('cgv');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
@@ -46,11 +49,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/candidate/settings', [SettingsController::class, 'index'])->name('candidate.settings');
     Route::put('/candidate/settings/profile', [SettingsController::class, 'updateProfile'])->name('candidate.settings.update-profile');
     Route::put('/candidate/settings/account', [SettingsController::class, 'updateAccount'])->name('candidate.settings.update-account');
-    Route::post('/candidate/settings/image', [SettingsController::class, 'updateImage'])->name('candidate.settings.update-image');
-
-    // Secure File Access
-    Route::get('/candidate/profile-image/{candidat}', ProfileImageController::class)->name('candidate.profile-image');
-    Route::get('/candidate/diploma/{formation}', DiplomaController::class)->name('candidate.diploma');
 
     // Candidate Profile Relations (CRUD)
     Route::prefix('candidate')->name('candidate.')->group(function () {

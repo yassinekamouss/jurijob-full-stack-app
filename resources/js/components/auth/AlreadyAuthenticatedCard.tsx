@@ -67,7 +67,7 @@ export default function AlreadyAuthenticatedCard({ user }: AlreadyAuthenticatedC
                 </div>
                 
                 <p className="mt-8 text-xs font-medium text-[#1a1f1e]/40">
-                    Besoin d'aide ? <a href="#" className="underline hover:text-[#C06041]">Contactez le support</a>
+                    Besoin d'aide ? <a href="mailto:[recrutement@sentissilegal.com]" className="underline hover:text-[#C06041]">Contactez le support</a>
                 </p>
             </div>
         </div>

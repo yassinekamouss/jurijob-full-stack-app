@@ -8,7 +8,6 @@ export type Candidat = {
     poste_recherche: string;
     niveau_experience: string;
     formation_juridique: string;
-    image_url?: string;
     created_at: string;
     updated_at: string;
 };
@@ -31,7 +30,6 @@ export type User = {
     email: string;
     telephone?: string;
     role: Role;
-    image_url?: string;
     is_active: boolean;
     is_archived: boolean;
     email_verified_at: string | null;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '@/components/signup/FormularIcons';
 import { useTaxonomies, getTaxonomyLabel, getTaxonomyLabels } from '@/hooks/use-taxonomies';
+import LegalHonorDeclaration from '@/components/signup/LegalHonorDeclaration';
 
 import { UserFormData, CandidatFormData, RecruteurFormData } from '@/types';
 
@@ -17,9 +18,18 @@ type FormConfirmationProps = {
 
 const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit }) => {
     const [loading, setLoading] = useState(false);
+    const [honorAccepted, setHonorAccepted] = useState(false);
+    const [honorError, setHonorError] = useState('');
     const { typeOrganisations, tailleEntreprises, villes, postes, niveauExperiences, formationJuridiques, specialisations } = useTaxonomies();
 
+    const isRecruiter = !!formData.recruteur;
+
     const handleSubmit = async () => {
+        if (!isRecruiter && !honorAccepted) {
+            setHonorError('Vous devez certifier sur l\'honneur l\'exactitude de vos informations.');
+            return;
+        }
+
         setLoading(true);
         try {
             await onSubmit();
@@ -28,8 +38,6 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
         }
     };
 
-    const isRecruiter = !!formData.recruteur;
-
     return (
         <div className="space-y-8 max-w-2xl mx-auto">
             <div className="text-center">
@@ -37,23 +45,7 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                 <p className="text-sm text-slate-500">Relisez vos informations une dernière fois avant de valider</p>
             </div>
 
-            {/* Profile image preview */}
-            {!isRecruiter && formData.user.image_file && (
-                <div className="flex flex-col items-center">
-                    <div className="relative">
-                        <img
-                            src={URL.createObjectURL(formData.user.image_file)}
-                            alt="Photo de profil"
-                            className="w-24 h-24 object-cover rounded-full border-4 border-white shadow-xl"
-                        />
-                        <div className="absolute -bottom-1 -right-1 bg-slate-900 text-white p-1.5 rounded-full shadow-lg">
-                            <Icon name="UserRound" size={14} />
-                        </div>
-                    </div>
-                    <span className="mt-3 text-xs font-bold text-slate-400 uppercase tracking-widest">Ma photo</span>
-                </div>
-            )}
-
+           
             <div className="grid gap-6">
                 {/* User info */}
                 <div className="border border-slate-100 rounded-[24px] p-6 bg-slate-50/50">
@@ -117,12 +109,26 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                 )}
             </div>
 
-            <div className="text-center pt-6">
+            {!isRecruiter && (
+                <div className="pt-2">
+                    <LegalHonorDeclaration
+                        variant="checkbox"
+                        checked={honorAccepted}
+                        onCheckedChange={(val) => {
+                            setHonorAccepted(val);
+                            if (val) setHonorError('');
+                        }}
+                        error={honorError}
+                    />
+                </div>
+            )}
+
+            <div className="text-center pt-4">
                 <button
                     type="button"
                     onClick={handleSubmit}
-                    disabled={loading}
-                    className="group relative inline-flex items-center justify-center gap-3 bg-slate-900 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
+                    disabled={loading || (!isRecruiter && !honorAccepted)}
+                    className="group relative inline-flex items-center justify-center gap-3 bg-slate-900 text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {loading ? (
                         <>

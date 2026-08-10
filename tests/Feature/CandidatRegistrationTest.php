@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 it('validates a successful request structure without hitting DB', function () {
@@ -22,9 +21,6 @@ it('validates a successful request structure without hitting DB', function () {
 
     app()->instance(CreatesNewUsers::class, $mockAction);
 
-    $avatar = UploadedFile::fake()->image('avatar.jpg');
-    $diploma = UploadedFile::fake()->create('diploma.pdf', 1000, 'application/pdf');
-
     $payload = [
         'email' => 'jane.doe@example.com',
         'password' => 'password123',
@@ -35,14 +31,10 @@ it('validates a successful request structure without hitting DB', function () {
         'poste_recherche' => 'Avocat',
         'niveau_experience' => 'Junior',
         'formation_juridique' => 'Master',
-        'image_file' => $avatar,
 
         // HasMany relations
         'specialisations' => [
             ['specialisation' => 'Droit des affaires'],
-        ],
-        'domain_experiences' => [
-            ['domain_experience' => 'Cabinet d\'avocats'],
         ],
         'langues' => [
             ['nom' => 'Anglais', 'niveau' => 'Courant'],
@@ -68,7 +60,6 @@ it('validates a successful request structure without hitting DB', function () {
                 'niveau' => 'Master 2',
                 'domaine' => 'Droit',
                 'ecole' => 'Sorbonne',
-                'diploma_file' => $diploma,
             ],
         ],
     ];

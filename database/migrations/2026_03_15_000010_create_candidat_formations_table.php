@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('niveau');
             $table->foreignId('formation_juridique_id')->nullable()->constrained('formation_juridiques')->nullOnDelete();
             $table->foreignId('ecole_id')->nullable()->constrained('ecoles')->nullOnDelete();
-            $table->string('diploma_file');
             $table->timestamps();
         });
     }

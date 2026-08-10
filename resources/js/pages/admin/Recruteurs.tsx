@@ -113,6 +113,8 @@ export default function Recruteurs({ recruteurs }: any) {
                         )
                     ))}
                 </div>
+
+                </div>
         </AdminLayout>
     );
 }

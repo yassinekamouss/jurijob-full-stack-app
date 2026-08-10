@@ -11,11 +11,9 @@ use App\DTOs\Recruteur\ProfileData as RecruteurProfile;
 use App\Models\Candidat\Candidat;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class RegistrationService
 {
@@ -28,11 +26,6 @@ class RegistrationService
     {
         return DB::transaction(function () use ($data) {
             try {
-                $imageUrl = $this->handleFileUpload(
-                    $data['image_file'] ?? null,
-                    'candidat_profiles'
-                );
-
                 $user = User::create([
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
@@ -44,10 +37,7 @@ class RegistrationService
 
                 $profile = CandidateProfile::fromArray($data);
 
-                $candidat = $user->candidat()->create(array_merge(
-                    $profile->toArray(),
-                    ['image_url' => $imageUrl]
-                ));
+                $candidat = $user->candidat()->create($profile->toArray());
 
                 $this->syncCandidatRelations($candidat, $data);
 
@@ -88,20 +78,6 @@ class RegistrationService
                 throw $e;
             }
         });
-    }
-
-    /**
-     * Handle file uploads to private storage.
-     */
-    protected function handleFileUpload(?UploadedFile $file, string $directory): ?string
-    {
-        if (! $file instanceof UploadedFile) {
-            return null;
-        }
-
-        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-
-        return $file->storeAs($directory, $filename, 'private');
     }
 
     /**
@@ -148,16 +124,10 @@ class RegistrationService
         }
 
         if (! empty($data['formations'])) {
-            $formationsData = [];
-            foreach ($data['formations'] as $formation) {
-                $diplomaPath = $this->handleFileUpload(
-                    $formation['diploma_file'] ?? null,
-                    'candidat_diplomas'
-                );
-
-                $dto = FormationData::fromArray(array_merge($formation, ['diploma_file' => $diplomaPath]));
-                $formationsData[] = $dto->toArray();
-            }
+            $formationsData = array_map(
+                fn ($formation) => FormationData::fromArray($formation)->toArray(),
+                $data['formations']
+            );
             $candidat->formations()->createMany($formationsData);
         }
     }

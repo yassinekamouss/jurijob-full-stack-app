@@ -1,12 +1,11 @@
 import { store as offresStore } from '@/routes/offres';
 import { Head, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
-import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { CheckCircle2, Sparkles, ArrowRight } from 'lucide-react';
-
+import { CheckCircle2, Sparkles } from 'lucide-react';
+import ExpertAdviceCard from '@/components/recruiter/offres/ExpertAdviceCard';
 import CreateIdentityStep from '@/components/recruiter/offres/CreateIdentityStep';
 import CreateOrganizationStep from '@/components/recruiter/offres/CreateOrganizationStep';
 import CreateProfileStep from '@/components/recruiter/offres/CreateProfileStep';
@@ -20,6 +19,8 @@ interface Props {
 
 export default function Create({ taxonomies }: Props) {
     const [step, setStep] = useState(1);
+    const stepCardRef = useRef<HTMLDivElement>(null);
+    const isFirstStepRender = useRef(true);
 
     const steps = [
         { id: 1, title: 'Identité', subtitle: 'Titre, métier, description' },
@@ -49,6 +50,22 @@ export default function Create({ taxonomies }: Props) {
     const nextStep = () => setStep((prev) => prev + 1);
     const prevStep = () => setStep((prev) => prev - 1);
 
+    useEffect(() => {
+        if (isFirstStepRender.current) {
+            isFirstStepRender.current = false;
+            return;
+        }
+
+        const frame = window.requestAnimationFrame(() => {
+            stepCardRef.current?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        });
+
+        return () => window.cancelAnimationFrame(frame);
+    }, [step]);
+
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         post(offresStore().url);
@@ -57,17 +74,14 @@ export default function Create({ taxonomies }: Props) {
     const progress = ((step - 1) / (steps.length - 1)) * 100;
 
     return (
-        <div className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(253,252,248,1)_34%,_#f4efe7_100%)] text-[#1a1f1e]">
-            <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-[#C06041]/10 blur-3xl" />
-                <div className="absolute left-0 top-48 h-80 w-80 rounded-full bg-[#1a1f1e]/5 blur-3xl" />
-            </div>
+        <div className="relative min-h-screen overflow-x-clip bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(253,252,248,1)_34%,_#f4efe7_100%)] text-[#1a1f1e]">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden" />
             <Head title="Publier une offre - Jurijob" />
 
             <DashboardHeader />
 
             <main className="relative z-10 mx-auto max-w-[1680px] px-4 pt-24 pb-16 sm:px-6 lg:px-8 xl:px-10">
-                <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px] xl:gap-10">
+                <div className="grid items-start gap-8 xl:grid-cols-[minmax(0,1fr)_380px] xl:gap-10">
                     <div className="min-w-0 space-y-8">
                         <motion.div
                             initial={{ opacity: 0, y: 16 }}
@@ -83,13 +97,13 @@ export default function Create({ taxonomies }: Props) {
                                     Une offre claire, élégante et facile à parcourir.
                                 </h1>
                                 <p className="max-w-2xl text-base font-medium leading-relaxed text-[#1a1f1e]/55 sm:text-lg">
-                                    Construisez une annonce structurée et professionnelle en cinq étapes guidées.
+                                    Construisez une annonce structurée et professionnelle en six étapes guidées.
                                 </p>
                             </div>
                         </motion.div>
 
-                        <div className="relative space-y-6">
-                            <div className="overflow-hidden rounded-[28px] border border-white/70 bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+                        <div id="formulaire-start" className="relative space-y-6">
+                            <div className="overflow-hidden border border-white/70 bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-5">
                                 <div className="mb-4 flex items-center justify-between gap-3">
                                     <p className="text-xs font-semibold text-[#1a1f1e]/55">
                                         Étape <span className="font-black text-[#1a1f1e]">{step}</span> sur {steps.length}
@@ -147,12 +161,13 @@ export default function Create({ taxonomies }: Props) {
                             </div>
 
                             <motion.div
+                                ref={stepCardRef}
                                 key={step}
                                 initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -8 }}
                                 transition={{ duration: 0.28 }}
-                                className="overflow-hidden rounded-[32px] border border-[#1a1f1e]/8 bg-white/95 shadow-2xl shadow-[#1a1f1e]/10 backdrop-blur"
+                                className="min-h-[420px] scroll-mt-28 overflow-hidden border border-[#1a1f1e]/8 bg-white/95"
                             >
                                 <div className="p-5 sm:p-8 lg:p-10 xl:p-12">
                                     {step === 1 && (
@@ -218,43 +233,26 @@ export default function Create({ taxonomies }: Props) {
                         </div>
                     </div>
 
-                    <aside className="hidden xl:block">
-                        <Card className="sticky top-28 rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-xl shadow-[#1a1f1e]/8 backdrop-blur-sm">
-                            <div className="space-y-5">
-                                <div>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/40">Guide</p>
-                                    <h3 className="mt-2 font-serif text-xl font-bold italic tracking-tight text-[#1a1f1e]">
-                                        Création guidée
-                                    </h3>
-                                </div>
-
-                                <div className="space-y-3">
-                                    {[
-                                        'Sélection directe des options importantes',
-                                        'Blocs clairs pour structurer l’annonce',
-                                        'Récapitulatif propre avant publication',
-                                    ].map((item) => (
-                                        <div key={item} className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-[#FCFCFB] p-3.5">
-                                            <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#C06041]" />
-                                            <p className="text-sm leading-relaxed text-[#1a1f1e]/65">{item}</p>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="rounded-2xl bg-[#1a1f1e] p-5 text-white">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45">Conseil</p>
-                                    <p className="mt-2 text-sm leading-relaxed text-white/75">
-                                        Gardez le titre court, puis laissez les choix visuels préciser le niveau attendu.
-                                    </p>
-                                </div>
-                            </div>
-                        </Card>
+                    <aside className="w-full xl:sticky xl:top-32 xl:self-start">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="space-y-6"
+                        >
+                            <ExpertAdviceCard currentStep={step} />
+                        </motion.div>
                     </aside>
                 </div>
 
                 <div className="mt-12 text-center opacity-40 transition-opacity hover:opacity-100">
                     <p className="text-sm font-bold text-[#1a1f1e]">
-                        Besoin d'aide ? <a href="#" className="underline decoration-2 underline-offset-4">Consultez notre guide de rédaction</a>
+                        Besoin d'aide ?{' '}
+                        <a
+                            href="mailto:recrutement@sentissilegal.com"
+                            className="underline decoration-2 underline-offset-4"
+                        >
+                            recrutement@sentissilegal.com
+                        </a>
                     </p>
                 </div>
             </main>

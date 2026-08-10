@@ -48,7 +48,6 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
             'telephone' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9]*$/'],
-            'image_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
 
             // Candidat rules
             'nom' => ['required', 'string', 'max:255'],
@@ -61,8 +60,6 @@ class CreateNewUser implements CreatesNewUsers
             'specialisations' => ['nullable', 'array'],
             'specialisations.*.specialisation_id' => ['required_with:specialisations', 'integer'],
 
-            'domain_experiences' => ['nullable', 'array'],
-            'domain_experiences.*.domain_experience_id' => ['required_with:domain_experiences', 'integer'],
 
             'langues' => ['nullable', 'array'],
             'langues.*.langue_id' => ['required_with:langues', 'integer'],
@@ -90,7 +87,6 @@ class CreateNewUser implements CreatesNewUsers
             'formations.*.formation_juridique_id' => ['required_with:formations', 'integer'],
             'formations.*.specialisation_id' => ['required_with:formations', 'integer'],
             'formations.*.ecole_id' => ['required_with:formations', 'integer'],
-            'formations.*.diploma_file' => ['required_with:formations', 'file', 'mimes:pdf,jpg,png,jpeg', 'max:5120'],
         ], [
             'telephone.regex' => 'Le numéro de téléphone doit contenir uniquement des chiffres et éventuellement un + au début.',
             'experiences.*.fin.after_or_equal' => 'La date de fin de l\'expérience doit être postérieure ou égale à la date de début.',
