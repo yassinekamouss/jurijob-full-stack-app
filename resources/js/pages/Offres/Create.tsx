@@ -3,11 +3,16 @@ import { Head, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { CheckCircle2, Sparkles, ArrowRight } from 'lucide-react';
 
-import RequirementsStep from '../../components/recruiter/offres/RequirementsStep';
-import ReviewStep from '../../components/recruiter/offres/ReviewStep';
-import StepperHeader from '../../components/recruiter/offres/StepperHeader';
-import BasicInfoStep from '../../components/recruiter/offres/BasicInfoStep';
+import CreateIdentityStep from '@/components/recruiter/offres/CreateIdentityStep';
+import CreateOrganizationStep from '@/components/recruiter/offres/CreateOrganizationStep';
+import CreateProfileStep from '@/components/recruiter/offres/CreateProfileStep';
+import CreateExpertiseStep from '@/components/recruiter/offres/CreateExpertiseStep';
+import CreateLanguagesStep from '@/components/recruiter/offres/CreateLanguagesStep';
+import CreateReviewStep from '@/components/recruiter/offres/CreateReviewStep';
 
 interface Props {
     taxonomies: any;
@@ -15,6 +20,15 @@ interface Props {
 
 export default function Create({ taxonomies }: Props) {
     const [step, setStep] = useState(1);
+
+    const steps = [
+        { id: 1, title: 'Identité', subtitle: 'Titre, métier, description' },
+        { id: 2, title: 'Organisation', subtitle: 'Contrat, mode, lieu, salaire' },
+        { id: 3, title: 'Profil', subtitle: 'Expérience, formation, notes' },
+        { id: 4, title: 'Expertise', subtitle: 'Spécialisations' },
+        { id: 5, title: 'Langues', subtitle: 'Niveau et importance' },
+        { id: 6, title: 'Récapitulatif', subtitle: 'Validation finale' },
+    ];
 
     const { data, setData, post, processing, errors } = useForm({
         titre: '',
@@ -40,76 +54,205 @@ export default function Create({ taxonomies }: Props) {
         post(offresStore().url);
     };
 
+    const progress = ((step - 1) / (steps.length - 1)) * 100;
+
     return (
-        <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
+        <div className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(253,252,248,1)_34%,_#f4efe7_100%)] text-[#1a1f1e]">
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-[#C06041]/10 blur-3xl" />
+                <div className="absolute left-0 top-48 h-80 w-80 rounded-full bg-[#1a1f1e]/5 blur-3xl" />
+            </div>
             <Head title="Publier une offre - Jurijob" />
-
-
 
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-4xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-12 text-center"
-                >
-                    <div className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-4 py-1.5 text-[10px] font-black tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm mb-6">
-                        Nouvelle Publication
-                    </div>
-                    <h1 className="mb-4 font-serif text-4xl font-bold tracking-tight italic md:text-5xl lg:text-6xl text-[#1a1f1e]">
-                        Recrutez votre Talent
-                    </h1>
-                    <p className="mx-auto max-w-xl text-lg font-medium text-[#1a1f1e]/50 leading-relaxed">
-                        Définissez votre besoin avec précision et laissez notre algorithme faire le reste.
-                    </p>
-                </motion.div>
+            <main className="relative z-10 mx-auto max-w-[1680px] px-4 pt-24 pb-16 sm:px-6 lg:px-8 xl:px-10">
+                <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_280px] xl:gap-10">
+                    <div className="min-w-0 space-y-8">
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="space-y-5"
+                        >
+                            <div className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/70 px-4 py-1.5 text-[10px] font-black tracking-[0.2em] text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
+                                <Sparkles className="h-3.5 w-3.5 text-[#C06041]" />
+                                Nouvelle publication
+                            </div>
+                            <div className="max-w-3xl space-y-3">
+                                <h1 className="font-serif text-3xl font-bold tracking-tight italic text-[#1a1f1e] sm:text-4xl lg:text-5xl">
+                                    Une offre claire, élégante et facile à parcourir.
+                                </h1>
+                                <p className="max-w-2xl text-base font-medium leading-relaxed text-[#1a1f1e]/55 sm:text-lg">
+                                    Construisez une annonce structurée et professionnelle en cinq étapes guidées.
+                                </p>
+                            </div>
+                        </motion.div>
 
-                <div className="relative">
-                    <StepperHeader currentStep={step} />
+                        <div className="relative space-y-6">
+                            <div className="overflow-hidden rounded-[28px] border border-white/70 bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+                                <div className="mb-4 flex items-center justify-between gap-3">
+                                    <p className="text-xs font-semibold text-[#1a1f1e]/55">
+                                        Étape <span className="font-black text-[#1a1f1e]">{step}</span> sur {steps.length}
+                                    </p>
+                                    <p className="text-xs font-semibold text-[#C06041]">{steps[step - 1]?.title}</p>
+                                </div>
 
-                    <motion.div
-                        key={step}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="mt-12 overflow-hidden rounded-[40px] border border-[#1a1f1e]/5 bg-white shadow-2xl shadow-[#1a1f1e]/5"
-                    >
-                        <div className="p-8 md:p-14">
-                            {step === 1 && (
-                                <BasicInfoStep
-                                    data={data}
-                                    setData={setData}
-                                    errors={errors}
-                                    onNext={nextStep}
-                                    taxonomies={taxonomies}
-                                />
-                            )}
-                            {step === 2 && (
-                                <RequirementsStep
-                                    data={data}
-                                    setData={setData}
-                                    errors={errors}
-                                    onNext={nextStep}
-                                    onPrev={prevStep}
-                                    taxonomies={taxonomies}
-                                />
-                            )}
-                            {step === 3 && (
-                                <ReviewStep
-                                    data={data}
-                                    processing={processing}
-                                    onSubmit={submit}
-                                    onPrev={prevStep}
-                                    taxonomies={taxonomies}
-                                />
-                            )}
+                                <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-slate-100">
+                                    <div
+                                        className="h-full rounded-full bg-[#C06041] transition-all duration-500 ease-out"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6 lg:gap-2.5">
+                                    {steps.map((item) => {
+                                        const state = step === item.id ? 'active' : step > item.id ? 'done' : 'todo';
+
+                                        return (
+                                            <div
+                                                key={item.id}
+                                                className={cn(
+                                                    'rounded-2xl border px-3 py-3 transition-colors sm:px-3.5 sm:py-3.5',
+                                                    state === 'active'
+                                                        ? 'border-[#C06041]/30 bg-[#C06041]/7'
+                                                        : state === 'done'
+                                                            ? 'border-emerald-200 bg-emerald-50'
+                                                            : 'border-slate-200/80 bg-white'
+                                                )}
+                                            >
+                                                <div className="flex items-center gap-2.5">
+                                                    <div
+                                                        className={cn(
+                                                            'flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-[11px] font-black',
+                                                            state === 'active'
+                                                                ? 'bg-[#C06041] text-white'
+                                                                : state === 'done'
+                                                                    ? 'bg-emerald-500 text-white'
+                                                                    : 'bg-slate-100 text-slate-500'
+                                                        )}
+                                                    >
+                                                        {state === 'done' ? <CheckCircle2 className="h-4 w-4" /> : item.id}
+                                                    </div>
+                                                    <p className="truncate text-[11px] font-black uppercase tracking-wider text-slate-700 sm:text-xs">
+                                                        {item.title}
+                                                    </p>
+                                                </div>
+                                                <p className="mt-2 hidden text-[11px] leading-relaxed text-slate-500 sm:block">
+                                                    {item.subtitle}
+                                                </p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            <motion.div
+                                key={step}
+                                initial={{ opacity: 0, y: 12 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                transition={{ duration: 0.28 }}
+                                className="overflow-hidden rounded-[32px] border border-[#1a1f1e]/8 bg-white/95 shadow-2xl shadow-[#1a1f1e]/10 backdrop-blur"
+                            >
+                                <div className="p-5 sm:p-8 lg:p-10 xl:p-12">
+                                    {step === 1 && (
+                                        <CreateIdentityStep
+                                            data={data}
+                                            setData={setData}
+                                            errors={errors}
+                                            onNext={nextStep}
+                                            taxonomies={taxonomies}
+                                        />
+                                    )}
+                                    {step === 2 && (
+                                        <CreateOrganizationStep
+                                            data={data}
+                                            setData={setData}
+                                            errors={errors}
+                                            onNext={nextStep}
+                                            onPrev={prevStep}
+                                            taxonomies={taxonomies}
+                                        />
+                                    )}
+                                    {step === 3 && (
+                                        <CreateProfileStep
+                                            data={data}
+                                            setData={setData}
+                                            errors={errors}
+                                            onNext={nextStep}
+                                            onPrev={prevStep}
+                                            taxonomies={taxonomies}
+                                        />
+                                    )}
+                                    {step === 4 && (
+                                        <CreateExpertiseStep
+                                            data={data}
+                                            setData={setData}
+                                            errors={errors}
+                                            onNext={nextStep}
+                                            onPrev={prevStep}
+                                            taxonomies={taxonomies}
+                                        />
+                                    )}
+                                    {step === 5 && (
+                                        <CreateLanguagesStep
+                                            data={data}
+                                            setData={setData}
+                                            errors={errors}
+                                            onNext={nextStep}
+                                            onPrev={prevStep}
+                                            taxonomies={taxonomies}
+                                        />
+                                    )}
+                                    {step === 6 && (
+                                        <CreateReviewStep
+                                            data={data}
+                                            processing={processing}
+                                            onSubmit={submit}
+                                            onPrev={prevStep}
+                                            taxonomies={taxonomies}
+                                        />
+                                    )}
+                                </div>
+                            </motion.div>
                         </div>
-                    </motion.div>
+                    </div>
+
+                    <aside className="hidden xl:block">
+                        <Card className="sticky top-28 rounded-[28px] border border-white/70 bg-white/85 p-6 shadow-xl shadow-[#1a1f1e]/8 backdrop-blur-sm">
+                            <div className="space-y-5">
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/40">Guide</p>
+                                    <h3 className="mt-2 font-serif text-xl font-bold italic tracking-tight text-[#1a1f1e]">
+                                        Création guidée
+                                    </h3>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {[
+                                        'Sélection directe des options importantes',
+                                        'Blocs clairs pour structurer l’annonce',
+                                        'Récapitulatif propre avant publication',
+                                    ].map((item) => (
+                                        <div key={item} className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-[#FCFCFB] p-3.5">
+                                            <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-[#C06041]" />
+                                            <p className="text-sm leading-relaxed text-[#1a1f1e]/65">{item}</p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="rounded-2xl bg-[#1a1f1e] p-5 text-white">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/45">Conseil</p>
+                                    <p className="mt-2 text-sm leading-relaxed text-white/75">
+                                        Gardez le titre court, puis laissez les choix visuels préciser le niveau attendu.
+                                    </p>
+                                </div>
+                            </div>
+                        </Card>
+                    </aside>
                 </div>
 
-                <div className="mt-12 text-center opacity-40 hover:opacity-100 transition-opacity">
+                <div className="mt-12 text-center opacity-40 transition-opacity hover:opacity-100">
                     <p className="text-sm font-bold text-[#1a1f1e]">
                         Besoin d'aide ? <a href="#" className="underline decoration-2 underline-offset-4">Consultez notre guide de rédaction</a>
                     </p>
