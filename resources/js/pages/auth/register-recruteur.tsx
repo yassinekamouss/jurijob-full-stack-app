@@ -6,7 +6,8 @@ import SEO from '@/components/SEO';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import RegisterSocialPrompt from '@/components/auth/RegisterSocialPrompt';
 import FormNavigator from '@/components/signup/FormNavigator';
-import { 
+import type { 
+    Auth,
     UserFormData, 
     RecruteurFormData, 
     FullRecruteurFormData 
@@ -23,7 +24,7 @@ const recruiterSteps = [
 ];
 
 export default function RegisterRecruteur() {
-    const { auth } = usePage().props as any;
+    const { auth } = usePage<{ auth: Auth }>().props;
 
     useEffect(() => {
         // Preload Outfit Font if not already

@@ -8,7 +8,8 @@ import SEO from '@/components/SEO';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import RegisterSocialPrompt from '@/components/auth/RegisterSocialPrompt';
 import CandidatDetails from '@/components/signup/CandidatDetails';
-import {
+import type {
+    Auth,
     UserFormData,
     CandidatFormData,
     Formation,
@@ -51,7 +52,7 @@ const createEmptyExperience = (): Experience => ({
 });
 
 export default function RegisterCandidat() {
-    const { auth } = usePage().props as any;
+    const { auth } = usePage<{ auth: Auth }>().props;
 
     useEffect(() => {
         // Preload Outfit Font if not already
