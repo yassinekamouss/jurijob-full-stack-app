@@ -40,11 +40,20 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         $admin = $request->user('admin');
+        $locale = app()->getLocale();
+
+        $translationPath = lang_path("{$locale}.json");
+        $translations = file_exists($translationPath)
+            ? (json_decode(file_get_contents($translationPath), true) ?? [])
+            : [];
 
         return [
             ...parent::share($request),
 
             'name' => config('app.name'),
+            'locale' => $locale,
+            'direction' => in_array($locale, ['ar'], true) ? 'rtl' : 'ltr',
+            'translations' => $translations,
 
             'auth' => [
                 'user' => $request->user() ? [

@@ -14,6 +14,7 @@ use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Offre\MatchingController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsContro
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::post('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 
 Route::inertia('/', 'Home')
     ->middleware('cacheResponse:86400')

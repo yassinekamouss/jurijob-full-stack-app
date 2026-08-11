@@ -2,9 +2,11 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { I18nextProvider } from 'react-i18next';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import '../css/app.css';
 import { initializeTheme } from '@/hooks/use-appearance';
+import i18n, { updateI18nLocale } from '@/i18n';
 
 const appName = import.meta.env.VITE_APP_NAME || 'JuriJob';
 
@@ -16,13 +18,19 @@ createInertiaApp({
             import.meta.glob('./pages/**/*.tsx'),
         ),
     setup({ el, App, props }) {
+        const locale = (props.initialPage.props.locale as string) || 'fr';
+        const translations = props.initialPage.props.translations as Record<string, unknown>;
+        updateI18nLocale(locale, translations);
+
         const root = createRoot(el);
 
         root.render(
             <StrictMode>
-                <TooltipProvider delayDuration={0}>
-                    <App {...props} />
-                </TooltipProvider>
+                <I18nextProvider i18n={i18n}>
+                    <TooltipProvider delayDuration={0}>
+                        <App {...props} />
+                    </TooltipProvider>
+                </I18nextProvider>
             </StrictMode>,
         );
     },

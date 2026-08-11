@@ -1,0 +1,21 @@
+{
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "faq": "FAQ",
+    "login": "Sign In",
+    "candidate_space": "Candidate Portal",
+    "recruiter_space": "Recruiter Portal"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "switch": "Switch language"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}

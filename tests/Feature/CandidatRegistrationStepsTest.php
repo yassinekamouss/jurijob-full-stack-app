@@ -9,8 +9,10 @@ use App\Models\Taxonomy\ModeTravail;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\NiveauLangue;
 use App\Models\Taxonomy\Poste;
+use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\Specialisation;
 use App\Models\Taxonomy\TypeTravail;
+use App\Models\Taxonomy\Urgence;
 use App\Models\Taxonomy\Ville;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
@@ -30,6 +32,8 @@ beforeEach(function () {
     $this->langue = Langue::create(['nom' => 'Français']);
     $this->niveauLangue = NiveauLangue::create(['nom' => 'Courant']);
     $this->ecole = Ecole::create(['nom' => 'Université Mohammed V']);
+    $this->salaire = Salaire::create(['nom' => '10k - 15k MAD']);
+    $this->urgence = Urgence::create(['nom' => 'Immédiate', 'code' => 'immediate']);
 });
 
 function candidatRegistrationPayload(array $overrides = []): array
@@ -47,6 +51,8 @@ function candidatRegistrationPayload(array $overrides = []): array
         'poste_id' => $test->poste->id,
         'niveau_experience_id' => $test->niveauExperience->id,
         'formation_juridique_id' => $test->formationJuridique->id,
+        'salaire_id' => $test->salaire->id,
+        'urgence_id' => $test->urgence->id,
         'specialisations' => [
             ['specialisation_id' => $test->specialisation->id],
         ],

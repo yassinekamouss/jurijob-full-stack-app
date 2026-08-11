@@ -1,0 +1,21 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "services": "Services",
+    "faq": "FAQ",
+    "login": "Se connecter",
+    "candidate_space": "Espace Candidat",
+    "recruiter_space": "Espace Recruteur"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "switch": "Changer de langue"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  }
+}

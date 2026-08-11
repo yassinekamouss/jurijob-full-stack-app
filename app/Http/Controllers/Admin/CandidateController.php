@@ -35,10 +35,10 @@ class CandidateController extends Controller
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('nom', 'like', "%{$search}%")
-                  ->orWhere('prenom', 'like', "%{$search}%")
-                  ->orWhereHas('user', function ($q) use ($search) {
-                      $q->where('email', 'like', "%{$search}%");
-                  });
+                    ->orWhere('prenom', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('email', 'like', "%{$search}%");
+                    });
             });
         }
 
