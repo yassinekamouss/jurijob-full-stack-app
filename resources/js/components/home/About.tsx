@@ -62,7 +62,7 @@ export default function About() {
                                     Notre mission
                                 </h3>
                                 <p className="text-xl font-light leading-relaxed text-[#FDFCF8]/90">
-                                    JURIJOB est né d'un constat : les directions juridiques et RH des grandes structures perdent un temps précieux à traiter des candidatures hors cible. Nous sélectionnons avec précision les meilleurs juristes d'entreprise, avocats, notaires et fiscalistes au Maroc et en Afrique francophone.
+                                    JURIJOB est né d'un constat : les directions juridiques et RH des grandes structures perdent un temps précieux à traiter des candidatures hors cible. Nous sélectionnons avec précision les meilleurs juristes d'entreprise, avocats, notaires et fiscalistes au Maroc et en Afrique.
                                 </p>
                             </div>
                         </Reveal>
@@ -168,7 +168,7 @@ export default function About() {
                     fontFamily: 'Cormorant Garamond, serif',
                 }}
             >
-                Maroc & Afrique francophone
+                Maroc & Afrique
             </div>
 
             <div className="text-xs font-medium uppercase tracking-widest text-[#FDFCF8]/50">

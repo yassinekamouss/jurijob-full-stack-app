@@ -276,7 +276,7 @@
                     </div>
 
                     <p class="text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        Par le biais de ce formulaire, Mohammed Sentissi collecte vos données personnelles en vue de leur inscription dans la CVthèque JURIJOB, plateforme de sélection de profils juridiques destinée à mettre les candidats en relation avec des recruteurs identifiés au Maroc et en Afrique francophone.
+                        Par le biais de ce formulaire, Mohammed Sentissi collecte vos données personnelles en vue de leur inscription dans la CVthèque JURIJOB, plateforme de sélection de profils juridiques destinée à mettre les candidats en relation avec des recruteurs identifiés au Maroc et en Afrique.
                     </p>
 
                     <div class="grid gap-4 sm:grid-cols-2">

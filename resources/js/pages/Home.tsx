@@ -20,7 +20,7 @@ const homeJsonLd = {
             url: 'https://jurijob.ma',
             logo: 'https://jurijob.ma/logo-512x512.png',
             description:
-                "Plateforme spécialisée dans le sourcing et la sélection de tous les profils et experts du droit au Maroc et en Afrique francophone.",
+                "Plateforme spécialisée dans le sourcing et la sélection de tous les profils et experts du droit au Maroc et en Afrique.",
             parentOrganization: {
                 '@type': 'Organization',
                 name: 'Sentissi Legal Advisory',
@@ -73,8 +73,8 @@ export default function Home() {
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
             <SEO
-                title="JuriJob - Sourcing & Recrutement Juridique au Maroc & Afrique Francophone"
-                description="Plateforme spécialisée dans le sourcing et la sélection de juristes d'affaires, avocats et experts du droit au Maroc et en Afrique francophone. Short-lists qualifiées sous 48h."
+                title="JuriJob - Sourcing & Recrutement Juridique au Maroc & Afrique"
+                description="Plateforme spécialisée dans le sourcing et la sélection de juristes d'affaires, avocats et experts du droit au Maroc et en Afrique. Short-lists qualifiées sous 48h."
                 canonical="https://jurijob.ma"
                 jsonLd={homeJsonLd}
             />

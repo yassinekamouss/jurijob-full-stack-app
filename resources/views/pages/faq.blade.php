@@ -9,7 +9,7 @@
                 [
                     'id' => 'comprendre-1',
                     'question' => "Qu'est-ce que JURIJOB, exactement ?",
-                    'answer' => "JURIJOB est une plateforme de sélection de profils juridiques au Maroc et en Afrique francophone. Notre rôle est de vous livrer une short-list qualifiée qui correspond à vos critères — spécialisation, langues, expérience, diplôme. L'entretien, l'appréciation et la décision finale restent entre vos mains : nous vous faisons gagner un temps considérable en identifiant les profils pertinents."
+                    'answer' => "JURIJOB est une plateforme de sélection de profils juridiques au Maroc et en Afrique. Notre rôle est de vous livrer une short-list qualifiée qui correspond à vos critères — spécialisation, langues, expérience, diplôme. L'entretien, l'appréciation et la décision finale restent entre vos mains : nous vous faisons gagner un temps considérable en identifiant les profils pertinents."
                 ],
                 [
                     'id' => 'comprendre-2',

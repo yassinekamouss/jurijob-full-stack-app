@@ -38,7 +38,7 @@ export default function FounderMessage() {
                                 Mohammed Sentissi
                             </h3>
                             <p className="mt-3 text-sm leading-relaxed font-light text-[#C06041] md:text-base">
-                                Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique. Président élu de l'Association marocaine des juristes d'entreprise — AMJE (en cours de constitution). Fondateur de Sentissi Legal Advisory — Un réseau d'experts au service des directions juridiques au Maroc et en Afrique francophone.
+                                Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique. Président élu de l'Association marocaine des juristes d'entreprise — AMJE (en cours de constitution). Fondateur de Sentissi Legal Advisory — Un réseau d'experts au service des directions juridiques au Maroc et en Afrique.
                             </p>
                         </div>
 

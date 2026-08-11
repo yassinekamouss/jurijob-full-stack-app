@@ -117,7 +117,7 @@
                             Les présentes Conditions Générales d'Utilisation (ci-après les « <strong class="font-semibold text-[#1a1f1e]">CGU</strong> ») définissent les modalités d'accès et d'utilisation de la plateforme <strong class="font-semibold text-[#1a1f1e]">JURIJOB</strong>, accessible à l'adresse <a href="https://www.jurijob.ma" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-4 hover:opacity-80">www.jurijob.ma</a>, éditée par la société <strong class="font-semibold text-[#1a1f1e]">SENTISSI LEGAL ADVISORY SARL AU</strong> (ci-après « SLA » ou « la Plateforme »).
                         </p>
                         <p>
-                            JURIJOB est un outil de sourcing spécialisé dans les métiers du droit. La Plateforme met en relation des professionnels du droit — <span class="italic">juristes d'entreprise, avocats, notaires, fiscalistes, compliance officers</span> — avec des recruteurs identifiés au Maroc et en Afrique francophone.
+                            JURIJOB est un outil de sourcing spécialisé dans les métiers du droit. La Plateforme met en relation des professionnels du droit — <span class="italic">juristes d'entreprise, avocats, notaires, fiscalistes, compliance officers</span> — avec des recruteurs identifiés au Maroc et en Afrique.
                         </p>
                         <div class="border-l-4 border-[#C06041] bg-[#1a1f1e]/5 p-4 font-medium text-[#1a1f1e]">
                             Toute utilisation de la Plateforme emporte acceptation pleine et entière des présentes CGU. L'utilisateur qui n'accepte pas ces conditions doit renoncer à utiliser le service.

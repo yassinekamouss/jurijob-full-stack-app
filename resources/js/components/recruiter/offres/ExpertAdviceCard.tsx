@@ -136,7 +136,7 @@ const stepAdvice: Record<number, StepAdvice> = {
                 icon: ShieldCheck,
                 iconClassName: 'text-emerald-600',
                 title: 'Critère éliminatoire',
-                body: 'Réservez « Indispensable » aux langues vraiment bloquantes, sinon d\'excellents juristes francophones seront écartés.',
+                body: 'Réservez « Indispensable » aux langues vraiment bloquantes, sinon d\'excellents juristes seront écartés.',
             },
         ],
         goldenRule: 'Calibrez l\'importance des langues pour ne jamais éliminer un profil qui correspond pourtant parfaitement à votre besoin.',
