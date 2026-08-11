@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, ReactNode, useEffect, RefObject } from 'react';
 import ProgressIndicator from '@/components/signup/ProgressionIndicator';
 import Icon from '@/components/signup/FormularIcons';
 
@@ -6,13 +6,33 @@ type NavigatorFormProps = {
     children: (currentStep: number) => ReactNode;
     onNextStep: (currentStep: number) => Promise<boolean> | boolean;
     steps: { id: number; label: string; icon: string }[];
+    scrollTargetRef?: RefObject<HTMLElement | null>;
 }
 
-export default function FormNavigator({ children, onNextStep, steps }: NavigatorFormProps) {
+export default function FormNavigator({ children, onNextStep, steps, scrollTargetRef }: NavigatorFormProps) {
     const [currentStep, setCurrentStep] = useState(1);
     const [isNavigating, setIsNavigating] = useState(false);
 
     const totalSteps = steps.length;
+
+    const scrollToCardTop = () => {
+        const frame = window.requestAnimationFrame(() => {
+            scrollTargetRef?.current?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        });
+
+        return () => window.cancelAnimationFrame(frame);
+    };
+
+    useEffect(() => {
+        if (currentStep === 1) {
+            return;
+        }
+
+        return scrollToCardTop();
+    }, [currentStep]);
 
     const nextStep = async () => {
         setIsNavigating(true);
@@ -26,7 +46,9 @@ export default function FormNavigator({ children, onNextStep, steps }: Navigator
     };
 
     const prevStep = () => {
-        if (currentStep > 1) setCurrentStep(currentStep - 1);
+        if (currentStep > 1) {
+            setCurrentStep(currentStep - 1);
+        }
     };
 
     return (

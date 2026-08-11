@@ -20,7 +20,7 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
     const [loading, setLoading] = useState(false);
     const [honorAccepted, setHonorAccepted] = useState(false);
     const [honorError, setHonorError] = useState('');
-    const { typeOrganisations, tailleEntreprises, villes, postes, niveauExperiences, formationJuridiques, specialisations } = useTaxonomies();
+    const { typeOrganisations, tailleEntreprises, villes, postes, niveauExperiences, formationJuridiques, specialisations, salaires, urgences } = useTaxonomies();
 
     const isRecruiter = !!formData.recruteur;
 
@@ -96,6 +96,8 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                             <Item label="Poste visé" value={getTaxonomyLabel(formData.candidat.poste_id, postes)} />
                             <Item label="Expérience" value={getTaxonomyLabel(formData.candidat.niveau_experience_id, niveauExperiences)} />
                             <Item label="Formation" value={getTaxonomyLabel(formData.candidat.formation_juridique_id, formationJuridiques)} />
+                            <Item label="Salaire souhaité" value={getTaxonomyLabel(formData.candidat.salaire_id, salaires)} />
+                            <Item label="Disponibilité" value={getTaxonomyLabel(formData.candidat.urgence_id, urgences)} />
                             <div className="pt-2 border-t border-slate-100 mt-2">
                                 <p className="text-[10px] font-black text-slate-400 uppercase mb-2">Spécialisations</p>
                                 <div className="flex flex-wrap gap-1.5">

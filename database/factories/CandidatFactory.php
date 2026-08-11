@@ -6,6 +6,8 @@ use App\Models\Candidat\Candidat;
 use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\Poste;
+use App\Models\Taxonomy\Salaire;
+use App\Models\Taxonomy\Urgence;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,6 +25,8 @@ class CandidatFactory extends Factory
             'poste_id' => Poste::firstOrCreate(['nom' => 'Avocat'])->id,
             'niveau_experience_id' => NiveauExperience::firstOrCreate(['nom' => 'Junior'])->id,
             'formation_juridique_id' => FormationJuridique::firstOrCreate(['nom' => 'Master'])->id,
+            'salaire_id' => Salaire::firstOrCreate(['nom' => '8 000 – 12 000 MAD/mois'])->id,
+            'urgence_id' => Urgence::firstOrCreate(['nom' => 'Normal (2–4 sem.)', 'code' => 'normal'])->id,
         ];
     }
 

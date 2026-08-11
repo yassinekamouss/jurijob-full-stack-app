@@ -3,17 +3,12 @@ import DashboardHeader from '@/components/candidate/DashboardHeader';
 import {
     User,
     Mail,
-    Phone,
-    Lock,
     ShieldCheck,
     ShieldAlert,
     CheckCircle2,
     AlertCircle,
-    ChevronRight,
     Briefcase,
     GraduationCap,
-    Eye,
-    EyeOff,
     LayoutGrid,
     Folder,
     Languages,
@@ -22,7 +17,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import {
     updateProfile as updateProfileRoute,
-    updateAccount as updateAccountRoute,
 } from '@/routes/candidate/settings';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
@@ -48,7 +42,6 @@ interface Props {
 
 type TabType =
     | 'profile'
-    | 'account'
     | 'experiences'
     | 'formations'
     | 'specialisations'
@@ -66,7 +59,7 @@ export default function Settings({
 }: Props) {
     const { flash } = usePage().props as any;
     const isPending = candidat?.status === 'en_attente';
-    const { postes, niveauExperiences, formationJuridiques } = useTaxonomies();
+    const { postes, niveauExperiences, formationJuridiques, salaires, urgences } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [visibleFlash, setVisibleFlash] = useState<{
         success?: string;
@@ -133,7 +126,6 @@ export default function Settings({
             tab &&
             [
                 'profile',
-                'account',
                 'experiences',
                 'formations',
                 'specialisations',
@@ -144,7 +136,6 @@ export default function Settings({
             setActiveTab(tab);
         }
     }, []);
-    const [showPassword, setShowPassword] = useState(false);
 
     const SectionSkeleton = () => (
         <div className="animate-pulse space-y-6 px-4 sm:px-0">
@@ -174,39 +165,53 @@ export default function Settings({
         </div>
     );
 
-    // Profile Form
     const profileForm = useForm({
         nom: candidat?.nom || '',
         prenom: candidat?.prenom || '',
         poste_id: candidat?.poste_id || '',
         niveau_experience_id: candidat?.niveau_experience_id || '',
         formation_juridique_id: candidat?.formation_juridique_id || '',
+        salaire_id: candidat?.salaire_id || '',
+        urgence_id: candidat?.urgence_id || '',
         is_active: user.is_active,
-    });
-
-    // Account Form
-    const accountForm = useForm({
-        email: user.email || '',
-        telephone: user.telephone || '',
-        password: '',
-        password_confirmation: '',
     });
 
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        profileForm.clearErrors();
+
+        const requiredFields: Array<{ key: keyof typeof profileForm.data; message: string }> = [
+            { key: 'prenom', message: 'Le prénom est requis.' },
+            { key: 'nom', message: 'Le nom est requis.' },
+            { key: 'poste_id', message: 'Veuillez sélectionner un poste.' },
+            { key: 'niveau_experience_id', message: 'Veuillez sélectionner un niveau d\'expérience.' },
+            { key: 'formation_juridique_id', message: 'Veuillez sélectionner une formation.' },
+            { key: 'salaire_id', message: 'Veuillez sélectionner un salaire souhaité.' },
+            { key: 'urgence_id', message: 'Veuillez indiquer votre disponibilité.' },
+        ];
+
+        let hasErrors = false;
+
+        requiredFields.forEach(({ key, message }) => {
+            if (!profileForm.data[key]) {
+                profileForm.setError(key, message);
+                hasErrors = true;
+            }
+        });
+
+        if (hasErrors) {
+            return;
+        }
+
         profileForm.put(updateProfileRoute.url(), {
             preserveScroll: true,
         });
     };
 
-    const handleAccountSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        accountForm.put(updateAccountRoute.url(), {
-            preserveScroll: true,
-            onSuccess: () =>
-                accountForm.reset('password', 'password_confirmation'),
-        });
-    };
+    const profileFieldClass = (field: keyof typeof profileForm.data) =>
+        profileForm.errors[field]
+            ? 'border-red-300 bg-red-50/40 focus:border-red-400'
+            : 'border-[#1a1f1e]/10 bg-[#FDFCF8] focus:border-[#C06041]';
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
@@ -288,16 +293,6 @@ export default function Settings({
                                 Langues
                             </button>
                             <button
-                                onClick={() => setActiveTab('account')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'account'
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                    }`}
-                            >
-                                <Lock className="h-4 w-4" />
-                                Compte & Sécurité
-                            </button>
-                            <button
                                 onClick={() => setActiveTab('security')}
                                 className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
@@ -344,8 +339,13 @@ export default function Settings({
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
+                                                        className={`w-full rounded-2xl px-5 py-4 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('prenom')}`}
                                                     />
+                                                    {profileForm.errors.prenom && (
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {profileForm.errors.prenom}
+                                                        </p>
+                                                    )}
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
@@ -362,9 +362,32 @@ export default function Settings({
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
+                                                        className={`w-full rounded-2xl px-5 py-4 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('nom')}`}
+                                                    />
+                                                    {profileForm.errors.nom && (
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {profileForm.errors.nom}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    Email professionnel
+                                                </label>
+                                                <div className="relative">
+                                                    <Mail className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                    <input
+                                                        type="email"
+                                                        value={user.email || ''}
+                                                        readOnly
+                                                        className="w-full cursor-not-allowed rounded-2xl border-[#1a1f1e]/10 bg-[#1a1f1e]/5 py-4 pr-5 pl-12 text-sm font-bold text-[#1a1f1e]/60 outline-none"
                                                     />
                                                 </div>
+                                                <p className="ml-1 text-xs font-medium text-[#1a1f1e]/40">
+                                                    L'adresse email ne peut pas être modifiée.
+                                                </p>
                                             </div>
 
                                             <div className="space-y-2">
@@ -384,7 +407,7 @@ export default function Settings({
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full cursor-pointer appearance-none rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
+                                                        className={`w-full cursor-pointer appearance-none rounded-2xl py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('poste_id')}`}
                                                     >
                                                         <option value="">
                                                             Choisir un poste
@@ -401,11 +424,13 @@ export default function Settings({
                                                                 </option>
                                                             ))
                                                         )}
-                                                        <option value="Autre">
-                                                            Autre
-                                                        </option>
                                                     </select>
                                                 </div>
+                                                {profileForm.errors.poste_id && (
+                                                    <p className="ml-1 text-xs font-bold text-red-500">
+                                                        {profileForm.errors.poste_id}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -424,7 +449,7 @@ export default function Settings({
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full cursor-pointer appearance-none rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
+                                                        className={`w-full cursor-pointer appearance-none rounded-2xl px-5 py-4 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('niveau_experience_id')}`}
                                                     >
                                                         <option value="">
                                                             Choisir un niveau
@@ -443,6 +468,11 @@ export default function Settings({
                                                                 )
                                                             ))}
                                                     </select>
+                                                    {profileForm.errors.niveau_experience_id && (
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {profileForm.errors.niveau_experience_id}
+                                                        </p>
+                                                    )}
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
@@ -462,7 +492,7 @@ export default function Settings({
                                                                         .value,
                                                                 )
                                                             }
-                                                            className="w-full cursor-pointer appearance-none rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
+                                                            className={`w-full cursor-pointer appearance-none rounded-2xl py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('formation_juridique_id')}`}
                                                         >
                                                             <option value="">
                                                                 Choisir une
@@ -487,7 +517,93 @@ export default function Settings({
                                                                 ))}
                                                         </select>
                                                     </div>
+                                                    {profileForm.errors.formation_juridique_id && (
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {profileForm.errors.formation_juridique_id}
+                                                        </p>
+                                                    )}
                                                 </div>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    Salaire souhaité
+                                                </label>
+                                                <select
+                                                    value={profileForm.data.salaire_id}
+                                                    onChange={(e) =>
+                                                        profileForm.setData(
+                                                            'salaire_id',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className={`w-full cursor-pointer appearance-none rounded-2xl px-5 py-4 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('salaire_id')}`}
+                                                >
+                                                    <option value="">
+                                                        Choisir une fourchette salariale
+                                                    </option>
+                                                    {useLoadingTaxonomy(salaires) ? (
+                                                        <option disabled>Chargement...</option>
+                                                    ) : (
+                                                        salaires.map((option) => (
+                                                            <option key={option.id} value={option.id}>
+                                                                {option.nom}
+                                                            </option>
+                                                        ))
+                                                    )}
+                                                </select>
+                                                {profileForm.errors.salaire_id && (
+                                                    <p className="ml-1 text-xs font-bold text-red-500">
+                                                        {profileForm.errors.salaire_id}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    Disponibilité
+                                                </label>
+                                                <p className="ml-1 text-xs font-medium text-[#1a1f1e]/40">
+                                                    Quand souhaitez-vous commencer ?
+                                                </p>
+                                                <div className="flex flex-wrap gap-2.5">
+                                                    {useLoadingTaxonomy(urgences) ? (
+                                                        <p className="w-full py-4 text-center text-sm text-[#1a1f1e]/40">
+                                                            Chargement...
+                                                        </p>
+                                                    ) : (
+                                                        urgences.map((option) => {
+                                                            const isSelected =
+                                                                String(profileForm.data.urgence_id) ===
+                                                                String(option.id);
+
+                                                            return (
+                                                                <button
+                                                                    key={option.id}
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        profileForm.setData(
+                                                                            'urgence_id',
+                                                                            option.id,
+                                                                        )
+                                                                    }
+                                                                    className={`inline-flex items-center rounded-2xl border px-3.5 py-2.5 text-sm font-semibold transition-all ${
+                                                                        isSelected
+                                                                            ? 'border-[#1a1f1e] bg-[#1a1f1e] text-white shadow-sm'
+                                                                            : 'border-[#1a1f1e]/10 bg-[#FDFCF8] text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
+                                                                    }`}
+                                                                >
+                                                                    {option.nom}
+                                                                </button>
+                                                            );
+                                                        })
+                                                    )}
+                                                </div>
+                                                {profileForm.errors.urgence_id && (
+                                                    <p className="ml-1 text-xs font-bold text-red-500">
+                                                        {profileForm.errors.urgence_id}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             <div className="flex items-center justify-between border-t border-[#1a1f1e]/5 pt-4">
@@ -517,10 +633,7 @@ export default function Settings({
 
                                                 <button
                                                     type="submit"
-                                                    disabled={
-                                                        profileForm.processing ||
-                                                        !profileForm.isDirty
-                                                    }
+                                                    disabled={profileForm.processing}
                                                     className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
                                                 >
                                                     Enregistrer
@@ -602,191 +715,6 @@ export default function Settings({
                                             langues={langues || []}
                                         />
                                     </Deferred>
-                                </motion.div>
-                            )}
-
-                            {activeTab === 'account' && (
-                                <motion.div
-                                    key="account"
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
-                                    className="space-y-10"
-                                >
-                                    <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
-                                        <h3 className="mb-6 font-serif text-xl font-bold italic">
-                                            Informations de connexion
-                                        </h3>
-                                        <form
-                                            onSubmit={handleAccountSubmit}
-                                            className="space-y-6"
-                                        >
-                                            <div className="space-y-2">
-                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    Email professionnel
-                                                </label>
-                                                <div className="relative">
-                                                    <Mail className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
-                                                    <input
-                                                        type="email"
-                                                        value={
-                                                            accountForm.data
-                                                                .email
-                                                        }
-                                                        onChange={(e) =>
-                                                            accountForm.setData(
-                                                                'email',
-                                                                e.target.value,
-                                                            )
-                                                        }
-                                                        className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-5 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    Téléphone
-                                                </label>
-                                                <div className="relative">
-                                                    <Phone className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
-                                                    <input
-                                                        type="tel"
-                                                        value={
-                                                            accountForm.data
-                                                                .telephone
-                                                        }
-                                                        onChange={(e) => {
-                                                            const val =
-                                                                e.target.value;
-                                                            accountForm.setData(
-                                                                'telephone',
-                                                                val,
-                                                            );
-                                                            if (
-                                                                val &&
-                                                                !/^\+?[0-9]*$/.test(
-                                                                    val,
-                                                                )
-                                                            ) {
-                                                                accountForm.setError(
-                                                                    'telephone',
-                                                                    'Format: + et chiffres uniquement',
-                                                                );
-                                                            } else if (
-                                                                accountForm
-                                                                    .errors
-                                                                    .telephone ===
-                                                                'Format: + et chiffres uniquement'
-                                                            ) {
-                                                                accountForm.clearErrors(
-                                                                    'telephone',
-                                                                );
-                                                            }
-                                                        }}
-                                                        className={`w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] py-4 pr-5 pl-12 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0 ${accountForm.errors.telephone ? 'border-red-300 ring-red-50' : ''}`}
-                                                    />
-                                                </div>
-                                                {accountForm.errors
-                                                    .telephone && (
-                                                        <p className="ml-1 text-xs font-bold text-red-500">
-                                                            {
-                                                                accountForm.errors
-                                                                    .telephone
-                                                            }
-                                                        </p>
-                                                    )}
-                                            </div>
-
-                                            <div className="border-t border-[#1a1f1e]/5 pt-6">
-                                                <h4 className="mb-6 text-sm font-black tracking-[0.2em] text-[#1a1f1e]/30 uppercase italic">
-                                                    Modification du mot de passe
-                                                </h4>
-
-                                                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                                                    <div className="space-y-2">
-                                                        <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                            Nouveau mot de passe
-                                                        </label>
-                                                        <div className="relative">
-                                                            <input
-                                                                type={
-                                                                    showPassword
-                                                                        ? 'text'
-                                                                        : 'password'
-                                                                }
-                                                                value={
-                                                                    accountForm
-                                                                        .data
-                                                                        .password
-                                                                }
-                                                                onChange={(e) =>
-                                                                    accountForm.setData(
-                                                                        'password',
-                                                                        e.target
-                                                                            .value,
-                                                                    )
-                                                                }
-                                                                className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
-                                                            />
-                                                            <button
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    setShowPassword(
-                                                                        !showPassword,
-                                                                    )
-                                                                }
-                                                                className="absolute top-1/2 right-5 -translate-y-1/2 text-[#1a1f1e]/30 hover:text-[#1a1f1e]/60"
-                                                            >
-                                                                {showPassword ? (
-                                                                    <EyeOff className="h-4 w-4" />
-                                                                ) : (
-                                                                    <Eye className="h-4 w-4" />
-                                                                )}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                            Confirmation
-                                                        </label>
-                                                        <input
-                                                            type={
-                                                                showPassword
-                                                                    ? 'text'
-                                                                    : 'password'
-                                                            }
-                                                            value={
-                                                                accountForm.data
-                                                                    .password_confirmation
-                                                            }
-                                                            onChange={(e) =>
-                                                                accountForm.setData(
-                                                                    'password_confirmation',
-                                                                    e.target
-                                                                        .value,
-                                                                )
-                                                            }
-                                                            className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold transition-all outline-none focus:border-[#C06041] focus:ring-0"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex justify-end pt-4">
-                                                <button
-                                                    type="submit"
-                                                    disabled={
-                                                        accountForm.processing ||
-                                                        !accountForm.isDirty
-                                                    }
-                                                    className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
-                                                >
-                                                    Mettre à jour le compte
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </section>
                                 </motion.div>
                             )}
 

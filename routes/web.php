@@ -56,12 +56,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Candidate Settings
     Route::get('/candidate/settings', [SettingsController::class, 'index'])->name('candidate.settings');
     Route::put('/candidate/settings/profile', [SettingsController::class, 'updateProfile'])->name('candidate.settings.update-profile');
-    Route::put('/candidate/settings/account', [SettingsController::class, 'updateAccount'])->name('candidate.settings.update-account');
 
     // Candidate Profile Relations (CRUD)
     Route::prefix('candidate')->name('candidate.')->group(function () {
         Route::resource('experiences', ExperienceController::class)->only(['store', 'update', 'destroy']);
         Route::resource('formations', FormationController::class)->only(['store', 'update', 'destroy']);
+        Route::put('specialisations/sync', [SpecialisationController::class, 'sync'])->name('specialisations.sync');
         Route::resource('specialisations', SpecialisationController::class)->only(['store', 'update', 'destroy']);
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
     });

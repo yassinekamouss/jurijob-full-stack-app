@@ -26,12 +26,19 @@ class LargeCandidatSeeder extends Seeder
         $modeTravailIds = ModeTravail::pluck('id')->toArray();
         $typeTravailIds = TypeTravail::pluck('id')->toArray();
         $posteIds = DB::table('postes')->pluck('id')->toArray();
+        $salaireIds = DB::table('salaires')->pluck('id')->toArray();
+        $urgenceIds = DB::table('urgences')->pluck('id')->toArray();
         $niveauIds = DB::table('niveau_experiences')->pluck('id')->toArray();
         $formationIds = DB::table('formation_juridiques')->pluck('id')->toArray();
         $langueIds = Langue::pluck('id')->toArray();
         $niveauLangueIds = NiveauLangue::pluck('id')->toArray();
 
-        if (empty($specialisationIds) || empty($villeIds)) {
+        if (
+            empty($specialisationIds)
+            || empty($villeIds)
+            || empty($salaireIds)
+            || empty($urgenceIds)
+        ) {
             $this->command->warn('Taxonomies are empty. Please run TaxonomySeeder first.');
 
             return;
@@ -50,6 +57,8 @@ class LargeCandidatSeeder extends Seeder
                 $specialisationIds,
                 $villeIds,
                 $modeTravailIds,
+                $salaireIds,
+                $urgenceIds,
                 $typeTravailIds,
                 $posteIds,
                 $niveauIds,
@@ -82,6 +91,8 @@ class LargeCandidatSeeder extends Seeder
                         'nom' => fake()->lastName(),
                         'prenom' => fake()->firstName(),
                         'poste_id' => ! empty($posteIds) ? $posteIds[array_rand($posteIds)] : null,
+                        'salaire_id' => $salaireIds[array_rand($salaireIds)],
+                        'urgence_id' => $urgenceIds[array_rand($urgenceIds)],
                         'niveau_experience_id' => ! empty($niveauIds) ? $niveauIds[array_rand($niveauIds)] : null,
                         'formation_juridique_id' => ! empty($formationIds) ? $formationIds[array_rand($formationIds)] : null,
                         'created_at' => now(),

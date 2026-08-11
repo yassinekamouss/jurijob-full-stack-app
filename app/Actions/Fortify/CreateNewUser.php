@@ -55,11 +55,12 @@ class CreateNewUser implements CreatesNewUsers
             'poste_id' => ['required', 'integer'],
             'niveau_experience_id' => ['required', 'integer'],
             'formation_juridique_id' => ['required', 'integer'],
+            'salaire_id' => ['required', 'integer', 'exists:salaires,id'],
+            'urgence_id' => ['required', 'integer', 'exists:urgences,id'],
 
             // Relationships
             'specialisations' => ['nullable', 'array'],
             'specialisations.*.specialisation_id' => ['required_with:specialisations', 'integer'],
-
 
             'langues' => ['nullable', 'array'],
             'langues.*.langue_id' => ['required_with:langues', 'integer'],

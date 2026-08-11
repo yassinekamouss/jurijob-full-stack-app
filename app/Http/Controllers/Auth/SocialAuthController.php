@@ -167,10 +167,7 @@ class SocialAuthController extends Controller
                 $prenom = $nameParts[0] ?? 'Candidat';
                 $nom = $nameParts[1] ?? 'Social';
 
-                $user->candidat()->create([
-                    'prenom' => $prenom,
-                    'nom' => $nom,
-                ]);
+                $this->createSocialCandidat($user, $prenom, $nom);
 
                 Auth::login($user);
                 session()->forget(['social_registration_role', 'social_registration_data']);
@@ -264,10 +261,7 @@ class SocialAuthController extends Controller
                 $prenom = $nameParts[0] ?? 'Candidat';
                 $nom = $nameParts[1] ?? 'Social';
 
-                $user->candidat()->create([
-                    'prenom' => $prenom,
-                    'nom' => $nom,
-                ]);
+                $this->createSocialCandidat($user, $prenom, $nom);
 
                 Auth::login($user);
                 session()->forget('social_registration_data');
@@ -284,5 +278,26 @@ class SocialAuthController extends Controller
                 return redirect()->route('recruteur.settings');
             }
         });
+    }
+
+    /**
+     * Create a minimal candidat profile after social registration.
+     * Required taxonomy fields use defaults until the user completes settings.
+     */
+    private function createSocialCandidat(User $user, string $prenom, string $nom): void
+    {
+        $defaultSalaireId = DB::table('salaires')->orderBy('id')->value('id');
+        $defaultUrgenceId = DB::table('urgences')->orderBy('id')->value('id');
+
+        if (! $defaultSalaireId || ! $defaultUrgenceId) {
+            throw new \RuntimeException('Les taxonomies salaire et urgence doivent être initialisées.');
+        }
+
+        $user->candidat()->create([
+            'prenom' => $prenom,
+            'nom' => $nom,
+            'salaire_id' => $defaultSalaireId,
+            'urgence_id' => $defaultUrgenceId,
+        ]);
     }
 }

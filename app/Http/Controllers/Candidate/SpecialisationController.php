@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Candidate;
 use App\DTOs\Candidate\SpecialisationData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Candidate\StoreSpecialisationRequest;
+use App\Http\Requests\Candidate\SyncSpecialisationsRequest;
 use App\Models\Candidat\CandidatSpecialisation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -53,6 +54,36 @@ class SpecialisationController extends Controller
             Log::error('Error updating specialisation', ['error' => $e->getMessage()]);
 
             return back()->with('error', 'Erreur lors de la mise à jour de la spécialisation.');
+        }
+    }
+
+    public function sync(SyncSpecialisationsRequest $request): RedirectResponse
+    {
+        $candidat = $request->user()->candidat;
+        $specialisationIds = $request->validated('specialisation_ids');
+
+        try {
+            $candidat->specialisations()
+                ->whereNotIn('specialisation_id', $specialisationIds)
+                ->delete();
+
+            $existingIds = $candidat->specialisations()
+                ->pluck('specialisation_id')
+                ->all();
+
+            foreach ($specialisationIds as $specialisationId) {
+                if (! in_array($specialisationId, $existingIds, true)) {
+                    $candidat->specialisations()->create([
+                        'specialisation_id' => $specialisationId,
+                    ]);
+                }
+            }
+
+            return back()->with('success', 'Spécialisations mises à jour.');
+        } catch (\Exception $e) {
+            Log::error('Error syncing specialisations', ['error' => $e->getMessage()]);
+
+            return back()->with('error', 'Erreur lors de la mise à jour des spécialisations.');
         }
     }
 
