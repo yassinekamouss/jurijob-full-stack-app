@@ -1,3 +1,4 @@
+import { Head } from '@inertiajs/react';
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
 import { AdminSidebar } from '@/components/admin-sidebar';
@@ -10,6 +11,9 @@ export default function AdminLayout({
 }: AppLayoutProps) {
     return (
         <AppShell variant="sidebar">
+            <Head>
+                <meta name="robots" content="noindex, nofollow" />
+            </Head>
             <AdminSidebar />
             <AppContent variant="sidebar" className="overflow-x-hidden">
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />

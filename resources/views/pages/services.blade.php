@@ -1,7 +1,38 @@
 @extends('layouts.guest-blade')
 
-@section('title', 'Nos Prestations & Services - JURIJOB')
-@section('meta_description', 'Découvrez les prestations et services JURIJOB & Sentissi Legal Advisory : short-list de profils juridiques, contrats sur mesure, recrutement d\'étrangers, évaluation d\'entretiens et fiches de poste.')
+@section('title', 'Nos Services de Recrutement Juridique & Short-List Sur-Mesure | JuriJob')
+@section('meta_description', 'Découvrez nos solutions de sourcing juridique au Maroc : présélection rigoureuse de candidats en 48h, évaluation multicritère et accompagnement par Sentissi Legal Advisory.')
+@section('canonical', url('/services'))
+
+@php
+    $serviceSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Service',
+        'name' => 'Sourcing & Recrutement Juridique',
+        'provider' => [
+            '@type' => 'Organization',
+            'name' => 'JuriJob - Sentissi Legal Advisory',
+            'url' => 'https://jurijob.ma'
+        ],
+        'areaServed' => [
+            '@type' => 'Country',
+            'name' => 'Maroc'
+        ],
+        'description' => 'Prestation de sourcing et livraison de short-list de profils juridiques qualifiés (juristes, avocats, directeurs juridiques) sous 48h.',
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => '1490',
+            'priceCurrency' => 'MAD',
+            'description' => 'Tarif unitaire HT par profil sélectionné'
+        ]
+    ];
+@endphp
+
+@section('json_ld')
+<script type="application/ld+json">
+{!! json_encode($serviceSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
 
 @section('content')
 <div class="w-full flex-1 pb-24 pt-12">

@@ -1,7 +1,8 @@
 @extends('layouts.legal')
 
-@section('title', "Conditions Générales d'Utilisation (CGU) - JURIJOB")
+@section('title', "Conditions Générales d'Utilisation (CGU) | JuriJob")
 @section('meta_description', "Conditions Générales d'Utilisation de JURIJOB : règles d'accès, d'inscription, obligations des candidats et recruteurs, limites de responsabilité et droit marocain.")
+@section('canonical', url('/cgu'))
 
 @section('content')
 <div class="w-full flex-1 pb-24 pt-10 sm:pt-14">

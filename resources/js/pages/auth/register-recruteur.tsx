@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { router, Head, usePage } from '@inertiajs/react';
 import { Toaster, toast } from 'react-hot-toast';
 import Header from '@/components/layout/Header';
+import SEO from '@/components/SEO';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import RegisterSocialPrompt from '@/components/auth/RegisterSocialPrompt';
 import FormNavigator from '@/components/signup/FormNavigator';
@@ -322,7 +323,11 @@ export default function RegisterRecruteur() {
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-            <Head title="Inscription Recruteur" />
+            <SEO
+                title="Inscription Recruteur - Recrutez vos Talents Juridiques | JuriJob"
+                description="Rejoignez JuriJob en tant que recruteur. Définissez vos critères de recherche et recevez une short-list qualifiée de juristes et avocats au Maroc."
+                canonical="https://jurijob.ma/register/recruteur"
+            />
             <Toaster position="top-right" />
 
             <Header />

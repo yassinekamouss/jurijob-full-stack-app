@@ -6,8 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'JuriJob - Smart Recrutement Juridique')</title>
+    <title>@yield('title', 'JuriJob - Smart Recrutement Juridique au Maroc')</title>
     <meta name="description" content="@yield('meta_description', 'Plateforme de recrutement spécialisée dans le secteur juridique au Maroc.')">
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="JuriJob">
+    <meta property="og:title" content="@yield('og_title', View::yieldContent('title', 'JuriJob - Smart Recrutement Juridique'))">
+    <meta property="og:description" content="@yield('og_description', View::yieldContent('meta_description', 'Plateforme de recrutement spécialisée dans le secteur juridique au Maroc.'))">
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="@yield('canonical', url()->current())">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo_jurijob.png'))">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', View::yieldContent('title', 'JuriJob - Smart Recrutement Juridique'))">
+    <meta name="twitter:description" content="@yield('og_description', View::yieldContent('meta_description', 'Plateforme de recrutement spécialisée dans le secteur juridique au Maroc.'))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/logo_jurijob.png'))">
+
+    @yield('json_ld')
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

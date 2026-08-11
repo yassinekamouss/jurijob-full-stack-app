@@ -8,6 +8,41 @@ import Testimonials from '@/components/home/Testimonials';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import SEO from '@/components/SEO';
+
+const homeJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+        {
+            '@type': 'Organization',
+            '@id': 'https://jurijob.ma/#organization',
+            name: 'JuriJob - Sentissi Legal Advisory',
+            url: 'https://jurijob.ma',
+            logo: 'https://jurijob.ma/images/logo_jurijob.png',
+            description:
+                "Plateforme spécialisée dans le sourcing et le recrutement de juristes d'affaires, avocats et experts du droit au Maroc.",
+            address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Casablanca',
+                addressCountry: 'MA',
+            },
+            contactPoint: {
+                '@type': 'ContactPoint',
+                email: 'recrutement@sentissilegal.com',
+                contactType: 'customer service',
+            },
+        },
+        {
+            '@type': 'WebSite',
+            '@id': 'https://jurijob.ma/#website',
+            url: 'https://jurijob.ma',
+            name: 'JuriJob',
+            publisher: {
+                '@id': 'https://jurijob.ma/#organization',
+            },
+        },
+    ],
+};
 
 export default function Home() {
     return (
@@ -15,6 +50,13 @@ export default function Home() {
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
+            <SEO
+                title="JuriJob - Sourcing & Recrutement Juridique d'Excellence au Maroc"
+                description="Plateforme spécialisée dans le sourcing et le recrutement de juristes d'affaires, avocats et experts du droit au Maroc. Short-lists qualifiées et accompagnement sur-mesure."
+                canonical="https://jurijob.ma"
+                jsonLd={homeJsonLd}
+            />
+
             <Header />
 
             <main className="w-full flex-1 pt-12">

@@ -1,7 +1,8 @@
 @extends('layouts.legal')
 
-@section('title', 'Mentions Légales & Informations Juridiques - JURIJOB')
+@section('title', 'Mentions Légales & Protection des Données | JuriJob')
 @section('meta_description', 'Mentions légales de JURIJOB : éditeur Sentissi Legal Advisory (SLA), hébergement, protection des données personnelles (CNDP, loi 09-08) et propriété intellectuelle.')
+@section('canonical', url('/mentions-legales'))
 
 @section('content')
 <div class="w-full flex-1 pb-24 pt-10 sm:pt-14">

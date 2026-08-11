@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Disallow: /candidate/
+Disallow: /recruteur/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /email/
+Disallow: /check-email
+Disallow: /login
+Disallow: /logout
+Disallow: /offres
+
+Sitemap: https://jurijob.ma/sitemap.xml

@@ -1,3 +1,4 @@
+import { Head } from '@inertiajs/react';
 import { AppContent } from '@/components/app-content';
 import { AppHeader } from '@/components/app-header';
 import { AppShell } from '@/components/app-shell';
@@ -9,6 +10,9 @@ export default function AppHeaderLayout({
 }: AppLayoutProps) {
     return (
         <AppShell variant="header">
+            <Head>
+                <meta name="robots" content="noindex, nofollow" />
+            </Head>
             <AppHeader breadcrumbs={breadcrumbs} />
             <AppContent variant="header">{children}</AppContent>
         </AppShell>

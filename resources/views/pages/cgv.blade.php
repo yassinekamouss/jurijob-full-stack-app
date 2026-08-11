@@ -1,7 +1,8 @@
 @extends('layouts.legal')
 
-@section('title', 'Conditions Générales de Vente (CGV) - JURIJOB')
+@section('title', 'Conditions Générales de Vente (CGV) | JuriJob')
 @section('meta_description', 'Conditions Générales de Vente de JURIJOB : tarifs, commande, livraison de la short-list, paiement par virement, annulation et cadre légal.')
+@section('canonical', url('/cgv'))
 
 @section('content')
 <div class="w-full flex-1 pb-24 pt-10 sm:pt-14">

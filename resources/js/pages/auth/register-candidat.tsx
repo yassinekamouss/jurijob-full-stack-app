@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import SEO from '@/components/SEO';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import RegisterSocialPrompt from '@/components/auth/RegisterSocialPrompt';
 import CandidatDetails from '@/components/signup/CandidatDetails';
@@ -499,7 +500,11 @@ export default function RegisterCandidat() {
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-            <Head title="Inscription Candidat" />
+            <SEO
+                title="Inscription Candidat - Boostez votre Carrière Juridique | JuriJob"
+                description="Créez votre profil juriste ou avocat sur JuriJob. Accédez aux meilleures opportunités en cabinet ou en entreprise au Maroc. Inscription rapide et sécurisée."
+                canonical="https://jurijob.ma/register/candidat"
+            />
             <Toaster position="top-right" />
 
             <Header />
