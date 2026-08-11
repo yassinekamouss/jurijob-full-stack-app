@@ -66,12 +66,12 @@ export default function Footer() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link
+                                    <a
                                         href="/services"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
                                         Nos Prestations
-                                    </Link>
+                                    </a>
                                 </li>
                                 <li>
                                     <a

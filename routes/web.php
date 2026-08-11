@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::inertia('/', 'Home')->name('home');
-Route::inertia('/services', 'Services')->name('services');
+Route::view('/services', 'pages.services')->name('services');
 Route::view('/faq', 'pages.faq')->name('faq');
 Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legales');
 Route::view('/cgu', 'pages.cgu')->name('cgu');
