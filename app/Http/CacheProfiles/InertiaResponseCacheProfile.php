@@ -20,4 +20,15 @@ class InertiaResponseCacheProfile extends CacheAllSuccessfulGetRequests
 
         return parent::shouldCacheRequest($request);
     }
+
+    public function useCacheNameSuffix(Request $request): string
+    {
+        $suffix = parent::useCacheNameSuffix($request);
+
+        if ($request->header('X-Inertia')) {
+            $suffix .= '-inertia';
+        }
+
+        return $suffix;
+    }
 }
