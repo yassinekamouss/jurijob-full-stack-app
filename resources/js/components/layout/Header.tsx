@@ -1,48 +1,42 @@
 import { Link } from '@inertiajs/react';
 import { ChevronDown, Building2, GraduationCap } from 'lucide-react';
 import { useState } from 'react';
-import Reveal from '@/components/home/Reveal'; // Import du composant global
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import Reveal from '@/components/home/Reveal';
 
 // --- Sous-composant Brand ---
-const Brand = () => (
-    <Link
-        href="/"
-        className="flex items-center tracking-tight hover:opacity-90 transition-opacity"
-        aria-label="Accueil JuriJob"
-    >
-        {/* <div
-            className="bg-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#FDFCF8]"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+const Brand = () => {
+    const { t } = useTranslation();
+    return (
+        <Link
+            href="/"
+            className="flex items-center tracking-tight hover:opacity-90 transition-opacity"
+            aria-label={t('navigation.home')}
         >
-            JURI
-        </div>
-        <div
-            className="flex items-center gap-1.5 border border-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#1a1f1e]"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-        >
-            JOB
-        </div> */}
-        <img
-            src="/images/logo_jurijob.png"
-            alt="JuriJob - Logo"
-            width={100}
-            height={100}
-            className="w-auto h-32"
-        />
-    </Link>
-);
+            <img
+                src="/images/logo_jurijob.png"
+                alt={t('navigation.brand_alt')}
+                width={100}
+                height={100}
+                className="w-auto h-32"
+            />
+        </Link>
+    );
+};
 
 // --- Composant Principal Header ---
 export default function Header() {
+    const { t } = useTranslation();
     const [showMenu, setShowMenu] = useState(false);
 
     const nav = [
-        { href: '/#home', label: 'Accueil' },
-        { href: '/services', label: 'Services' },
-        { href: '/#how-it-works', label: 'Comment ça marche' },
-        { href: '/#about', label: 'À propos' },
-        { href: '/#pricing', label: 'Tarifs' },
-        { href: '/faq', label: 'FAQ' }
+        { href: '/#home', label: t('navigation.home') },
+        { href: '/services', label: t('navigation.services') },
+        { href: '/#how-it-works', label: t('navigation.how_it_works') },
+        { href: '/#about', label: t('navigation.about') },
+        { href: '/#pricing', label: t('navigation.pricing') },
+        { href: '/faq', label: t('navigation.faq') },
     ];
 
     const handleNavClick = (e: React.MouseEvent<Element>, href: string) => {
@@ -92,7 +86,7 @@ export default function Header() {
                         {/* Navigation Desktop */}
                         <nav
                             className="hidden space-x-12 md:flex"
-                            aria-label="Navigation principale"
+                            aria-label={t('navigation.home')}
                         >
                             {nav.map((item, index) => (
                                 <Reveal
@@ -119,19 +113,20 @@ export default function Header() {
 
                         {/* Actions */}
                         <Reveal direction="left" duration={0.8}>
-                            <div className="flex items-center space-x-6">
+                            <div className="flex items-center space-x-4 md:space-x-6">
+                                <LanguageSwitcher />
                                 <Link
                                     href="/login"
                                     className="px-2 py-2 text-sm font-medium text-[#1a1f1e] transition-opacity hover:opacity-70"
                                 >
-                                    Connexion
+                                    {t('navigation.login')}
                                 </Link>
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowMenu(!showMenu)}
                                         className="flex items-center gap-2 bg-[#1a1f1e] px-6 py-2.5 text-sm font-medium text-[#FDFCF8] transition-all hover:bg-[#343a38]"
                                     >
-                                        Inscription
+                                        {t('navigation.register')}
                                         <ChevronDown
                                             className={`h-3.5 w-3.5 transition-transform ${showMenu ? 'rotate-180' : ''}`}
                                         />
@@ -144,14 +139,14 @@ export default function Header() {
                                                 className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
                                             >
                                                 <Building2 className="h-4 w-4 text-[#C06041]" />
-                                                En tant que Recruteur
+                                                {t('navigation.as_recruiter')}
                                             </Link>
                                             <Link
                                                 href="/register/candidat"
                                                 className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
                                             >
                                                 <GraduationCap className="h-4 w-4 text-[#C06041]" />
-                                                En tant que Candidat
+                                                {t('navigation.as_candidate')}
                                             </Link>
                                         </div>
                                     )}

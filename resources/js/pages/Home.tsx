@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import About from '@/components/home/About';
 import CallToAction from '@/components/home/CallToAction';
 import FounderMessage from '@/components/home/FounderMessage';
@@ -10,71 +11,69 @@ import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import SEO from '@/components/SEO';
 
-const homeJsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-        {
-            '@type': 'Organization',
-            '@id': 'https://jurijob.ma/#organization',
-            name: 'JuriJob',
-            url: 'https://jurijob.ma',
-            logo: 'https://jurijob.ma/logo-512x512.png',
-            description:
-                "Plateforme spécialisée dans le sourcing et la sélection de tous les profils et experts du droit au Maroc et en Afrique.",
-            parentOrganization: {
-                '@type': 'Organization',
-                name: 'Sentissi Legal Advisory',
-                url: 'https://sentissilegal.com/'
-            },
-            sameAs: [
-                'https://sentissilegal.com/'
-            ],
-            founder: {
-                '@type': 'Person',
-                '@id': 'https://jurijob.ma/#founder',
-                name: 'Mohammed Sentissi',
-                jobTitle: 'Expert Juridique & Fondateur',
-                description: 'Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique...',
-                worksFor: {
-                    '@type': 'Organization',
-                    name: 'Sentissi Legal Advisory'
-                },
-                sameAs: [
-                    'https://www.linkedin.com/in/mohammed-sentissi/'
-                ]
-            },
-            address: {
-                '@type': 'PostalAddress',
-                addressLocality: 'Casablanca',
-                addressCountry: 'MA',
-            },
-            contactPoint: {
-                '@type': 'ContactPoint',
-                email: 'recrutement@sentissilegal.com',
-                contactType: 'customer service',
-            },
-        },
-        {
-            '@type': 'WebSite',
-            '@id': 'https://jurijob.ma/#website',
-            url: 'https://jurijob.ma',
-            name: 'JuriJob',
-            publisher: {
-                '@id': 'https://jurijob.ma/#organization',
-            },
-        },
-    ],
-};
-
 export default function Home() {
+    const { t, i18n } = useTranslation();
+
+    const homeJsonLd = {
+        '@context': 'https://schema.org',
+        '@graph': [
+            {
+                '@type': 'Organization',
+                '@id': 'https://jurijob.ma/#organization',
+                name: 'JuriJob',
+                url: 'https://jurijob.ma',
+                logo: 'https://jurijob.ma/logo-512x512.png',
+                description: t('home.seo.jsonld.org_description'),
+                parentOrganization: {
+                    '@type': 'Organization',
+                    name: 'Sentissi Legal Advisory',
+                    url: 'https://sentissilegal.com/',
+                },
+                sameAs: ['https://sentissilegal.com/'],
+                founder: {
+                    '@type': 'Person',
+                    '@id': 'https://jurijob.ma/#founder',
+                    name: 'Mohammed Sentissi',
+                    jobTitle: t('home.seo.jsonld.founder_job_title'),
+                    description: t('home.seo.jsonld.founder_description'),
+                    worksFor: {
+                        '@type': 'Organization',
+                        name: 'Sentissi Legal Advisory',
+                    },
+                    sameAs: ['https://www.linkedin.com/in/mohammed-sentissi/'],
+                },
+                address: {
+                    '@type': 'PostalAddress',
+                    addressLocality: 'Casablanca',
+                    addressCountry: 'MA',
+                },
+                contactPoint: {
+                    '@type': 'ContactPoint',
+                    email: 'recrutement@sentissilegal.com',
+                    contactType: 'customer service',
+                },
+            },
+            {
+                '@type': 'WebSite',
+                '@id': 'https://jurijob.ma/#website',
+                url: 'https://jurijob.ma',
+                name: 'JuriJob',
+                inLanguage: i18n.language,
+                publisher: {
+                    '@id': 'https://jurijob.ma/#organization',
+                },
+            },
+        ],
+    };
+
     return (
         <div
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
             <SEO
-                title="JuriJob - Sourcing & Recrutement Juridique au Maroc & Afrique"
-                description="Plateforme spécialisée dans le sourcing et la sélection de juristes d'affaires, avocats et experts du droit au Maroc et en Afrique. Short-lists qualifiées sous 48h."
+                title={t('home.seo.title')}
+                description={t('home.seo.description')}
                 canonical="https://jurijob.ma"
                 jsonLd={homeJsonLd}
             />

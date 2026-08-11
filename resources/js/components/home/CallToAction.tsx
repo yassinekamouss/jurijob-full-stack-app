@@ -1,7 +1,10 @@
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/home/Reveal';
 
 export default function CallToAction() {
+    const { t } = useTranslation();
+
     return (
         <section className="relative overflow-hidden bg-[#1a1f1e] px-4 py-32 text-[#FDFCF8] sm:px-6 md:py-40">
             {/* Architectural Grid Lines */}
@@ -15,16 +18,16 @@ export default function CallToAction() {
                         className="mb-8 text-5xl leading-[1.05] font-medium tracking-tight sm:text-7xl"
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                     >
-                        Identifiez votre prochain <br />
+                        {t('home.cta.title_part1')} <br />
                         <span className="font-light text-[#C06041] italic">
-                            juriste ou expert juridique au Maroc & en Afrique
+                            {t('home.cta.title_part2')}
                         </span>
                     </h2>
                 </Reveal>
 
                 <Reveal direction="up" duration={0.8} delay={0.2}>
                     <p className="mx-auto mb-12 max-w-2xl text-lg font-light text-[#FDFCF8]/70 md:text-xl">
-                        Décrivez votre besoin en quelques minutes. Nous vous recontactons sous 48 heures avec une short-list qualifiée.
+                        {t('home.cta.description')}
                     </p>
                 </Reveal>
 
@@ -34,7 +37,7 @@ export default function CallToAction() {
                             href="/register/recruteur"
                             className="group flex items-center justify-center gap-3 border border-[#FDFCF8] bg-[#FDFCF8] px-10 py-5 text-sm tracking-widest text-[#1a1f1e] uppercase transition-colors duration-500 hover:border-[#C06041] hover:bg-[#C06041] hover:text-[#FDFCF8]"
                         >
-                            <span>Démarrer ma recherche</span>
+                            <span>{t('home.cta.button')}</span>
                             <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                         </Link>
                     </div>

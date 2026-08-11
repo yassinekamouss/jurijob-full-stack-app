@@ -1,37 +1,30 @@
 import { Link } from '@inertiajs/react';
-import { Linkedin, Twitter, Facebook, Instagram } from 'lucide-react';
-import Reveal from '@/components/home/Reveal'; // Import du composant global
+import { useTranslation } from 'react-i18next';
+import Reveal from '@/components/home/Reveal';
 
 // --- Sous-composant Brand ---
-const Brand = () => (
-    <Link
-        href="/"
-        className="flex items-center tracking-tight hover:opacity-90 transition-opacity"
-        aria-label="Accueil JuriJob"
-    >
-        {/* <div
-            className="bg-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#FDFCF8]"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-        >é
-            JURI
-        </div>
-        <div
-            className="flex items-center gap-1.5 border border-[#1a1f1e] px-3 py-1 text-lg font-medium text-[#1a1f1e]"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+const Brand = () => {
+    const { t } = useTranslation();
+    return (
+        <Link
+            href="/"
+            className="flex items-center tracking-tight hover:opacity-90 transition-opacity"
+            aria-label={t('navigation.home')}
         >
-            JOB
-        </div> */}
-        <img
-            src="/images/logo_jurijob.png"
-            alt="JuriJob - Logo"
-            width={100}
-            height={100}
-            className="w-auto h-32"
-        />
-    </Link>
-);
+            <img
+                src="/images/logo_jurijob.png"
+                alt={t('navigation.brand_alt')}
+                width={100}
+                height={100}
+                className="w-auto h-32"
+            />
+        </Link>
+    );
+};
 
 export default function Footer() {
+    const { t } = useTranslation();
+
     return (
         <footer className="border-t border-[#1a1f1e]/10 bg-[#FDFCF8] py-16 text-[#1a1f1e]">
             <div className="mx-auto max-w-7xl px-8 md:px-16">
@@ -41,11 +34,11 @@ export default function Footer() {
                         <div className="md:col-span-2">
                             <Brand />
                             <p className="my-6 max-w-sm text-sm leading-relaxed font-light text-[#1a1f1e]/70">
-                            L'écosystème de référence au Maroc et en Afrique pour le sourcing et le recrutement de tous les profils juridiques, juristes spécialisés et avocats.
+                                {t('footer.description')}
                             </p>
                             <div className="flex items-center gap-2 text-xs font-medium tracking-widest text-[#C06041] uppercase">
                                 <span>
-                                    Spécialisé dans les carrières juridiques
+                                    {t('footer.specialized_badge')}
                                 </span>
                             </div>
                         </div>
@@ -53,7 +46,7 @@ export default function Footer() {
                         {/* Colonne 3 : Navigation Principale */}
                         <div className="mt-10">
                             <h4 className="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">
-                                Navigation
+                                {t('footer.navigation_heading')}
                             </h4>
                             <ul className="space-y-4 text-sm font-light text-[#1a1f1e]/70">
                                 <li>
@@ -61,7 +54,7 @@ export default function Footer() {
                                         href="/#about"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
-                                        Notre Vision
+                                        {t('footer.vision')}
                                     </Link>
                                 </li>
                                 <li>
@@ -69,7 +62,7 @@ export default function Footer() {
                                         href="/services"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
-                                        Nos Prestations
+                                        {t('footer.services')}
                                     </a>
                                 </li>
                                 <li>
@@ -77,11 +70,11 @@ export default function Footer() {
                                         href="/faq"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
-                                        Foire Aux Questions (FAQ)
+                                        {t('footer.faq')}
                                     </a>
                                 </li>
                                 <li className="pt-2">
-                                    <a 
+                                    <a
                                         href="mailto:recrutement@sentissilegal.com"
                                         className="inline-block transition-colors text-[#C06041]"
                                     >
@@ -94,7 +87,7 @@ export default function Footer() {
                         {/* Colonne 4 : Informations Légales */}
                         <div className="mt-10">
                             <h4 className="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">
-                                Légal
+                                {t('footer.legal_heading')}
                             </h4>
                             <ul className="space-y-4 text-sm font-light text-[#1a1f1e]/70">
                                 <li>
@@ -102,7 +95,7 @@ export default function Footer() {
                                         href="/mentions-legales"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
-                                        Mentions Légales
+                                        {t('footer.mentions_legales')}
                                     </a>
                                 </li>
                                 <li>
@@ -110,7 +103,7 @@ export default function Footer() {
                                         href="/cgu"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
-                                        Conditions d'Utilisation (CGU)
+                                        {t('footer.cgu')}
                                     </a>
                                 </li>
                                 <li>
@@ -118,7 +111,7 @@ export default function Footer() {
                                         href="/cgv"
                                         className="transition-colors hover:text-[#C06041]"
                                     >
-                                        Conditions de Vente (CGV)
+                                        {t('footer.cgv')}
                                     </a>
                                 </li>
                             </ul>
@@ -129,8 +122,8 @@ export default function Footer() {
                 {/* Section Copyright */}
                 <Reveal delay={0.05}>
                     <div className="mt-16 flex flex-col items-center justify-between border-t border-[#1a1f1e]/10 pt-8 text-xs font-light tracking-widest text-[#1a1f1e]/50 uppercase md:flex-row">
-                        <p>&copy; 2026 — Smart Recrutement Juridique. Tous droits réservés.</p>
-                        <p className="mt-4 md:mt-0">4, Rue Mohamed Al Hayani, Casablanca - Maroc</p>
+                        <p>{t('footer.copyright')}</p>
+                        <p className="mt-4 md:mt-0">{t('footer.address')}</p>
                     </div>
                 </Reveal>
             </div>

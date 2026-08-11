@@ -1,18 +1,21 @@
 import { Quote } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/home/Reveal';
 
 export default function Testimonials() {
+    const { t } = useTranslation();
+
     const testimonials = [
         {
-            quote: "Cette plateforme m'a aidée à décrocher mon premier poste d'assistante juridique. Le processus a été fluide et le soutien de l'équipe exceptionnel. Je recommande vivement Jurijob.",
-            name: 'Amina Benali',
-            role: 'Juriste Junior',
+            quote: t('home.testimonials.item1.quote'),
+            name: t('home.testimonials.item1.name'),
+            role: t('home.testimonials.item1.role'),
             type: 'graduate',
         },
         {
-            quote: 'Nous avons trouvé des candidats qualifiés plus rapidement que par les méthodes traditionnelles. Les profils vérifiés sont un gage de qualité indéniable.',
-            name: 'Mohamed El Fassi',
-            role: "DRH, Cabinet d'avocats",
+            quote: t('home.testimonials.item2.quote'),
+            name: t('home.testimonials.item2.name'),
+            role: t('home.testimonials.item2.role'),
             type: 'recruiter',
         },
     ];
@@ -30,16 +33,15 @@ export default function Testimonials() {
                             className="mb-6 text-5xl tracking-tight md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Histoires de{' '}
+                            {t('home.testimonials.title_part1')}
                             <span className="font-light text-[#C06041] italic">
-                                réussite
+                                {t('home.testimonials.title_part2')}
                             </span>
                         </h2>
                     </Reveal>
                     <Reveal direction="up" delay={0.1}>
                         <p className="mx-auto max-w-2xl text-lg leading-relaxed font-light text-[#FDFCF8]/60 md:text-xl">
-                            Découvrez les retours des diplômés et des recruteurs
-                            qui font grandir le secteur juridique avec Jurijob.
+                            {t('home.testimonials.subtitle')}
                         </p>
                     </Reveal>
                 </div>

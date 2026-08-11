@@ -1,31 +1,30 @@
-import Reveal from '@/components/home/Reveal';
 import { Scale, CheckCircle, Shield, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import Reveal from '@/components/home/Reveal';
 
 export default function WhyChooseUs() {
+    const { t } = useTranslation();
+
     const features = [
         {
             symbol: <Scale />,
-            title: 'Une expertise terrain',
-            description:
-                'Chaque short-list est validée par un ex-Directeur juridique ayant lui-même recruté des dizaines de juristes au Maroc et en Afrique. La sélection comprend les codes du métier.',
+            title: t('home.why_choose_us.feature1.title'),
+            description: t('home.why_choose_us.feature1.description'),
         },
         {
             symbol: <CheckCircle />,
-            title: 'Confidentialité absolue',
-            description:
-                'Hébergement sécurisé, accès aux profils strictly limité aux paiements confirmés, aucune diffusion publique. Conforme à la loi marocaine 09-08.',
+            title: t('home.why_choose_us.feature2.title'),
+            description: t('home.why_choose_us.feature2.description'),
         },
         {
             symbol: <Shield />,
-            title: 'Sélection sur mesure',
-            description:
-                'Spécialisations, langues, séniorité, formation : chaque critère est pris en compte. Une short-list courte et qualifiée, pas un déluge de CV.',
+            title: t('home.why_choose_us.feature3.title'),
+            description: t('home.why_choose_us.feature3.description'),
         },
         {
             symbol: <Clock />,
-            title: '100% juridique',
-            description:
-                "Juristes d'entreprise, juristes en cabinet, notaires, compliance officers, fiscalistes. Aucune dilution dans un catalogue généraliste.",
+            title: t('home.why_choose_us.feature4.title'),
+            description: t('home.why_choose_us.feature4.description'),
         },
     ];
 
@@ -37,29 +36,28 @@ export default function WhyChooseUs() {
             <div className="pointer-events-none absolute top-0 right-1/4 hidden h-full w-[1px] bg-white/5 md:block"></div>
 
             <div className="mx-auto max-w-7xl px-8 md:px-16">
-                {/* Header - Aligné avec le style "Comment ça marche" */}
+                {/* Header */}
                 <div className="mb-20 grid items-end gap-12 md:mb-32 md:grid-cols-2">
                     <Reveal direction="up">
                         <h2
                             className="mb-3 text-5xl leading-[1.1] tracking-tight md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Pourquoi choisir notre plateforme de{' '}
+                            {t('home.why_choose_us.title_part1')}
                             <span className="text-[#C06041] italic">
-                                sourcing juridique au Maroc et en Afrique ?
+                                {t('home.why_choose_us.title_part2')}
                             </span>
                         </h2>
                         <p className="text-xs uppercase tracking-widest text-[#C06041] font-medium">
-                            Une alternative aux plateformes RH généralistes.
+                            {t('home.why_choose_us.badge')}
                         </p>
                     </Reveal>
                     <Reveal direction="up" delay={0.1}>
                         <p className="border-b border-[#FDFCF8]/20 pb-4 text-lg leading-relaxed font-light text-[#FDFCF8]/60 md:text-xl">
-                            Construire la confiance grâce à la qualité, la
-                            sécurité et l'efficacité au service du droit.
+                            {t('home.why_choose_us.subtitle1')}
                         </p>
                         <p className="border-b border-[#FDFCF8]/20 pb-4 text-lg leading-relaxed font-light text-[#FDFCF8]/80 md:text-xl">
-                            Pensée par et pour les juristes, JURIJOB s'appuie sur 24 ans d'expérience en direction juridique et sur le réseau d'un leader des juristes d'entreprise au Maroc, riche de plusieurs dizaines de milliers de contacts professionnels.
+                            {t('home.why_choose_us.subtitle2')}
                         </p>
                     </Reveal>
                 </div>

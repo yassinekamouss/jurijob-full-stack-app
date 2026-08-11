@@ -1,9 +1,16 @@
 {
   "navigation": {
+    "brand_alt": "JuriJob - Logo",
     "home": "Accueil",
     "services": "Services",
+    "how_it_works": "Comment ça marche",
+    "about": "À propos",
+    "pricing": "Tarifs",
     "faq": "FAQ",
-    "login": "Se connecter",
+    "login": "Connexion",
+    "register": "Inscription",
+    "as_recruiter": "En tant que Recruteur",
+    "as_candidate": "En tant que Candidat",
     "candidate_space": "Espace Candidat",
     "recruiter_space": "Espace Recruteur"
   },
@@ -17,5 +24,169 @@
     "error": "Une erreur est survenue",
     "save": "Enregistrer",
     "cancel": "Annuler"
+  },
+  "home": {
+    "seo": {
+      "title": "JuriJob - Sourcing & Recrutement Juridique au Maroc & Afrique",
+      "description": "Plateforme spécialisée dans le sourcing et la sélection de juristes d'affaires, avocats et experts du droit au Maroc et en Afrique. Short-lists qualifiées sous 48h.",
+      "jsonld": {
+        "org_description": "Plateforme spécialisée dans le sourcing et la sélection de tous les profils et experts du droit au Maroc et en Afrique.",
+        "founder_job_title": "Expert Juridique & Fondateur",
+        "founder_description": "Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique..."
+      }
+    },
+    "hero": {
+      "badge": "Recrutement juridique · Maroc & Afrique",
+      "title_part1": "Le recrutement et sourcing juridique au Maroc & en Afrique,",
+      "title_part2": "à la hauteur de vos exigences.",
+      "description": "Présélection sur-mesure de juristes d'affaires, avocats et experts du droit à Casablanca, Rabat, Abidjan, Dakar et à travers toute l'Afrique.",
+      "cta_candidate_prefix": "Je suis juriste",
+      "cta_candidate_action": "Créer mon profil",
+      "cta_recruiter_prefix": "Je recrute un juriste",
+      "cta_recruiter_action": "Déposer une demande",
+      "image_alt": "Espace de travail juridique",
+      "stat1_value": "1,250+",
+      "stat1_label": "Utilisateurs actifs",
+      "stat2_value": "98%",
+      "stat2_label": "Taux d'adéquation"
+    },
+    "why_choose_us": {
+      "title_part1": "Pourquoi choisir notre plateforme de ",
+      "title_part2": "sourcing juridique au Maroc et en Afrique ?",
+      "badge": "Une alternative aux plateformes RH généralistes.",
+      "subtitle1": "Construire la confiance grâce à la qualité, la sécurité et l'efficacité au service du droit.",
+      "subtitle2": "Pensée par et pour les juristes, JURIJOB s'appuie sur 24 ans d'expérience en direction juridique et sur le réseau d'un leader des juristes d'entreprise au Maroc, riche de plusieurs dizaines de milliers de contacts professionnels.",
+      "feature1": {
+        "title": "Une expertise terrain",
+        "description": "Chaque short-list est validée par un ex-Directeur juridique ayant lui-même recruté des dizaines de juristes au Maroc et en Afrique. La sélection comprend les codes du métier."
+      },
+      "feature2": {
+        "title": "Confidentialité absolue",
+        "description": "Hébergement sécurisé, accès aux profils strictly limité aux paiements confirmés, aucune diffusion publique. Conforme à la loi marocaine 09-08."
+      },
+      "feature3": {
+        "title": "Sélection sur mesure",
+        "description": "Spécialisations, langues, séniorité, formation : chaque critère est pris en compte. Une short-list courte et qualifiée, pas un déluge de CV."
+      },
+      "feature4": {
+        "title": "100% juridique",
+        "description": "Juristes d'entreprise, juristes en cabinet, notaires, compliance officers, fiscalistes. Aucune dilution dans un catalogue généraliste."
+      }
+    },
+    "how_it_works": {
+      "title_part1": "Notre méthode de ",
+      "title_part2": "sélection et présélection de talents juridiques",
+      "subtitle": "Un processus simple et supervisé.",
+      "step1": {
+        "number": "01 //",
+        "title": "Vous déposez votre demande",
+        "description": "Critères précis : spécialisation, niveau, langues, diplôme. Quelques minutes suffisent."
+      },
+      "step2": {
+        "number": "02 //",
+        "title": "Notre équipe sélectionne",
+        "description": "Recherche dans la CVthèque et le réseau professionnel. Évaluation manuelle de chaque profil."
+      },
+      "step3": {
+        "number": "03 //",
+        "title": "Vous recevez votre short-list",
+        "description": "Sous 48 heures ouvrées. Profils qualifiés et coordonnées complètes après confirmation du paiement."
+      }
+    },
+    "testimonials": {
+      "title_part1": "Histoires de ",
+      "title_part2": "réussite",
+      "subtitle": "Découvrez les retours des diplômés et des recruteurs qui font grandir le secteur juridique avec Jurijob.",
+      "item1": {
+        "quote": "Cette plateforme m'a aidée à décrocher mon premier poste d'assistante juridique. Le processus a été fluide et le soutien de l'équipe exceptionnel. Je recommande vivement Jurijob.",
+        "name": "Amina Benali",
+        "role": "Juriste Junior"
+      },
+      "item2": {
+        "quote": "Nous avons trouvé des candidats qualifiés plus rapidement que par les méthodes traditionnelles. Les profils vérifiés sont un gage de qualité indéniable.",
+        "name": "Mohamed El Fassi",
+        "role": "DRH, Cabinet d'avocats"
+      }
+    },
+    "pricing": {
+      "title_part1": "Tarifs transparents pour votre ",
+      "title_part2": "recrutement juridique d'entreprise",
+      "subtitle": "Choisissez l'offre qui correspond à votre profil d'expertise et vos ambitions.",
+      "graduates": {
+        "badge": "Diplômés & Talents",
+        "price": "Gratuit",
+        "period": "/ à vie",
+        "description": "L'accès à l'excellence professionnelle ne devrait jamais être tarifé pour les talents de demain.",
+        "feature1": "Création de profil détaillé",
+        "feature2": "Validation de CV prioritaire",
+        "feature3": "Visibilité auprès des grands cabinets",
+        "feature4": "Ressources de développement de carrière",
+        "cta": "Rejoindre la plateforme"
+      },
+      "recruiters": {
+        "badge": "Cabinets & Recruteurs",
+        "plan_name": "Élite",
+        "price_from": "À partir de",
+        "price": "1 490 MAD HT",
+        "period": "/ profil",
+        "tax_inclusive": "(soit 1 788 MAD TTC)",
+        "description": "Une tarification transparente et ajustée selon vos volumes de recrutement, garantie par l'œil de nos experts.",
+        "feature1": "Sélection rigoureuse par nos experts juridiques (+20 ans d'expérience)",
+        "feature2": "Garantie d'une short-list 100% sur-mesure",
+        "feature3": "Accès exclusif à notre vivier certifié",
+        "feature4": "Accompagnement marque employeur & suivi dédié",
+        "cta": "Contacter l'équipe",
+        "cgv_link": "Consulter nos Conditions Générales de Vente (CGV)"
+      }
+    },
+    "about": {
+      "title_part1": "À propos de ",
+      "title_part2": "JURIJOB",
+      "badge": "Le 1er réseau de recrutement exclusivement dédié aux professionnels du droit.",
+      "image_alt": "Recrutement juridique d'excellence",
+      "quote": "\"Le recrutement juridique requiert une expertise métier, pas un simple traitement de CV.\"",
+      "mission_title": "Notre mission",
+      "mission_description": "JURIJOB est né d'un constat : les directions juridiques et RH des grandes structures perdent un temps précieux à traiter des candidatures hors cible. Nous sélectionnons avec précision les meilleurs juristes d'entreprise, avocats, notaires et fiscalistes au Maroc et en Afrique.",
+      "pillars_title": "Nos piliers d'engagement",
+      "pillar1_title": "Évaluation Juridique Métier",
+      "pillar1_desc": "Chaque juriste est qualifié selon sa spécialisation (Droit des affaires, Compliance, Fiscalité, M&A) et son niveau d’expertise réel.",
+      "pillar2_title": "Confidentialité Maximale",
+      "pillar2_desc": "Protection absolue des recherches de cabinets/entreprises et des données des juristes (Conformité Loi 09-08).",
+      "pillar3_title": "Short-List Sous 48 Hours",
+      "pillar3_desc": "Accélérez vos recrutements avec une sélection ciblée et directement opérationnelle, sans pollution de candidatures inappropriées.",
+      "stat1_value": "48h",
+      "stat1_label": "Transmission de la short-list",
+      "stat2_value": "24 ans",
+      "stat2_label": "D'expertise en Direction Juridique",
+      "stat3_value": "Maroc & Afrique",
+      "stat3_label": "Couverture géographique"
+    },
+    "founder": {
+      "badge": "Le mot du Fondateur",
+      "name": "Mohammed Sentissi",
+      "role": "Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique. Président élu de l'Association marocaine des juristes d'entreprise — AMJE (en cours de constitution). Fondateur de Sentissi Legal Advisory — Un réseau d'experts au service des directions juridiques au Maroc et en Afrique.",
+      "quote": "« Recruter un juriste, ce n'est pas remplir un poste. C'est trouver la personne qui parlera la langue du droit et celle de votre entreprise. »",
+      "image_alt": "Mohammed Sentissi - Fondateur Jurijob"
+    },
+    "cta": {
+      "title_part1": "Identifiez votre prochain ",
+      "title_part2": "juriste ou expert juridique au Maroc & en Afrique",
+      "description": "Décrivez votre besoin en quelques minutes. Nous vous recontactons sous 48 heures avec une short-list qualifiée.",
+      "button": "Démarrer ma recherche"
+    }
+  },
+  "footer": {
+    "description": "L'écosystème de référence au Maroc et en Afrique pour le sourcing et le recrutement de tous les profils juridiques, juristes spécialisés et avocats.",
+    "specialized_badge": "Spécialisé dans les carrières juridiques",
+    "navigation_heading": "Navigation",
+    "vision": "Notre Vision",
+    "services": "Nos Prestations",
+    "faq": "Foire Aux Questions (FAQ)",
+    "legal_heading": "Légal",
+    "mentions_legales": "Mentions Légales",
+    "cgu": "Conditions d'Utilisation (CGU)",
+    "cgv": "Conditions de Vente (CGV)",
+    "copyright": "© 2026 — Smart Recrutement Juridique. Tous droits réservés.",
+    "address": "4, Rue Mohamed Al Hayani, Casablanca - Maroc"
   }
 }

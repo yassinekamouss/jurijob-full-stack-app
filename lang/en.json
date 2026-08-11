@@ -1,9 +1,16 @@
 {
   "navigation": {
+    "brand_alt": "JuriJob - Logo",
     "home": "Home",
     "services": "Services",
+    "how_it_works": "How it works",
+    "about": "About us",
+    "pricing": "Pricing",
     "faq": "FAQ",
     "login": "Sign In",
+    "register": "Sign Up",
+    "as_recruiter": "As a Recruiter",
+    "as_candidate": "As a Candidate",
     "candidate_space": "Candidate Portal",
     "recruiter_space": "Recruiter Portal"
   },
@@ -17,5 +24,169 @@
     "error": "An error occurred",
     "save": "Save",
     "cancel": "Cancel"
+  },
+  "home": {
+    "seo": {
+      "title": "JuriJob - Legal Sourcing & Recruitment in Morocco & Africa",
+      "description": "Specialized platform for sourcing and selecting corporate counsel, attorneys, and legal experts in Morocco and Africa. Qualified shortlists within 48h.",
+      "jsonld": {
+        "org_description": "Specialized platform for sourcing and selecting all legal profiles and experts in Morocco and Africa.",
+        "founder_job_title": "Legal Expert & Founder",
+        "founder_description": "Legal expert, former Legal Director of holdings in Morocco and Africa. Elected President of the Moroccan Corporate Counsel Association (AMJE). Founder of Sentissi Legal Advisory."
+      }
+    },
+    "hero": {
+      "badge": "Legal recruitment · Morocco & Africa",
+      "title_part1": "Legal recruitment and sourcing in Morocco & Africa,",
+      "title_part2": "meeting your highest standards.",
+      "description": "Tailor-made preselection of corporate lawyers, attorneys, and legal experts in Casablanca, Rabat, Abidjan, Dakar, and across Africa.",
+      "cta_candidate_prefix": "I am a lawyer",
+      "cta_candidate_action": "Create my profile",
+      "cta_recruiter_prefix": "I am recruiting a lawyer",
+      "cta_recruiter_action": "Submit a request",
+      "image_alt": "Legal workspace",
+      "stat1_value": "1,250+",
+      "stat1_label": "Active users",
+      "stat2_value": "98%",
+      "stat2_label": "Match rate"
+    },
+    "why_choose_us": {
+      "title_part1": "Why choose our platform for ",
+      "title_part2": "legal sourcing in Morocco and Africa?",
+      "badge": "An alternative to generalist HR platforms.",
+      "subtitle1": "Building trust through quality, security, and efficiency serving the legal domain.",
+      "subtitle2": "Designed by and for legal professionals, JURIJOB relies on 24 years of legal management experience and the network of a corporate legal leader in Morocco with tens of thousands of professional contacts.",
+      "feature1": {
+        "title": "Field expertise",
+        "description": "Each shortlist is validated by a former Legal Director who has personally hired dozens of legal experts in Morocco and Africa, incorporating deep industry standards."
+      },
+      "feature2": {
+        "title": "Absolute confidentiality",
+        "description": "Secure hosting, profile access strictly restricted to confirmed payments, no public broadcast. Compliant with Moroccan Law 09-08."
+      },
+      "feature3": {
+        "title": "Tailor-made selection",
+        "description": "Specializations, languages, seniority, education: every criterion is considered. A concise and qualified shortlist, not a flood of CVs."
+      },
+      "feature4": {
+        "title": "100% legal",
+        "description": "Corporate counsel, law firm associates, notaries, compliance officers, tax experts. No dilution in a generalist directory."
+      }
+    },
+    "how_it_works": {
+      "title_part1": "Our method for ",
+      "title_part2": "selecting and preselecting legal talent",
+      "subtitle": "A simple, supervised process.",
+      "step1": {
+        "number": "01 //",
+        "title": "Submit your request",
+        "description": "Precise criteria: specialization, level, languages, degree. Takes only a few minutes."
+      },
+      "step2": {
+        "number": "02 //",
+        "title": "Our team selects",
+        "description": "Searching the resume database and professional network. Manual evaluation of each candidate profile."
+      },
+      "step3": {
+        "number": "03 //",
+        "title": "Receive your shortlist",
+        "description": "Within 48 business hours. Qualified profiles and full contact details upon payment confirmation."
+      }
+    },
+    "testimonials": {
+      "title_part1": "Stories of ",
+      "title_part2": "success",
+      "subtitle": "Discover feedback from graduates and recruiters advancing the legal sector with Jurijob.",
+      "item1": {
+        "quote": "This platform helped me land my first legal assistant job. The process was smooth and the team's support was exceptional. I highly recommend Jurijob.",
+        "name": "Amina Benali",
+        "role": "Junior Counsel"
+      },
+      "item2": {
+        "quote": "We found qualified candidates faster than through traditional channels. Verified profiles are an undeniable mark of quality.",
+        "name": "Mohamed El Fassi",
+        "role": "HR Director, Law Firm"
+      }
+    },
+    "pricing": {
+      "title_part1": "Transparent pricing for your ",
+      "title_part2": "corporate legal recruitment",
+      "subtitle": "Choose the plan that fits your professional expertise and ambitions.",
+      "graduates": {
+        "badge": "Graduates & Talent",
+        "price": "Free",
+        "period": "/ lifetime",
+        "description": "Access to professional excellence should never be priced for tomorrow's talent.",
+        "feature1": "Detailed profile creation",
+        "feature2": "Priority resume validation",
+        "feature3": "Visibility with top firms",
+        "feature4": "Career development resources",
+        "cta": "Join the platform"
+      },
+      "recruiters": {
+        "badge": "Firms & Recruiters",
+        "plan_name": "Elite",
+        "price_from": "Starting from",
+        "price": "1 490 MAD excl. tax",
+        "period": "/ profile",
+        "tax_inclusive": "(or 1 788 MAD incl. tax)",
+        "description": "Transparent pricing adjusted to your recruitment volume, guaranteed by expert review.",
+        "feature1": "Rigorous selection by legal experts (+20 years experience)",
+        "feature2": "Guaranteed 100% custom shortlist",
+        "feature3": "Exclusive access to our certified talent pool",
+        "feature4": "Employer branding support & dedicated follow-up",
+        "cta": "Contact the team",
+        "cgv_link": "Read our General Terms of Sale (CGV)"
+      }
+    },
+    "about": {
+      "title_part1": "About ",
+      "title_part2": "JURIJOB",
+      "badge": "The 1st recruitment network exclusively dedicated to legal professionals.",
+      "image_alt": "Excellence in legal recruitment",
+      "quote": "\"Legal recruitment requires domain expertise, not simple CV filtering.\"",
+      "mission_title": "Our mission",
+      "mission_description": "JURIJOB was created from an observation: legal and HR departments spend valuable time filtering off-target applications. We precisely select top corporate counsel, lawyers, notaries, and tax experts in Morocco and Africa.",
+      "pillars_title": "Our key commitments",
+      "pillar1_title": "Domain Legal Evaluation",
+      "pillar1_desc": "Every lawyer is qualified based on their specialization (Corporate Law, Compliance, Tax, M&A) and actual expertise level.",
+      "pillar2_title": "Maximum Confidentiality",
+      "pillar2_desc": "Absolute protection of firm/company searches and candidates' data (Compliant with Law 09-08).",
+      "pillar3_title": "Shortlist Within 48 Hours",
+      "pillar3_desc": "Accelerate your hiring with a targeted, operational selection without inappropriate applicant noise.",
+      "stat1_value": "48h",
+      "stat1_label": "Shortlist delivery",
+      "stat2_value": "24 years",
+      "stat2_label": "Of Legal Management expertise",
+      "stat3_value": "Morocco & Africa",
+      "stat3_label": "Geographic coverage"
+    },
+    "founder": {
+      "badge": "Founder's Message",
+      "name": "Mohammed Sentissi",
+      "role": "Legal expert, former Legal Director of holdings in Morocco and Africa. Elected President of the Moroccan Corporate Counsel Association — AMJE (in formation). Founder of Sentissi Legal Advisory — A network of experts serving legal departments in Morocco and Africa.",
+      "quote": "“Hiring a lawyer is not just filling a role. It is finding the person who speaks both the language of law and that of your business.”",
+      "image_alt": "Mohammed Sentissi - Founder Jurijob"
+    },
+    "cta": {
+      "title_part1": "Find your next ",
+      "title_part2": "corporate lawyer or legal expert in Morocco & Africa",
+      "description": "Describe your requirements in minutes. We will contact you within 48 hours with a qualified shortlist.",
+      "button": "Start my search"
+    }
+  },
+  "footer": {
+    "description": "The benchmark ecosystem in Morocco and Africa for sourcing and recruiting all legal profiles, specialized counsel, and attorneys.",
+    "specialized_badge": "Specialized in legal careers",
+    "navigation_heading": "Navigation",
+    "vision": "Our Vision",
+    "services": "Our Services",
+    "faq": "Frequently Asked Questions (FAQ)",
+    "legal_heading": "Legal",
+    "mentions_legales": "Legal Notice",
+    "cgu": "Terms of Use (CGU)",
+    "cgv": "Terms of Sale (CGV)",
+    "copyright": "© 2026 — Smart Legal Recruitment. All rights reserved.",
+    "address": "4, Mohamed Al Hayani Street, Casablanca - Morocco"
   }
 }
