@@ -19,6 +19,22 @@ interface Props {
     taxonomies: Taxonomies;
 }
 
+export interface OffreFormData {
+    titre: string;
+    description: string;
+    poste_id: number | string;
+    type_travail_id: number | string;
+    mode_travail_id: number | string;
+    ville_id: number | string;
+    niveau_experience_id: number | string;
+    formation_juridique_id: number | string;
+    salaire_id: number | string;
+    urgence_id: number | string;
+    notes_complementaires: string;
+    nombre_cv: number;
+    requirements: Requirement[];
+}
+
 export default function Create({ taxonomies }: Props) {
     const [step, setStep] = useState(1);
     const stepCardRef = useRef<HTMLDivElement>(null);
@@ -33,7 +49,7 @@ export default function Create({ taxonomies }: Props) {
         { id: 6, title: 'Récapitulatif', subtitle: 'Validation finale' },
     ];
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<OffreFormData>({
         titre: '',
         description: '',
         poste_id: '',
@@ -46,7 +62,7 @@ export default function Create({ taxonomies }: Props) {
         urgence_id: '',
         notes_complementaires: '',
         nombre_cv: 1,
-        requirements: [] as Requirement[],
+        requirements: [],
     });
 
     const nextStep = () => setStep((prev) => prev + 1);

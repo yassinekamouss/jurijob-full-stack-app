@@ -4,7 +4,7 @@ export interface Requirement {
     taxonomy_id: number;
     taxonomy_type: 'SPECIALISATION' | 'LANGUE';
     label?: string;
-    metadata?: Record<string, unknown>;
+    metadata?: Record<string, any>;
 }
 
 export interface Offre {

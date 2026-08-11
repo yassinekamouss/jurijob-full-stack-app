@@ -8,11 +8,27 @@ import { ArrowLeft, Save, Briefcase, Settings2, SlidersHorizontal, AlertCircle }
 
 import RequirementsStep from '@/components/recruiter/offres/RequirementsStep';
 import BasicInfoStep from '@/components/recruiter/offres/BasicInfoStep';
-import type { Offre, Taxonomies } from '@/types';
+import type { Offre, Taxonomies, Requirement } from '@/types';
 
 interface Props {
     offre: Offre;
     taxonomies: Taxonomies;
+}
+
+export interface OffreEditFormData {
+    titre: string;
+    description: string;
+    poste_id: number | string;
+    type_travail_id: number | string;
+    mode_travail_id: number | string;
+    ville_id: number | string;
+    niveau_experience_id: number | string;
+    formation_juridique_id: number | string;
+    salaire_id: number | string;
+    urgence_id: number | string;
+    notes_complementaires: string;
+    nombre_cv: number;
+    requirements: Requirement[];
 }
 
 type TabType = 'general' | 'criteres';
@@ -20,7 +36,7 @@ type TabType = 'general' | 'criteres';
 export default function Edit({ offre, taxonomies }: Props) {
     const [activeTab, setActiveTab] = useState<TabType>('general');
 
-    const { data, setData, put, processing, errors, isDirty, reset } = useForm({
+    const { data, setData, put, processing, errors, isDirty, reset } = useForm<OffreEditFormData>({
         titre: offre.titre || '',
         description: offre.description || '',
         poste_id: offre.poste_id || '',
