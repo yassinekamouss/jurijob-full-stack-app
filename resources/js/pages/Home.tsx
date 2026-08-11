@@ -51,8 +51,8 @@ export default function Home() {
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
             <SEO
-                title="JuriJob - Sourcing & Recrutement Juridique d'Excellence au Maroc"
-                description="Plateforme spécialisée dans le sourcing et le recrutement de juristes d'affaires, avocats et experts du droit au Maroc. Short-lists qualifiées et accompagnement sur-mesure."
+                title="JuriJob - Sourcing & Recrutement Juridique au Maroc & Afrique Francophone"
+                description="Plateforme spécialisée dans le sourcing et la sélection de juristes d'affaires, avocats et experts du droit au Maroc et en Afrique francophone. Short-lists qualifiées sous 48h."
                 canonical="https://jurijob.ma"
                 jsonLd={homeJsonLd}
             />
