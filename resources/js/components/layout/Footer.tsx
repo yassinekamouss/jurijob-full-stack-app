@@ -130,7 +130,7 @@ export default function Footer() {
                 <Reveal delay={0.05}>
                     <div className="mt-16 flex flex-col items-center justify-between border-t border-[#1a1f1e]/10 pt-8 text-xs font-light tracking-widest text-[#1a1f1e]/50 uppercase md:flex-row">
                         <p>&copy; 2026 — Smart Recrutement Juridique. Tous droits réservés.</p>
-                        <p className="mt-4 md:mt-0">Casablanca, Maroc</p>
+                        <p className="mt-4 md:mt-0">4, Rue Mohamed Al Hayani, Casablanca - Maroc</p>
                     </div>
                 </Reveal>
             </div>

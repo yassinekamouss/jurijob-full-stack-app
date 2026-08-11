@@ -14,7 +14,7 @@ export default function SEO({
     title,
     description,
     canonical,
-    ogImage = 'https://jurijob.ma/images/logo_jurijob.png',
+    ogImage = 'https://jurijob.ma/images/logo-512x512.png',
     ogType = 'website',
     jsonLd,
     noindex = false,

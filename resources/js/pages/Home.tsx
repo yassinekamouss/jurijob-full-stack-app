@@ -18,9 +18,9 @@ const homeJsonLd = {
             '@id': 'https://jurijob.ma/#organization',
             name: 'JuriJob',
             url: 'https://jurijob.ma',
-            logo: 'https://jurijob.ma/images/logo_jurijob.png',
+            logo: 'https://jurijob.ma/logo-512x512.png',
             description:
-                "Plateforme spécialisée dans le sourcing et le recrutement de juristes d'affaires, avocats et experts du droit au Maroc.",
+                "Plateforme spécialisée dans le sourcing et la sélection de tous les profils et experts du droit au Maroc et en Afrique francophone.",
             parentOrganization: {
                 '@type': 'Organization',
                 name: 'Sentissi Legal Advisory',
@@ -34,11 +34,14 @@ const homeJsonLd = {
                 '@id': 'https://jurijob.ma/#founder',
                 name: 'Mohammed Sentissi',
                 jobTitle: 'Expert Juridique & Fondateur',
-                description: 'Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique, Président élu de l’Association marocaine des juristes d’entreprise (AMJE).',
+                description: 'Expert juridique, ex-Directeur juridique de holdings au Maroc et en Afrique...',
                 worksFor: {
                     '@type': 'Organization',
                     name: 'Sentissi Legal Advisory'
-                }
+                },
+                sameAs: [
+                    'https://www.linkedin.com/in/mohammed-sentissi/'
+                ]
             },
             address: {
                 '@type': 'PostalAddress',
