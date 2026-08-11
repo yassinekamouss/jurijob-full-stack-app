@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
 export type ResolvedAppearance = 'light' | 'dark';
 export type Appearance = ResolvedAppearance | 'system';
@@ -52,10 +52,12 @@ const applyTheme = (appearance: Appearance): void => {
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 };
 
-const subscribe = (callback: () => void) => {
+const subscribe = (callback: () => void): (() => void) => {
     listeners.add(callback);
 
-    return () => listeners.delete(callback);
+    return (): void => {
+        listeners.delete(callback);
+    };
 };
 
 const notify = (): void => listeners.forEach((listener) => listener());
@@ -98,7 +100,7 @@ export function useAppearance(): UseAppearanceReturn {
         ? 'dark'
         : 'light';
 
-    const updateAppearance = (mode: Appearance): void => {
+    const updateAppearance = useCallback((mode: Appearance): void => {
         currentAppearance = mode;
 
         // Store in localStorage for client-side persistence...
@@ -109,7 +111,8 @@ export function useAppearance(): UseAppearanceReturn {
 
         applyTheme(mode);
         notify();
-    };
+    }, []);
 
     return { appearance, resolvedAppearance, updateAppearance } as const;
 }
+

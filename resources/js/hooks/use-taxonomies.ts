@@ -1,12 +1,13 @@
 import { usePage } from '@inertiajs/react';
+import { useMemo } from 'react';
 
-interface Taxonomy {
+export interface Taxonomy {
     id: number;
     nom: string;
     domaine?: string;
 }
 
-interface Taxonomies {
+export interface Taxonomies {
     domaineExperiences: Taxonomy[];
     ecoles: Taxonomy[];
     formationJuridiques: Taxonomy[];
@@ -24,23 +25,26 @@ interface Taxonomies {
 
 export const useTaxonomies = (): Taxonomies => {
     const { props } = usePage();
-    const taxonomies = (props.taxonomies || {}) as Taxonomies;
+    const rawTaxonomies = props.taxonomies as Partial<Taxonomies> | undefined;
 
-    return {
-        domaineExperiences: taxonomies.domaineExperiences || [],
-        ecoles: taxonomies.ecoles || [],
-        formationJuridiques: taxonomies.formationJuridiques || [],
-        langues: taxonomies.langues || [],
-        modeTravails: taxonomies.modeTravails || [],
-        niveauExperiences: taxonomies.niveauExperiences || [],
-        niveauLangues: taxonomies.niveauLangues || [],
-        postes: taxonomies.postes || [],
-        specialisations: taxonomies.specialisations || [],
-        tailleEntreprises: taxonomies.tailleEntreprises || [],
-        typeOrganisations: taxonomies.typeOrganisations || [],
-        typeTravails: taxonomies.typeTravails || [],
-        villes: taxonomies.villes || [],
-    };
+    return useMemo((): Taxonomies => {
+        const taxonomies = rawTaxonomies || {};
+        return {
+            domaineExperiences: taxonomies.domaineExperiences || [],
+            ecoles: taxonomies.ecoles || [],
+            formationJuridiques: taxonomies.formationJuridiques || [],
+            langues: taxonomies.langues || [],
+            modeTravails: taxonomies.modeTravails || [],
+            niveauExperiences: taxonomies.niveauExperiences || [],
+            niveauLangues: taxonomies.niveauLangues || [],
+            postes: taxonomies.postes || [],
+            specialisations: taxonomies.specialisations || [],
+            tailleEntreprises: taxonomies.tailleEntreprises || [],
+            typeOrganisations: taxonomies.typeOrganisations || [],
+            typeTravails: taxonomies.typeTravails || [],
+            villes: taxonomies.villes || [],
+        };
+    }, [rawTaxonomies]);
 };
 
 export const useLoadingTaxonomy = (taxonomy: Taxonomy[] | undefined): boolean => {
@@ -74,5 +78,9 @@ export const getTaxonomyLabel = (value: string | number, taxonomy: Taxonomy[]): 
  * getTaxonomyLabels([1, 3], specialisations) // Returns ["Droit Affaires", "Droit Fiscal"]
  */
 export const getTaxonomyLabels = (values: (string | number)[], taxonomy: Taxonomy[]): string[] => {
+    if (!values || !Array.isArray(values)) {
+        return [];
+    }
     return values.map((value) => getTaxonomyLabel(value, taxonomy));
 };
+

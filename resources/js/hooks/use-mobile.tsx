@@ -2,25 +2,30 @@ import { useSyncExternalStore } from 'react';
 
 const MOBILE_BREAKPOINT = 768;
 
-const mql =
-    typeof window === 'undefined'
-        ? undefined
-        : window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+const getMql = (): MediaQueryList | undefined => {
+    if (typeof window === 'undefined') {
+        return undefined;
+    }
 
-function mediaQueryListener(callback: (event: MediaQueryListEvent) => void) {
+    return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+};
+
+function mediaQueryListener(callback: () => void): () => void {
+    const mql = getMql();
     if (!mql) {
         return () => {};
     }
 
-    mql.addEventListener('change', callback);
+    const handler = (): void => callback();
+    mql.addEventListener('change', handler);
 
-    return () => {
-        mql.removeEventListener('change', callback);
+    return (): void => {
+        mql.removeEventListener('change', handler);
     };
 }
 
 function isSmallerThanBreakpoint(): boolean {
-    return mql?.matches ?? false;
+    return getMql()?.matches ?? false;
 }
 
 function getServerSnapshot(): boolean {
@@ -34,3 +39,4 @@ export function useIsMobile(): boolean {
         getServerSnapshot,
     );
 }
+
