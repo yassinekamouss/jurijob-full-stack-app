@@ -22,7 +22,9 @@ use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::inertia('/', 'Home')->name('home');
+Route::inertia('/', 'Home')
+    ->middleware('cacheResponse:86400')
+    ->name('home');
 Route::view('/services', 'pages.services')->name('services');
 Route::view('/faq', 'pages.faq')->name('faq');
 Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legales');
