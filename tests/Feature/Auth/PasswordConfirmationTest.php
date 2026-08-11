@@ -20,3 +20,35 @@ test('password confirmation requires authentication', function () {
 
     $response->assertRedirect(route('login'));
 });
+
+test('password can be confirmed and redirects recruiter to security settings', function () {
+    $user = User::factory()->create(['role' => 'recruteur']);
+
+    $response = $this->actingAs($user)->post(route('password.confirm.store'), [
+        'password' => 'password',
+    ]);
+
+    $response->assertRedirect(route('recruteur.settings', ['tab' => 'security']));
+    $response->assertSessionHas('auth.password_confirmed_at');
+});
+
+test('password can be confirmed and redirects candidate to security settings', function () {
+    $user = User::factory()->create(['role' => 'candidat']);
+
+    $response = $this->actingAs($user)->post(route('password.confirm.store'), [
+        'password' => 'password',
+    ]);
+
+    $response->assertRedirect(route('candidate.settings', ['tab' => 'security']));
+    $response->assertSessionHas('auth.password_confirmed_at');
+});
+
+test('password is not confirmed with invalid password', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->post(route('password.confirm.store'), [
+        'password' => 'wrong-password',
+    ]);
+
+    $response->assertSessionHasErrors('password');
+});

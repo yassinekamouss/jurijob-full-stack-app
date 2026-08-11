@@ -22,10 +22,6 @@ const Brand = () => (
     </Link>
 );
 
-
-
-
-
 export default function DashboardHeader() {
     const { auth } = usePage().props as any;
     const { url } = usePage();
