@@ -3,7 +3,7 @@ import Reveal from "@/components/home/Reveal"; // Import du composant global
 
 export default function Hero() {
   return (
-    <section id="home" className="relative min-h-[90vh] flex items-center bg-[#FDFCF8] overflow-hidden pt-12 pb-24">
+    <section id="home" className="relative min-h-[90vh] flex items-center bg-[#FDFCF8] overflow-hidden pt-8 pb-24">
       <div className="absolute top-0 left-8 md:left-16 w-[1px] h-full bg-[#1a1f1e]/5" />
       <div className="absolute top-0 right-8 md:right-16 w-[1px] h-full bg-[#1a1f1e]/5" />
       

@@ -41,8 +41,7 @@ export default function Footer() {
                         <div className="md:col-span-2">
                             <Brand />
                             <p className="my-6 max-w-sm text-sm leading-relaxed font-light text-[#1a1f1e]/70">
-                                L'écosystème de référence au Maroc qui connecte
-                                l'élite des Juristes aux Cabinets d'avocats et entreprises.
+                            L'écosystème de référence au Maroc et en Afrique francophone pour le sourcing et le recrutement de tous les profils juridiques, juristes spécialisés et avocats.
                             </p>
                             <div className="flex items-center gap-2 text-xs font-medium tracking-widest text-[#C06041] uppercase">
                                 <span>
