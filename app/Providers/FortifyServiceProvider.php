@@ -11,6 +11,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Contracts\PasswordConfirmedResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
@@ -25,6 +26,11 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(
             LoginResponse::class,
             \App\Http\Responses\LoginResponse::class
+        );
+
+        $this->app->singleton(
+            LogoutResponse::class,
+            \App\Http\Responses\LogoutResponse::class
         );
 
         $this->app->singleton(

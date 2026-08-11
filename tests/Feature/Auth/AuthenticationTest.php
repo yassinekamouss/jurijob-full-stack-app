@@ -62,10 +62,10 @@ test('users can not authenticate with invalid password', function () {
 test('users can logout', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post(route('logout'));
+    $response = $this->actingAs($user)->post(route('logout'), [], ['X-Inertia' => 'true']);
 
     $this->assertGuest();
-    $response->assertRedirect(route('home'));
+    $response->assertHeader('X-Inertia-Location', '/');
 });
 
 test('users are rate limited', function () {
