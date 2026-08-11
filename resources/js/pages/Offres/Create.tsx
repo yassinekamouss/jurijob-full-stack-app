@@ -13,8 +13,10 @@ import CreateExpertiseStep from '@/components/recruiter/offres/CreateExpertiseSt
 import CreateLanguagesStep from '@/components/recruiter/offres/CreateLanguagesStep';
 import CreateReviewStep from '@/components/recruiter/offres/CreateReviewStep';
 
+import type { Taxonomies, Requirement } from '@/types';
+
 interface Props {
-    taxonomies: any;
+    taxonomies: Taxonomies;
 }
 
 export default function Create({ taxonomies }: Props) {
@@ -44,7 +46,7 @@ export default function Create({ taxonomies }: Props) {
         urgence_id: '',
         notes_complementaires: '',
         nombre_cv: 1,
-        requirements: [] as any[],
+        requirements: [] as Requirement[],
     });
 
     const nextStep = () => setStep((prev) => prev + 1);

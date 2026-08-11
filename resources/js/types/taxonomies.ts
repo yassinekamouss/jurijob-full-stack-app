@@ -14,3 +14,18 @@ export interface NiveauLangue extends TaxonomyItem {}
 export interface Langue extends TaxonomyItem {}
 export interface Salaire extends TaxonomyItem {}
 export interface Urgence extends TaxonomyItem { code: string; }
+
+export interface Taxonomies {
+    postes: Poste[];
+    types_travail: TypeTravail[];
+    modes_travail: ModeTravail[];
+    villes: Ville[];
+    niveaux_experience: NiveauExperience[];
+    formations_juridiques: FormationJuridique[];
+    salaires: Salaire[];
+    urgences: Urgence[];
+    specialisations: Specialisation[];
+    langues: Langue[];
+    niveaux_langues: NiveauLangue[];
+}
+

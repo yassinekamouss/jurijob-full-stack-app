@@ -6,12 +6,13 @@ import DashboardHeader from '@/components/recruiter/DashboardHeader';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Save, Briefcase, Settings2, SlidersHorizontal, AlertCircle } from 'lucide-react';
 
-import RequirementsStep from '../../components/recruiter/offres/RequirementsStep';
-import BasicInfoStep from '../../components/recruiter/offres/BasicInfoStep';
+import RequirementsStep from '@/components/recruiter/offres/RequirementsStep';
+import BasicInfoStep from '@/components/recruiter/offres/BasicInfoStep';
+import type { Offre, Taxonomies } from '@/types';
 
 interface Props {
-    offre: any;
-    taxonomies: any;
+    offre: Offre;
+    taxonomies: Taxonomies;
 }
 
 type TabType = 'general' | 'criteres';

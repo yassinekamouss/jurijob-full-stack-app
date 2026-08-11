@@ -41,7 +41,6 @@ export default function RegisterRecruteur() {
             prenom: '',
             telephone: '',
             email: '',
-            image_file: null,
             password: '',
             password_confirmation: '',
         },
