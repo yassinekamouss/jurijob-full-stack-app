@@ -11,7 +11,7 @@
             <div class="inline-flex items-center gap-2 border border-[#C06041]/20 bg-[#C06041]/5 px-4 py-1.5 text-xs font-semibold tracking-wider text-[#C06041] uppercase mb-4">
                 Nos prestations
             </div>
-            <h1 className="text-4xl font-normal tracking-tight text-[#1a1f1e] sm:text-5xl lg:text-6xl" style="font-family: 'Cormorant Garamond', serif;">
+            <h1 class="text-4xl font-normal tracking-tight text-[#1a1f1e] sm:text-5xl lg:text-6xl" style="font-family: 'Cormorant Garamond', serif;">
                 Nos <span class="text-[#C06041]">services</span>
             </h1>
             <p class="mx-auto mt-4 max-w-2xl text-base font-light leading-relaxed text-[#1a1f1e]/75 sm:text-lg">
