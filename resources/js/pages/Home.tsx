@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import About from '@/components/home/About';
 import CallToAction from '@/components/home/CallToAction';
 import FounderMessage from '@/components/home/FounderMessage';
@@ -11,16 +10,6 @@ import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 
 export default function Home() {
-    useEffect(() => {
-        const link = document.createElement('link');
-
-        link.href =
-            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap';
-
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-    }, []);
-
     return (
         <div
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
