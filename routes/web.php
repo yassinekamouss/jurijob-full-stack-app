@@ -31,6 +31,12 @@ Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legal
 Route::view('/cgu', 'pages.cgu')->name('cgu');
 Route::view('/cgv', 'pages.cgv')->name('cgv');
 
+Route::get('/sitemap.xml', function () {
+    return response()
+        ->view('sitemap')
+        ->header('Content-Type', 'text/xml');
+})->name('sitemap');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         // ... previous dashboard logic ...

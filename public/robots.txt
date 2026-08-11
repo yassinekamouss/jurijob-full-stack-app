@@ -3,10 +3,17 @@ Disallow: /candidate/
 Disallow: /recruteur/
 Disallow: /admin/
 Disallow: /auth/
-Disallow: /email/
-Disallow: /check-email
 Disallow: /login
 Disallow: /logout
-Disallow: /offres
+Disallow: /register/
+Disallow: /email/
+Disallow: /check-email
+
+Allow: /
+Allow: /services
+Allow: /faq
+Allow: /cgv
+Allow: /cgu
+Allow: /mentions-legales
 
 Sitemap: https://jurijob.ma/sitemap.xml
