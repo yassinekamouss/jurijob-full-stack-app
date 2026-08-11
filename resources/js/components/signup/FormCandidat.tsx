@@ -21,19 +21,19 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
     return (
         <div className={`space-y-8 ${className}`}>
             <div className="mb-8 text-center">
-                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidate.title')}</h3>
-                <p className="text-sm text-slate-500">{t('auth.forms.candidate.subtitle')}</p>
+                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidat.title')}</h3>
+                <p className="text-sm text-slate-500">{t('auth.forms.candidat.subtitle')}</p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label className={labelClasses}>{t('auth.forms.candidate.experience_label')}</label>
+                    <label className={labelClasses}>{t('auth.forms.candidat.experience_label')}</label>
                     <select
                         value={formData.niveau_experience_id || ''}
                         onChange={(event) => onFieldChange('niveau_experience_id', event.target.value)}
                         className={selectClasses}
                     >
-                        <option value="">{t('auth.forms.candidate.experience_placeholder')}</option>
+                        <option value="">{t('auth.forms.candidat.experience_placeholder')}</option>
                         {useLoadingTaxonomy(niveauExperiences) ? (
                             <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
@@ -50,13 +50,13 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
                 </div>
 
                 <div>
-                    <label className={labelClasses}>{t('auth.forms.candidate.education_label')}</label>
+                    <label className={labelClasses}>{t('auth.forms.candidat.formation_label')}</label>
                     <select
                         value={formData.formation_juridique_id || ''}
                         onChange={(event) => onFieldChange('formation_juridique_id', event.target.value)}
                         className={selectClasses}
                     >
-                        <option value="">{t('auth.forms.candidate.education_placeholder')}</option>
+                        <option value="">{t('auth.forms.candidat.formation_placeholder')}</option>
                         {useLoadingTaxonomy(formationJuridiques) ? (
                             <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
@@ -74,13 +74,13 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
             </div>
 
             <div>
-                <label className={labelClasses}>{t('auth.forms.candidate.target_job_label')}</label>
+                <label className={labelClasses}>{t('auth.forms.candidat.poste_label')}</label>
                 <select
                     value={formData.poste_id || ''}
                     onChange={(event) => onFieldChange('poste_id', event.target.value)}
                     className={selectClasses}
                 >
-                    <option value="">{t('auth.forms.candidate.target_job_placeholder')}</option>
+                    <option value="">{t('auth.forms.candidat.poste_placeholder')}</option>
                     {useLoadingTaxonomy(postes) ? (
                         <option disabled>{t('auth.forms.loading_options')}</option>
                     ) : (
@@ -95,7 +95,7 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
             </div>
 
             <div>
-                <label className={labelClasses}>{t('auth.forms.candidate.work_type_label')}</label>
+                <label className={labelClasses}>{t('auth.forms.candidat.work_type_label')}</label>
                 <ChipMultiSelect
                     options={typeTravails}
                     selected={formData.type_travails || []}
@@ -106,13 +106,13 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
 
             <div className="space-y-6 border-t border-slate-100 pt-8">
                 <div>
-                    <label className={labelClasses}>{t('auth.forms.candidate.salary_label')}</label>
+                    <label className={labelClasses}>{t('auth.forms.candidat.salary_label')}</label>
                     <select
                         value={formData.salaire_id || ''}
                         onChange={(event) => onFieldChange('salaire_id', event.target.value)}
                         className={selectClasses}
                     >
-                        <option value="">{t('auth.forms.candidate.salary_placeholder')}</option>
+                        <option value="">{t('auth.forms.candidat.salary_placeholder')}</option>
                         {useLoadingTaxonomy(salaires) ? (
                             <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
@@ -129,8 +129,8 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
                 </div>
 
                 <div>
-                    <label className={labelClasses}>{t('auth.forms.candidate.availability_label')}</label>
-                    <p className="mb-3 text-xs font-medium text-slate-400">{t('auth.forms.candidate.availability_help')}</p>
+                    <label className={labelClasses}>{t('auth.forms.candidat.availability_label')}</label>
+                    <p className="mb-3 text-xs font-medium text-slate-400">{t('auth.forms.candidat.availability_subtitle')}</p>
                     <div className="flex flex-wrap gap-2.5">
                         {useLoadingTaxonomy(urgences) ? (
                             <p className="w-full py-4 text-center text-sm text-slate-500">{t('auth.forms.loading_options')}</p>

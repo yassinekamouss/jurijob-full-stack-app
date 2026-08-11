@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck, AlertTriangle, Scale, Check } from 'lucide-react';
+import { Trans, useTranslation } from 'react-i18next';
 
 export type LegalDeclarationVariant = 'alert' | 'checkbox';
 
@@ -18,6 +19,8 @@ export const LegalHonorDeclaration: React.FC<LegalHonorDeclarationProps> = ({
     error,
     className = '',
 }) => {
+    const { t } = useTranslation();
+
     if (variant === 'alert') {
         return (
             <div className={`relative border border-[#1a1f1e]/15 bg-[#FDFCF8] p-4 text-[#1a1f1e] ${className}`}>
@@ -28,17 +31,22 @@ export const LegalHonorDeclaration: React.FC<LegalHonorDeclarationProps> = ({
                     <div className="space-y-1.5 text-xs">
                         <div className="flex items-center justify-between">
                             <h5 className="font-semibold tracking-wider text-[#1a1f1e] uppercase">
-                                Déclaration sur l'honneur & véracité
+                                {t('auth.forms.declaration.title')}
                             </h5>
                             <span className="inline-flex items-center gap-1 text-[10px] font-medium tracking-widest text-[#C06041] uppercase">
-                                <Scale className="h-3 w-3" /> Exigence Légale
+                                <Scale className="h-3 w-3" /> {t('auth.forms.declaration.legal_requirement')}
                             </span>
                         </div>
                         <p className="leading-relaxed font-normal text-[#1a1f1e]/80">
-                            En validant votre profil, vous <strong className="font-semibold text-[#1a1f1e]">certifiez sur l'honneur</strong> l'exactitude stricte de toutes les informations communiquées (parcours académique, diplômes et expériences).
+                            <Trans
+                                i18nKey="auth.forms.declaration.alert_text"
+                                components={{
+                                    bold: <strong className="font-semibold text-[#1a1f1e]" />,
+                                }}
+                            />
                         </p>
                         <p className="leading-relaxed text-[11px] text-[#1a1f1e]/65 italic">
-                            La falsification de données est strictement interdite. Toute fausse déclaration expose le candidat à des sanctions juridiques et à la suppression immédiate de son compte.
+                            {t('auth.forms.declaration.alert_subtext')}
                         </p>
                     </div>
                 </div>
@@ -77,10 +85,15 @@ export const LegalHonorDeclaration: React.FC<LegalHonorDeclarationProps> = ({
                 </div>
                 <div className="space-y-1 text-xs leading-relaxed text-[#1a1f1e]">
                     <p className="font-normal text-[#1a1f1e]/90">
-                        Je <strong className="font-semibold text-[#1a1f1e]">certifie sur l'honneur</strong> que toutes les informations saisies (formations, diplômes, expériences) sont exactes et conformes.
+                        <Trans
+                            i18nKey="auth.forms.declaration.checkbox_text"
+                            components={{
+                                bold: <strong className="font-semibold text-[#1a1f1e]" />,
+                            }}
+                        />
                     </p>
                     <p className="text-[11px] text-[#1a1f1e]/65">
-                        Je reconnais que toute falsification ou fausse déclaration est strictement interdite et m'expose à la suppression immédiate de mon profil ainsi qu'à des conséquences juridiques.
+                        {t('auth.forms.declaration.checkbox_subtext')}
                     </p>
                 </div>
             </label>

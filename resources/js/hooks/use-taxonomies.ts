@@ -57,28 +57,36 @@ export const useLoadingTaxonomy = (taxonomy: Taxonomy[] | undefined): boolean =>
 };
 
 /**
- * Convert a taxonomy ID to its label (name)
- * @param value - The ID to look up
- * @param taxonomy - The taxonomy array to search in
- * @returns The nom (name) of the taxonomy item, or the value as string if not found
- * 
+ * Resolve a taxonomy label from either a taxonomy item or an ID + list.
+ *
  * @example
+ * getTaxonomyLabel(item) // Returns item.nom
  * getTaxonomyLabel(3, specialisations) // Returns "Droit Fiscal"
  */
-export const getTaxonomyLabel = (value: string | number, taxonomy: Taxonomy[]): string => {
-    if (!value || !taxonomy || taxonomy.length === 0) {
-        return String(value || '');
+export const getTaxonomyLabel = (
+    value: string | number | Taxonomy | null | undefined,
+    taxonomy?: Taxonomy[],
+): string => {
+    if (value && typeof value === 'object' && 'nom' in value) {
+        return value.nom || String(value.id ?? '');
     }
-    const item = taxonomy.find((t) => String(t.id) === String(value));
+
+    if (value === null || value === undefined || value === '') {
+        return '';
+    }
+
+    if (!taxonomy || taxonomy.length === 0) {
+        return String(value);
+    }
+
+    const item = taxonomy.find((entry) => String(entry.id) === String(value));
+
     return item?.nom || String(value);
 };
 
 /**
  * Convert an array of taxonomy IDs to their labels
- * @param values - Array of IDs to look up
- * @param taxonomy - The taxonomy array to search in
- * @returns Array of nom (names) of the taxonomy items
- * 
+ *
  * @example
  * getTaxonomyLabels([1, 3], specialisations) // Returns ["Droit Affaires", "Droit Fiscal"]
  */
@@ -86,6 +94,7 @@ export const getTaxonomyLabels = (values: (string | number)[], taxonomy: Taxonom
     if (!values || !Array.isArray(values)) {
         return [];
     }
+
     return values.map((value) => getTaxonomyLabel(value, taxonomy));
 };
 

@@ -19,21 +19,23 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 beforeEach(function () {
-    $this->poste = Poste::create(['nom' => 'Avocat']);
-    $this->niveauExperience = NiveauExperience::create(['nom' => 'Junior']);
-    $this->formationJuridique = FormationJuridique::create(['nom' => 'Master']);
+    $this->poste = Poste::create(['nom_fr' => 'Avocat', 'nom_en' => 'Lawyer']);
+    $this->niveauExperience = NiveauExperience::create(['nom_fr' => 'Junior', 'nom_en' => 'Junior']);
+    $this->formationJuridique = FormationJuridique::create(['nom_fr' => 'Master', 'nom_en' => 'Master']);
     $this->specialisation = Specialisation::create([
-        'nom' => 'Droit des affaires',
-        'domaine' => 'Droit privé',
+        'nom_fr' => 'Droit des affaires',
+        'nom_en' => 'Business Law',
+        'domaine_fr' => 'Droit privé',
+        'domaine_en' => 'Private Law',
     ]);
-    $this->typeTravail = TypeTravail::create(['nom' => 'CDI']);
-    $this->modeTravail = ModeTravail::create(['nom' => 'Hybride']);
-    $this->ville = Ville::create(['nom' => 'Casablanca']);
-    $this->langue = Langue::create(['nom' => 'Français']);
-    $this->niveauLangue = NiveauLangue::create(['nom' => 'Courant']);
-    $this->ecole = Ecole::create(['nom' => 'Université Mohammed V']);
-    $this->salaire = Salaire::create(['nom' => '10k - 15k MAD']);
-    $this->urgence = Urgence::create(['nom' => 'Immédiate', 'code' => 'immediate']);
+    $this->typeTravail = TypeTravail::create(['nom_fr' => 'CDI', 'nom_en' => 'Permanent Contract (CDI)']);
+    $this->modeTravail = ModeTravail::create(['nom_fr' => 'Hybride', 'nom_en' => 'Hybrid']);
+    $this->ville = Ville::create(['nom_fr' => 'Casablanca', 'nom_en' => 'Casablanca']);
+    $this->langue = Langue::create(['nom_fr' => 'Français', 'nom_en' => 'French']);
+    $this->niveauLangue = NiveauLangue::create(['nom_fr' => 'Courant', 'nom_en' => 'Fluent']);
+    $this->ecole = Ecole::create(['nom_fr' => 'Université Mohammed V', 'nom_en' => 'Mohammed V University']);
+    $this->salaire = Salaire::create(['nom_fr' => '10k - 15k MAD', 'nom_en' => '10k - 15k MAD']);
+    $this->urgence = Urgence::create(['nom_fr' => 'Immédiate', 'nom_en' => 'Immediate', 'code' => 'immediate']);
 });
 
 function candidatRegistrationPayload(array $overrides = []): array

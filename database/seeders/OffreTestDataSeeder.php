@@ -69,7 +69,7 @@ class OffreTestDataSeeder extends Seeder
             $villeId = ($modeId == 2) ? null : (! empty($villeIds) ? $villeIds[array_rand($villeIds)] : null); // 2 is Remote
 
             $posteId = $posteIds[array_rand($posteIds)];
-            $posteNom = DB::table('postes')->where('id', $posteId)->value('nom');
+            $posteNom = DB::table('postes')->where('id', $posteId)->value('nom_fr');
 
             $offreId = DB::table('offres')->insertGetId([
                 'recruteur_id' => $recruteurId,

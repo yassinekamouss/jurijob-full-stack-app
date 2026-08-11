@@ -22,11 +22,26 @@ class CandidatFactory extends Factory
             'status' => 'en_attente',
             'nom' => $this->faker->lastName(),
             'prenom' => $this->faker->firstName(),
-            'poste_id' => Poste::firstOrCreate(['nom' => 'Avocat'])->id,
-            'niveau_experience_id' => NiveauExperience::firstOrCreate(['nom' => 'Junior'])->id,
-            'formation_juridique_id' => FormationJuridique::firstOrCreate(['nom' => 'Master'])->id,
-            'salaire_id' => Salaire::firstOrCreate(['nom' => '8 000 – 12 000 MAD/mois'])->id,
-            'urgence_id' => Urgence::firstOrCreate(['nom' => 'Normal (2–4 sem.)', 'code' => 'normal'])->id,
+            'poste_id' => Poste::firstOrCreate(
+                ['nom_fr' => 'Avocat'],
+                ['nom_en' => 'Lawyer']
+            )->id,
+            'niveau_experience_id' => NiveauExperience::firstOrCreate(
+                ['nom_fr' => 'Junior'],
+                ['nom_en' => 'Junior']
+            )->id,
+            'formation_juridique_id' => FormationJuridique::firstOrCreate(
+                ['nom_fr' => 'Master'],
+                ['nom_en' => 'Master']
+            )->id,
+            'salaire_id' => Salaire::firstOrCreate(
+                ['nom_fr' => '8 000 – 12 000 MAD/mois'],
+                ['nom_en' => '8,000 – 12,000 MAD/month']
+            )->id,
+            'urgence_id' => Urgence::firstOrCreate(
+                ['code' => 'normal'],
+                ['nom_fr' => 'Normal (2–4 sem.)', 'nom_en' => 'Normal (2–4 weeks)']
+            )->id,
         ];
     }
 
