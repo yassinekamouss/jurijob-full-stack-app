@@ -12,6 +12,8 @@ readonly class ProfileData
         public int $poste_id,
         public int $niveau_experience_id,
         public int $formation_juridique_id,
+        public int $salaire_id,
+        public int $urgence_id,
         public bool $is_active = true,
     ) {}
 
@@ -28,6 +30,8 @@ readonly class ProfileData
             poste_id: (int) $data['poste_id'],
             niveau_experience_id: (int) $data['niveau_experience_id'],
             formation_juridique_id: (int) $data['formation_juridique_id'],
+            salaire_id: (int) $data['salaire_id'],
+            urgence_id: (int) $data['urgence_id'],
             is_active: (bool) ($data['is_active'] ?? true),
         );
     }
@@ -40,6 +44,8 @@ readonly class ProfileData
             'poste_id' => $this->poste_id,
             'niveau_experience_id' => $this->niveau_experience_id,
             'formation_juridique_id' => $this->formation_juridique_id,
+            'salaire_id' => $this->salaire_id,
+            'urgence_id' => $this->urgence_id,
         ];
     }
 }

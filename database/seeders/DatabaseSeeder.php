@@ -58,6 +58,8 @@ class DatabaseSeeder extends Seeder
             'poste_id' => 1,
             'niveau_experience_id' => 1,
             'formation_juridique_id' => 1,
+            'salaire_id' => 1,
+            'urgence_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -5,6 +5,8 @@ namespace App\Models\Candidat;
 use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\Poste;
+use App\Models\Taxonomy\Salaire;
+use App\Models\Taxonomy\Urgence;
 use App\Models\User;
 use Database\Factories\CandidatFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +31,8 @@ class Candidat extends Model
         'poste_id',
         'niveau_experience_id',
         'formation_juridique_id',
+        'salaire_id',
+        'urgence_id',
     ];
 
     public function user(): BelongsTo
@@ -86,6 +90,16 @@ class Candidat extends Model
         return $this->belongsTo(FormationJuridique::class);
     }
 
+    public function salaire(): BelongsTo
+    {
+        return $this->belongsTo(Salaire::class);
+    }
+
+    public function urgence(): BelongsTo
+    {
+        return $this->belongsTo(Urgence::class);
+    }
+
     public function isPendingVerification(): bool
     {
         return $this->status === 'en_attente';
@@ -106,6 +120,8 @@ class Candidat extends Model
         $profile = filled($this->poste_id)
             && filled($this->niveau_experience_id)
             && filled($this->formation_juridique_id)
+            && filled($this->salaire_id)
+            && filled($this->urgence_id)
             && filled($this->nom)
             && filled($this->prenom);
 
@@ -138,7 +154,5 @@ class Candidat extends Model
     /**
      * The "booted" method of the model.
      */
-    protected static function booted(): void
-    {
-    }
+    protected static function booted(): void {}
 }

@@ -1,167 +1,171 @@
-import { useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Folder, Plus, Trash2, Check, X, ChevronDown, Pencil } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
-import { store, update, destroy } from '@/routes/candidate/specialisations';
+import { motion } from 'framer-motion';
+import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
+import { sync } from '@/routes/candidate/specialisations';
 
 interface Props {
-  specialisations: any[];
+    specialisations: Array<{ id: number; specialisation_id: number }>;
 }
 
 export default function SpecialisationSection({ specialisations }: Props) {
-  const { specialisations: specialisationOptions } = useTaxonomies();
-  const [isAdding, setIsAdding] = useState(false);
-  const [editingId, setEditingId] = useState<number | null>(null);
+    const { specialisations: specialisationOptions } = useTaxonomies();
 
-  const form = useForm({
-    specialisation_id: '',
-  });
+    const initialSelectedIds = useMemo(
+        () => specialisations.map((item) => item.specialisation_id),
+        [specialisations],
+    );
 
-  const resetForm = () => {
-    form.reset();
-    setIsAdding(false);
-    setEditingId(null);
-  };
-
-  const handleEdit = (spec: any) => {
-    form.setData({
-      specialisation_id: spec.specialisation_id,
+    const form = useForm<{ specialisation_ids: number[] }>({
+        specialisation_ids: initialSelectedIds,
     });
-    setEditingId(spec.id);
-    setIsAdding(false);
-  };
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (editingId) {
-      form.put(update(editingId).url, {
-        onSuccess: () => {
-          resetForm();
-        },
-      });
-    } else {
-      form.post(store().url, {
-        onSuccess: () => {
-          resetForm();
-        },
-      });
-    }
-  };
+    useEffect(() => {
+        form.setData('specialisation_ids', initialSelectedIds);
+    }, [initialSelectedIds]);
 
-  const handleDelete = (id: number) => {
-    if (confirm('Supprimer cette spécialisation ?')) {
-      form.delete(destroy(id).url);
-    }
-  };
+    const groupedSpecialisations = useMemo(() => {
+        const groups: Record<string, typeof specialisationOptions> = {};
 
-  return (
-    <section className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-xl font-bold font-serif italic mb-1">Spécialisations</h3>
-          <p className="text-sm text-[#1a1f1e]/50 font-medium">Vos expertises juridiques.</p>
-        </div>
-        {!isAdding && !editingId && (
-          <button
-            onClick={() => setIsAdding(true)}
-            className="flex items-center gap-2 bg-[#1a1f1e] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#343a38] transition-all"
-          >
-            <Plus className="h-4 w-4" />
-            Ajouter
-          </button>
-        )}
-      </div>
+        specialisationOptions.forEach((item) => {
+            const domaine = item.domaine || 'Autre';
+            if (!groups[domaine]) {
+                groups[domaine] = [];
+            }
+            groups[domaine].push(item);
+        });
 
-      <AnimatePresence>
-        {(isAdding || editingId) && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="p-8 bg-[#1a1f1e]/[0.03] rounded-[32px] border border-[#1a1f1e]/5"
-          >
-            <form onSubmit={submit} className="flex flex-col sm:flex-row gap-6 items-end">
-              <div className="flex-1 space-y-2 w-full">
-                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">Spécialisation</label>
-                <div className="relative group">
-                  <select
-                    value={form.data.specialisation_id}
-                    onChange={e => form.setData('specialisation_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
-                    required
-                  >
-                    <option value="">Sélectionner une expertise</option>
-                    {useLoadingTaxonomy(specialisationOptions) ? (
-                      <option disabled>Chargement...</option>
-                    ) : (
-                      specialisationOptions
-                        .filter(opt => !specialisations.some(s => s.specialisation_id === opt.id && s.id !== editingId))
-                        .map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
-                    )}
-                  </select>
-                  <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/20 group-hover:text-[#1a1f1e]/40 transition-colors pointer-events-none" />
-                </div>
-                {form.errors.specialisation_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.specialisation_id}</p>}
-              </div>
+        return Object.entries(groups).map(([domaine, items]) => ({ domaine, items }));
+    }, [specialisationOptions]);
 
-              <div className="flex gap-3 w-full sm:w-auto">
-                <button
-                  type="submit"
-                  disabled={form.processing || !form.isDirty}
-                  className="flex-1 sm:flex-none bg-[#1a1f1e] text-white p-4 px-6 rounded-2xl flex items-center justify-center hover:bg-[#343a38] transition-all disabled:opacity-50 shadow-xl shadow-[#1a1f1e]/10 active:scale-95"
-                  title={editingId ? 'Mettre à jour' : 'Ajouter'}
-                >
-                  {editingId ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => resetForm()}
-                  className="p-4 rounded-2xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:bg-white hover:text-[#1a1f1e] hover:border-[#1a1f1e]/20 transition-all active:scale-95"
-                  title="Annuler"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    const toggleSpecialisation = (id: number) => {
+        const selected = form.data.specialisation_ids;
+        const isSelected = selected.includes(id);
 
-      <div className="flex flex-wrap gap-3">
-        {specialisations.length > 0 ? (
-          specialisations.map((s) => (
-            <div
-              key={s.id}
-              className="group relative flex items-center gap-3 rounded-2xl bg-white border border-[#1a1f1e]/10 px-6 py-4 transition-all hover:border-[#1a1f1e] hover:shadow-sm"
-            >
-              <Folder className="h-4 w-4 text-[#1a1f1e]/20" />
-              <span className="font-bold text-sm text-[#1a1f1e]">{getTaxonomyLabel(s.specialisation_id, specialisationOptions)}</span>
-              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-auto">
-                <button
-                  onClick={() => handleEdit(s)}
-                  className="p-1.5 rounded-lg text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-all"
-                  title="Éditer"
-                >
-                  <Pencil className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  onClick={() => handleDelete(s.id)}
-                  className="p-1.5 rounded-lg text-red-300 hover:text-red-500 transition-all"
-                  title="Supprimer"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
+        form.setData(
+            'specialisation_ids',
+            isSelected ? selected.filter((item) => item !== id) : [...selected, id],
+        );
+
+        if (form.errors.specialisation_ids) {
+            form.clearErrors('specialisation_ids');
+        }
+    };
+
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (form.data.specialisation_ids.length === 0) {
+            form.setError('specialisation_ids', 'Veuillez sélectionner au moins une spécialisation.');
+            return;
+        }
+
+        form.put(sync().url, {
+            preserveScroll: true,
+            onSuccess: () => form.clearErrors(),
+        });
+    };
+
+    const selectedCount = form.data.specialisation_ids.length;
+    const isDirty =
+        JSON.stringify([...form.data.specialisation_ids].sort((a, b) => a - b)) !==
+        JSON.stringify([...initialSelectedIds].sort((a, b) => a - b));
+
+    return (
+        <section className="space-y-6">
+            <div>
+                <h3 className="mb-1 font-serif text-xl font-bold italic">Spécialisations</h3>
+                <p className="text-sm font-medium text-[#1a1f1e]/50">
+                    Sélectionnez une ou plusieurs expertises juridiques par catégorie.
+                </p>
             </div>
-          ))
-        ) : (
-          <div className="w-full text-center py-12 rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10">
-            <p className="text-[#1a1f1e]/30 font-bold italic">Aucune spécialisation ajoutée.</p>
-          </div>
-        )}
-      </div>
-    </section>
-  );
+
+            <motion.form
+                onSubmit={submit}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-8 rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm"
+            >
+                {useLoadingTaxonomy(specialisationOptions) ? (
+                    <p className="py-8 text-center text-sm text-[#1a1f1e]/40">
+                        Chargement des spécialisations...
+                    </p>
+                ) : (
+                    <div className="space-y-8">
+                        {groupedSpecialisations.map((group) => {
+                            const selectedInGroup = group.items.filter((item) =>
+                                form.data.specialisation_ids.includes(item.id),
+                            ).length;
+
+                            return (
+                                <section key={group.domaine} className="space-y-4">
+                                    <div className="flex flex-wrap items-center gap-2.5">
+                                        <h4 className="text-base font-bold text-[#1a1f1e]">
+                                            {group.domaine}
+                                        </h4>
+                                        <span className="rounded-full border border-[#1a1f1e]/10 bg-[#1a1f1e]/5 px-2.5 py-1 text-[10px] font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                            {group.items.length}
+                                        </span>
+                                        {selectedInGroup > 0 && (
+                                            <span className="text-xs font-semibold text-[#C06041]">
+                                                {selectedInGroup} choisie
+                                                {selectedInGroup > 1 ? 's' : ''}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2.5">
+                                        {group.items.map((item) => {
+                                            const isSelected = form.data.specialisation_ids.includes(
+                                                item.id,
+                                            );
+
+                                            return (
+                                                <button
+                                                    key={item.id}
+                                                    type="button"
+                                                    onClick={() => toggleSpecialisation(item.id)}
+                                                    className={`inline-flex max-w-full items-center rounded-2xl border px-3.5 py-2.5 text-left text-sm font-semibold transition-all ${
+                                                        isSelected
+                                                            ? 'border-[#1a1f1e] bg-[#1a1f1e] text-white shadow-sm'
+                                                            : 'border-[#1a1f1e]/10 bg-[#FDFCF8] text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
+                                                    }`}
+                                                >
+                                                    <span className="leading-snug break-words">
+                                                        {item.nom}
+                                                    </span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </section>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {form.errors.specialisation_ids && (
+                    <p className="text-xs font-bold text-red-500">
+                        {form.errors.specialisation_ids}
+                    </p>
+                )}
+
+                <div className="flex items-center justify-between border-t border-[#1a1f1e]/5 pt-4">
+                    <p className="text-xs font-semibold text-[#1a1f1e]/40">
+                        {selectedCount > 0
+                            ? `${selectedCount} spécialisation${selectedCount > 1 ? 's' : ''} sélectionnée${selectedCount > 1 ? 's' : ''}`
+                            : 'Aucune spécialisation sélectionnée'}
+                    </p>
+
+                    <button
+                        type="submit"
+                        disabled={form.processing || !isDirty}
+                        className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
+                    >
+                        Enregistrer
+                    </button>
+                </div>
+            </motion.form>
+        </section>
+    );
 }

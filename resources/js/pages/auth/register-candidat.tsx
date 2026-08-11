@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/purity */
 import { router, Head, usePage } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
@@ -26,7 +26,7 @@ import Icon from '@/components/signup/FormularIcons';
 
 const candidatSteps = [
     { id: 1, label: 'Infos', icon: 'FileText' },
-    { id: 2, label: 'Profil', icon: 'Settings' },
+    { id: 2, label: 'Profil & attentes', icon: 'Settings' },
     { id: 3, label: 'Expertise', icon: 'Layers' },
     { id: 4, label: 'Parcours', icon: 'GraduationCap' },
     { id: 5, label: 'Préférences', icon: 'MapPin' },
@@ -53,6 +53,7 @@ const createEmptyExperience = (): Experience => ({
 
 export default function RegisterCandidat() {
     const { auth } = usePage<{ auth: Auth }>().props;
+    const signupCardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         // Preload Outfit Font if not already
@@ -81,6 +82,8 @@ export default function RegisterCandidat() {
             ville_travails: [],
             mode_travails: [],
             poste_id: '',
+            salaire_id: '',
+            urgence_id: '',
             formations: [createEmptyFormation()],
             experiences: [createEmptyExperience()],
         },
@@ -128,6 +131,8 @@ export default function RegisterCandidat() {
         payload.append('poste_id', String(candidat.poste_id));
         payload.append('niveau_experience_id', String(candidat.niveau_experience_id));
         payload.append('formation_juridique_id', String(candidat.formation_juridique_id));
+        payload.append('salaire_id', String(candidat.salaire_id));
+        payload.append('urgence_id', String(candidat.urgence_id));
 
         candidat.specialisations.forEach((s: string | number, i: number) =>
             payload.append(`specialisations[${i}][specialisation_id]`, String(s)),
@@ -315,6 +320,8 @@ export default function RegisterCandidat() {
                 'formation_juridique_id',
                 'poste_id',
                 'type_travails',
+                'salaire_id',
+                'urgence_id',
             ];
             requiredFields.forEach((field) => {
                 const value = formData.candidat[field];
@@ -609,13 +616,14 @@ export default function RegisterCandidat() {
                                 />
                             )}
 
-                            <div className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/10 bg-white/50 p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
+                            <div ref={signupCardRef} className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/10 bg-white/50 p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
                                 {auth.user ? (
                                     <AlreadyAuthenticatedCard user={auth.user} />
                                 ) : (
                                     <FormNavigator
                                         onNextStep={handleNextStepValidation}
                                         steps={candidatSteps}
+                                        scrollTargetRef={signupCardRef}
                                     >
                                         {renderStep}
                                     </FormNavigator>

@@ -34,6 +34,8 @@ export type CandidatFormData = {
     niveau_experience_id: string | number;
     formation_juridique_id: string | number;
     poste_id: string | number;
+    salaire_id: string | number;
+    urgence_id: string | number;
     specialisations: (string | number)[];
     type_travails: (string | number)[];
     mode_travails: (string | number)[];

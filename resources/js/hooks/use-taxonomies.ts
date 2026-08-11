@@ -5,6 +5,7 @@ export interface Taxonomy {
     id: number;
     nom: string;
     domaine?: string;
+    code?: string;
 }
 
 export interface Taxonomies {
@@ -16,10 +17,12 @@ export interface Taxonomies {
     niveauExperiences: Taxonomy[];
     niveauLangues: Taxonomy[];
     postes: Taxonomy[];
+    salaires: Taxonomy[];
     specialisations: Taxonomy[];
     tailleEntreprises: Taxonomy[];
     typeOrganisations: Taxonomy[];
     typeTravails: Taxonomy[];
+    urgences: Taxonomy[];
     villes: Taxonomy[];
 }
 
@@ -38,10 +41,12 @@ export const useTaxonomies = (): Taxonomies => {
             niveauExperiences: taxonomies.niveauExperiences || [],
             niveauLangues: taxonomies.niveauLangues || [],
             postes: taxonomies.postes || [],
+            salaires: taxonomies.salaires || [],
             specialisations: taxonomies.specialisations || [],
             tailleEntreprises: taxonomies.tailleEntreprises || [],
             typeOrganisations: taxonomies.typeOrganisations || [],
             typeTravails: taxonomies.typeTravails || [],
+            urgences: taxonomies.urgences || [],
             villes: taxonomies.villes || [],
         };
     }, [rawTaxonomies]);
