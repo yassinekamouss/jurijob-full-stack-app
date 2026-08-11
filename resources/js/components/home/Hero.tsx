@@ -37,33 +37,33 @@ export default function Hero() {
             </div>
 
             <div className="flex flex-row gap-4 pt-4 w-full">
-  <Link
-    href="/register/candidat"
-    className="flex-[0.9] bg-[#1a1f1e] text-[#FDFCF8]
-               hover:bg-[#343a38] px-5 py-4
-               text-xs md:text-sm uppercase tracking-wide
-               transition-all text-center flex items-center
-               justify-center gap-2 group whitespace-nowrap"
-  >
-    <span>Je suis juriste</span>
-    <span className="group-hover:translate-x-1 transition-transform">→</span>
-    <span>Créer mon profil</span>
-  </Link>
+            <Link
+              href="/register/candidat"
+              className="flex-[0.9] bg-[#1a1f1e] text-[#FDFCF8]
+                        hover:bg-[#343a38] px-5 py-4
+                        text-xs md:text-sm uppercase tracking-wide
+                        transition-all text-center flex items-center
+                        justify-center gap-2 group whitespace-nowrap"
+            >
+              <span>Je suis juriste</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <span>Créer mon profil</span>
+            </Link>
 
-  <Link
-    href="/register/recruteur"
-    className="flex-[1.1] border border-[#1a1f1e]
-               text-[#1a1f1e] hover:bg-[#1a1f1e]/5
-               px-5 py-4
-               text-xs md:text-sm uppercase tracking-wide
-               transition-all text-center flex items-center
-               justify-center gap-2 group whitespace-nowrap"
-  >
-    <span>Je recrute un juriste</span>
-    <span className="group-hover:translate-x-1 transition-transform">→</span>
-    <span>Déposer une demande</span>
-  </Link>
-</div>
+            <Link
+              href="/register/recruteur"
+              className="flex-[1.1] border border-[#1a1f1e]
+                        text-[#1a1f1e] hover:bg-[#1a1f1e]/5
+                        px-5 py-4
+                        text-xs md:text-sm uppercase tracking-wide
+                        transition-all text-center flex items-center
+                        justify-center gap-2 group whitespace-nowrap"
+            >
+              <span>Je recrute un juriste</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <span>Déposer une demande</span>
+            </Link>
+          </div>
           </Reveal>
 
           {/* Image - Colonne Droite */}
@@ -81,24 +81,20 @@ export default function Hero() {
               </div>
 
               {/* Stat 1 - bottom left */}
-              <Reveal direction="up" duration={0.8} delay={1.2}>
                 <div className="absolute -left-12 bottom-12 bg-[#FDFCF8] p-5 shadow-2xl z-20 border border-[#1a1f1e]/10 backdrop-blur-sm">
                   <div className="flex flex-col">
                     <div className="text-3xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>1,250+</div>
                     <div className="text-xs uppercase tracking-wider text-[#1a1f1e]/60 mt-1">Utilisateurs actifs</div>
                   </div>
                 </div>
-              </Reveal>
 
               {/* ✅ Stat 2 - moved INSIDE the relative div, not after </section> */}
-              <Reveal direction="down" duration={0.8} delay={1.4}>
                 <div className="absolute -right-8 -top-8 bg-[#FDFCF8] p-5 shadow-2xl z-20 border border-[#1a1f1e]/10 backdrop-blur-sm">
                   <div className="flex flex-col text-right">
                     <div className="text-3xl" style={{ fontFamily: 'Cormorant Garamond, serif' }}>98%</div>
                     <div className="text-xs uppercase tracking-wider text-[#1a1f1e]/60 mt-1">Taux d'adéquation</div>
                   </div>
                 </div>
-              </Reveal>
 
             </div>
           </Reveal>
