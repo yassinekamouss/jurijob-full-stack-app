@@ -403,7 +403,10 @@
         "website_placeholder": "https://www.votre-entreprise.com",
         "website_help": "Optionnel - Aide à valider votre profil",
         "city_label": "Ville *",
-        "city_placeholder": "Sélectionnez une ville"
+        "city_placeholder": "Sélectionnez une ville",
+        "country_label": "Pays *",
+        "country_placeholder": "Sélectionnez un pays",
+        "city_country_required": "Sélectionnez d’abord un pays"
       },
       "confirmation": {
         "title": "Vérification finale",
@@ -438,7 +441,8 @@
         "education": "Formation",
         "specializations": "Spécialisations",
         "honor_declaration_required": "Vous devez certifier sur l'honneur l'exactitude de vos informations.",
-        "terms_acceptance": "En cliquant, vous acceptez nos conditions d'utilisation"
+        "terms_acceptance": "En cliquant, vous acceptez nos conditions d'utilisation",
+        "country": "Pays"
       },
       "declaration": {
         "title": "Déclaration sur l'honneur & véracité",
@@ -495,7 +499,11 @@
         "exp_type_label": "Type d'expérience",
         "exp_type_placeholder": "Sélectionner un type",
         "position_label": "Poste",
-        "position_placeholder": "Sélectionner un poste"
+        "position_placeholder": "Sélectionner un poste",
+        "countries_label": "Pays recherché *",
+        "country_placeholder": "Sélectionnez un pays",
+        "cities_country_required": "Sélectionnez d’abord un pays pour voir ses villes",
+        "experiences_help": "Un stage est une expérience. Stage, alternance, clinique juridique ou bénévolat juridique comptent pleinement et renforcent votre positionnement auprès des recruteurs. Ne laissez pas cette étape vide si vous avez déjà exercé, même brièvement."
       }
     }
   },

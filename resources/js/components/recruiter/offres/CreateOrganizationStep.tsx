@@ -3,7 +3,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, Building2, MapPin, ShieldCheck, Wallet } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface Props {
     data: any;
@@ -15,11 +15,32 @@ interface Props {
 }
 
 export default function CreateOrganizationStep({ data, setData, errors, onNext, onPrev, taxonomies }: Props) {
+    const [selectedPaysId, setSelectedPaysId] = useState<string>('');
+
     const selectedMode = useMemo(() => {
         return taxonomies.modeTravails?.find((mode: any) => String(mode.id) === String(data.mode_travail_id));
     }, [data.mode_travail_id, taxonomies.modeTravails]);
 
-    const isRemoteMode = /teletravail|télétravail/i.test(selectedMode?.nom || '');
+    const isRemoteMode = /teletravail|télétravail|remote/i.test(selectedMode?.nom || '');
+
+    const citiesForCountry = useMemo(() => {
+        if (!selectedPaysId) {
+            return [];
+        }
+
+        return (taxonomies.villes || []).filter((ville: any) => String(ville.pays_id) === String(selectedPaysId));
+    }, [selectedPaysId, taxonomies.villes]);
+
+    useEffect(() => {
+        if (selectedPaysId || !data.ville_id || !(taxonomies.villes || []).length) {
+            return;
+        }
+
+        const selectedCity = taxonomies.villes.find((ville: any) => String(ville.id) === String(data.ville_id));
+        if (selectedCity?.pays_id) {
+            setSelectedPaysId(String(selectedCity.pays_id));
+        }
+    }, [data.ville_id, selectedPaysId, taxonomies.villes]);
 
     const ChoiceGrid = ({
         items,
@@ -111,8 +132,9 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                             value={String(data.mode_travail_id || '')}
                             onChange={(id, name) => {
                                 setData('mode_travail_id', id);
-                                if (/teletravail|télétravail/i.test(name)) {
+                                if (/teletravail|télétravail|remote/i.test(name)) {
                                     setData('ville_id', '');
+                                    setSelectedPaysId('');
                                 }
                             }}
                             icon={<Building2 className="h-4 w-4" />}
@@ -128,14 +150,44 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                                 Localisation non requise pour le mode télétravail.
                             </div>
                         ) : (
-                            <div className="max-h-[320px] overflow-auto rounded-2xl border border-slate-100 bg-white p-3 sm:p-4">
-                                <ChoiceGrid
-                                    items={taxonomies.villes || []}
-                                    value={String(data.ville_id || '')}
-                                    onChange={(id) => setData('ville_id', id)}
-                                    icon={<MapPin className="h-4 w-4" />}
-                                    columns="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                                />
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label className="text-sm font-medium text-slate-700">Pays</Label>
+                                    <Select
+                                        value={selectedPaysId || undefined}
+                                        onValueChange={(paysId) => {
+                                            setSelectedPaysId(paysId);
+                                            setData('ville_id', '');
+                                        }}
+                                    >
+                                        <SelectTrigger className="h-12 w-full rounded-2xl border-slate-200 bg-white text-sm focus:ring-[#C06041]/20 sm:text-[15px]">
+                                            <SelectValue placeholder="Sélectionnez un pays" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {(taxonomies.pays || []).map((item: any) => (
+                                                <SelectItem key={item.id} value={String(item.id)}>
+                                                    {item.nom}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                {!selectedPaysId ? (
+                                    <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-5 py-6 text-sm leading-relaxed text-slate-500">
+                                        Sélectionnez d'abord un pays pour afficher ses villes.
+                                    </div>
+                                ) : (
+                                    <div className="max-h-[320px] overflow-auto rounded-2xl border border-slate-100 bg-white p-3 sm:p-4">
+                                        <ChoiceGrid
+                                            items={citiesForCountry}
+                                            value={String(data.ville_id || '')}
+                                            onChange={(id) => setData('ville_id', id)}
+                                            icon={<MapPin className="h-4 w-4" />}
+                                            columns="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
                         {errors.ville_id && <p className="text-sm text-red-500">{errors.ville_id}</p>}

@@ -12,7 +12,7 @@ import {
     ShieldAlert,
     Building,
 } from 'lucide-react';
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, useMemo, FormEvent } from 'react';
 
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
@@ -28,8 +28,9 @@ interface Props {
 type TabType = 'profile' | 'security';
 
 export default function Settings({ recruteur, user }: Props) {
-    const { typeOrganisations, tailleEntreprises, villes } = useTaxonomies();
+    const { typeOrganisations, tailleEntreprises, pays, villes } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
+    const [selectedPaysId, setSelectedPaysId] = useState<string>('');
 
     const { data, setData, put, processing, errors } = useForm({
         nom_entreprise: recruteur?.nom_entreprise || '',
@@ -39,6 +40,25 @@ export default function Settings({ recruteur, user }: Props) {
         site_web: recruteur?.site_web || '',
         ville_id: recruteur?.ville_id || '',
     });
+
+    useEffect(() => {
+        if (selectedPaysId || !data.ville_id || villes.length === 0) {
+            return;
+        }
+
+        const selectedCity = villes.find((ville) => String(ville.id) === String(data.ville_id));
+        if (selectedCity?.pays_id) {
+            setSelectedPaysId(String(selectedCity.pays_id));
+        }
+    }, [data.ville_id, selectedPaysId, villes]);
+
+    const citiesForCountry = useMemo(() => {
+        if (!selectedPaysId) {
+            return [];
+        }
+
+        return villes.filter((ville) => String(ville.pays_id) === String(selectedPaysId));
+    }, [selectedPaysId, villes]);
 
     const submit = (e: FormEvent) => {
         e.preventDefault();
@@ -306,7 +326,36 @@ export default function Settings({ recruteur, user }: Props) {
                                                     )}
                                                 </div>
 
-                                                {/* Ville */}
+                                                {/* Pays + Ville */}
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-sm font-bold">
+                                                        <MapPin className="h-4 w-4 opacity-50" />
+                                                        Pays *
+                                                    </label>
+                                                    <select
+                                                        value={selectedPaysId}
+                                                        onChange={(e) => {
+                                                            setSelectedPaysId(e.target.value);
+                                                            setData('ville_id', '');
+                                                        }}
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        required
+                                                    >
+                                                        <option value="" disabled>
+                                                            Sélectionner un pays
+                                                        </option>
+                                                        {useLoadingTaxonomy(pays) ? (
+                                                            <option disabled>Chargement...</option>
+                                                        ) : (
+                                                            pays.map((opt) => (
+                                                                <option key={opt.id} value={opt.id}>
+                                                                    {opt.nom}
+                                                                </option>
+                                                            ))
+                                                        )}
+                                                    </select>
+                                                </div>
+
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <MapPin className="h-4 w-4 opacity-50" />
@@ -322,13 +371,20 @@ export default function Settings({ recruteur, user }: Props) {
                                                         }
                                                         className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
+                                                        disabled={!selectedPaysId}
                                                     >
-                                                        <option value="" disabled>Sélectionner une ville</option>
+                                                        <option value="" disabled>
+                                                            {selectedPaysId
+                                                                ? 'Sélectionner une ville'
+                                                                : "Sélectionnez d'abord un pays"}
+                                                        </option>
                                                         {useLoadingTaxonomy(villes) ? (
                                                             <option disabled>Chargement...</option>
                                                         ) : (
-                                                            villes.map(opt => (
-                                                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                                            citiesForCountry.map((opt) => (
+                                                                <option key={opt.id} value={opt.id}>
+                                                                    {opt.nom}
+                                                                </option>
                                                             ))
                                                         )}
                                                     </select>

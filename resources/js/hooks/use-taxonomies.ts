@@ -6,6 +6,7 @@ export interface Taxonomy {
     nom: string;
     domaine?: string;
     code?: string;
+    pays_id?: number;
 }
 
 export interface Taxonomies {
@@ -23,6 +24,7 @@ export interface Taxonomies {
     typeOrganisations: Taxonomy[];
     typeTravails: Taxonomy[];
     urgences: Taxonomy[];
+    pays: Taxonomy[];
     villes: Taxonomy[];
 }
 
@@ -47,6 +49,7 @@ export const useTaxonomies = (): Taxonomies => {
             typeOrganisations: taxonomies.typeOrganisations || [],
             typeTravails: taxonomies.typeTravails || [],
             urgences: taxonomies.urgences || [],
+            pays: taxonomies.pays || [],
             villes: taxonomies.villes || [],
         };
     }, [rawTaxonomies]);

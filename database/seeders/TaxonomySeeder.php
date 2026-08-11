@@ -152,29 +152,213 @@ class TaxonomySeeder extends Seeder
         ];
 
         /**
-         * @var list<array{nom_fr: string, nom_en: string}> $villes
+         * @var list<array{code: string, nom_fr: string, nom_en: string, villes: list<array{nom_fr: string, nom_en: string}>}> $paysAvecVilles
          */
-        $villes = [
-            ['nom_fr' => 'Casablanca', 'nom_en' => 'Casablanca'],
-            ['nom_fr' => 'Rabat', 'nom_en' => 'Rabat'],
-            ['nom_fr' => 'Marrakech', 'nom_en' => 'Marrakech'],
-            ['nom_fr' => 'Fès', 'nom_en' => 'Fez'],
-            ['nom_fr' => 'Tanger', 'nom_en' => 'Tangier'],
-            ['nom_fr' => 'Agadir', 'nom_en' => 'Agadir'],
-            ['nom_fr' => 'Meknès', 'nom_en' => 'Meknes'],
-            ['nom_fr' => 'Oujda', 'nom_en' => 'Oujda'],
-            ['nom_fr' => 'Tétouan', 'nom_en' => 'Tetouan'],
-            ['nom_fr' => 'El Jadida', 'nom_en' => 'El Jadida'],
-            ['nom_fr' => 'Nador', 'nom_en' => 'Nador'],
-            ['nom_fr' => 'Kénitra', 'nom_en' => 'Kenitra'],
-            ['nom_fr' => 'Safi', 'nom_en' => 'Safi'],
-            ['nom_fr' => 'Berkane', 'nom_en' => 'Berkane'],
-            ['nom_fr' => 'Béni Mellal', 'nom_en' => 'Beni Mellal'],
-            ['nom_fr' => 'Essaouira', 'nom_en' => 'Essaouira'],
-            ['nom_fr' => 'Larache', 'nom_en' => 'Larache'],
-            ['nom_fr' => 'Khouribga', 'nom_en' => 'Khouribga'],
-            ['nom_fr' => 'Taza', 'nom_en' => 'Taza'],
-            ['nom_fr' => 'Errachidia', 'nom_en' => 'Errachidia'],
+        $paysAvecVilles = [
+            [
+                'code' => 'MA',
+                'nom_fr' => 'Maroc',
+                'nom_en' => 'Morocco',
+                'villes' => [
+                    ['nom_fr' => 'Casablanca', 'nom_en' => 'Casablanca'],
+                    ['nom_fr' => 'Rabat', 'nom_en' => 'Rabat'],
+                    ['nom_fr' => 'Marrakech', 'nom_en' => 'Marrakech'],
+                    ['nom_fr' => 'Fès', 'nom_en' => 'Fez'],
+                    ['nom_fr' => 'Tanger', 'nom_en' => 'Tangier'],
+                    ['nom_fr' => 'Agadir', 'nom_en' => 'Agadir'],
+                    ['nom_fr' => 'Meknès', 'nom_en' => 'Meknes'],
+                    ['nom_fr' => 'Oujda', 'nom_en' => 'Oujda'],
+                    ['nom_fr' => 'Tétouan', 'nom_en' => 'Tetouan'],
+                    ['nom_fr' => 'El Jadida', 'nom_en' => 'El Jadida'],
+                    ['nom_fr' => 'Nador', 'nom_en' => 'Nador'],
+                    ['nom_fr' => 'Kénitra', 'nom_en' => 'Kenitra'],
+                    ['nom_fr' => 'Safi', 'nom_en' => 'Safi'],
+                    ['nom_fr' => 'Berkane', 'nom_en' => 'Berkane'],
+                    ['nom_fr' => 'Béni Mellal', 'nom_en' => 'Beni Mellal'],
+                    ['nom_fr' => 'Essaouira', 'nom_en' => 'Essaouira'],
+                    ['nom_fr' => 'Larache', 'nom_en' => 'Larache'],
+                    ['nom_fr' => 'Khouribga', 'nom_en' => 'Khouribga'],
+                    ['nom_fr' => 'Taza', 'nom_en' => 'Taza'],
+                    ['nom_fr' => 'Errachidia', 'nom_en' => 'Errachidia'],
+                ],
+            ],
+            [
+                'code' => 'FR',
+                'nom_fr' => 'France',
+                'nom_en' => 'France',
+                'villes' => [
+                    ['nom_fr' => 'Paris', 'nom_en' => 'Paris'],
+                    ['nom_fr' => 'Lyon', 'nom_en' => 'Lyon'],
+                    ['nom_fr' => 'Marseille', 'nom_en' => 'Marseille'],
+                    ['nom_fr' => 'Lille', 'nom_en' => 'Lille'],
+                    ['nom_fr' => 'Toulouse', 'nom_en' => 'Toulouse'],
+                    ['nom_fr' => 'Bordeaux', 'nom_en' => 'Bordeaux'],
+                    ['nom_fr' => 'Nantes', 'nom_en' => 'Nantes'],
+                    ['nom_fr' => 'Strasbourg', 'nom_en' => 'Strasbourg'],
+                    ['nom_fr' => 'Nice', 'nom_en' => 'Nice'],
+                    ['nom_fr' => 'Montpellier', 'nom_en' => 'Montpellier'],
+                ],
+            ],
+            [
+                'code' => 'SN',
+                'nom_fr' => 'Sénégal',
+                'nom_en' => 'Senegal',
+                'villes' => [
+                    ['nom_fr' => 'Dakar', 'nom_en' => 'Dakar'],
+                    ['nom_fr' => 'Thiès', 'nom_en' => 'Thies'],
+                    ['nom_fr' => 'Saint-Louis', 'nom_en' => 'Saint-Louis'],
+                    ['nom_fr' => 'Kaolack', 'nom_en' => 'Kaolack'],
+                ],
+            ],
+            [
+                'code' => 'CI',
+                'nom_fr' => "Côte d'Ivoire",
+                'nom_en' => 'Ivory Coast',
+                'villes' => [
+                    ['nom_fr' => 'Abidjan', 'nom_en' => 'Abidjan'],
+                    ['nom_fr' => 'Bouaké', 'nom_en' => 'Bouake'],
+                    ['nom_fr' => 'Yamoussoukro', 'nom_en' => 'Yamoussoukro'],
+                    ['nom_fr' => 'San-Pédro', 'nom_en' => 'San-Pedro'],
+                ],
+            ],
+            [
+                'code' => 'TN',
+                'nom_fr' => 'Tunisie',
+                'nom_en' => 'Tunisia',
+                'villes' => [
+                    ['nom_fr' => 'Tunis', 'nom_en' => 'Tunis'],
+                    ['nom_fr' => 'Sfax', 'nom_en' => 'Sfax'],
+                    ['nom_fr' => 'Sousse', 'nom_en' => 'Sousse'],
+                    ['nom_fr' => 'Bizerte', 'nom_en' => 'Bizerte'],
+                ],
+            ],
+            [
+                'code' => 'DZ',
+                'nom_fr' => 'Algérie',
+                'nom_en' => 'Algeria',
+                'villes' => [
+                    ['nom_fr' => 'Alger', 'nom_en' => 'Algiers'],
+                    ['nom_fr' => 'Oran', 'nom_en' => 'Oran'],
+                    ['nom_fr' => 'Constantine', 'nom_en' => 'Constantine'],
+                    ['nom_fr' => 'Annaba', 'nom_en' => 'Annaba'],
+                ],
+            ],
+            [
+                'code' => 'CM',
+                'nom_fr' => 'Cameroun',
+                'nom_en' => 'Cameroon',
+                'villes' => [
+                    ['nom_fr' => 'Douala', 'nom_en' => 'Douala'],
+                    ['nom_fr' => 'Yaoundé', 'nom_en' => 'Yaounde'],
+                    ['nom_fr' => 'Garoua', 'nom_en' => 'Garoua'],
+                ],
+            ],
+            [
+                'code' => 'ML',
+                'nom_fr' => 'Mali',
+                'nom_en' => 'Mali',
+                'villes' => [
+                    ['nom_fr' => 'Bamako', 'nom_en' => 'Bamako'],
+                    ['nom_fr' => 'Sikasso', 'nom_en' => 'Sikasso'],
+                ],
+            ],
+            [
+                'code' => 'BF',
+                'nom_fr' => 'Burkina Faso',
+                'nom_en' => 'Burkina Faso',
+                'villes' => [
+                    ['nom_fr' => 'Ouagadougou', 'nom_en' => 'Ouagadougou'],
+                    ['nom_fr' => 'Bobo-Dioulasso', 'nom_en' => 'Bobo-Dioulasso'],
+                ],
+            ],
+            [
+                'code' => 'BJ',
+                'nom_fr' => 'Bénin',
+                'nom_en' => 'Benin',
+                'villes' => [
+                    ['nom_fr' => 'Cotonou', 'nom_en' => 'Cotonou'],
+                    ['nom_fr' => 'Porto-Novo', 'nom_en' => 'Porto-Novo'],
+                ],
+            ],
+            [
+                'code' => 'TG',
+                'nom_fr' => 'Togo',
+                'nom_en' => 'Togo',
+                'villes' => [
+                    ['nom_fr' => 'Lomé', 'nom_en' => 'Lome'],
+                ],
+            ],
+            [
+                'code' => 'GN',
+                'nom_fr' => 'Guinée',
+                'nom_en' => 'Guinea',
+                'villes' => [
+                    ['nom_fr' => 'Conakry', 'nom_en' => 'Conakry'],
+                ],
+            ],
+            [
+                'code' => 'GA',
+                'nom_fr' => 'Gabon',
+                'nom_en' => 'Gabon',
+                'villes' => [
+                    ['nom_fr' => 'Libreville', 'nom_en' => 'Libreville'],
+                    ['nom_fr' => 'Port-Gentil', 'nom_en' => 'Port-Gentil'],
+                ],
+            ],
+            [
+                'code' => 'CG',
+                'nom_fr' => 'Congo',
+                'nom_en' => 'Congo',
+                'villes' => [
+                    ['nom_fr' => 'Brazzaville', 'nom_en' => 'Brazzaville'],
+                    ['nom_fr' => 'Pointe-Noire', 'nom_en' => 'Pointe-Noire'],
+                ],
+            ],
+            [
+                'code' => 'CD',
+                'nom_fr' => 'République démocratique du Congo',
+                'nom_en' => 'Democratic Republic of the Congo',
+                'villes' => [
+                    ['nom_fr' => 'Kinshasa', 'nom_en' => 'Kinshasa'],
+                    ['nom_fr' => 'Lubumbashi', 'nom_en' => 'Lubumbashi'],
+                ],
+            ],
+            [
+                'code' => 'MG',
+                'nom_fr' => 'Madagascar',
+                'nom_en' => 'Madagascar',
+                'villes' => [
+                    ['nom_fr' => 'Antananarivo', 'nom_en' => 'Antananarivo'],
+                    ['nom_fr' => 'Toamasina', 'nom_en' => 'Toamasina'],
+                ],
+            ],
+            [
+                'code' => 'RW',
+                'nom_fr' => 'Rwanda',
+                'nom_en' => 'Rwanda',
+                'villes' => [
+                    ['nom_fr' => 'Kigali', 'nom_en' => 'Kigali'],
+                ],
+            ],
+            [
+                'code' => 'KE',
+                'nom_fr' => 'Kenya',
+                'nom_en' => 'Kenya',
+                'villes' => [
+                    ['nom_fr' => 'Nairobi', 'nom_en' => 'Nairobi'],
+                    ['nom_fr' => 'Mombasa', 'nom_en' => 'Mombasa'],
+                ],
+            ],
+            [
+                'code' => 'ZA',
+                'nom_fr' => 'Afrique du Sud',
+                'nom_en' => 'South Africa',
+                'villes' => [
+                    ['nom_fr' => 'Johannesburg', 'nom_en' => 'Johannesburg'],
+                    ['nom_fr' => 'Le Cap', 'nom_en' => 'Cape Town'],
+                    ['nom_fr' => 'Durban', 'nom_en' => 'Durban'],
+                ],
+            ],
         ];
 
         /**
@@ -250,7 +434,23 @@ class TaxonomySeeder extends Seeder
         DB::table('ecoles')->insert($ecolesMaroc);
         DB::table('langues')->insert($langues);
         DB::table('type_travails')->insert($typesTravailRecherche);
-        DB::table('villes')->insert($villes);
+
+        foreach ($paysAvecVilles as $pays) {
+            $paysId = DB::table('pays')->insertGetId([
+                'code' => $pays['code'],
+                'nom_fr' => $pays['nom_fr'],
+                'nom_en' => $pays['nom_en'],
+            ]);
+
+            foreach ($pays['villes'] as $ville) {
+                DB::table('villes')->insert([
+                    'pays_id' => $paysId,
+                    'nom_fr' => $ville['nom_fr'],
+                    'nom_en' => $ville['nom_en'],
+                ]);
+            }
+        }
+
         DB::table('mode_travails')->insert($modesTravailRecherche);
         DB::table('postes')->insert($postes);
         DB::table('type_organisations')->insert($typeOrganisation);

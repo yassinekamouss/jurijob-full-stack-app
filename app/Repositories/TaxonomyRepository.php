@@ -8,6 +8,7 @@ use App\Models\Taxonomy\Langue;
 use App\Models\Taxonomy\ModeTravail;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\NiveauLangue;
+use App\Models\Taxonomy\Pays;
 use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\Specialisation;
@@ -44,7 +45,8 @@ class TaxonomyRepository
                 'typeOrganisations' => self::localizedList(TypeOrganisation::query(), $locale),
                 'typeTravails' => self::localizedList(TypeTravail::query(), $locale),
                 'urgences' => self::localizedList(Urgence::query(), $locale, extraColumns: ['code']),
-                'villes' => self::localizedList(Ville::query(), $locale, orderByNom: true),
+                'pays' => self::localizedList(Pays::query(), $locale, orderByNom: true, extraColumns: ['code']),
+                'villes' => self::localizedList(Ville::query(), $locale, orderByNom: true, extraColumns: ['pays_id']),
             ];
         });
     }

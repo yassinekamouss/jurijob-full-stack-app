@@ -403,7 +403,10 @@
         "website_placeholder": "https://www.your-company.com",
         "website_help": "Optional - Helps validate your profile",
         "city_label": "City *",
-        "city_placeholder": "Select a city"
+        "city_placeholder": "Select a city",
+        "country_label": "Country *",
+        "country_placeholder": "Select a country",
+        "city_country_required": "Select a country first"
       },
       "confirmation": {
         "title": "Final Verification",
@@ -438,7 +441,8 @@
         "education": "Education",
         "specializations": "Specializations",
         "honor_declaration_required": "You must certify upon honor that your information is accurate.",
-        "terms_acceptance": "By clicking, you accept our Terms of Service"
+        "terms_acceptance": "By clicking, you accept our Terms of Service",
+        "country": "Country"
       },
       "declaration": {
         "title": "Honor Declaration & Accuracy",
@@ -467,7 +471,7 @@
         "total_selected_count_other": "{{count}} specializations selected",
         "preferences_title": "Search Preferences",
         "preferences_subtitle": "Indicate where and how you prefer to work",
-        "cities_label": "Target Cities *",
+        "cities_label": "Target cities *",
         "work_mode_label": "Mode of Work *",
         "languages_label": "Languages Spoken *",
         "languages_help": "Check a language and select your proficiency level",
@@ -495,7 +499,11 @@
         "exp_type_label": "Experience Type",
         "exp_type_placeholder": "Select a type",
         "position_label": "Position",
-        "position_placeholder": "Select a position"
+        "position_placeholder": "Select a position",
+        "countries_label": "Target country *",
+        "country_placeholder": "Select a country",
+        "cities_country_required": "Select a country first to see its cities",
+        "experiences_help": "An internship is experience. Internships, apprenticeships, legal clinics, or legal volunteering all count fully and strengthen your profile with recruiters. Do not leave this step empty if you have already practiced, even briefly."
       }
     }
   },

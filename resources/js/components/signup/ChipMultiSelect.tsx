@@ -21,7 +21,6 @@ export default function ChipMultiSelect({
     loading = false,
 }: ChipMultiSelectProps) {
     const { t } = useTranslation();
-    const isLoading = loading || options.length === 0;
 
     const toggle = (id: number) => {
         const isSelected = selected.includes(id);
@@ -31,7 +30,7 @@ export default function ChipMultiSelect({
     return (
         <div>
             <div className="flex flex-wrap gap-2.5">
-                {isLoading ? (
+                {loading ? (
                     <p className="w-full py-4 text-center text-sm text-slate-500">{t('auth.forms.loading_options')}</p>
                 ) : (
                     options.map((option) => {

@@ -309,6 +309,10 @@ export default function CandidatDetails({
                     </button>
                 </div>
 
+                <p className="text-sm leading-relaxed text-slate-500">
+                    {t('auth.forms.candidate.experiences_help')}
+                </p>
+
                 {errors.experiences && (
                     <div className="rounded-lg border border-red-100 bg-red-50 p-3 text-xs font-bold text-red-600">
                         {errors.experiences}

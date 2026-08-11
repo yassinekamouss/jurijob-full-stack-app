@@ -7,7 +7,12 @@ export interface Poste extends TaxonomyItem {}
 export interface TypeTravail extends TaxonomyItem {}
 export interface NiveauExperience extends TaxonomyItem {}
 export interface Specialisation extends TaxonomyItem { domaine?: string; }
-export interface Ville extends TaxonomyItem {}
+export interface Ville extends TaxonomyItem {
+    pays_id?: number;
+}
+export interface Pays extends TaxonomyItem {
+    code?: string;
+}
 export interface ModeTravail extends TaxonomyItem {}
 export interface FormationJuridique extends TaxonomyItem {}
 export interface NiveauLangue extends TaxonomyItem {}
@@ -19,6 +24,7 @@ export interface Taxonomies {
     postes: Poste[];
     types_travail: TypeTravail[];
     modes_travail: ModeTravail[];
+    pays: Pays[];
     villes: Ville[];
     niveaux_experience: NiveauExperience[];
     formations_juridiques: FormationJuridique[];

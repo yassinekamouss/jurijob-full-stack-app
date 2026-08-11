@@ -4,25 +4,27 @@ namespace App\Models\Taxonomy;
 
 use App\Models\Taxonomy\Concerns\HasLocalizedTaxonomyLabel;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Ville extends Model
+class Pays extends Model
 {
     use HasLocalizedTaxonomyLabel;
+
+    protected $table = 'pays';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'pays_id',
+        'code',
         'nom_fr',
         'nom_en',
     ];
 
     /**
-     * @return BelongsTo<Pays, $this>
+     * @return HasMany<Ville, $this>
      */
-    public function pays(): BelongsTo
+    public function villes(): HasMany
     {
-        return $this->belongsTo(Pays::class);
+        return $this->hasMany(Ville::class);
     }
 }

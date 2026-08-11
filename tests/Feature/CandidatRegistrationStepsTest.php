@@ -8,6 +8,7 @@ use App\Models\Taxonomy\Langue;
 use App\Models\Taxonomy\ModeTravail;
 use App\Models\Taxonomy\NiveauExperience;
 use App\Models\Taxonomy\NiveauLangue;
+use App\Models\Taxonomy\Pays;
 use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\Specialisation;
@@ -30,7 +31,12 @@ beforeEach(function () {
     ]);
     $this->typeTravail = TypeTravail::create(['nom_fr' => 'CDI', 'nom_en' => 'Permanent Contract (CDI)']);
     $this->modeTravail = ModeTravail::create(['nom_fr' => 'Hybride', 'nom_en' => 'Hybrid']);
-    $this->ville = Ville::create(['nom_fr' => 'Casablanca', 'nom_en' => 'Casablanca']);
+    $this->pays = Pays::create(['code' => 'MA', 'nom_fr' => 'Maroc', 'nom_en' => 'Morocco']);
+    $this->ville = Ville::create([
+        'pays_id' => $this->pays->id,
+        'nom_fr' => 'Casablanca',
+        'nom_en' => 'Casablanca',
+    ]);
     $this->langue = Langue::create(['nom_fr' => 'Français', 'nom_en' => 'French']);
     $this->niveauLangue = NiveauLangue::create(['nom_fr' => 'Courant', 'nom_en' => 'Fluent']);
     $this->ecole = Ecole::create(['nom_fr' => 'Université Mohammed V', 'nom_en' => 'Mohammed V University']);

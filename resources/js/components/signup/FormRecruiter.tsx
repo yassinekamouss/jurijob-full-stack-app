@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RecruteurFormData } from '@/types';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
@@ -17,8 +17,33 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
     className = '',
 }) => {
     const { t } = useTranslation();
-    const { typeOrganisations, tailleEntreprises, villes } = useTaxonomies();
+    const { typeOrganisations, tailleEntreprises, pays, villes } = useTaxonomies();
+    const [selectedPaysId, setSelectedPaysId] = useState<string>('');
     const inputClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-400";
+
+    useEffect(() => {
+        if (selectedPaysId || !formData.ville_id || villes.length === 0) {
+            return;
+        }
+
+        const selectedCity = villes.find((ville) => String(ville.id) === String(formData.ville_id));
+        if (selectedCity?.pays_id) {
+            setSelectedPaysId(String(selectedCity.pays_id));
+        }
+    }, [formData.ville_id, selectedPaysId, villes]);
+
+    const citiesForCountry = useMemo(() => {
+        if (!selectedPaysId) {
+            return [];
+        }
+
+        return villes.filter((ville) => String(ville.pays_id) === String(selectedPaysId));
+    }, [selectedPaysId, villes]);
+
+    const handleCountryChange = (paysId: string) => {
+        setSelectedPaysId(paysId);
+        onFieldChange('ville_id', '');
+    };
 
     return (
         <div className={`space-y-6 ${className}`}>
@@ -109,24 +134,49 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                 {errors.site_web && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.site_web}</p>}
             </div>
 
-            {/* Ville */}
-            <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.city_label')}</label>
-                <select
-                    value={formData.ville_id || ''}
-                    onChange={(e) => onFieldChange('ville_id', e.target.value)}
-                    className={inputClasses}
-                >
-                    <option value="">{t('auth.forms.recruiter.city_placeholder')}</option>
-                    {useLoadingTaxonomy(villes) ? (
-                        <option disabled>{t('auth.forms.loading_options')}</option>
-                    ) : (
-                        villes.map((v) => (
-                            <option key={v.id} value={v.id}>{getTaxonomyLabel(v)}</option>
-                        ))
-                    )}
-                </select>
-                {errors.ville_id && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.ville_id}</p>}
+            {/* Pays + Ville */}
+            <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.country_label')}</label>
+                    <select
+                        value={selectedPaysId}
+                        onChange={(e) => handleCountryChange(e.target.value)}
+                        className={inputClasses}
+                    >
+                        <option value="">{t('auth.forms.recruiter.country_placeholder')}</option>
+                        {useLoadingTaxonomy(pays) ? (
+                            <option disabled>{t('auth.forms.loading_options')}</option>
+                        ) : (
+                            pays.map((country) => (
+                                <option key={country.id} value={country.id}>{getTaxonomyLabel(country)}</option>
+                            ))
+                        )}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.city_label')}</label>
+                    <select
+                        value={formData.ville_id || ''}
+                        onChange={(e) => onFieldChange('ville_id', e.target.value)}
+                        className={inputClasses}
+                        disabled={!selectedPaysId}
+                    >
+                        <option value="">
+                            {selectedPaysId
+                                ? t('auth.forms.recruiter.city_placeholder')
+                                : t('auth.forms.recruiter.city_country_required')}
+                        </option>
+                        {useLoadingTaxonomy(villes) ? (
+                            <option disabled>{t('auth.forms.loading_options')}</option>
+                        ) : (
+                            citiesForCountry.map((v) => (
+                                <option key={v.id} value={v.id}>{getTaxonomyLabel(v)}</option>
+                            ))
+                        )}
+                    </select>
+                    {errors.ville_id && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.ville_id}</p>}
+                </div>
             </div>
         </div>
     );

@@ -43,15 +43,6 @@ const createEmptyFormation = (): Formation => ({
     ecole_id: '',
 });
 
-const createEmptyExperience = (): Experience => ({
-    id: crypto.randomUUID(),
-    debut: '',
-    fin: '',
-    type_travail_id: '',
-    entreprise: '',
-    poste_id: '',
-});
-
 export default function RegisterCandidat() {
     const { t } = useTranslation();
     const { auth } = usePage<{ auth: Auth }>().props;
@@ -92,7 +83,7 @@ export default function RegisterCandidat() {
             salaire_id: '',
             urgence_id: '',
             formations: [createEmptyFormation()],
-            experiences: [createEmptyExperience()],
+            experiences: [],
         },
     });
 
@@ -369,13 +360,17 @@ export default function RegisterCandidat() {
                 newErrors.formations =
                     t('auth.validation.fill_all_formations');
                 valid = false;
+            } else {
+                formations.forEach((f: Formation, i: number) => {
+                    if (f.annee_debut && f.annee_fin && f.annee_fin < f.annee_debut) {
+                        (newErrors as any)[`formations.${i}.annee_fin`] = t('auth.validation.end_year_invalid');
+                        valid = false;
+                    }
+                });
             }
 
-            if (experiences.length === 0) {
-                newErrors.experiences =
-                    t('auth.validation.add_experience');
-                valid = false;
-            } else if (
+            if (
+                experiences.length > 0 &&
                 experiences.some(
                     (e: Experience) =>
                         !e.debut ||
@@ -389,13 +384,6 @@ export default function RegisterCandidat() {
                     t('auth.validation.fill_all_experiences');
                 valid = false;
             } else {
-                formations.forEach((f: Formation, i: number) => {
-                    if (f.annee_debut && f.annee_fin && f.annee_fin < f.annee_debut) {
-                        (newErrors as any)[`formations.${i}.annee_fin`] = t('auth.validation.end_year_invalid');
-                        valid = false;
-                    }
-                });
-
                 experiences.forEach((e: Experience, i: number) => {
                     if (e.debut && e.fin && e.fin < e.debut) {
                         (newErrors as any)[`experiences.${i}.fin`] = t('auth.validation.end_date_invalid');
