@@ -11,6 +11,7 @@ use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\TypeTravail;
 use App\Models\Taxonomy\Urgence;
 use App\Models\Taxonomy\Ville;
+use Database\Factories\OffreFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Offre extends Model
 {
+    /** @use HasFactory<OffreFactory> */
     use HasFactory;
+
+    protected static function newFactory(): OffreFactory
+    {
+        return OffreFactory::new();
+    }
 
     protected $fillable = [
         'recruteur_id',

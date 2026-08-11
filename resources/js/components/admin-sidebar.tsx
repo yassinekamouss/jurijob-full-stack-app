@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Users, Building2, LogOut } from 'lucide-react';
+import { LayoutGrid, Users, Building2, Briefcase, LogOut } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -28,6 +28,11 @@ const adminNavItems: NavItem[] = [
         title: 'Recruteurs',
         href: '/admin/recruteurs',
         icon: Building2,
+    },
+    {
+        title: 'Offres',
+        href: '/admin/offres',
+        icon: Briefcase,
     },
 ];
 

@@ -7,6 +7,7 @@ use App\Models\Taxonomy\TailleEntreprise;
 use App\Models\Taxonomy\TypeOrganisation;
 use App\Models\Taxonomy\Ville;
 use App\Models\User;
+use Database\Factories\RecruteurFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Recruteur extends Model
 {
+    /** @use HasFactory<RecruteurFactory> */
     use HasFactory;
+
+    protected static function newFactory(): RecruteurFactory
+    {
+        return RecruteurFactory::new();
+    }
 
     protected $fillable = [
         'user_id',
