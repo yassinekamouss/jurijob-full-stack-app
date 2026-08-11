@@ -24,14 +24,14 @@ export default function Hero() {
 
               <Reveal direction="up" duration={1} delay={0.6}>
                 <h1 className="text-5xl lg:text-7xl text-[#1a1f1e] leading-[1.1] tracking-tight" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                  <span className="block font-medium">Le recrutement juridique,</span>
+                  <span className="block font-medium">Le recrutement et sourcing juridique au Maroc & en Afrique francophone,</span>
                   <span className="block italic text-[#C06041] font-light mt-2">à la hauteur de vos exigences.</span>
                 </h1>
               </Reveal>
 
               <Reveal direction="up" duration={0.8} delay={0.8}>
                 <p className="text-lg text-[#1a1f1e]/80 leading-relaxed max-w-lg font-light">
-                  JURIJOB identifie les meilleurs profils juridiques pour les directions juridiques et RH des grandes structures, au Maroc et en Afrique francophone. Discrétion, expertise, sélection sur mesure.
+                  Présélection sur-mesure de juristes d'affaires, avocats et experts du droit à Casablanca, Rabat, Abidjan, Dakar et à travers toute l'Afrique francophone.
                 </p>
               </Reveal>
             </div>

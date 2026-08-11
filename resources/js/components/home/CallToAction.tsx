@@ -17,7 +17,7 @@ export default function CallToAction() {
                     >
                         Identifiez votre prochain <br />
                         <span className="font-light text-[#C06041] italic">
-                            talent juridique.
+                            juriste ou expert juridique au Maroc & en Afrique
                         </span>
                     </h2>
                 </Reveal>

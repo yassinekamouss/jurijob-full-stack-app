@@ -14,9 +14,9 @@ export default function HowItWorks() {
                             className="text-5xl leading-[1] tracking-tight md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Notre
-                            <span className="font-light text-[#C06041] italic ml-4">
-                                approche
+                            Notre méthode de{' '}
+                            <span className="font-light text-[#C06041] italic">
+                                sélection et présélection de talents juridiques
                             </span>
                         </h2>
                     </Reveal>

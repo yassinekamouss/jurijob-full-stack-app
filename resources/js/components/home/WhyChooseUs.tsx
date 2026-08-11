@@ -44,9 +44,9 @@ export default function WhyChooseUs() {
                             className="mb-3 text-5xl leading-[1.1] tracking-tight md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Pourquoi <br />
+                            Pourquoi choisir notre plateforme de{' '}
                             <span className="text-[#C06041] italic">
-                                JURIJOB ?
+                                sourcing juridique au Maroc et en Afrique ?
                             </span>
                         </h2>
                         <p className="text-xs uppercase tracking-widest text-[#C06041] font-medium">

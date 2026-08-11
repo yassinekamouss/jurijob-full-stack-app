@@ -15,9 +15,9 @@ export default function Pricing() {
                             className="mb-6 text-5xl tracking-tight text-[#1a1f1e] md:text-7xl"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Tarification{' '}
+                            Tarifs transparents pour votre{' '}
                             <span className="font-light text-[#C06041] italic">
-                                sur mesure
+                                recrutement juridique d'entreprise
                             </span>
                         </h2>
                     </Reveal>
