@@ -76,7 +76,7 @@ export default function Dashboard({ auth, chartData = { totals: { candidats: 0, 
             tooltip: {
                 backgroundColor: '#1f2937',
                 padding: 12,
-                titleFont: { size: 14, weight: 'bold' },
+                titleFont: { size: 14, weight: 'bold' as const },
                 bodyFont: { size: 13 },
                 cornerRadius: 8,
             }
