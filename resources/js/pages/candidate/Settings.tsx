@@ -12,6 +12,7 @@ import {
     LayoutGrid,
     Folder,
     Languages,
+    MapPin,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -23,6 +24,7 @@ import ExperienceSection from '@/components/candidate/settings/ExperienceSection
 import FormationSection from '@/components/candidate/settings/FormationSection';
 import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
 import LanguageSection from '@/components/candidate/settings/LanguageSection';
+import PreferencesSection from '@/components/candidate/settings/PreferencesSection';
 import PendingVerificationBanner, {
     type ProfileCompletion,
 } from '@/components/candidate/PendingVerificationBanner';
@@ -37,11 +39,15 @@ interface Props {
     formations?: any[];
     specialisations?: any[];
     langues?: any[];
+    villeTravails?: any[];
+    modeTravails?: any[];
+    typeTravails?: any[];
     profileCompletion?: ProfileCompletion;
 }
 
 type TabType =
     | 'profile'
+    | 'preferences'
     | 'experiences'
     | 'formations'
     | 'specialisations'
@@ -55,6 +61,9 @@ export default function Settings({
     formations,
     specialisations,
     langues,
+    villeTravails = [],
+    modeTravails = [],
+    typeTravails = [],
     profileCompletion,
 }: Props) {
     const { flash } = usePage().props as any;
@@ -126,6 +135,7 @@ export default function Settings({
             tab &&
             [
                 'profile',
+                'preferences',
                 'experiences',
                 'formations',
                 'specialisations',
@@ -251,6 +261,16 @@ export default function Settings({
                             >
                                 <User className="h-4 w-4" />
                                 Profil Général
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('preferences')}
+                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'preferences'
+                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    }`}
+                            >
+                                <MapPin className="h-4 w-4" />
+                                Préférences
                             </button>
                             <button
                                 onClick={() => setActiveTab('experiences')}
@@ -641,6 +661,21 @@ export default function Settings({
                                             </div>
                                         </form>
                                     </section>
+                                </motion.div>
+                            )}
+
+                            {activeTab === 'preferences' && (
+                                <motion.div
+                                    key="preferences"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                >
+                                    <PreferencesSection
+                                        villeTravails={villeTravails}
+                                        modeTravails={modeTravails}
+                                        typeTravails={typeTravails}
+                                    />
                                 </motion.div>
                             )}
 

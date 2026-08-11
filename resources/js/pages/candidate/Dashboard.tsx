@@ -163,10 +163,6 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
                                     Un profil complet augmente vos chances d'être contacté.
                                 </p>
 
-                                <div className="mt-6 flex items-center gap-2 text-xs font-black uppercase tracking-widest">
-                                    Lire le guide
-                                    <ExternalLink className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-                                </div>
                             </div>
                         </div>
                     </div>

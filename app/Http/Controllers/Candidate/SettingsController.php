@@ -19,7 +19,15 @@ class SettingsController extends Controller
         $user = $request->user();
         $candidat = $user->candidat()->first();
 
-        $candidat->load(['experiences', 'formations', 'specialisations', 'langues']);
+        $candidat->load([
+            'experiences',
+            'formations',
+            'specialisations',
+            'langues',
+            'villeTravails',
+            'modeTravails',
+            'typeTravails',
+        ]);
 
         return Inertia::render('candidate/Settings', [
             'candidat' => $candidat,
@@ -29,6 +37,9 @@ class SettingsController extends Controller
             'formations' => $candidat->formations,
             'specialisations' => $candidat->specialisations,
             'langues' => $candidat->langues,
+            'villeTravails' => $candidat->villeTravails,
+            'modeTravails' => $candidat->modeTravails,
+            'typeTravails' => $candidat->typeTravails,
             'profileCompletion' => $candidat->profileCompletion(),
         ]);
     }

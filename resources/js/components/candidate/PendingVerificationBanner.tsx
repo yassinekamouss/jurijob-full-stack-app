@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import {
     AlertCircle,
     Briefcase,
+    Building2,
     CheckCircle2,
     Clock,
     Folder,
     GraduationCap,
     Languages,
+    MapPin,
     User,
 } from 'lucide-react';
 
@@ -17,6 +19,9 @@ export type ProfileCompletion = {
     formations: boolean;
     specialisations: boolean;
     langues: boolean;
+    localisation: boolean;
+    mode_travails: boolean;
+    type_travails: boolean;
     is_complete: boolean;
 };
 
@@ -31,6 +36,9 @@ const sections = [
     { key: 'formations' as const, label: 'Formations', icon: GraduationCap },
     { key: 'specialisations' as const, label: 'Spécialisations', icon: Folder },
     { key: 'langues' as const, label: 'Langues', icon: Languages },
+    { key: 'localisation' as const, label: 'Localisation', icon: MapPin },
+    { key: 'mode_travails' as const, label: 'Mode de travail', icon: Building2 },
+    { key: 'type_travails' as const, label: 'Type de travail', icon: Briefcase },
 ];
 
 export default function PendingVerificationBanner({
@@ -38,6 +46,9 @@ export default function PendingVerificationBanner({
     showSettingsLink = false,
 }: Props) {
     const isComplete = profileCompletion?.is_complete ?? false;
+    const missingCount = profileCompletion
+        ? sections.filter(({ key }) => !profileCompletion[key]).length
+        : 0;
 
     return (
         <motion.div
@@ -62,8 +73,9 @@ export default function PendingVerificationBanner({
                             </h2>
                             <p className="max-w-2xl text-sm leading-relaxed font-medium text-[#1a1f1e]/60">
                                 Pour être accepté et intégré au matching, renseignez
-                                avec exactitude l&apos;ensemble de votre parcours :
-                                expériences, formations, spécialisations et langues.
+                                avec exactitude votre parcours, vos préférences de
+                                recherche (pays, villes, modes et types de travail)
+                                ainsi que vos langues et spécialisations.
                                 Une fois vos données authentifiées par notre équipe,
                                 votre profil sera validé sous{' '}
                                 <span className="font-bold text-[#1a1f1e]">
@@ -95,12 +107,12 @@ export default function PendingVerificationBanner({
                             ) : (
                                 <>
                                     <AlertCircle className="h-3.5 w-3.5 text-amber-600" />
-                                    Sections à renseigner
+                                    {missingCount} section{missingCount > 1 ? 's' : ''} à renseigner
                                 </>
                             )}
                         </div>
 
-                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
                             {sections.map(({ key, label, icon: Icon }) => {
                                 const done = profileCompletion[key];
 

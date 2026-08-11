@@ -12,6 +12,7 @@ use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardCont
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
+use App\Http\Controllers\Candidate\PreferenceController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
 use App\Http\Controllers\LocaleController;
@@ -67,6 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('specialisations/sync', [SpecialisationController::class, 'sync'])->name('specialisations.sync');
         Route::resource('specialisations', SpecialisationController::class)->only(['store', 'update', 'destroy']);
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
+        Route::put('preferences/sync', [PreferenceController::class, 'sync'])->name('preferences.sync');
     });
 
     Route::middleware('role:candidat')->group(function () {

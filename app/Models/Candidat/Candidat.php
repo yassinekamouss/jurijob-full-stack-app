@@ -112,6 +112,9 @@ class Candidat extends Model
      *     formations: bool,
      *     specialisations: bool,
      *     langues: bool,
+     *     localisation: bool,
+     *     mode_travails: bool,
+     *     type_travails: bool,
      *     is_complete: bool
      * }
      */
@@ -141,13 +144,35 @@ class Candidat extends Model
             ? $this->langues->isNotEmpty()
             : $this->langues()->exists();
 
+        $localisation = $this->relationLoaded('villeTravails')
+            ? $this->villeTravails->isNotEmpty()
+            : $this->villeTravails()->exists();
+
+        $modeTravails = $this->relationLoaded('modeTravails')
+            ? $this->modeTravails->isNotEmpty()
+            : $this->modeTravails()->exists();
+
+        $typeTravails = $this->relationLoaded('typeTravails')
+            ? $this->typeTravails->isNotEmpty()
+            : $this->typeTravails()->exists();
+
         return [
             'profile' => $profile,
             'experiences' => $experiences,
             'formations' => $formations,
             'specialisations' => $specialisations,
             'langues' => $langues,
-            'is_complete' => $profile && $experiences && $formations && $specialisations && $langues,
+            'localisation' => $localisation,
+            'mode_travails' => $modeTravails,
+            'type_travails' => $typeTravails,
+            'is_complete' => $profile
+                && $experiences
+                && $formations
+                && $specialisations
+                && $langues
+                && $localisation
+                && $modeTravails
+                && $typeTravails,
         ];
     }
 
