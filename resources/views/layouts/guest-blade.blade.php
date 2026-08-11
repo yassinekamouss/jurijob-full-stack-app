@@ -18,7 +18,7 @@
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="@yield('canonical', url()->current())">
     <meta property="og:image" content="@yield('og_image', asset('images/logo_jurijob.png'))">
-    <meta property="og:locale" content="fr_FR">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'en' ? 'en_US' : 'fr_FR' }}">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
@@ -54,28 +54,39 @@
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
                     <!-- Logo -->
-                    <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="Accueil JuriJob">
-                        <img src="/images/logo_jurijob.png" alt="JuriJob - Logo" width="100" height="100" class="w-auto h-32" />
+                    <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="{{ __t('navigation.brand_alt') }}">
+                        <img src="/images/logo_jurijob.png" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
                     </a>
 
                     <!-- Navigation Desktop -->
-                    <nav class="hidden space-x-12 md:flex" aria-label="Navigation principale">
-                        <a href="/#home" class="text-gray-700 transition-colors hover:text-black">Accueil</a>
-                        <a href="/services" class="text-gray-700 transition-colors hover:text-black">Services</a>
-                        <a href="/#how-it-works" class="text-gray-700 transition-colors hover:text-black">Comment ça marche</a>
-                        <a href="/#about" class="text-gray-700 transition-colors hover:text-black">À propos</a>
-                        <a href="/#pricing" class="text-gray-700 transition-colors hover:text-black">Tarifs</a>
-                        <a href="/faq" class="text-gray-700 transition-colors hover:text-black">FAQ</a>
+                    <nav class="hidden space-x-12 md:flex" aria-label="{{ __t('navigation.home') }}">
+                        <a href="/#home" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.home') }}</a>
+                        <a href="/services" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.services') }}</a>
+                        <a href="/#how-it-works" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.how_it_works') }}</a>
+                        <a href="/#about" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.about') }}</a>
+                        <a href="/#pricing" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.pricing') }}</a>
+                        <a href="/faq" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.faq') }}</a>
                     </nav>
 
                     <!-- Actions -->
-                    <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-4 md:space-x-6">
+                        <div class="inline-flex items-center gap-1 text-xs font-medium">
+                            <form action="/locale/fr" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="px-2 py-1 transition-colors {{ app()->getLocale() === 'fr' ? 'font-bold text-[#1a1f1e] underline underline-offset-4' : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e]' }}">FR</button>
+                            </form>
+                            <span class="text-[#1a1f1e]/30">|</span>
+                            <form action="/locale/en" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="px-2 py-1 transition-colors {{ app()->getLocale() === 'en' ? 'font-bold text-[#1a1f1e] underline underline-offset-4' : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e]' }}">EN</button>
+                            </form>
+                        </div>
                         <a href="/login" class="px-2 py-2 text-sm font-medium text-[#1a1f1e] transition-opacity hover:opacity-70">
-                            Connexion
+                            {{ __t('navigation.login') }}
                         </a>
                         <div class="relative group">
                             <button class="flex items-center gap-2 bg-[#1a1f1e] px-6 py-2.5 text-sm font-medium text-[#FDFCF8] transition-all hover:bg-[#343a38]">
-                                Inscription
+                                {{ __t('navigation.register') }}
                                 <svg class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
@@ -85,14 +96,14 @@
                                     <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                     </svg>
-                                    En tant que Recruteur
+                                    {{ __t('navigation.as_recruiter') }}
                                 </a>
                                 <a href="/register/candidat" class="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5">
                                     <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
                                     </svg>
-                                    En tant que Candidat
+                                    {{ __t('navigation.as_candidate') }}
                                 </a>
                             </div>
                         </div>
@@ -111,23 +122,23 @@
             <div class="mx-auto max-w-7xl px-8 md:px-16">
                 <div class="grid gap-12 md:grid-cols-4">
                     <div class="md:col-span-2">
-                        <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="Accueil JuriJob">
-                            <img src="/images/logo_jurijob.png" alt="JuriJob - Logo" width="100" height="100" class="w-auto h-32" />
+                        <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="{{ __t('navigation.brand_alt') }}">
+                            <img src="/images/logo_jurijob.png" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
                         </a>
                         <p class="my-6 max-w-sm text-sm leading-relaxed font-light text-[#1a1f1e]/70">
-                            L'écosystème de référence au Maroc qui connecte l'élite des Juristes aux Cabinets d'avocats et entreprises.
+                            {{ __t('footer.description') }}
                         </p>
                         <div class="flex items-center gap-2 text-xs font-medium tracking-widest text-[#C06041] uppercase">
-                            <span>Spécialisé dans les carrières juridiques</span>
+                            <span>{{ __t('footer.specialized_badge') }}</span>
                         </div>
                     </div>
 
                     <div class="mt-10">
-                        <h4 class="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">Navigation</h4>
+                        <h4 class="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">{{ __t('footer.navigation_heading') }}</h4>
                         <ul class="space-y-4 text-sm font-light text-[#1a1f1e]/70">
-                            <li><a href="/#about" class="transition-colors hover:text-[#C06041]">Notre Vision</a></li>
-                            <li><a href="/services" class="transition-colors hover:text-[#C06041]">Nos Prestations</a></li>
-                            <li><a href="/faq" class="transition-colors hover:text-[#C06041]">Foire Aux Questions (FAQ)</a></li>
+                            <li><a href="/#about" class="transition-colors hover:text-[#C06041]">{{ __t('footer.vision') }}</a></li>
+                            <li><a href="/services" class="transition-colors hover:text-[#C06041]">{{ __t('footer.services') }}</a></li>
+                            <li><a href="/faq" class="transition-colors hover:text-[#C06041]">{{ __t('footer.faq') }}</a></li>
                             <li class="pt-2">
                                 <a href="mailto:recrutement@sentissilegal.com" class="inline-block transition-colors text-[#C06041]">
                                     recrutement@sentissilegal.com
@@ -137,18 +148,18 @@
                     </div>
 
                     <div class="mt-10">
-                        <h4 class="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">Légal</h4>
+                        <h4 class="mb-6 text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">{{ __t('footer.legal_heading') }}</h4>
                         <ul class="space-y-4 text-sm font-light text-[#1a1f1e]/70">
-                            <li><a href="/mentions-legales" class="transition-colors hover:text-[#C06041]">Mentions Légales</a></li>
-                            <li><a href="/cgu" class="transition-colors hover:text-[#C06041]">Conditions d'Utilisation (CGU)</a></li>
-                            <li><a href="/cgv" class="transition-colors hover:text-[#C06041]">Conditions de Vente (CGV)</a></li>
+                            <li><a href="/mentions-legales" class="transition-colors hover:text-[#C06041]">{{ __t('footer.mentions_legales') }}</a></li>
+                            <li><a href="/cgu" class="transition-colors hover:text-[#C06041]">{{ __t('footer.cgu') }}</a></li>
+                            <li><a href="/cgv" class="transition-colors hover:text-[#C06041]">{{ __t('footer.cgv') }}</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="mt-16 flex flex-col items-center justify-between border-t border-[#1a1f1e]/10 pt-8 text-xs font-light tracking-widest text-[#1a1f1e]/50 uppercase md:flex-row">
-                    <p>&copy; 2026 — Smart Recrutement Juridique. Tous droits réservés.</p>
-                    <p class="mt-4 md:mt-0">Casablanca, Maroc</p>
+                    <p>{{ __t('footer.copyright') }}</p>
+                    <p class="mt-4 md:mt-0">{{ __t('footer.address') }}</p>
                 </div>
             </div>
         </footer>

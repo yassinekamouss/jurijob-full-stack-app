@@ -22,6 +22,9 @@ export function LanguageSwitcher({ className = '' }: LanguageSwitcherProps) {
                 {
                     preserveState: false,
                     preserveScroll: true,
+                    onSuccess: () => {
+                        window.location.reload();
+                    },
                 },
             );
         });

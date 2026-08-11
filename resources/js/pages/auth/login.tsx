@@ -1,5 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/home/Reveal';
 import InputError from '@/components/input-error';
 import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
@@ -27,6 +28,8 @@ export default function Login({
     canResetPassword,
     canRegister,
 }: Props) {
+    const { t } = useTranslation();
+
     useEffect(() => {
         // Preload fonts to match the main aesthetic
         const link = document.createElement('link');
@@ -41,7 +44,7 @@ export default function Login({
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-            <Head title="Connexion | JuriJob" />
+            <Head title={t('auth.login.seo_title')} />
 
             <Header />
 
@@ -71,10 +74,10 @@ export default function Login({
                                             "'Cormorant Garamond', serif",
                                     }}
                                 >
-                                    Bon retour
+                                    {t('auth.login.title')}
                                 </h1>
                                 <p className="text-base text-gray-600">
-                                    Connectez-vous à votre espace personnel
+                                    {t('auth.login.subtitle')}
                                 </p>
                             </div>
 
@@ -106,7 +109,7 @@ export default function Login({
                                                     htmlFor="email"
                                                     className="text-xs font-semibold tracking-wider text-gray-700 uppercase"
                                                 >
-                                                    Adresse email
+                                                    {t('auth.login.email_label')}
                                                 </Label>
                                                 <Input
                                                     id="email"
@@ -116,7 +119,7 @@ export default function Login({
                                                     autoFocus
                                                     tabIndex={1}
                                                     autoComplete="email"
-                                                    placeholder="email@exemple.com"
+                                                    placeholder={t('auth.login.email_placeholder')}
                                                     className="h-12 rounded-none border-t-0 border-r-0 border-b border-l-0 border-[#1a1f1e]/30 bg-transparent px-0 font-medium text-[#1a1f1e] placeholder:text-gray-400 hover:border-[#1a1f1e]/30 focus:border-[#1a1f1e] focus:ring-0 focus-visible:border-[#1a1f1e] focus-visible:ring-0 focus-visible:ring-offset-0"
                                                 />
                                                 <InputError
@@ -130,7 +133,7 @@ export default function Login({
                                                         htmlFor="password"
                                                         className="text-xs font-semibold tracking-wider text-gray-700 uppercase"
                                                     >
-                                                        Mot de passe
+                                                        {t('auth.login.password_label')}
                                                     </Label>
                                                     {canResetPassword && (
                                                         <TextLink
@@ -138,8 +141,7 @@ export default function Login({
                                                             className="text-xs font-medium text-[#1a1f1e] underline-offset-4 opacity-70 transition-opacity hover:underline hover:opacity-100"
                                                             tabIndex={5}
                                                         >
-                                                            Mot de passe oublié
-                                                            ?
+                                                            {t('auth.login.forgot_password')}
                                                         </TextLink>
                                                     )}
                                                 </div>
@@ -170,7 +172,7 @@ export default function Login({
                                                     htmlFor="remember"
                                                     className="text-sm font-normal text-gray-600"
                                                 >
-                                                    Se souvenir de moi
+                                                    {t('auth.login.remember_me')}
                                                 </Label>
                                             </div>
 
@@ -184,13 +186,13 @@ export default function Login({
                                                 {processing && (
                                                     <Spinner className="mr-3 h-4 w-4" />
                                                 )}
-                                                Se connecter
+                                                {t('auth.login.submit')}
                                             </Button>
 
                                             {/* Social Login Divider */}
                                             <div className="relative my-2 flex items-center">
                                                 <div className="flex-1 border-t border-[#1a1f1e]/10" />
-                                                <span className="mx-4 shrink-0 text-xs font-semibold tracking-widest text-gray-400 uppercase">ou</span>
+                                                <span className="mx-4 shrink-0 text-xs font-semibold tracking-widest text-gray-400 uppercase">{t('auth.login.or')}</span>
                                                 <div className="flex-1 border-t border-[#1a1f1e]/10" />
                                             </div>
 
@@ -199,13 +201,13 @@ export default function Login({
 
                                         {canRegister && (
                                             <div className="mt-4 text-center text-sm text-gray-600 lg:text-left">
-                                                Vous n'avez pas de compte ?{' '}
+                                                {t('auth.login.no_account')}{' '}
                                                 <TextLink
                                                     href={register()}
                                                     tabIndex={5}
                                                     className="font-semibold text-[#1a1f1e] underline-offset-4 transition-all hover:underline"
                                                 >
-                                                    Inscrivez-vous
+                                                    {t('auth.login.register_link')}
                                                 </TextLink>
                                             </div>
                                         )}
@@ -228,17 +230,13 @@ export default function Login({
                                     fontFamily: "'Cormorant Garamond', serif",
                                 }}
                             >
-                                L'Évolution du <br />
+                                {t('auth.login.hero_title_1')} <br />
                                 <span className="text-gray-600 italic">
-                                    Recrutement Juridique
+                                    {t('auth.login.hero_title_2')}
                                 </span>
                             </h2>
                             <p className="text-lg leading-relaxed font-light text-gray-700">
-                                Accédez à une plateforme sélective pensée pour
-                                les professionnels du droit. Que vous cherchiez
-                                à propulser votre carrière ou à dénicher des
-                                talents rares, JuriJob vous offre un
-                                environnement raffiné et confidentiel.
+                                {t('auth.login.hero_desc')}
                             </p>
                         </div>
 
@@ -249,13 +247,10 @@ export default function Login({
                                 </div>
                                 <div className="ml-5">
                                     <h3 className="text-sm font-semibold tracking-widest text-[#1a1f1e] uppercase">
-                                        Visibilité Qualifiée
+                                        {t('auth.login.feature1_title')}
                                     </h3>
                                     <p className="mt-2 text-base font-light text-gray-600">
-                                        Connectez-vous directement avec les
-                                        cabinets et entreprises correspondant à
-                                        vos aspirations et à votre spécialité
-                                        locale ou internationale.
+                                        {t('auth.login.feature1_desc')}
                                     </p>
                                 </div>
                             </div>
@@ -265,13 +260,10 @@ export default function Login({
                                 </div>
                                 <div className="ml-5">
                                     <h3 className="text-sm font-semibold tracking-widest text-[#1a1f1e] uppercase">
-                                        Espace Privilégié
+                                        {t('auth.login.feature2_title')}
                                     </h3>
                                     <p className="mt-2 text-base font-light text-gray-600">
-                                        Profitez d'un suivi sur-mesure pour
-                                        gérer vos candidatures ou vos offres
-                                        d'emploi, avec un accès constant à notre
-                                        base de données qualifiée.
+                                        {t('auth.login.feature2_desc')}
                                     </p>
                                 </div>
                             </div>

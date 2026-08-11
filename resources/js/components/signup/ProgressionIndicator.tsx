@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '@/components/signup/FormularIcons';
 
 type ProgressIndicatorProps = {
@@ -7,7 +8,7 @@ type ProgressIndicatorProps = {
 }
 
 const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
-
+    const { t } = useTranslation();
     const totalSteps = steps.length;
 
     const getStepStatus = (stepId: number) => {
@@ -81,7 +82,7 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
             {/* Progress bar and percentage */}
             <div className="mt-20 px-8">
                 <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">
-                    <span>Avancement</span>
+                    <span>{t('auth.forms.navigator.progress')}</span>
                     <span className="text-slate-900">{Math.round((currentStep / totalSteps) * 100)}%</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">

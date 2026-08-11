@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { RecruteurFormData } from '@/types';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 
@@ -15,23 +16,24 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
     errors = {},
     className = '',
 }) => {
+    const { t } = useTranslation();
     const { typeOrganisations, tailleEntreprises, villes } = useTaxonomies();
     const inputClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-400";
 
     return (
         <div className={`space-y-6 ${className}`}>
             <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Informations entreprise</h3>
-                <p className="text-sm text-slate-500">Renseignez les détails de votre organisation pour optimiser vos recherches</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{t('auth.forms.recruiter.title')}</h3>
+                <p className="text-sm text-slate-500">{t('auth.forms.recruiter.subtitle')}</p>
             </div>
 
             {/* Nom entreprise */}
             <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Nom de l'entreprise *</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.company_name_label')}</label>
                     <input
                         type="text"
-                        placeholder="Nom de votre organisation"
+                        placeholder={t('auth.forms.recruiter.company_name_placeholder')}
                         value={formData.nom_entreprise || ''}
                         onChange={(e) => onFieldChange('nom_entreprise', e.target.value)}
                         className={inputClasses}
@@ -40,10 +42,10 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                 </div>
 
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Votre poste</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.job_title_label')}</label>
                     <input
                         type="text"
-                        placeholder="Ex: Responsable RH, Directeur Juridique"
+                        placeholder={t('auth.forms.recruiter.job_title_placeholder')}
                         value={formData.poste || ''}
                         onChange={(e) => onFieldChange('poste', e.target.value)}
                         className={inputClasses}
@@ -55,18 +57,18 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
             {/* Type et taille */}
             <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Type d'organisation *</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.org_type_label')}</label>
                     <select
                         value={formData.type_organisation_id || ''}
                         onChange={(e) => onFieldChange('type_organisation_id', e.target.value)}
                         className={inputClasses}
                     >
-                        <option value="">Sélectionnez le type</option>
+                        <option value="">{t('auth.forms.recruiter.org_type_placeholder')}</option>
                         {useLoadingTaxonomy(typeOrganisations) ? (
-                            <option disabled>Chargement des options...</option>
+                            <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
                             typeOrganisations.map((opt) => (
-                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                <option key={opt.id} value={opt.id}>{getTaxonomyLabel(opt)}</option>
                             ))
                         )}
                     </select>
@@ -74,18 +76,18 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
                 </div>
 
                 <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">Taille de l'entreprise *</label>
+                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.company_size_label')}</label>
                     <select
                         value={formData.taille_entreprise_id || ''}
                         onChange={(e) => onFieldChange('taille_entreprise_id', e.target.value)}
                         className={inputClasses}
                     >
-                        <option value="">Nombre d'employés</option>
+                        <option value="">{t('auth.forms.recruiter.company_size_placeholder')}</option>
                         {useLoadingTaxonomy(tailleEntreprises) ? (
-                            <option disabled>Chargement des options...</option>
+                            <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
                             tailleEntreprises.map((opt) => (
-                                <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                <option key={opt.id} value={opt.id}>{getTaxonomyLabel(opt)}</option>
                             ))
                         )}
                     </select>
@@ -95,32 +97,32 @@ const FormRecruiter: React.FC<RecruiterFieldsProps> = ({
 
             {/* Site web */}
             <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Site web de l'entreprise</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.website_label')}</label>
                 <input
                     type="url"
-                    placeholder="https://www.votre-entreprise.com"
+                    placeholder={t('auth.forms.recruiter.website_placeholder')}
                     value={formData.site_web || ''}
                     onChange={(e) => onFieldChange('site_web', e.target.value)}
                     className={inputClasses}
                 />
-                <p className="text-xs text-slate-400 mt-1.5 font-medium">Optionnel - Aide à valider votre profil</p>
+                <p className="text-xs text-slate-400 mt-1.5 font-medium">{t('auth.forms.recruiter.website_help')}</p>
                 {errors.site_web && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.site_web}</p>}
             </div>
 
             {/* Ville */}
             <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1.5">Ville *</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('auth.forms.recruiter.city_label')}</label>
                 <select
                     value={formData.ville_id || ''}
                     onChange={(e) => onFieldChange('ville_id', e.target.value)}
                     className={inputClasses}
                 >
-                    <option value="">Sélectionnez une ville</option>
+                    <option value="">{t('auth.forms.recruiter.city_placeholder')}</option>
                     {useLoadingTaxonomy(villes) ? (
-                        <option disabled>Chargement des options...</option>
+                        <option disabled>{t('auth.forms.loading_options')}</option>
                     ) : (
                         villes.map((v) => (
-                            <option key={v.id} value={v.id}>{v.nom}</option>
+                            <option key={v.id} value={v.id}>{getTaxonomyLabel(v)}</option>
                         ))
                     )}
                 </select>

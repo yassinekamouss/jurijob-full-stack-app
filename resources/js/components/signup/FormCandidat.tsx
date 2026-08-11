@@ -1,5 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { CandidatFormData } from '@/types';
-import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import ChipMultiSelect from '@/components/signup/ChipMultiSelect';
 
 type CandidateFieldsProps = {
@@ -10,6 +11,7 @@ type CandidateFieldsProps = {
 };
 
 const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: CandidateFieldsProps) => {
+    const { t } = useTranslation();
     const { typeTravails, niveauExperiences, formationJuridiques, postes, salaires, urgences } = useTaxonomies();
 
     const selectClasses =
@@ -19,25 +21,25 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
     return (
         <div className={`space-y-8 ${className}`}>
             <div className="mb-8 text-center">
-                <h3 className="mb-2 text-xl font-bold text-slate-900">Profil & attentes</h3>
-                <p className="text-sm text-slate-500">Vos informations essentielles et vos attentes salariales</p>
+                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidate.title')}</h3>
+                <p className="text-sm text-slate-500">{t('auth.forms.candidate.subtitle')}</p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                    <label className={labelClasses}>Niveau d'expérience *</label>
+                    <label className={labelClasses}>{t('auth.forms.candidate.experience_label')}</label>
                     <select
                         value={formData.niveau_experience_id || ''}
                         onChange={(event) => onFieldChange('niveau_experience_id', event.target.value)}
                         className={selectClasses}
                     >
-                        <option value="">Sélectionnez votre niveau</option>
+                        <option value="">{t('auth.forms.candidate.experience_placeholder')}</option>
                         {useLoadingTaxonomy(niveauExperiences) ? (
-                            <option disabled>Chargement des options...</option>
+                            <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
                             niveauExperiences.map((option) => (
                                 <option key={option.id} value={option.id}>
-                                    {option.nom}
+                                    {getTaxonomyLabel(option)}
                                 </option>
                             ))
                         )}
@@ -48,19 +50,19 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
                 </div>
 
                 <div>
-                    <label className={labelClasses}>Formation juridique *</label>
+                    <label className={labelClasses}>{t('auth.forms.candidate.education_label')}</label>
                     <select
                         value={formData.formation_juridique_id || ''}
                         onChange={(event) => onFieldChange('formation_juridique_id', event.target.value)}
                         className={selectClasses}
                     >
-                        <option value="">Votre niveau d'études</option>
+                        <option value="">{t('auth.forms.candidate.education_placeholder')}</option>
                         {useLoadingTaxonomy(formationJuridiques) ? (
-                            <option disabled>Chargement des options...</option>
+                            <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
                             formationJuridiques.map((option) => (
                                 <option key={option.id} value={option.id}>
-                                    {option.nom}
+                                    {getTaxonomyLabel(option)}
                                 </option>
                             ))
                         )}
@@ -72,19 +74,19 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
             </div>
 
             <div>
-                <label className={labelClasses}>Poste recherché *</label>
+                <label className={labelClasses}>{t('auth.forms.candidate.target_job_label')}</label>
                 <select
                     value={formData.poste_id || ''}
                     onChange={(event) => onFieldChange('poste_id', event.target.value)}
                     className={selectClasses}
                 >
-                    <option value="">Sélectionnez un poste</option>
+                    <option value="">{t('auth.forms.candidate.target_job_placeholder')}</option>
                     {useLoadingTaxonomy(postes) ? (
-                        <option disabled>Chargement des options...</option>
+                        <option disabled>{t('auth.forms.loading_options')}</option>
                     ) : (
                         postes.map((option) => (
                             <option key={option.id} value={option.id}>
-                                {option.nom}
+                                {getTaxonomyLabel(option)}
                             </option>
                         ))
                     )}
@@ -93,7 +95,7 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
             </div>
 
             <div>
-                <label className={labelClasses}>Type de travail recherché *</label>
+                <label className={labelClasses}>{t('auth.forms.candidate.work_type_label')}</label>
                 <ChipMultiSelect
                     options={typeTravails}
                     selected={formData.type_travails || []}
@@ -104,19 +106,19 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
 
             <div className="space-y-6 border-t border-slate-100 pt-8">
                 <div>
-                    <label className={labelClasses}>Salaire souhaité *</label>
+                    <label className={labelClasses}>{t('auth.forms.candidate.salary_label')}</label>
                     <select
                         value={formData.salaire_id || ''}
                         onChange={(event) => onFieldChange('salaire_id', event.target.value)}
                         className={selectClasses}
                     >
-                        <option value="">Sélectionnez une fourchette salariale</option>
+                        <option value="">{t('auth.forms.candidate.salary_placeholder')}</option>
                         {useLoadingTaxonomy(salaires) ? (
-                            <option disabled>Chargement des options...</option>
+                            <option disabled>{t('auth.forms.loading_options')}</option>
                         ) : (
                             salaires.map((option) => (
                                 <option key={option.id} value={option.id}>
-                                    {option.nom}
+                                    {getTaxonomyLabel(option)}
                                 </option>
                             ))
                         )}
@@ -127,11 +129,11 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
                 </div>
 
                 <div>
-                    <label className={labelClasses}>Disponibilité *</label>
-                    <p className="mb-3 text-xs font-medium text-slate-400">Quand souhaitez-vous commencer ?</p>
+                    <label className={labelClasses}>{t('auth.forms.candidate.availability_label')}</label>
+                    <p className="mb-3 text-xs font-medium text-slate-400">{t('auth.forms.candidate.availability_help')}</p>
                     <div className="flex flex-wrap gap-2.5">
                         {useLoadingTaxonomy(urgences) ? (
-                            <p className="w-full py-4 text-center text-sm text-slate-500">Chargement des options...</p>
+                            <p className="w-full py-4 text-center text-sm text-slate-500">{t('auth.forms.loading_options')}</p>
                         ) : (
                             urgences.map((option) => {
                                 const isSelected = String(formData.urgence_id) === String(option.id);
@@ -147,7 +149,7 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
                                                 : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
                                         }`}
                                     >
-                                        {option.nom}
+                                        {getTaxonomyLabel(option)}
                                     </button>
                                 );
                             })

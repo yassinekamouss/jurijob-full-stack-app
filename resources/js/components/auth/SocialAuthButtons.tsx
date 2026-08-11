@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next';
+
 type Props = {
     role?: 'candidat' | 'recruteur';
     label?: string;
+    variant?: 'connect' | 'quick';
 };
 
 const GoogleIcon = () => (
@@ -30,7 +33,9 @@ const LinkedInIcon = () => (
     </svg>
 );
 
-export default function SocialAuthButtons({ role, label = 'Continuer' }: Props) {
+export default function SocialAuthButtons({ role, label, variant }: Props) {
+    const { t } = useTranslation();
+
     const buildUrl = (provider: 'google' | 'linkedin-openid') => {
         const base = `/auth/${provider}/redirect`;
         return role ? `${base}?role=${role}` : base;
@@ -39,6 +44,10 @@ export default function SocialAuthButtons({ role, label = 'Continuer' }: Props) 
     const baseButtonClass =
         'flex h-11 w-full items-center justify-center gap-3 rounded-xl border bg-white px-4 text-sm font-semibold transition-all';
 
+    const isQuick = variant === 'quick' || label === 'Inscription rapide';
+    const googleText = isQuick ? t('auth.social.quick_signup_google') : t('auth.social.connect_with_google');
+    const linkedinText = isQuick ? t('auth.social.quick_signup_linkedin') : t('auth.social.connect_with_linkedin');
+
     return (
         <div className="flex flex-col gap-2.5">
             <a
@@ -46,14 +55,14 @@ export default function SocialAuthButtons({ role, label = 'Continuer' }: Props) 
                 className={`${baseButtonClass} border-[#1a1f1e]/12 text-[#1a1f1e] hover:border-[#1a1f1e]/30 hover:bg-[#1a1f1e]/5`}
             >
                 <GoogleIcon />
-                {label} avec Google
+                {googleText}
             </a>
             <a
                 href={buildUrl('linkedin-openid')}
                 className={`${baseButtonClass} border-[#0A66C2]/20 text-[#0A66C2] hover:border-[#0A66C2]/40 hover:bg-[#0A66C2]/10`}
             >
                 <LinkedInIcon />
-                {label} avec LinkedIn
+                {linkedinText}
             </a>
         </div>
     );

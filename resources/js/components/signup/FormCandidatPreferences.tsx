@@ -1,5 +1,6 @@
+import { useTranslation } from 'react-i18next';
 import { CandidatFormData } from '@/types';
-import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import ChipMultiSelect from '@/components/signup/ChipMultiSelect';
 
 type FormCandidatPreferencesProps = {
@@ -15,6 +16,7 @@ export default function FormCandidatPreferences({
     errors = {},
     className = '',
 }: FormCandidatPreferencesProps) {
+    const { t } = useTranslation();
     const { villes, modeTravails, langues, niveauLangues } = useTaxonomies();
 
     const selectClasses =
@@ -24,12 +26,12 @@ export default function FormCandidatPreferences({
     return (
         <div className={`space-y-8 ${className}`}>
             <div className="mb-8 text-center">
-                <h3 className="mb-2 text-xl font-bold text-slate-900">Préférences de recherche</h3>
-                <p className="text-sm text-slate-500">Indiquez où et comment vous souhaitez travailler</p>
+                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidate.preferences_title')}</h3>
+                <p className="text-sm text-slate-500">{t('auth.forms.candidate.preferences_subtitle')}</p>
             </div>
 
             <div>
-                <label className={labelClasses}>Villes recherchées *</label>
+                <label className={labelClasses}>{t('auth.forms.candidate.cities_label')}</label>
                 <ChipMultiSelect
                     options={villes}
                     selected={formData.ville_travails || []}
@@ -39,7 +41,7 @@ export default function FormCandidatPreferences({
             </div>
 
             <div>
-                <label className={labelClasses}>Mode de travail *</label>
+                <label className={labelClasses}>{t('auth.forms.candidate.work_mode_label')}</label>
                 <ChipMultiSelect
                     options={modeTravails}
                     selected={formData.mode_travails || []}
@@ -49,11 +51,11 @@ export default function FormCandidatPreferences({
             </div>
 
             <div>
-                <label className={labelClasses}>Langues parlées *</label>
-                <p className="mb-3 text-xs font-medium text-slate-400">Cochez puis indiquez votre niveau</p>
+                <label className={labelClasses}>{t('auth.forms.candidate.languages_label')}</label>
+                <p className="mb-3 text-xs font-medium text-slate-400">{t('auth.forms.candidate.languages_help')}</p>
                 <div className="flex flex-wrap gap-2.5">
                     {useLoadingTaxonomy(langues) ? (
-                        <p className="w-full py-4 text-center text-sm text-slate-500">Chargement des options...</p>
+                        <p className="w-full py-4 text-center text-sm text-slate-500">{t('auth.forms.loading_options')}</p>
                     ) : (
                         langues.map((option) => {
                             const isSelected = (formData.langues || []).some((langue) => langue.langue_id === option.id);
@@ -77,7 +79,7 @@ export default function FormCandidatPreferences({
                                             : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
                                     }`}
                                 >
-                                    {option.nom}
+                                    {getTaxonomyLabel(option)}
                                 </button>
                             );
                         })
@@ -87,13 +89,13 @@ export default function FormCandidatPreferences({
                 {(formData.langues || []).length > 0 && (
                     <div className="mt-5 space-y-4">
                         {(formData.langues || []).map((langue, index) => {
-                            const langName =
-                                langues.find((item) => item.id === langue.langue_id)?.nom || String(langue.langue_id);
+                            const foundLang = langues.find((item) => item.id === langue.langue_id);
+                            const langName = foundLang ? getTaxonomyLabel(foundLang) : String(langue.langue_id);
 
                             return (
                                 <div key={langue.langue_id} className="rounded-xl border border-slate-100 bg-slate-50/50 p-4">
                                     <label className="mb-2.5 block text-[10px] font-black tracking-widest text-slate-400 uppercase">
-                                        Niveau — {langName}
+                                        {t('auth.forms.candidate.language_level_header', { name: langName })}
                                     </label>
                                     <select
                                         value={langue.niveau_langue_id}
@@ -107,13 +109,13 @@ export default function FormCandidatPreferences({
                                         }}
                                         className={selectClasses}
                                     >
-                                        <option value="">Sélectionnez le niveau</option>
+                                        <option value="">{t('auth.forms.candidate.select_level_option')}</option>
                                         {useLoadingTaxonomy(niveauLangues) ? (
-                                            <option disabled>Chargement des options...</option>
+                                            <option disabled>{t('auth.forms.loading_options')}</option>
                                         ) : (
                                             niveauLangues.map((niveau) => (
                                                 <option key={niveau.id} value={niveau.id}>
-                                                    {niveau.nom}
+                                                    {getTaxonomyLabel(niveau)}
                                                 </option>
                                             ))
                                         )}

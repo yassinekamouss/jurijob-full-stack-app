@@ -1,7 +1,7 @@
 @extends('layouts.legal')
 
-@section('title', 'Mentions Légales & Protection des Données | JuriJob')
-@section('meta_description', 'Mentions légales de JURIJOB : éditeur Sentissi Legal Advisory (SLA), hébergement, protection des données personnelles (CNDP, loi 09-08) et propriété intellectuelle.')
+@section('title', __t('mentions_legales_page.seo_title'))
+@section('meta_description', __t('mentions_legales_page.seo_description'))
 @section('canonical', url('/mentions-legales'))
 
 @section('content')
@@ -14,21 +14,21 @@
                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                     </svg>
-                    Cadre Réglementaire & Transparence
+                    {{ __t('mentions_legales_page.hero.badge') }}
                 </div>
 
                 <h1 class="mt-6 text-4xl font-normal tracking-tight text-[#1a1f1e] sm:text-5xl lg:text-6xl" style="font-family: 'Cormorant Garamond', serif;">
-                    Informations <span class="italic text-[#C06041]">Juridiques</span>
+                    {{ __t('mentions_legales_page.hero.title_part1') }} <span class="italic text-[#C06041]">{{ __t('mentions_legales_page.hero.title_part2') }}</span>
                 </h1>
 
                 <p class="mt-4 text-base font-light leading-relaxed text-[#1a1f1e]/75 sm:text-lg">
-                    Mentions légales, informations relatives à l'éditeur, à l'hébergement et aux engagements de protection des données personnelles de la plateforme JURIJOB.
+                    {{ __t('mentions_legales_page.hero.subtitle') }}
                 </p>
 
                 <div class="mt-6 inline-flex items-center gap-2 text-xs font-medium text-[#1a1f1e]/50">
-                    <span>Dernière mise à jour : août 2026</span>
+                    <span>{{ __t('mentions_legales_page.hero.updated') }}</span>
                     <span>•</span>
-                    <span>Conforme Droit Marocain</span>
+                    <span>{{ __t('mentions_legales_page.hero.law') }}</span>
                 </div>
             </div>
         </div>
@@ -42,22 +42,22 @@
                 <div class="sticky top-28 space-y-6 border border-[#1a1f1e]/10 bg-[#FDFCF8] p-6 shadow-sm">
                     <div>
                         <h3 class="text-lg font-normal text-[#1a1f1e]" style="font-family: 'Cormorant Garamond', serif;">
-                            Sommaire interactif
+                            {{ __t('mentions_legales_page.sidebar.title') }}
                         </h3>
                         <p class="text-xs font-light text-[#1a1f1e]/60">
-                            Accès rapide aux articles légaux
+                            {{ __t('mentions_legales_page.sidebar.subtitle') }}
                         </p>
                     </div>
 
                     <nav class="space-y-1.5">
                         @php
                             $articles = [
-                                ['id' => 'article-1', 'num' => 'Article 1', 'title' => 'Éditeur du site'],
-                                ['id' => 'article-2', 'num' => 'Article 2', 'title' => 'Hébergement'],
-                                ['id' => 'article-3', 'num' => 'Article 3', 'title' => 'Propriété intellectuelle'],
-                                ['id' => 'article-4', 'num' => 'Article 4', 'title' => 'Traitement des données personnelles'],
-                                ['id' => 'article-5', 'num' => 'Article 5', 'title' => 'Responsabilité'],
-                                ['id' => 'article-6', 'num' => 'Article 6', 'title' => 'Droit applicable'],
+                                ['id' => 'article-1', 'num' => __t('mentions_legales_page.articles.art1.num'), 'title' => __t('mentions_legales_page.articles.art1.title')],
+                                ['id' => 'article-2', 'num' => __t('mentions_legales_page.articles.art2.num'), 'title' => __t('mentions_legales_page.articles.art2.title')],
+                                ['id' => 'article-3', 'num' => __t('mentions_legales_page.articles.art3.num'), 'title' => __t('mentions_legales_page.articles.art3.title')],
+                                ['id' => 'article-4', 'num' => __t('mentions_legales_page.articles.art4.num'), 'title' => __t('mentions_legales_page.articles.art4.title')],
+                                ['id' => 'article-5', 'num' => __t('mentions_legales_page.articles.art5.num'), 'title' => __t('mentions_legales_page.articles.art5.title')],
+                                ['id' => 'article-6', 'num' => __t('mentions_legales_page.articles.art6.num'), 'title' => __t('mentions_legales_page.articles.art6.title')],
                             ];
                         @endphp
 
@@ -76,9 +76,9 @@
 
                     <div class="border-t border-[#1a1f1e]/10 pt-4">
                         <div class="bg-[#1a1f1e]/5 p-4 text-xs">
-                            <p class="font-semibold text-[#1a1f1e]">Besoin d'assistance juridique ?</p>
+                            <p class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.sidebar.question_title') }}</p>
                             <p class="mt-1 text-[#1a1f1e]/70">
-                                Pour toute demande de clarification réglementaire :
+                                {{ __t('mentions_legales_page.sidebar.question_sub') }}
                             </p>
                             <a href="mailto:recrutement@sentissilegal.com" class="mt-3 flex w-full items-center justify-center gap-2 border border-[#1a1f1e]/20 bg-[#FDFCF8] px-3 py-1.5 text-xs font-medium text-[#1a1f1e] hover:border-[#1a1f1e]">
                                 <svg class="h-3.5 w-3.5 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,75 +102,75 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 1</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Éditeur du site</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art1.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('mentions_legales_page.articles.art1.title') }}</h2>
                         </div>
                     </div>
 
                     <p class="text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        Le site <a href="https://www.jurijob.ma" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-4 hover:opacity-80">www.jurijob.ma</a> et la plateforme <strong class="font-semibold text-[#1a1f1e]">JURIJOB</strong> sont édités par :
+                        {{ __t('mentions_legales_page.articles.art1.p1_prefix') }}<a href="https://www.jurijob.ma" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-4 hover:opacity-80">www.jurijob.ma</a>{{ __t('mentions_legales_page.articles.art1.p1_mid1') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.p1_jurijob') }}</strong>{{ __t('mentions_legales_page.articles.art1.p1_suffix') }}
                     </p>
 
                     <!-- Structured Grid for Corporate Details -->
                     <div class="grid gap-4 border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 shadow-sm sm:grid-cols-2">
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Dénomination sociale</span>
-                            <p class="text-base font-semibold text-[#1a1f1e]">SENTISSI LEGAL ADVISORY (SLA)</p>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.deno_title') }}</span>
+                            <p class="text-base font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.corporate.deno_val') }}</p>
                         </div>
 
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Forme juridique</span>
-                            <p class="text-sm font-medium text-[#1a1f1e]">Société à responsabilité limitée à associé unique (SARL AU)</p>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.forme_title') }}</span>
+                            <p class="text-sm font-medium text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.corporate.forme_val') }}</p>
                         </div>
 
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Capital social</span>
-                            <p class="text-sm font-medium text-[#1a1f1e]">10 000 MAD</p>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.capital_title') }}</span>
+                            <p class="text-sm font-medium text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.corporate.capital_val') }}</p>
                         </div>
 
                         <div class="space-y-1 sm:col-span-2">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Siège social</span>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.siege_title') }}</span>
                             <p class="flex items-start gap-2 text-sm font-medium text-[#1a1f1e]">
                                 <svg class="mt-0.5 h-4 w-4 shrink-0 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span>12, rue Saria Ben Zounaim, étage 3, appartement 3 — Palmier, Casablanca, Maroc</span>
+                                <span>{{ __t('mentions_legales_page.articles.art1.corporate.siege_val') }}</span>
                             </p>
                         </div>
 
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Registre du commerce</span>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.rc_title') }}</span>
                             <p class="flex items-center gap-1.5 text-sm font-medium text-[#1a1f1e]">
                                 <svg class="h-3.5 w-3.5 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
                                 </svg>
-                                <span>RC n° 641427 — Tribunal de commerce de Casablanca</span>
+                                <span>{{ __t('mentions_legales_page.articles.art1.corporate.rc_val') }}</span>
                             </p>
                         </div>
 
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Identifiant commun (ICE)</span>
-                            <p class="text-sm font-medium text-[#1a1f1e]">ICE 003569200000033</p>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.ice_title') }}</span>
+                            <p class="text-sm font-medium text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.corporate.ice_val') }}</p>
                         </div>
 
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Identifiant fiscal (IF)</span>
-                            <p class="text-sm font-medium text-[#1a1f1e]">IF 66067629</p>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.if_title') }}</span>
+                            <p class="text-sm font-medium text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.corporate.if_val') }}</p>
                         </div>
 
                         <div class="space-y-1">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Responsable de la publication</span>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.pub_title') }}</span>
                             <p class="flex items-center gap-1.5 text-sm font-medium text-[#1a1f1e]">
                                 <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                <span>Mohammed Sentissi, gérant</span>
+                                <span>{{ __t('mentions_legales_page.articles.art1.corporate.pub_val') }}</span>
                             </p>
                         </div>
 
                         <div class="space-y-1 sm:col-span-2 pt-2 border-t border-[#1a1f1e]/10">
-                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">Contact officiel</span>
+                            <span class="text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/50">{{ __t('mentions_legales_page.articles.art1.corporate.contact_title') }}</span>
                             <div class="flex flex-wrap items-center gap-3">
                                 <a href="mailto:recrutement@sentissilegal.com" class="inline-flex items-center gap-2 text-sm font-medium text-[#C06041] hover:underline">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -189,7 +189,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
                             </svg>
                             <div class="text-sm leading-relaxed text-[#1a1f1e]/85">
-                                <strong class="font-semibold text-[#1a1f1e]">Marque déposée OMPIC :</strong> JURIJOB est une marque déposée auprès de l'OMPIC sous la dénomination <span class="italic font-medium">« JURIJOB — Smart Recrutement Juridique »</span>. La plateforme est exploitée par Sentissi Legal Advisory, également éditrice du site <a href="https://www.sentissilegal.com" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-2 hover:opacity-80">www.sentissilegal.com</a>.
+                                <strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art1.trademark_bold') }}</strong>{{ __t('mentions_legales_page.articles.art1.trademark_desc') }}<span class="italic font-medium">{{ __t('mentions_legales_page.articles.art1.trademark_brand') }}</span>{{ __t('mentions_legales_page.articles.art1.trademark_suffix') }}<a href="https://www.sentissilegal.com" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-2 hover:opacity-80">www.sentissilegal.com</a>.
                             </div>
                         </div>
                     </div>
@@ -204,32 +204,32 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 2</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Hébergement & Infrastructure</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art2.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('mentions_legales_page.articles.art2.title') }}</h2>
                         </div>
                     </div>
 
                     <p class="text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        L'infrastructure technique de la plateforme s'appuie sur des partenaires internationaux garantissant haute disponibilité, sécurité et conformité :
+                        {{ __t('mentions_legales_page.articles.art2.intro') }}
                     </p>
 
                     <div class="grid gap-4 sm:grid-cols-3">
                         <div class="border border-[#1a1f1e]/10 bg-[#FDFCF8] p-5">
-                            <div class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Hébergement Web</div>
+                            <div class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art2.vercel_badge') }}</div>
                             <h3 class="mt-1 text-base font-semibold text-[#1a1f1e]">Vercel Inc.</h3>
-                            <p class="mt-2 text-xs leading-relaxed text-[#1a1f1e]/70">Société de droit américain.<br />340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.</p>
+                            <p class="mt-2 text-xs leading-relaxed text-[#1a1f1e]/70">{!! __t('mentions_legales_page.articles.art2.vercel_desc') !!}</p>
                         </div>
 
                         <div class="border border-[#1a1f1e]/10 bg-[#FDFCF8] p-5">
-                            <div class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Base de Données</div>
+                            <div class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art2.supabase_badge') }}</div>
                             <h3 class="mt-1 text-base font-semibold text-[#1a1f1e]">Supabase Inc.</h3>
-                            <p class="mt-2 text-xs leading-relaxed text-[#1a1f1e]/70">Infrastructure sécurisée pour le stockage et la gestion des données de la plateforme.</p>
+                            <p class="mt-2 text-xs leading-relaxed text-[#1a1f1e]/70">{{ __t('mentions_legales_page.articles.art2.supabase_desc') }}</p>
                         </div>
 
                         <div class="border border-[#1a1f1e]/10 bg-[#FDFCF8] p-5">
-                            <div class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">E-mails Transactionnels</div>
+                            <div class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art2.resend_badge') }}</div>
                             <h3 class="mt-1 text-base font-semibold text-[#1a1f1e]">Resend</h3>
-                            <p class="mt-2 text-xs leading-relaxed text-[#1a1f1e]/70">Acheminement des courriels via serveurs d'envoi situés en Irlande (Union européenne).</p>
+                            <p class="mt-2 text-xs leading-relaxed text-[#1a1f1e]/70">{{ __t('mentions_legales_page.articles.art2.resend_desc') }}</p>
                         </div>
                     </div>
                 </section>
@@ -243,20 +243,20 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 3</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Propriété intellectuelle</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art3.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('mentions_legales_page.articles.art3.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 border-l-4 border-[#C06041] bg-[#1a1f1e]/5 p-6 text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
                         <p>
-                            L'ensemble des éléments composant le site — structure, textes, graphismes, logo, charte visuelle, base de données et méthodologie de sélection — est protégé par la <strong class="font-semibold text-[#1a1f1e]">loi 2-00</strong> relative aux droits d'auteur et droits voisins, ainsi que par la <strong class="font-semibold text-[#1a1f1e]">loi 17-97</strong> relative à la protection de la propriété industrielle.
+                            {{ __t('mentions_legales_page.articles.art3.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art3.p1_law1') }}</strong>{{ __t('mentions_legales_page.articles.art3.p1_mid') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art3.p1_law2') }}</strong>{{ __t('mentions_legales_page.articles.art3.p1_suffix') }}
                         </p>
                         <p>
-                            Toute reproduction, représentation, extraction ou réutilisation, totale ou partielle, sans autorisation écrite préalable de <strong class="font-semibold text-[#1a1f1e]">Sentissi Legal Advisory</strong>, est strictement interdite.
+                            {{ __t('mentions_legales_page.articles.art3.p2_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art3.p2_sla') }}</strong>{{ __t('mentions_legales_page.articles.art3.p2_suffix') }}
                         </p>
                         <p class="text-xs text-[#1a1f1e]/70 italic border-t border-[#1a1f1e]/10 pt-3">
-                            * Les contenus déposés par les candidats demeurent leur propriété exclusive ; ceux-ci concèdent à la plateforme une licence d'utilisation limitée aux seules finalités du service.
+                            {{ __t('mentions_legales_page.articles.art3.disclaimer') }}
                         </p>
                     </div>
                 </section>
@@ -270,13 +270,13 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 4</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Traitement des données personnelles (Loi 09-08)</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art4.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('mentions_legales_page.articles.art4.title') }}</h2>
                         </div>
                     </div>
 
                     <p class="text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        Par le biais de ce formulaire, Mohammed Sentissi collecte vos données personnelles en vue de leur inscription dans la CVthèque JURIJOB, plateforme de sélection de profils juridiques destinée à mettre les candidats en relation avec des recruteurs identifiés au Maroc et en Afrique.
+                        {{ __t('mentions_legales_page.articles.art4.intro') }}
                     </p>
 
                     <div class="grid gap-4 sm:grid-cols-2">
@@ -285,10 +285,10 @@
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
-                                Déclaration CNDP
+                                {{ __t('mentions_legales_page.articles.art4.cndp_title') }}
                             </div>
                             <p class="text-xs leading-relaxed text-[#1a1f1e]/80">
-                                Ce traitement a fait l'objet d'une déclaration auprès de la CNDP sous le numéro en cours de traitement par la CNDP. Les données personnelles collectées peuvent être transmises à tous les recruteurs potentiels au Maroc conformément à la demande de transfert déposée auprès de la CNDP.
+                                {{ __t('mentions_legales_page.articles.art4.cndp_desc') }}
                             </p>
                         </div>
 
@@ -297,18 +297,18 @@
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                 </svg>
-                                Accès Réservé & Protection
+                                {{ __t('mentions_legales_page.articles.art4.access_title') }}
                             </div>
                             <p class="text-xs leading-relaxed text-[#1a1f1e]/80">
-                                L'accès aux profils est strictement réservé aux recruteurs dont le paiement a été confirmé. Aucune diffusion publique n'est effectuée. Les données sont conservées tant que le candidat maintient son profil actif ; celui-ci peut le supprimer définitivement à tout moment depuis son espace personnel.
+                                {{ __t('mentions_legales_page.articles.art4.access_desc') }}
                             </p>
                         </div>
                     </div>
 
                     <div class="border border-[#1a1f1e]/15 bg-[#1a1f1e]/5 p-6 space-y-3">
-                        <h4 class="text-sm font-semibold text-[#1a1f1e] uppercase tracking-wider">Exercice de vos droits (Loi 09-08)</h4>
+                        <h4 class="text-sm font-semibold text-[#1a1f1e] uppercase tracking-wider">{{ __t('mentions_legales_page.articles.art4.rights_title') }}</h4>
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/80">
-                            Vous pouvez vous adresser à <a href="mailto:recrutement@sentissilegal.com" class="font-medium text-[#C06041] underline underline-offset-2">recrutement@sentissilegal.com</a> pour exercer vos droits d'accès, de rectification et d'opposition conformément aux dispositions de la loi marocaine 09-08.
+                            {{ __t('mentions_legales_page.articles.art4.rights_prefix') }}<a href="mailto:recrutement@sentissilegal.com" class="font-medium text-[#C06041] underline underline-offset-2">recrutement@sentissilegal.com</a>{{ __t('mentions_legales_page.articles.art4.rights_suffix') }}
                         </p>
                     </div>
                 </section>
@@ -322,14 +322,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 5</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Limitation de Responsabilité</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art5.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('mentions_legales_page.articles.art5.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>JURIJOB intervient en qualité d'outil de sourcing et de mise en relation. La plateforme n'est pas partie aux relations contractuelles qui se nouent entre candidats et recruteurs, et ne saurait être tenue responsable du déroulement des entretiens, des décisions d'embauche ou des engagements pris entre les parties.</p>
-                        <p>Les informations figurant dans les profils sont déclarées par les candidats sous leur seule responsabilité. Sentissi Legal Advisory s'efforce d'assurer la disponibilité et l'exactitude du service, sans garantir une accessibilité ininterrompue.</p>
+                        <p>{{ __t('mentions_legales_page.articles.art5.p1') }}</p>
+                        <p>{{ __t('mentions_legales_page.articles.art5.p2') }}</p>
                     </div>
                 </section>
 
@@ -342,17 +342,17 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 6</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Droit applicable & juridiction compétente</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('mentions_legales_page.articles.art6.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('mentions_legales_page.articles.art6.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 space-y-4 shadow-sm">
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                            Les présentes mentions légales sont régies par le <strong class="font-semibold text-[#1a1f1e]">droit marocain</strong>.
+                            {{ __t('mentions_legales_page.articles.art6.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art6.p1_bold') }}</strong>{{ __t('mentions_legales_page.articles.art6.p1_suffix') }}
                         </p>
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                            Tout litige relatif à leur interprétation ou à leur exécution relève de la compétence exclusive des <strong class="font-semibold text-[#1a1f1e]">tribunaux de Casablanca</strong>, à défaut de résolution amiable.
+                            {{ __t('mentions_legales_page.articles.art6.p2_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('mentions_legales_page.articles.art6.p2_bold') }}</strong>{{ __t('mentions_legales_page.articles.art6.p2_suffix') }}
                         </p>
                     </div>
                 </section>

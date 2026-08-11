@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/purity */
 import { router, Head, usePage } from '@inertiajs/react';
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
@@ -24,13 +25,13 @@ import FormConfirmation from '@/components/signup/FormConfirmation';
 import FormNavigator from '@/components/signup/FormNavigator';
 import Icon from '@/components/signup/FormularIcons';
 
-const candidatSteps = [
-    { id: 1, label: 'Infos', icon: 'FileText' },
-    { id: 2, label: 'Profil & attentes', icon: 'Settings' },
-    { id: 3, label: 'Expertise', icon: 'Layers' },
-    { id: 4, label: 'Parcours', icon: 'GraduationCap' },
-    { id: 5, label: 'Préférences', icon: 'MapPin' },
-    { id: 6, label: 'Confirmation', icon: 'ClipboardCheck' },
+const candidatStepDefinitions = [
+    { id: 1, labelKey: 'auth.steps.infos', icon: 'FileText' },
+    { id: 2, labelKey: 'auth.steps.profile', icon: 'Settings' },
+    { id: 3, labelKey: 'auth.steps.expertise', icon: 'Layers' },
+    { id: 4, labelKey: 'auth.steps.career', icon: 'GraduationCap' },
+    { id: 5, labelKey: 'auth.steps.preferences', icon: 'MapPin' },
+    { id: 6, labelKey: 'auth.steps.confirmation', icon: 'ClipboardCheck' },
 ];
 
 const createEmptyFormation = (): Formation => ({
@@ -52,8 +53,14 @@ const createEmptyExperience = (): Experience => ({
 });
 
 export default function RegisterCandidat() {
+    const { t } = useTranslation();
     const { auth } = usePage<{ auth: Auth }>().props;
     const signupCardRef = useRef<HTMLDivElement>(null);
+
+    const candidatSteps = candidatStepDefinitions.map((step) => ({
+        ...step,
+        label: t(step.labelKey),
+    }));
 
     useEffect(() => {
         // Preload Outfit Font if not already
@@ -125,8 +132,6 @@ export default function RegisterCandidat() {
         payload.append('password_confirmation', user.password_confirmation);
         payload.append('role', 'candidat');
 
-     
-
         // --- Candidat fields ---
         payload.append('poste_id', String(candidat.poste_id));
         payload.append('niveau_experience_id', String(candidat.niveau_experience_id));
@@ -181,7 +186,7 @@ export default function RegisterCandidat() {
             router.post('/register', payload, {
                 forceFormData: true,
                 onSuccess: () => {
-                    toast.success('Compte créé avec succès !');
+                    toast.success(t('auth.register_candidate.toast_success'));
                     resolve();
                 },
                 onError: (errs) => {
@@ -214,7 +219,7 @@ export default function RegisterCandidat() {
                     reject(
                         new Error(
                             (firstError as string) ||
-                            "Erreur lors de l'inscription",
+                            t('auth.register_candidate.toast_error'),
                         ),
                     );
                 },
@@ -243,7 +248,7 @@ export default function RegisterCandidat() {
                     !value ||
                     (typeof value === 'string' && value.trim() === '')
                 ) {
-                    newErrors[field] = 'Ce champ est obligatoire';
+                    newErrors[field] = t('auth.validation.required_field');
                     valid = false;
                 }
             });
@@ -251,7 +256,7 @@ export default function RegisterCandidat() {
             if (formData.user.password && formData.user.password_confirmation) {
                 if (formData.user.password !== formData.user.password_confirmation) {
                     newErrors.password_confirmation =
-                        'Les mots de passe ne correspondent pas';
+                        t('auth.validation.password_mismatch');
                     valid = false;
                 } else {
                     const p = formData.user.password;
@@ -264,7 +269,7 @@ export default function RegisterCandidat() {
                         !/[^A-Za-z0-9]/.test(p)
                     ) {
                         newErrors.password =
-                            'Le mot de passe doit contenir au moins 8 caractères, majuscules, minuscules, chiffres et symboles';
+                            t('auth.validation.password_complexity');
                         valid = false;
                     }
                 }
@@ -290,27 +295,27 @@ export default function RegisterCandidat() {
                         valid = false;
 
                         if (res.status === 409) {
-                            newErrors.email = 'Cet email est déjà utilisé';
+                            newErrors.email = t('auth.validation.email_taken');
                             toast.error(
-                                'Cet email est déjà associé à un compte.',
+                                t('auth.validation.email_taken_toast'),
                             );
                         } else if (res.status === 422) {
                             const data = await res.json();
-                            newErrors.email = data.message || 'Email invalide';
+                            newErrors.email = data.message || t('auth.validation.invalid_email');
                             toast.error(
                                 data.message ||
-                                'Veuillez vérifier votre email.',
+                                t('auth.validation.verify_email'),
                             );
                         } else {
                             toast.error(
-                                "Une erreur est survenue lors de la vérification de l'email.",
+                                t('auth.validation.email_check_error'),
                             );
                         }
                     }
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 } catch (error) {
                     valid = false;
-                    toast.error('Erreur de connexion. Veuillez réessayer.');
+                    toast.error(t('auth.validation.connection_error'));
                 }
             }
         } else if (step === 2) {
@@ -332,7 +337,7 @@ export default function RegisterCandidat() {
                     (typeof value === 'string' && value.trim() === '') ||
                     (Array.isArray(value) && value.length === 0)
                 ) {
-                    (newErrors as any)[field] = 'Ce champ est obligatoire';
+                    (newErrors as any)[field] = t('auth.validation.required_field');
                     valid = false;
                 }
             });
@@ -340,7 +345,7 @@ export default function RegisterCandidat() {
             section = 'candidat';
 
             if ((formData.candidat.specialisations || []).length === 0) {
-                newErrors.specialisations = 'Veuillez sélectionner au moins une spécialisation.';
+                newErrors.specialisations = t('auth.validation.select_specialisation');
                 valid = false;
             }
         } else if (step === 4) {
@@ -349,7 +354,7 @@ export default function RegisterCandidat() {
 
             if (formations.length === 0) {
                 newErrors.formations =
-                    'Veuillez ajouter au moins une formation.';
+                    t('auth.validation.add_formation');
                 valid = false;
             } else if (
                 formations.some(
@@ -362,13 +367,13 @@ export default function RegisterCandidat() {
                 )
             ) {
                 newErrors.formations =
-                    'Veuillez remplir tous les champs de chaque formation.';
+                    t('auth.validation.fill_all_formations');
                 valid = false;
             }
 
             if (experiences.length === 0) {
                 newErrors.experiences =
-                    'Veuillez ajouter au moins une expérience.';
+                    t('auth.validation.add_experience');
                 valid = false;
             } else if (
                 experiences.some(
@@ -381,19 +386,19 @@ export default function RegisterCandidat() {
                 )
             ) {
                 newErrors.experiences =
-                    'Veuillez remplir tous les champs de chaque expérience.';
+                    t('auth.validation.fill_all_experiences');
                 valid = false;
             } else {
                 formations.forEach((f: Formation, i: number) => {
                     if (f.annee_debut && f.annee_fin && f.annee_fin < f.annee_debut) {
-                        (newErrors as any)[`formations.${i}.annee_fin`] = "L'année de fin doit être postérieure ou égale à l'année de début.";
+                        (newErrors as any)[`formations.${i}.annee_fin`] = t('auth.validation.end_year_invalid');
                         valid = false;
                     }
                 });
 
                 experiences.forEach((e: Experience, i: number) => {
                     if (e.debut && e.fin && e.fin < e.debut) {
-                        (newErrors as any)[`experiences.${i}.fin`] = "La date de fin doit être postérieure ou égale à la date de début.";
+                        (newErrors as any)[`experiences.${i}.fin`] = t('auth.validation.end_date_invalid');
                         valid = false;
                     }
                 });
@@ -414,7 +419,7 @@ export default function RegisterCandidat() {
                     value === null ||
                     (Array.isArray(value) && value.length === 0)
                 ) {
-                    (newErrors as any)[field] = 'Ce champ est obligatoire';
+                    (newErrors as any)[field] = t('auth.validation.required_field');
                     valid = false;
                 }
             });
@@ -424,7 +429,7 @@ export default function RegisterCandidat() {
                     (langue) => !langue.langue_id || !langue.niveau_langue_id,
                 )
             ) {
-                newErrors.langues = 'Veuillez indiquer le niveau pour chaque langue sélectionnée.';
+                newErrors.langues = t('auth.validation.language_level_required');
                 valid = false;
             }
         }
@@ -509,8 +514,8 @@ export default function RegisterCandidat() {
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
             <SEO
-                title="Inscription Candidat - Boostez votre Carrière Juridique | JuriJob"
-                description="Créez votre profil juriste ou avocat sur JuriJob. Accédez aux meilleures opportunités en cabinet ou en entreprise au Maroc. Inscription rapide et sécurisée."
+                title={t('auth.register_candidate.seo_title')}
+                description={t('auth.register_candidate.seo_description')}
                 canonical="https://jurijob.ma/register/candidat"
             />
             <Toaster position="top-right" />
@@ -530,7 +535,7 @@ export default function RegisterCandidat() {
                                             size={14}
                                             className="text-[#C06041]"
                                         />
-                                        Inscription candidat
+                                        {t('auth.register_candidate.badge')}
                                     </span>
 
                                     <h1
@@ -540,22 +545,19 @@ export default function RegisterCandidat() {
                                                 'Cormorant Garamond, serif',
                                         }}
                                     >
-                                        Créez votre compte et trouvez le poste
-                                        idéal
+                                        {t('auth.register_candidate.title')}
                                     </h1>
 
                                     <p className="mt-4 text-lg font-medium text-[#1a1f1e]/70">
-                                        Un processus simple, une présentation
-                                        professionnelle et des correspondances
-                                        intelligentes.
+                                        {t('auth.register_candidate.subtitle')}
                                     </p>
                                 </div>
 
                                 <ul className="space-y-4">
                                     {[
-                                        'Profil clair et structuré',
-                                        'Mise en avant de vos spécialités',
-                                        'Matching avec les meilleures opportunités',
+                                        t('auth.register_candidate.feature1'),
+                                        t('auth.register_candidate.feature2'),
+                                        t('auth.register_candidate.feature3'),
                                     ].map((text) => (
                                         <li
                                             key={text}
@@ -579,11 +581,10 @@ export default function RegisterCandidat() {
                                                 size={18}
                                                 className="text-[#C06041]"
                                             />{' '}
-                                            Sécurisé
+                                            {t('auth.register_candidate.secure_title')}
                                         </div>
                                         <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
-                                            Vos données restent privées et
-                                            protégées.
+                                            {t('auth.register_candidate.secure_desc')}
                                         </p>
                                     </div>
                                     <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm">
@@ -593,10 +594,10 @@ export default function RegisterCandidat() {
                                                 size={18}
                                                 className="text-[#C06041]"
                                             />{' '}
-                                            Rapide
+                                            {t('auth.register_candidate.fast_title')}
                                         </div>
                                         <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
-                                            Inscription en moins de 3 minutes.
+                                            {t('auth.register_candidate.fast_desc')}
                                         </p>
                                     </div>
                                 </div>
@@ -631,13 +632,13 @@ export default function RegisterCandidat() {
 
                                 <div className="mt-8 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-6">
                                     <p className="text-sm font-medium text-[#1a1f1e]/50">
-                                        Déjà un compte ?
+                                        {t('auth.register_candidate.already_account')}
                                     </p>
                                     <a
                                         href="/login"
                                         className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
                                     >
-                                        Se connecter
+                                        {t('auth.register_candidate.login_link')}
                                     </a>
                                 </div>
                             </div>

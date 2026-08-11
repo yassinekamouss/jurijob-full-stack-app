@@ -1,4 +1,5 @@
 import { useState, ReactNode, useEffect, RefObject } from 'react';
+import { useTranslation } from 'react-i18next';
 import ProgressIndicator from '@/components/signup/ProgressionIndicator';
 import Icon from '@/components/signup/FormularIcons';
 
@@ -10,6 +11,7 @@ type NavigatorFormProps = {
 }
 
 export default function FormNavigator({ children, onNextStep, steps, scrollTargetRef }: NavigatorFormProps) {
+    const { t } = useTranslation();
     const [currentStep, setCurrentStep] = useState(1);
     const [isNavigating, setIsNavigating] = useState(false);
 
@@ -68,7 +70,7 @@ export default function FormNavigator({ children, onNextStep, steps, scrollTarge
                             : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                 >
-                    <Icon name="ChevronLeft" size={16} /> Précédent
+                    <Icon name="ChevronLeft" size={16} /> {t('auth.forms.navigator.previous')}
                 </button>
 
                 {currentStep < totalSteps && (
@@ -78,7 +80,7 @@ export default function FormNavigator({ children, onNextStep, steps, scrollTarge
                         disabled={isNavigating}
                         className="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-slate-800 transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-wait"
                     >
-                        {isNavigating ? 'Validation...' : <>Suivant <Icon name="ChevronRight" size={16} /></>}
+                        {isNavigating ? t('auth.forms.navigator.validating') : <>{t('auth.forms.navigator.next')} <Icon name="ChevronRight" size={16} /></>}
                     </button>
                 )}
             </div>

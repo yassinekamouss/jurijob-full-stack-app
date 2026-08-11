@@ -24,6 +24,8 @@ class InertiaResponseCacheProfile extends CacheAllSuccessfulGetRequests
     public function useCacheNameSuffix(Request $request): string
     {
         $suffix = parent::useCacheNameSuffix($request);
+        $locale = app()->getLocale();
+        $suffix .= "-{$locale}";
 
         if ($request->header('X-Inertia')) {
             $suffix .= '-inertia';

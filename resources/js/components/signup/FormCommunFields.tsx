@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Icon from '@/components/signup/FormularIcons';
 
 import { UserFormData } from '@/types';
@@ -18,6 +19,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
     className = '',
     isRecruiter = false
 }) => {
+    const { t } = useTranslation();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [dragActive, setDragActive] = useState(false);
@@ -36,11 +38,11 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
 
         const levels = [
             { strength: 0, label: '', color: '', bg: 'bg-slate-200' },
-            { strength: 1, label: 'Très faible', color: 'text-red-500', bg: 'bg-red-500' },
-            { strength: 2, label: 'Faible', color: 'text-orange-500', bg: 'bg-orange-400' },
-            { strength: 3, label: 'Moyen', color: 'text-yellow-500', bg: 'bg-yellow-400' },
-            { strength: 4, label: 'Fort', color: 'text-green-500', bg: 'bg-green-500' },
-            { strength: 5, label: 'Très fort', color: 'text-green-600', bg: 'bg-green-600' },
+            { strength: 1, label: t('auth.forms.common.strength.very_weak'), color: 'text-red-500', bg: 'bg-red-500' },
+            { strength: 2, label: t('auth.forms.common.strength.weak'), color: 'text-orange-500', bg: 'bg-orange-400' },
+            { strength: 3, label: t('auth.forms.common.strength.medium'), color: 'text-yellow-500', bg: 'bg-yellow-400' },
+            { strength: 4, label: t('auth.forms.common.strength.strong'), color: 'text-green-500', bg: 'bg-green-500' },
+            { strength: 5, label: t('auth.forms.common.strength.very_strong'), color: 'text-green-600', bg: 'bg-green-600' },
         ];
         return levels[strength];
     };
@@ -54,30 +56,27 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
         return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
     };
 
-
-
     const inputClasses = "w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-900 focus:ring-2 focus:ring-slate-900 focus:outline-none transition-all placeholder:text-slate-400";
     const labelClasses = "block text-sm font-semibold text-slate-700 mb-1.5";
 
     return (
         <div className={`space-y-6 ${className}`}>
             <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Informations personnelles</h3>
-                <p className="text-sm text-slate-500">Renseignez vos informations de base pour créer votre compte</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{t('auth.forms.common.title')}</h3>
+                <p className="text-sm text-slate-500">{t('auth.forms.common.subtitle')}</p>
             </div>
-
 
             {/* --- NOM / PRENOM --- */}
             {!isRecruiter && (
                 <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                        <label className={labelClasses}>Prénom *</label>
-                        <input type="text" placeholder="Votre prénom" value={formData.prenom || ''} onChange={(e) => onFieldChange('prenom', e.target.value)} className={inputClasses} />
+                        <label className={labelClasses}>{t('auth.forms.common.firstname_label')}</label>
+                        <input type="text" placeholder={t('auth.forms.common.firstname_placeholder')} value={formData.prenom || ''} onChange={(e) => onFieldChange('prenom', e.target.value)} className={inputClasses} />
                         {errors.prenom && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.prenom}</p>}
                     </div>
                     <div>
-                        <label className={labelClasses}>Nom *</label>
-                        <input type="text" placeholder="Votre nom" value={formData.nom || ''} onChange={(e) => onFieldChange('nom', e.target.value)} className={inputClasses} />
+                        <label className={labelClasses}>{t('auth.forms.common.lastname_label')}</label>
+                        <input type="text" placeholder={t('auth.forms.common.lastname_placeholder')} value={formData.nom || ''} onChange={(e) => onFieldChange('nom', e.target.value)} className={inputClasses} />
                         {errors.nom && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.nom}</p>}
                     </div>
                 </div>
@@ -85,23 +84,23 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
 
             {/* --- EMAIL --- */}
             <div>
-                <label className={labelClasses}>Adresse e-mail *</label>
-                <input type="email" placeholder="votre.email@exemple.com" value={formData.email || ''} onChange={(e) => onFieldChange('email', e.target.value)} className={inputClasses} />
+                <label className={labelClasses}>{t('auth.forms.common.email_label')}</label>
+                <input type="email" placeholder={t('auth.forms.common.email_placeholder')} value={formData.email || ''} onChange={(e) => onFieldChange('email', e.target.value)} className={inputClasses} />
                 {errors.email && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.email}</p>}
             </div>
 
             {/* --- TELEPHONE --- */}
             <div>
-                <label className={labelClasses}>Téléphone</label>
+                <label className={labelClasses}>{t('auth.forms.common.phone_label')}</label>
                 <input
                     type="tel"
-                    placeholder="+212600000000"
+                    placeholder={t('auth.forms.common.phone_placeholder')}
                     value={formData.telephone || ''}
                     onChange={(e) => {
                         const val = e.target.value;
                         onFieldChange('telephone', val);
                         if (val && !/^\+?[0-9]*$/.test(val)) {
-                            setLocalPhoneError('Format: + et chiffres uniquement');
+                            setLocalPhoneError(t('auth.forms.common.phone_format_error'));
                         } else {
                             setLocalPhoneError(null);
                         }
@@ -117,8 +116,8 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
 
             {/* --- PASSWORD --- */}
             <div className="relative">
-                <label className={labelClasses}>Mot de passe *</label>
-                <input type={showPassword ? 'text' : 'password'} placeholder="Créez un mot de passe sécurisé" value={formData.password || ''} onChange={(e) => onFieldChange('password', e.target.value)} className={`${inputClasses} pr-10`} />
+                <label className={labelClasses}>{t('auth.forms.common.password_label')}</label>
+                <input type={showPassword ? 'text' : 'password'} placeholder={t('auth.forms.common.password_placeholder')} value={formData.password || ''} onChange={(e) => onFieldChange('password', e.target.value)} className={`${inputClasses} pr-10`} />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-600 transition-colors">
                     <Icon name={showPassword ? 'EyeOff' : 'Eye'} size={20} />
                 </button>
@@ -130,7 +129,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
                             </div>
                             <span className={`text-[10px] font-bold uppercase tracking-wider ${passwordStrength.color}`}>{passwordStrength.label}</span>
                         </div>
-                        <p className="text-[11px] text-slate-400 mt-1">8+ caractères, majuscule, minuscule, chiffre et symbole</p>
+                        <p className="text-[11px] text-slate-400 mt-1">{t('auth.forms.common.password_requirements')}</p>
                     </div>
                 )}
                 {errors.password && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.password}</p>}
@@ -138,13 +137,13 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
 
             {/* --- CONFIRM PASSWORD --- */}
             <div className="relative">
-                <label className={labelClasses}>Confirmer le mot de passe *</label>
-                <input type={showConfirmPassword ? 'text' : 'password'} placeholder="Confirmez votre mot de passe" value={formData.password_confirmation || ''} onChange={(e) => onFieldChange('password_confirmation', e.target.value)} className={`${inputClasses} pr-10`} />
+                <label className={labelClasses}>{t('auth.forms.common.confirm_password_label')}</label>
+                <input type={showConfirmPassword ? 'text' : 'password'} placeholder={t('auth.forms.common.confirm_password_placeholder')} value={formData.password_confirmation || ''} onChange={(e) => onFieldChange('password_confirmation', e.target.value)} className={`${inputClasses} pr-10`} />
                 <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-600 transition-colors">
                     <Icon name={showConfirmPassword ? 'EyeOff' : 'Eye'} size={20} />
                 </button>
                 {formData.password_confirmation && formData.password_confirmation !== formData.password && (
-                    <p className="text-xs text-red-500 mt-1.5 font-medium">Les mots de passe ne correspondent pas</p>
+                    <p className="text-xs text-red-500 mt-1.5 font-medium">{t('auth.forms.common.password_mismatch')}</p>
                 )}
                 {errors.password_confirmation && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.password_confirmation}</p>}
             </div>

@@ -1,7 +1,7 @@
 @extends('layouts.legal')
 
-@section('title', 'Conditions Générales de Vente (CGV) | JuriJob')
-@section('meta_description', 'Conditions Générales de Vente de JURIJOB : tarifs, commande, livraison de la short-list, paiement par virement, annulation et cadre légal.')
+@section('title', __t('cgv_page.seo_title'))
+@section('meta_description', __t('cgv_page.seo_description'))
 @section('canonical', url('/cgv'))
 
 @section('content')
@@ -14,21 +14,21 @@
                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                     </svg>
-                    Prestations Payantes & Recruteurs
+                    {{ __t('cgv_page.hero.badge') }}
                 </div>
 
                 <h1 class="mt-6 text-4xl font-normal tracking-tight text-[#1a1f1e] sm:text-5xl lg:text-6xl" style="font-family: 'Cormorant Garamond', serif;">
-                    Conditions Générales <span class="italic text-[#C06041]">de Vente</span>
+                    {{ __t('cgv_page.hero.title_part1') }} <span class="italic text-[#C06041]">{{ __t('cgv_page.hero.title_part2') }}</span>
                 </h1>
 
                 <p class="mt-4 text-base font-light leading-relaxed text-[#1a1f1e]/75 sm:text-lg">
-                    Les conditions applicables aux prestations payantes de JURIJOB, destinées aux recruteurs professionnels.
+                    {{ __t('cgv_page.hero.subtitle') }}
                 </p>
 
                 <div class="mt-6 inline-flex items-center gap-2 text-xs font-medium text-[#1a1f1e]/50">
-                    <span>Dernière mise à jour : août 2026</span>
+                    <span>{{ __t('cgv_page.hero.updated') }}</span>
                     <span>•</span>
-                    <span>Droit Commercial Marocain</span>
+                    <span>{{ __t('cgv_page.hero.law') }}</span>
                 </div>
             </div>
         </div>
@@ -42,27 +42,27 @@
                 <div class="sticky top-28 space-y-6 border border-[#1a1f1e]/10 bg-[#FDFCF8] p-6 shadow-sm">
                     <div>
                         <h3 class="text-lg font-normal text-[#1a1f1e]" style="font-family: 'Cormorant Garamond', serif;">
-                            Sommaire interactif
+                            {{ __t('cgv_page.sidebar.title') }}
                         </h3>
                         <p class="text-xs font-light text-[#1a1f1e]/60">
-                            Table des articles des CGV
+                            {{ __t('cgv_page.sidebar.subtitle') }}
                         </p>
                     </div>
 
                     <nav class="space-y-1">
                         @php
                             $articles = [
-                                ['id' => 'article-1', 'num' => 'Article 1', 'title' => 'Objet'],
-                                ['id' => 'article-2', 'num' => 'Article 2', 'title' => 'Prestation : la short-list'],
-                                ['id' => 'article-3', 'num' => 'Article 3', 'title' => 'Prix et Tarification'],
-                                ['id' => 'article-4', 'num' => 'Article 4', 'title' => 'Commande et livraison'],
-                                ['id' => 'article-5', 'num' => 'Article 5', 'title' => 'Modalités de paiement'],
-                                ['id' => 'article-6', 'num' => 'Article 6', 'title' => 'Annulation et rétractation'],
-                                ['id' => 'article-7', 'num' => 'Article 7', 'title' => 'Absence de garantie de résultat'],
-                                ['id' => 'article-8', 'num' => 'Article 8', 'title' => 'Utilisation des profils livrés'],
-                                ['id' => 'article-9', 'num' => 'Article 9', 'title' => 'Responsabilité'],
-                                ['id' => 'article-10', 'num' => 'Article 10', 'title' => 'Facturation et données personnelles'],
-                                ['id' => 'article-11', 'num' => 'Article 11', 'title' => 'Droit applicable et litiges'],
+                                ['id' => 'article-1', 'num' => __t('cgv_page.articles.art1.num'), 'title' => __t('cgv_page.articles.art1.title')],
+                                ['id' => 'article-2', 'num' => __t('cgv_page.articles.art2.num'), 'title' => __t('cgv_page.articles.art2.title')],
+                                ['id' => 'article-3', 'num' => __t('cgv_page.articles.art3.num'), 'title' => __t('cgv_page.articles.art3.title')],
+                                ['id' => 'article-4', 'num' => __t('cgv_page.articles.art4.num'), 'title' => __t('cgv_page.articles.art4.title')],
+                                ['id' => 'article-5', 'num' => __t('cgv_page.articles.art5.num'), 'title' => __t('cgv_page.articles.art5.title')],
+                                ['id' => 'article-6', 'num' => __t('cgv_page.articles.art6.num'), 'title' => __t('cgv_page.articles.art6.title')],
+                                ['id' => 'article-7', 'num' => __t('cgv_page.articles.art7.num'), 'title' => __t('cgv_page.articles.art7.title')],
+                                ['id' => 'article-8', 'num' => __t('cgv_page.articles.art8.num'), 'title' => __t('cgv_page.articles.art8.title')],
+                                ['id' => 'article-9', 'num' => __t('cgv_page.articles.art9.num'), 'title' => __t('cgv_page.articles.art9.title')],
+                                ['id' => 'article-10', 'num' => __t('cgv_page.articles.art10.num'), 'title' => __t('cgv_page.articles.art10.title')],
+                                ['id' => 'article-11', 'num' => __t('cgv_page.articles.art11.num'), 'title' => __t('cgv_page.articles.art11.title')],
                             ];
                         @endphp
 
@@ -81,9 +81,9 @@
 
                     <div class="border-t border-[#1a1f1e]/10 pt-4">
                         <div class="bg-[#1a1f1e]/5 p-4 text-xs">
-                            <p class="font-semibold text-[#1a1f1e]">Une question sur votre commande ?</p>
+                            <p class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.sidebar.question_title') }}</p>
                             <p class="mt-1 text-[#1a1f1e]/70">
-                                Contactez notre équipe dédiée aux recruteurs :
+                                {{ __t('cgv_page.sidebar.question_sub') }}
                             </p>
                             <a href="mailto:recrutement@sentissilegal.com" class="mt-3 flex w-full items-center justify-center gap-2 border border-[#1a1f1e]/20 bg-[#FDFCF8] px-3 py-1.5 text-xs font-medium text-[#1a1f1e] hover:border-[#1a1f1e]">
                                 <svg class="h-3.5 w-3.5 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,20 +107,20 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 1</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Objet</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art1.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art1.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
                         <p>
-                            Les présentes Conditions Générales de Vente (ci-après les « <strong class="font-semibold text-[#1a1f1e]">CGV</strong> ») régissent les prestations payantes proposées par <strong class="font-semibold text-[#1a1f1e]">SENTISSI LEGAL ADVISORY SARL AU</strong> (ci-après « SLA ») aux recruteurs professionnels via la plateforme JURIJOB.
+                            {{ __t('cgv_page.articles.art1.p1') }}
                         </p>
                         <p>
-                            Elles complètent les <a href="/cgu" class="font-medium text-[#C06041] underline underline-offset-4">Conditions Générales d'Utilisation</a>, auxquelles elles ne dérogent pas. En cas de contradiction, les présentes CGV prévalent pour tout ce qui concerne les prestations payantes.
+                            {{ __t('cgv_page.articles.art1.p2_prefix') }}<a href="/cgu" class="font-medium text-[#C06041] underline underline-offset-4">{{ __t('cgv_page.articles.art1.p2_link') }}</a>{{ __t('cgv_page.articles.art1.p2_suffix') }}
                         </p>
                         <div class="border-l-4 border-[#C06041] bg-[#1a1f1e]/5 p-4 font-medium text-[#1a1f1e]">
-                            Toute commande emporte acceptation pleine et entière des présentes CGV.
+                            {{ __t('cgv_page.articles.art1.box') }}
                         </div>
                     </div>
                 </section>
@@ -134,31 +134,31 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 2</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Prestation : la short-list de profils juridiques</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art2.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art2.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
                         <p>
-                            La prestation principale consiste en la livraison d'une short-list de profils juridiques présélectionnés, établie en réponse aux critères définis par le recruteur : <span class="italic">spécialisations, niveau d'expérience, diplôme, langues et modalité de travail</span>.
+                            {{ __t('cgv_page.articles.art2.p1') }}
                         </p>
                         <p>
-                            Chaque profil est évalué au moyen d'un algorithme de scoring propriétaire portant sur quatre dimensions, puis la sélection est validée manuellement avant transmission.
+                            {{ __t('cgv_page.articles.art2.p2') }}
                         </p>
 
                         <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-5 space-y-3">
-                            <h3 class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Contenu du livrable pour chaque profil</h3>
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art2.box_title') }}</h3>
                             <ul class="grid gap-2 sm:grid-cols-2 text-xs sm:text-sm text-[#1a1f1e]/80">
-                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>Identité et coordonnées du candidat</li>
-                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>Parcours complet de formation</li>
-                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>Expériences professionnelles détaillées</li>
-                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>Spécialisations & compétences linguistiques</li>
+                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>{{ __t('cgv_page.articles.art2.item1') }}</li>
+                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>{{ __t('cgv_page.articles.art2.item2') }}</li>
+                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>{{ __t('cgv_page.articles.art2.item3') }}</li>
+                                <li class="flex items-center gap-2"><div class="h-1.5 w-1.5 bg-[#C06041]"></div>{{ __t('cgv_page.articles.art2.item4') }}</li>
                             </ul>
                         </div>
 
                         <p class="text-xs text-[#1a1f1e]/70 italic">
-                            La prestation ne comprend ni la conduite des entretiens, ni l'évaluation approfondie des candidats, ni aucune garantie d'embauche. Ces prestations peuvent faire l'objet de services complémentaires distincts, sur devis.
+                            {{ __t('cgv_page.articles.art2.disclaimer') }}
                         </p>
                     </div>
                 </section>
@@ -172,31 +172,31 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 3</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Prix et Tarification</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art3.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art3.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="border border-[#1a1f1e] bg-[#FDFCF8] p-6 shadow-md space-y-4">
                         <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-[#1a1f1e]/10 pb-4">
                             <div>
-                                <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Tarif unitaire réglementé</span>
+                                <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art3.badge') }}</span>
                                 <div class="text-3xl font-bold text-[#1a1f1e] mt-1">
-                                    1 490 MAD <span class="text-sm font-normal text-[#1a1f1e]/60">HT / profil</span>
+                                    {{ __t('cgv_page.articles.art3.price') }} <span class="text-sm font-normal text-[#1a1f1e]/60">{{ __t('cgv_page.articles.art3.unit') }}</span>
                                 </div>
                             </div>
                             <div class="text-sm font-medium text-[#1a1f1e]/70">
-                                Soit <strong class="text-[#1a1f1e] font-semibold">1 788 MAD TTC</strong> (TVA 20%)
+                                {{ __t('cgv_page.articles.art3.tax') }}
                             </div>
                         </div>
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/85">
-                            Le montant total dû correspond au prix unitaire multiplié par le nombre de profils effectivement composant la short-list livrée. Ce montant est affiché au recruteur avant tout engagement de paiement.
+                            {{ __t('cgv_page.articles.art3.p1') }}
                         </p>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>Des conditions tarifaires spécifiques peuvent être consenties pour les besoins récurrents ou les volumes importants.</p>
-                        <p>Les prix sont susceptibles d'évoluer ; le tarif applicable est celui en vigueur au jour de la livraison de la short-list.</p>
+                        <p>{{ __t('cgv_page.articles.art3.p2') }}</p>
+                        <p>{{ __t('cgv_page.articles.art3.p3') }}</p>
                     </div>
                 </section>
 
@@ -209,24 +209,24 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 4</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Commande et livraison</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art4.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art4.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>Le recruteur dépose sa demande depuis son espace personnel en précisant ses critères et le nombre de profils souhaité.</p>
-                        <p>SLA s'engage à livrer la short-list dans un délai indicatif de <strong class="font-semibold text-[#1a1f1e]">48 heures ouvrées</strong> à compter de la validation de la demande.</p>
+                        <p>{{ __t('cgv_page.articles.art4.p1') }}</p>
+                        <p>{{ __t('cgv_page.articles.art4.p2_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art4.p2_bold') }}</strong>{{ __t('cgv_page.articles.art4.p2_suffix') }}</p>
 
                         <div class="border border-[#C06041]/30 bg-[#C06041]/5 p-5 space-y-2">
                             <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#C06041]">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                                 </svg>
-                                Garantie 0 MAD en cas d'absence de correspondance
+                                {{ __t('cgv_page.articles.art4.box_title') }}
                             </div>
                             <p class="text-xs sm:text-sm leading-relaxed text-[#1a1f1e]/85">
-                                Lorsque aucun profil ne correspond aux critères, aucune short-list n'est livrée et aucune somme n'est due. SLA en informe le recruteur et peut lui proposer une prestation complémentaire de recherche directe.
+                                {{ __t('cgv_page.articles.art4.box_desc') }}
                             </p>
                         </div>
                     </div>
@@ -241,14 +241,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 5</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Modalités de paiement</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art5.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art5.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 shadow-sm text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                        <p>Le paiement s'effectue par <strong class="font-semibold text-[#1a1f1e]">virement bancaire</strong> sur le compte de SENTISSI LEGAL ADVISORY.</p>
-                        <p>Le recruteur signale son virement depuis son espace personnel. L'accès aux profils est débloqué après vérification de la réception des fonds par SLA.</p>
+                        <p>{{ __t('cgv_page.articles.art5.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art5.p1_bold') }}</strong>{{ __t('cgv_page.articles.art5.p1_suffix') }}</p>
+                        <p>{{ __t('cgv_page.articles.art5.p2') }}</p>
                     </div>
                 </section>
 
@@ -261,14 +261,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 6</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Annulation et rétractation</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art6.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art6.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>Le recruteur peut retirer sa demande à tout moment, tant qu'aucun paiement n'a été effectué, sans frais ni justification.</p>
-                        <p>Une fois le paiement confirmé et l'accès aux profils débloqué, la prestation est réputée exécutée et aucun remboursement ne peut être demandé au motif qu'aucun candidat n'aurait été retenu.</p>
+                        <p>{{ __t('cgv_page.articles.art6.p1') }}</p>
+                        <p>{{ __t('cgv_page.articles.art6.p2') }}</p>
                     </div>
                 </section>
 
@@ -281,14 +281,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 7</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Absence de garantie de résultat</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art7.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art7.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>SLA est tenue à une <strong class="font-semibold text-[#1a1f1e]">obligation de moyens</strong> et non de résultat.</p>
-                        <p>Les informations composant les profils sont déclarées par les candidats sous leur seule responsabilité. Il appartient au recruteur de procéder aux vérifications qu'il juge nécessaires.</p>
+                        <p>{{ __t('cgv_page.articles.art7.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art7.p1_bold') }}</strong>{{ __t('cgv_page.articles.art7.p1_suffix') }}</p>
+                        <p>{{ __t('cgv_page.articles.art7.p2') }}</p>
                     </div>
                 </section>
 
@@ -301,13 +301,13 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 8</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Utilisation des profils livrés</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art8.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art8.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 shadow-sm text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                        <p>Les profils livrés sont destinés au seul processus de recrutement au titre duquel la short-list a été commandée. Toute extraction massive, revente ou communication à des tiers est strictement interdite.</p>
+                        <p>{{ __t('cgv_page.articles.art8.p1') }}</p>
                     </div>
                 </section>
 
@@ -320,13 +320,13 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 9</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Limitation de responsabilité</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art9.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art9.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>La responsabilité de SLA ne saurait excéder le <strong class="font-semibold text-[#1a1f1e]">montant effectivement réglé</strong> par le recruteur au titre de la prestation concernée.</p>
+                        <p>{{ __t('cgv_page.articles.art9.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art9.p1_bold') }}</strong>{{ __t('cgv_page.articles.art9.p1_suffix') }}</p>
                     </div>
                 </section>
 
@@ -339,13 +339,13 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 10</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Facturation et données personnelles</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art10.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art10.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>Une facture est établie pour chaque prestation. Le traitement des données personnelles est effectué conformément à la <strong class="font-semibold text-[#1a1f1e]">loi 09-08</strong> et aux <a href="/mentions-legales" class="font-medium text-[#C06041] underline underline-offset-2">mentions légales</a>.</p>
+                        <p>{{ __t('cgv_page.articles.art10.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art10.p1_bold') }}</strong>{{ __t('cgv_page.articles.art10.p1_and') }}<a href="/mentions-legales" class="font-medium text-[#C06041] underline underline-offset-2">{{ __t('cgv_page.articles.art10.p1_link') }}</a>{{ __t('cgv_page.articles.art10.p1_suffix') }}</p>
                     </div>
                 </section>
 
@@ -358,14 +358,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 11</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Droit applicable et litiges</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgv_page.articles.art11.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgv_page.articles.art11.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 space-y-4 shadow-sm">
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                            Les présentes CGV sont régies par le <strong class="font-semibold text-[#1a1f1e]">droit marocain</strong>. Tout litige relève de la compétence exclusive des <strong class="font-semibold text-[#1a1f1e]">tribunaux de Casablanca</strong>.
+                            {{ __t('cgv_page.articles.art11.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art11.p1_bold') }}</strong>{{ __t('cgv_page.articles.art11.p1_middle') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgv_page.articles.art11.p1_courts') }}</strong>{{ __t('cgv_page.articles.art11.p1_suffix') }}
                         </p>
                     </div>
                 </section>

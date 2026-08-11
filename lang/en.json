@@ -188,5 +188,749 @@
     "cgv": "Terms of Sale (CGV)",
     "copyright": "© 2026 — Smart Legal Recruitment. All rights reserved.",
     "address": "4, Mohamed Al Hayani Street, Casablanca - Morocco"
+  },
+  "auth": {
+    "steps": {
+      "infos": "Information",
+      "profile": "Profile",
+      "specialisations": "Specializations",
+      "expertise": "Expertise",
+      "journey": "Career",
+      "career": "Career",
+      "preferences": "Preferences",
+      "confirmation": "Confirmation"
+    },
+    "validation": {
+      "required_field": "This field is required",
+      "password_mismatch": "Passwords do not match",
+      "password_complexity": "Password must contain at least 8 characters, uppercase, lowercase, numbers, and symbols",
+      "email_taken": "This email is already in use",
+      "email_taken_toast": "This email is already associated with an account.",
+      "invalid_email": "Invalid email",
+      "verify_email": "Please verify your email.",
+      "email_check_error": "An error occurred while checking the email.",
+      "connection_error": "Connection error. Please try again.",
+      "select_specialisation": "Please select at least one specialization.",
+      "add_formation": "Please add at least one education record.",
+      "fill_all_formations": "Please fill in all required fields for each education record.",
+      "add_experience": "Please add at least one work experience.",
+      "fill_all_experiences": "Please fill in all required fields for each experience.",
+      "end_year_invalid": "End year must be greater than or equal to start year.",
+      "end_date_invalid": "End date must be greater than or equal to start date.",
+      "language_level_required": "Please specify the proficiency level for each selected language."
+    },
+    "login": {
+      "seo_title": "Sign In | JuriJob",
+      "title": "Welcome back",
+      "subtitle": "Sign in to your personal space",
+      "email_label": "Email address",
+      "email_placeholder": "email@example.com",
+      "password_label": "Password",
+      "forgot_password": "Forgot password?",
+      "remember_me": "Remember me",
+      "submit": "Sign in",
+      "or": "or",
+      "no_account": "Don't have an account?",
+      "register_link": "Sign up",
+      "hero_title_1": "The Evolution of",
+      "hero_title_2": "Legal Recruitment",
+      "hero_desc": "Access a selective platform designed for legal professionals. Whether you are looking to boost your career or hire rare talent, JuriJob offers a refined and confidential environment.",
+      "feature1_title": "Qualified Visibility",
+      "feature1_desc": "Connect directly with law firms and corporate companies matching your aspirations and local or international specialization.",
+      "feature2_title": "Privileged Space",
+      "feature2_desc": "Benefit from customized tracking to manage your applications or job openings, with constant access to our qualified database."
+    },
+    "register_candidate": {
+      "toast_success": "Candidate account successfully created!",
+      "toast_error": "Error during registration",
+      "seo_title": "Candidate Registration - Boost Your Legal Career | JuriJob",
+      "seo_description": "Join JuriJob as a candidate. Create your profile and connect with the best law firms and legal departments in Morocco.",
+      "badge": "Candidate space",
+      "title": "Boost your legal career",
+      "subtitle": "Join the first platform dedicated to legal professions in Morocco.",
+      "feature1": "100% confidential profile",
+      "feature2": "Targeted shortlists by our experts",
+      "feature3": "Access to top opportunities",
+      "network_title": "Elite network",
+      "network_desc": "Access the best legal career opportunities.",
+      "confidential_title": "Confidential & Secure",
+      "confidential_desc": "Your data is strictly protected.",
+      "secure_title": "100% Secure Payment",
+      "secure_desc": "Secured transactions and full data protection.",
+      "fast_title": "Shortlist within 48h",
+      "fast_desc": "Fast reception of qualified candidate profiles.",
+      "already_account": "Already have an account?",
+      "login_link": "Sign in"
+    },
+    "register_recruiter": {
+      "toast_success": "Recruiter account successfully created!",
+      "toast_error": "Error during registration",
+      "seo_title": "Recruiter Registration - Hire Legal Talent | JuriJob",
+      "seo_description": "Join JuriJob as a recruiter. Define your search criteria and receive a qualified shortlist of lawyers and legal professionals in Morocco.",
+      "badge": "Recruiter registration",
+      "title": "Hire top legal talent",
+      "subtitle": "Access a qualified pool of legal counsels and lawyers ready to join your organization.",
+      "feature1": "Targeted job postings",
+      "feature2": "Smart matching",
+      "feature3": "Streamlined application management",
+      "pro_title": "Professional",
+      "pro_desc": "Your company profile is highlighted.",
+      "efficient_title": "Efficient",
+      "efficient_desc": "Find the right profile quickly.",
+      "already_account": "Already have an account?",
+      "login_link": "Sign in"
+    },
+    "social": {
+      "or_continue_with": "or continue with",
+      "connect_with_google": "Sign in with Google",
+      "connect_with_linkedin": "Sign in with LinkedIn",
+      "quick_signup_google": "Quick registration with Google",
+      "quick_signup_linkedin": "Quick registration with LinkedIn",
+      "quick_signup": "Quick registration",
+      "quick_signup_desc": "Create your account in one click with Google or LinkedIn.",
+      "candidate_quick": "Candidate: instant time saver",
+      "recruiter_quick": "Recruiter: fast setup via LinkedIn or Google",
+      "no_password_needed": "No password needed. Your basic information will be prefilled."
+    },
+    "already_authenticated": {
+      "title": "Already Logged In",
+      "message": "You are currently logged in as",
+      "dashboard_button": "Go to my dashboard",
+      "logout_button": "Log out",
+      "switch_account": "Would you like to sign in with another account?"
+    },
+    "forms": {
+      "common": {
+        "title": "Personal Information",
+        "subtitle": "Fill in your basic information to create your account",
+        "firstname_label": "First Name *",
+        "firstname_placeholder": "Your first name",
+        "lastname_label": "Last Name *",
+        "lastname_placeholder": "Your last name",
+        "email_label": "Email Address *",
+        "email_placeholder": "your.email@example.com",
+        "phone_label": "Phone Number",
+        "phone_placeholder": "+212600000000",
+        "phone_format_error": "Format: + and numbers only",
+        "password_label": "Password *",
+        "password_placeholder": "Create a secure password",
+        "password_requirements": "8+ characters, uppercase, lowercase, number, and symbol",
+        "confirm_password_label": "Confirm Password *",
+        "confirm_password_placeholder": "Confirm your password",
+        "password_mismatch": "Passwords do not match",
+        "strength": {
+          "very_weak": "Very weak",
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong",
+          "very_strong": "Very strong"
+        }
+      },
+      "candidat": {
+        "title": "Profile & Expectations",
+        "subtitle": "Your essential information and salary expectations",
+        "experience_label": "Experience Level *",
+        "experience_placeholder": "Select your experience level",
+        "formation_label": "Legal Education *",
+        "formation_placeholder": "Your degree level",
+        "poste_label": "Desired Position *",
+        "poste_placeholder": "Select a position",
+        "work_type_label": "Desired Job Type *",
+        "salary_label": "Desired Salary *",
+        "salary_placeholder": "Select a salary range",
+        "availability_label": "Availability *",
+        "availability_subtitle": "When would you like to start?",
+        "details_title": "Profile Details",
+        "experiences_count": "experiences provided",
+        "formations_count": "education records provided"
+      },
+      "specialisations": {
+        "title": "Specializations",
+        "subtitle": "Select one or more specializations by category",
+        "loading": "Loading specializations...",
+        "selected_one": "selected",
+        "selected_plural": "selected",
+        "total_selected_one": "specialization selected",
+        "total_selected_plural": "specializations selected"
+      },
+      "details": {
+        "title": "Career Details",
+        "subtitle": "Fill in your education and key work experience",
+        "formations_title": "Education",
+        "add_button": "Add",
+        "new_formation": "New Education",
+        "school_label": "School / University",
+        "school_placeholder": "Select an institution",
+        "study_level_label": "Degree Level",
+        "study_level_placeholder": "Select a level",
+        "domain_label": "Field of Study",
+        "domain_placeholder": "Select a field",
+        "start_date": "Start",
+        "end_date": "End",
+        "no_formations": "No education added",
+        "experiences_title": "Experience",
+        "new_experience": "New Experience",
+        "company_label": "Company",
+        "company_placeholder": "Ex: Benjelloun Law Firm",
+        "experience_type_label": "Experience Type",
+        "experience_type_placeholder": "Select a type",
+        "poste_label": "Position",
+        "poste_placeholder": "Select a position",
+        "no_experiences": "No experience added"
+      },
+      "preferences": {
+        "title": "Search Preferences",
+        "subtitle": "Indicate where and how you prefer to work",
+        "cities_label": "Target Cities *",
+        "work_mode_label": "Mode of Work *",
+        "languages_label": "Languages Spoken *",
+        "languages_subtitle": "Check a language and select your proficiency level",
+        "level_prefix": "Level —",
+        "select_level": "Select level"
+      },
+      "recruiter": {
+        "title": "Company Information",
+        "subtitle": "Fill in your organization details to optimize your searches",
+        "company_name_label": "Company Name *",
+        "company_name_placeholder": "Your organization name",
+        "job_title_label": "Your Position",
+        "job_title_placeholder": "Ex: HR Manager, Legal Director",
+        "org_type_label": "Organization Type *",
+        "org_type_placeholder": "Select organization type",
+        "company_size_label": "Company Size *",
+        "company_size_placeholder": "Number of employees",
+        "website_label": "Company Website",
+        "website_placeholder": "https://www.your-company.com",
+        "website_help": "Optional - Helps validate your profile",
+        "city_label": "City *",
+        "city_placeholder": "Select a city"
+      },
+      "confirmation": {
+        "title": "Final Verification",
+        "subtitle": "Review your information one last time before submitting",
+        "user_section": "User Account",
+        "email": "Email",
+        "identity": "Identity",
+        "phone": "Phone",
+        "not_provided": "Not specified",
+        "company_section": "Company Details",
+        "organization": "Organization",
+        "type": "Type",
+        "size": "Size",
+        "city": "City",
+        "current_position": "Current Position",
+        "candidate_section": "Candidate Profile",
+        "target_position": "Target Position",
+        "experience": "Experience",
+        "formation": "Education",
+        "desired_salary": "Desired Salary",
+        "availability": "Availability",
+        "specialisations": "Specializations",
+        "honor_error": "You must certify upon honor that your information is accurate.",
+        "submitting": "Processing...",
+        "submit_button": "Create my account",
+        "terms_accept": "By clicking, you accept our Terms of Service"
+      },
+      "declaration": {
+        "title": "Honor Declaration & Accuracy",
+        "legal_requirement": "Legal Requirement",
+        "alert_text_bold": "certify upon honor",
+        "alert_text": "By submitting your profile, you certify upon honor the strict accuracy of all provided information (academic background, diplomas, and experience).",
+        "alert_subtext": "Data falsification is strictly prohibited. Any false declaration exposes the candidate to legal sanctions and immediate account termination.",
+        "checkbox_text_bold": "certify upon honor",
+        "checkbox_text": "I certify upon honor that all entered information (education, diplomas, experience) is accurate and truthful.",
+        "checkbox_subtext": "I acknowledge that any falsification or false declaration is strictly prohibited and exposes me to immediate profile removal as well as legal consequences."
+      },
+      "navigator": {
+        "previous": "Previous",
+        "next": "Next",
+        "validating": "Validating...",
+        "progress": "Progress"
+      },
+      "loading_options": "Loading options..."
+    }
+  },
+  "services_page": {
+    "seo_title": "Our Legal Recruitment Services & Tailored Shortlists | JuriJob",
+    "seo_description": "Discover our legal sourcing solutions in Morocco: rigorous preselection of candidates within 48 hours, multi-criteria assessment, and support by Sentissi Legal Advisory.",
+    "json_ld": {
+      "service_name": "Legal Sourcing & Recruitment",
+      "country": "Morocco",
+      "offer_description": "Unit price excl. VAT per selected profile"
+    },
+    "hero": {
+      "badge": "Our Services",
+      "title_part1": "Our ",
+      "title_part2": "services",
+      "subtitle": "Beyond connecting candidates and employers, JURIJOB and Sentissi Legal Advisory support you at every stage of your legal recruitment."
+    },
+    "main_offer": {
+      "badge": "Tailored Solution",
+      "title_part1": "Our ",
+      "title_part2": "main offer",
+      "card_title": "Legal Profiles Shortlist",
+      "delivery_badge": "Delivery within 48 business hours",
+      "description": "The core of JURIJOB: select your criteria for the required profile — specialization, experience, degree, languages — and the requested number of profiles, and we deliver a shortlist of preselected and scored legal professionals within 48 business hours.",
+      "validation_note": "Each shortlist is manually validated by a former Legal Director. You retain full control over interviews and final decisions.",
+      "no_subscription": "No Subscription",
+      "no_subscription_desc": "You only pay for delivered profiles.",
+      "no_commission": "No Commission",
+      "no_commission_desc": "No percentage fee taken from the salary.",
+      "no_commitment": "No Commitment",
+      "no_commitment_desc": "One-time or recurring requests."
+    },
+    "pricing": {
+      "badge": "Transparent Pricing",
+      "sub_badge": "Payment upon delivery",
+      "price_ht": "1,490 MAD excl. VAT",
+      "price_details": "per delivered profile · i.e. 1,788 MAD incl. VAT",
+      "note1": "• The total amount is communicated before any payment. If no profile in our CV database matches your criteria, no shortlist is delivered and nothing is billed.",
+      "note2": "• Preferential pricing applies for five or more profiles. Contact us for a tailored quotation matching your volume.",
+      "cta": "Request a tailored quote"
+    },
+    "complementary": {
+      "badge": "Going Further",
+      "title_part1": "Complementary ",
+      "title_part2": "services",
+      "international_badge": "International Service",
+      "international_title": "Recruitment & Onboarding of Foreign Profiles",
+      "international_desc": "Looking to hire non-Moroccan talent? We handle all administrative and legal procedures for hiring foreign profiles in Morocco from start to finish.",
+      "contracts_title": "Custom Employment Contract Drafting",
+      "contracts_desc": "We draft custom employment contracts tailored to each role and context, in full compliance with Moroccan labor legislation.",
+      "interviews_title": "Interview Participation & Candidate Assessment",
+      "interviews_desc": "Our legal experts can join your job interviews and evaluate each candidate against a rigorous matrix to secure and objectify your final decision.",
+      "job_desc_title": "Job Description & Profile Definition",
+      "job_desc_desc": "Before hiring, we help you precisely define your requirements and build a structured job description — the foundation of an effective search."
+    },
+    "contact_banner": {
+      "title_part1": "A specific ",
+      "title_part2": "need?",
+      "desc": "Every service is customized to your context with a dedicated quote. Write to us to discuss your requirements."
+    }
+  },
+  "faq_page": {
+    "seo_title": "Frequently Asked Questions (FAQ) & Recruitment Pricing | JuriJob",
+    "seo_description": "All answers to your questions about JuriJob: pricing (1,490 MAD excl. VAT/profile), 48h delivery, selection by legal experts, and confidentiality.",
+    "hero": {
+      "title_part1": "Frequently Asked ",
+      "title_part2": "Questions",
+      "subtitle": "Frequently Asked Questions — Everything you need to know about JURIJOB: our approach, pricing, timelines, and methodology."
+    },
+    "sections": {
+      "section_label": "Section",
+      "sec1": {
+        "title": "Understanding JURIJOB",
+        "items": {
+          "q1": {
+            "question": "What exactly is JURIJOB?",
+            "answer": "JURIJOB is a legal profile selection platform in Morocco and Africa. Our role is to deliver a qualified shortlist matching your criteria — specialization, languages, experience, degree. The interview, assessment, and final decision remain in your hands: we save you considerable time by identifying the most relevant profiles."
+          },
+          "q2": {
+            "question": "How does JURIJOB differ from a traditional recruitment agency?",
+            "answer": "A traditional recruitment agency charges on a success basis, often 15% to 25% of the hired candidate's annual salary — representing tens of thousands of dirhams for a senior legal counsel. JURIJOB charges 1,490 MAD excl. VAT per delivered profile, with no subscription and no placement commission. We are not compensated based on hiring success, but on the quality of selection — allowing us to remain objective and offer a cost-controlled service, even for recurring needs."
+          },
+          "q3": {
+            "question": "Who is behind JURIJOB?",
+            "answer": "JURIJOB is backed by Sentissi Legal Advisory (SLA), a firm founded by Mohammed Sentissi — legal expert, former Legal Director of holdings in Morocco and Africa, and elected President of the Moroccan Corporate Counsel Association (AMJE - in formation). The service relies on 24 years of experience in legal management and a network of tens of thousands of professional contacts."
+          }
+        }
+      },
+      "sec2": {
+        "title": "For Employers & Recruiters",
+        "items": {
+          "q1": {
+            "question": "How much does a shortlist cost?",
+            "answer": "1,490 MAD excl. VAT per delivered profile (1,788 MAD incl. VAT). You choose the desired number of profiles when making your request, and the total amount is communicated before any payment — so you know exactly what you commit. No subscription, no commission on the hired candidate's salary. If no profile in our CV database matches your criteria, no shortlist is delivered and you pay nothing. Volume pricing applies for five or more profiles: email us at recrutement@sentissilegal.com for a customized quote."
+          },
+          "q2": {
+            "question": "When and how is payment made?",
+            "answer": "You only pay after receiving your shortlist. Payment is made via bank transfer: bank details and a unique reference are provided in your recruiter dashboard. Once the transfer is submitted and confirmed by our team — usually within 24 business hours — full candidate profiles are unlocked: identity, contact details, career background, and experience. Profiles remain locked until payment is confirmed."
+          },
+          "q3": {
+            "question": "How does JURIJOB select candidates?",
+            "answer": "We apply a rigorous methodology based on practical legal expertise. Our scoring algorithm evaluates each profile across four key dimensions: legal specializations, languages, experience, and degrees. Each shortlist is then manually validated by a former Legal Director before delivery to the employer."
+          },
+          "q4": {
+            "question": "What is the turnaround time to receive my shortlist?",
+            "answer": "Within 48 business hours after request validation. This timeframe covers the complete workflow: analyzing your criteria, searching our CV database and professional network, manual evaluation of profiles, and curating a concise, qualified shortlist."
+          },
+          "q5": {
+            "question": "What happens if none of the shortlisted candidates fit my needs?",
+            "answer": "Write to us at recrutement@sentissilegal.com. Depending on the nature of your requirement, we can direct you to a complementary executive search service with tailored pricing. We remain available to refine your search."
+          },
+          "q6": {
+            "question": "Do you offer special rates for recurring recruitment needs?",
+            "answer": "Yes. For companies and firms with multiple legal recruitments per year, we offer volume-based pricing. Contact us at recrutement@sentissilegal.com for a personalized quote."
+          }
+        }
+      },
+      "sec3": {
+        "title": "Candidates & Additional Services",
+        "items": {
+          "q1": {
+            "question": "How do you guarantee confidentiality?",
+            "answer": "Discretion is central to our ethics. Each candidate profile is securely hosted and only accessible to recruiters with confirmed payment — no public exposure. Our platform complies with Moroccan Law 09-08 on personal data protection."
+          },
+          "q2": {
+            "question": "Does JURIJOB offer services beyond shortlisting?",
+            "answer": "Yes. In addition, SLA can conduct pre-qualification interviews (paid service) to evaluate candidates prior to your own interviews. Other services available on request include executive search, custom employment contract drafting, and HR legal audits. Email recruitment@sentissilegal.com for custom inquiries."
+          }
+        }
+      }
+    },
+    "contact": {
+      "title": "Have another question?",
+      "subtitle": "Our team is at your disposal for any specific inquiry."
+    }
+  },
+  "cgv_page": {
+    "seo_title": "General Terms of Sale (CGV) | JuriJob",
+    "seo_description": "JURIJOB General Terms of Sale: pricing, ordering, shortlist delivery, bank wire payment, cancellation and legal framework.",
+    "hero": {
+      "badge": "Paid Services & Recruiters",
+      "title_part1": "General Terms",
+      "title_part2": "of Sale",
+      "subtitle": "The terms applicable to JURIJOB paid services, intended for professional recruiters.",
+      "updated": "Last updated: August 2026",
+      "law": "Moroccan Commercial Law"
+    },
+    "sidebar": {
+      "title": "Interactive Summary",
+      "subtitle": "Table of CGV articles",
+      "question_title": "A question about your order?",
+      "question_sub": "Contact our dedicated recruiter team:"
+    },
+    "articles": {
+      "art1": {
+        "num": "Article 1",
+        "title": "Subject",
+        "p1": "These General Terms of Sale (hereinafter \"CGV\") govern the paid services offered by SENTISSI LEGAL ADVISORY SARL AU (hereinafter \"SLA\") to professional recruiters via the JURIJOB platform.",
+        "p2_prefix": "They supplement the ",
+        "p2_link": "General Terms of Use",
+        "p2_suffix": ", from which they do not derogate. In case of conflict, these CGV prevail for everything concerning paid services.",
+        "box": "Any order implies full and unreserved acceptance of these CGV."
+      },
+      "art2": {
+        "num": "Article 2",
+        "title": "Service: legal profile shortlist",
+        "p1": "The primary service consists of delivering a shortlist of preselected legal profiles, established in response to criteria defined by the recruiter: specializations, experience level, degree, languages, and work arrangement.",
+        "p2": "Each profile is evaluated using a proprietary scoring algorithm across four dimensions, then the selection is manually validated before transmission.",
+        "box_title": "Deliverable content for each profile",
+        "item1": "Candidate identity and contact details",
+        "item2": "Complete educational background",
+        "item3": "Detailed professional experience",
+        "item4": "Specializations & language skills",
+        "disclaimer": "The service includes neither interview conduct, in-depth candidate assessment, nor any hiring guarantee. These services can be provided separately upon quote."
+      },
+      "art3": {
+        "num": "Article 3",
+        "title": "Pricing & Rates",
+        "badge": "Standard Unit Rate",
+        "price": "1,490 MAD",
+        "unit": "excl. tax / profile",
+        "tax": "I.e. 1,788 MAD incl. tax (20% VAT)",
+        "p1": "The total amount due corresponds to the unit price multiplied by the number of profiles effectively making up the delivered shortlist. This amount is displayed to the recruiter prior to any payment commitment.",
+        "p2": "Specific pricing terms may be granted for recurring needs or large volumes.",
+        "p3": "Prices are subject to change; the applicable rate is the one in force on the day the shortlist is delivered."
+      },
+      "art4": {
+        "num": "Article 4",
+        "title": "Order & Delivery",
+        "p1": "The recruiter submits their request from their personal portal specifying criteria and the desired number of profiles.",
+        "p2_prefix": "SLA commits to delivering the shortlist within an indicative timeframe of ",
+        "p2_bold": "48 business hours",
+        "p2_suffix": " starting from request validation.",
+        "box_title": "0 MAD Guarantee if no match found",
+        "box_desc": "When no profile matches the criteria, no shortlist is delivered and no payment is due. SLA informs the recruiter and may propose a complementary headhunting service."
+      },
+      "art5": {
+        "num": "Article 5",
+        "title": "Payment Methods",
+        "p1_prefix": "Payment is made by ",
+        "p1_bold": "bank wire transfer",
+        "p1_suffix": " to the account of SENTISSI LEGAL ADVISORY.",
+        "p2": "The recruiter reports their wire transfer from their personal portal. Access to profiles is unlocked after SLA verifies receipt of funds."
+      },
+      "art6": {
+        "num": "Article 6",
+        "title": "Cancellation & Withdrawal",
+        "p1": "The recruiter can withdraw their request at any time before payment is made, without fees or justification.",
+        "p2": "Once payment is confirmed and access to profiles unlocked, the service is deemed performed and no refund can be requested on the grounds that no candidate was selected."
+      },
+      "art7": {
+        "num": "Article 7",
+        "title": "No Guarantee of Result",
+        "p1_prefix": "SLA is bound by an ",
+        "p1_bold": "obligation of means",
+        "p1_suffix": " and not of result.",
+        "p2": "Profile information is declared by candidates under their sole responsibility. It is up to the recruiter to perform any verification deemed necessary."
+      },
+      "art8": {
+        "num": "Article 8",
+        "title": "Use of Delivered Profiles",
+        "p1": "Delivered profiles are intended solely for the recruitment process for which the shortlist was ordered. Any mass extraction, resale, or communication to third parties is strictly prohibited."
+      },
+      "art9": {
+        "num": "Article 9",
+        "title": "Limitation of Liability",
+        "p1_prefix": "SLA's liability shall not exceed the ",
+        "p1_bold": "amount actually paid",
+        "p1_suffix": " by the recruiter for the service concerned."
+      },
+      "art10": {
+        "num": "Article 10",
+        "title": "Invoicing & Personal Data",
+        "p1_prefix": "An invoice is issued for each service. Personal data processing is conducted in compliance with ",
+        "p1_bold": "law 09-08",
+        "p1_and": " and the ",
+        "p1_link": "legal notices",
+        "p1_suffix": "."
+      },
+      "art11": {
+        "num": "Article 11",
+        "title": "Applicable Law & Jurisdiction",
+        "p1_prefix": "These CGV are governed by ",
+        "p1_bold": "Moroccan law",
+        "p1_middle": ". Any dispute falls under the exclusive jurisdiction of the ",
+        "p1_courts": "courts of Casablanca",
+        "p1_suffix": "."
+      }
+    }
+  },
+  "cgu_page": {
+    "seo_title": "General Terms of Use (CGU) | JuriJob",
+    "seo_description": "JURIJOB General Terms of Use: access rules, registration, candidate and recruiter obligations, liability limits and Moroccan law.",
+    "hero": {
+      "badge": "Contractual Framework & Usage",
+      "title_part1": "General Terms",
+      "title_part2": "of Use",
+      "subtitle": "Rules for accessing and using the JURIJOB platform, applicable to both candidates and recruiters.",
+      "updated": "Last updated: August 2026",
+      "law": "Moroccan Law"
+    },
+    "sidebar": {
+      "title": "Interactive Summary",
+      "subtitle": "Table of CGU articles",
+      "question_title": "A question about the CGU?",
+      "question_sub": "Write to us directly at our dedicated address:"
+    },
+    "articles": {
+      "art1": {
+        "num": "Article 1",
+        "title": "Subject and scope of application",
+        "p1_prefix": "These General Terms of Use (hereinafter \"",
+        "p1_cgu": "CGU",
+        "p1_mid1": "\") define the terms of access and use of the ",
+        "p1_jurijob": "JURIJOB",
+        "p1_mid2": " platform, accessible at ",
+        "p1_mid3": ", published by ",
+        "p1_sla": "SENTISSI LEGAL ADVISORY SARL AU",
+        "p1_suffix": " (hereinafter \"SLA\" or \"the Platform\").",
+        "p2": "JURIJOB is a sourcing tool specializing in legal professions. The Platform connects legal professionals — corporate lawyers, attorneys, notaries, tax experts, compliance officers — with identified recruiters in Morocco and Africa.",
+        "box": "Any use of the Platform implies full and unreserved acceptance of these CGU. Users who do not accept these terms must refrain from using the service."
+      },
+      "art2": {
+        "num": "Article 2",
+        "title": "Key Definitions",
+        "candidat_title": "Candidate",
+        "candidat_desc": "Any natural person creating a profile in the JURIJOB resume database to be presented to recruiters.",
+        "recruteur_title": "Recruiter",
+        "recruteur_desc": "Any legal or natural person acting within the scope of their professional activity, submitting a sourcing request on the Platform.",
+        "shortlist_title": "Short-list",
+        "shortlist_desc": "Selection of candidate profiles, evaluated and manually validated, sent to a recruiter in response to their request.",
+        "cvtheque_title": "Resume Database",
+        "cvtheque_desc": "Database of candidate profiles compiled and operated exclusively by SLA."
+      },
+      "art3": {
+        "num": "Article 3",
+        "title": "Service Access",
+        "p1": "Browsing public pages on the Platform is free and unrestricted. Creating an account is required to submit a candidate profile or sourcing request.",
+        "p2": "The user is responsible for their IT equipment and internet connection. Network access fees remain their sole responsibility.",
+        "p3": "SLA reserves the right to temporarily suspend access to the Platform for maintenance, update, or security reasons, without such interruption granting right to any compensation."
+      },
+      "art4": {
+        "num": "Article 4",
+        "title": "Registration & User Account",
+        "p1": "Registration requires providing accurate, complete, and up-to-date information. The user commits to maintaining the accuracy of this information throughout their use of the service.",
+        "p2": "A valid email address is required; activation may be subject to verification. Each user is solely responsible for maintaining credentials confidentiality and all activities performed under their account.",
+        "box_title": "Single Account per Role Rule",
+        "box_desc": "A single email address can only be associated with one role — candidate or recruiter. To have both spaces, the user must create two distinct accounts with different email addresses.",
+        "disclaimer": "SLA reserves the right to suspend or delete any account in case of failure to comply with these CGU, notably in case of false information or identity theft."
+      },
+      "art5": {
+        "num": "Article 5",
+        "title": "Candidate Obligations",
+        "item1_bold": "Truthfulness of information:",
+        "item1_text": " The candidate guarantees the accuracy of declared information (identity, contact details, education, professional experience, specializations, and language skills).",
+        "item2_bold": "Data legitimacy:",
+        "item2_text": " They commit to providing only personal data concerning themselves and which they have the right to dispose of.",
+        "item3_bold": "Profile control:",
+        "item3_text": " The candidate can view, edit, complete, or permanently delete their profile at any time from their personal portal.",
+        "disclaimer": "* Any inaccurate statement likely to mislead a recruiter engages the sole responsibility of the candidate and may result in profile deletion."
+      },
+      "art6": {
+        "num": "Article 6",
+        "title": "Recruiter Obligations",
+        "p1": "The recruiter acts exclusively within their professional activity and guarantees having the necessary authority to bind the entity they represent.",
+        "p2": "They commit to formulating search criteria compliant with applicable labor law, particularly provisions prohibiting hiring discrimination.",
+        "box_title": "Strictly confidential use:",
+        "box_desc": " Communicated profiles are intended solely for the recruitment process for which they were requested. Any extraction, internal database retention, resale, assignment, or transmission to third parties is strictly prohibited.",
+        "p3": "The recruiter remains solely responsible for conducting interviews, assessing candidates, and making their final hiring decision."
+      },
+      "art7": {
+        "num": "Article 7",
+        "title": "Role and Limitations of the Platform",
+        "p1": "JURIJOB acts as a sourcing tool and technical intermediary. The Platform does not operate as a private employment agency and does not intervene in any contractual relationship formed between candidate and recruiter.",
+        "p2": "SLA guarantees neither candidate hiring, effective availability, nor accuracy of information declared under their own responsibility.",
+        "p3": "The Platform cannot be held responsible for the conduct of recruitment processes, commitments between parties, or hiring outcomes.",
+        "box_title": "Key Point",
+        "box_desc": "JURIJOB identifies and presents relevant profiles. The recruiter retains full control over interviews and hiring decisions."
+      },
+      "art8": {
+        "num": "Article 8",
+        "title": "Intellectual Property",
+        "p1_prefix": "The Platform, its structure, design, texts, logo, graphic identity, database, and selection methodology are protected by Moroccan laws ",
+        "p1_law1": "2-00",
+        "p1_mid": " (copyright and related rights) and ",
+        "p1_law2": "17-97",
+        "p1_suffix": " (industrial property).",
+        "p2_prefix": "The trademark ",
+        "p2_brand": "\"JURIJOB — Smart Legal Recruitment\"",
+        "p2_suffix": " is registered with OMPIC. Any total or partial reproduction or representation without prior written authorization is prohibited.",
+        "disclaimer": "Content uploaded by users remains their property. Users grant SLA a non-exclusive license for service operation purposes only."
+      },
+      "art9": {
+        "num": "Article 9",
+        "title": "Personal Data",
+        "p1_prefix": "Personal data processing is carried out in compliance with ",
+        "p1_law": "law 09-08",
+        "p1_suffix": " on protection of individuals with regard to personal data processing, registered with CNDP.",
+        "p2": "Candidate profiles are not publicly distributed. Access is strictly reserved for recruiters whose payment is confirmed, limited to profiles in their delivered shortlist.",
+        "box_title": "User Rights",
+        "box_prefix": "Each user has rights of access, rectification, and objection by writing to ",
+        "box_mid": ". Detailed terms are listed in the ",
+        "box_link": "legal notices",
+        "box_suffix": "."
+      },
+      "art10": {
+        "num": "Article 10",
+        "title": "Modification of CGU",
+        "p1": "SLA reserves the right to modify these CGU at any time to adapt them to service or regulatory changes.",
+        "p2": "Users will be informed of any substantial modification. Continued use of the Platform after modification constitutes acceptance of the new terms."
+      },
+      "art11": {
+        "num": "Article 11",
+        "title": "Applicable Law & Jurisdiction",
+        "p1_prefix": "These CGU are governed by ",
+        "p1_bold": "Moroccan law",
+        "p1_suffix": ".",
+        "p2_prefix": "Any dispute concerning their interpretation or execution falls under the exclusive jurisdiction of the ",
+        "p2_bold": "courts of Casablanca",
+        "p2_suffix": ", failing prior amicable resolution."
+      }
+    }
+  },
+  "mentions_legales_page": {
+    "seo_title": "Legal Notices & Personal Data Protection | JuriJob",
+    "seo_description": "JURIJOB Legal Notices: publisher Sentissi Legal Advisory (SLA), hosting, personal data protection (CNDP, law 09-08) and intellectual property.",
+    "hero": {
+      "badge": "Regulatory Framework & Transparency",
+      "title_part1": "Legal",
+      "title_part2": "Information",
+      "subtitle": "Legal notices, publisher and hosting details, and personal data protection commitments for the JURIJOB platform.",
+      "updated": "Last updated: August 2026",
+      "law": "Compliant with Moroccan Law"
+    },
+    "sidebar": {
+      "title": "Interactive Summary",
+      "subtitle": "Quick access to legal articles",
+      "question_title": "Need legal assistance?",
+      "question_sub": "For any regulatory clarification request:"
+    },
+    "articles": {
+      "art1": {
+        "num": "Article 1",
+        "title": "Site Publisher",
+        "p1_prefix": "The website ",
+        "p1_mid1": " and the platform ",
+        "p1_jurijob": "JURIJOB",
+        "p1_suffix": " are published by:",
+        "corporate": {
+          "deno_title": "Corporate Name",
+          "deno_val": "SENTISSI LEGAL ADVISORY (SLA)",
+          "forme_title": "Legal Form",
+          "forme_val": "Single-member limited liability company (SARL AU)",
+          "capital_title": "Share Capital",
+          "capital_val": "10,000 MAD",
+          "siege_title": "Registered Office",
+          "siege_val": "12, rue Saria Ben Zounaim, 3rd floor, apt 3 — Palmier, Casablanca, Morocco",
+          "rc_title": "Trade Register",
+          "rc_val": "RC No. 641427 — Commercial Court of Casablanca",
+          "ice_title": "Common Identifier (ICE)",
+          "ice_val": "ICE 003569200000033",
+          "if_title": "Tax Identifier (IF)",
+          "if_val": "IF 66067629",
+          "pub_title": "Publication Director",
+          "pub_val": "Mohammed Sentissi, Manager",
+          "contact_title": "Official Contact"
+        },
+        "trademark_bold": "OMPIC Registered Trademark:",
+        "trademark_desc": " JURIJOB is a trademark registered with OMPIC under ",
+        "trademark_brand": "“JURIJOB — Smart Legal Recruitment”",
+        "trademark_suffix": ". The platform is operated by Sentissi Legal Advisory, publisher of the website "
+      },
+      "art2": {
+        "num": "Article 2",
+        "title": "Hosting & Infrastructure",
+        "intro": "The technical infrastructure of the platform relies on international partners ensuring high availability, security, and compliance:",
+        "vercel_badge": "Web Hosting",
+        "vercel_desc": "US corporation.<br />340 S Lemon Ave #4133, Walnut, CA 91789, United States.",
+        "supabase_badge": "Database",
+        "supabase_desc": "Secure infrastructure for platform data storage and management.",
+        "resend_badge": "Transactional Emails",
+        "resend_desc": "Email delivery via servers located in Ireland (European Union)."
+      },
+      "art3": {
+        "num": "Article 3",
+        "title": "Intellectual Property",
+        "p1_prefix": "All elements comprising the site — structure, text, graphics, logo, visual identity, database, and selection methodology — are protected by ",
+        "p1_law1": "law 2-00",
+        "p1_mid": " on copyright and related rights, as well as ",
+        "p1_law2": "law 17-97",
+        "p1_suffix": " on industrial property protection.",
+        "p2_prefix": "Any reproduction, representation, extraction, or reuse, total or partial, without prior written authorization from ",
+        "p2_sla": "Sentissi Legal Advisory",
+        "p2_suffix": ", is strictly prohibited.",
+        "disclaimer": "* Content submitted by candidates remains their exclusive property; candidates grant the platform a limited license solely for service operation purposes."
+      },
+      "art4": {
+        "num": "Article 4",
+        "title": "Personal Data Processing (Law 09-08)",
+        "intro": "Through this form, Mohammed Sentissi collects your personal data for registration in the JURIJOB resume database, a legal profile selection platform designed to connect candidates with identified recruiters in Morocco and Africa.",
+        "cndp_title": "CNDP Declaration",
+        "cndp_desc": "This processing has been declared to the CNDP under filing process. Personal data collected may be transferred to potential recruiters in Morocco in accordance with the transfer request submitted to the CNDP.",
+        "access_title": "Restricted Access & Protection",
+        "access_desc": "Profile access is strictly reserved for recruiters with confirmed payment. No public distribution is conducted. Data is retained as long as the candidate maintains an active profile, which can be permanently deleted at any time from their personal portal.",
+        "rights_title": "Exercising Your Rights (Law 09-08)",
+        "rights_prefix": "You may write to ",
+        "rights_suffix": " to exercise your rights of access, rectification, and objection in accordance with Moroccan Law 09-08."
+      },
+      "art5": {
+        "num": "Article 5",
+        "title": "Limitation of Liability",
+        "p1": "JURIJOB operates as a sourcing and matching tool. The platform is not party to contractual relationships formed between candidates and recruiters, and cannot be held liable for interview proceedings, hiring decisions, or commitments between parties.",
+        "p2": "Information in profiles is declared by candidates under their sole responsibility. Sentissi Legal Advisory strives to ensure service availability and accuracy, without guaranteeing uninterrupted access."
+      },
+      "art6": {
+        "num": "Article 6",
+        "title": "Applicable Law & Jurisdiction",
+        "p1_prefix": "These legal notices are governed by ",
+        "p1_bold": "Moroccan law",
+        "p1_suffix": ".",
+        "p2_prefix": "Any dispute regarding their interpretation or execution falls under the exclusive jurisdiction of the ",
+        "p2_bold": "courts of Casablanca",
+        "p2_suffix": ", failing prior amicable resolution."
+      }
+    }
   }
 }

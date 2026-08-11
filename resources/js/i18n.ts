@@ -36,6 +36,8 @@ export function updateI18nLocale(locale: string, translations?: Record<string, u
 
     if (i18n.language !== locale) {
         i18n.changeLanguage(locale);
+    } else {
+        i18n.emit('languageChanged', locale);
     }
 
     if (typeof document !== 'undefined') {

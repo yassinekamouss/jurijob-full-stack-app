@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, GraduationCap, Briefcase, FileText, Calendar, Building2, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CandidatFormData, Formation, Experience } from '@/types';
@@ -36,6 +37,7 @@ export default function CandidatDetails({
     errors = {},
     className = '',
 }: CandidatDetailsProps) {
+    const { t } = useTranslation();
     const { ecoles, formationJuridiques, specialisations, typeTravails, postes } = useTaxonomies();
 
     const formations = formData.formations || [];
@@ -68,8 +70,8 @@ export default function CandidatDetails({
     return (
         <div className={`space-y-12 pb-10 ${className}`}>
             <div className="mb-8 text-center">
-                <h3 className="mb-2 text-xl font-bold text-slate-900">Détails du parcours</h3>
-                <p className="text-sm text-slate-500">Renseignez vos formations et expériences marquantes</p>
+                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidate.details_title')}</h3>
+                <p className="text-sm text-slate-500">{t('auth.forms.candidate.details_subtitle')}</p>
             </div>
 
             <section className="space-y-6">
@@ -78,14 +80,14 @@ export default function CandidatDetails({
                         <div className="rounded-lg bg-slate-900 p-2 text-white shadow-sm">
                             <GraduationCap size={20} />
                         </div>
-                        <h4 className="text-lg font-bold text-slate-900">Formations</h4>
+                        <h4 className="text-lg font-bold text-slate-900">{t('auth.forms.candidate.formations_header')}</h4>
                     </div>
                     <button
                         type="button"
                         onClick={() => onFieldChange('formations', [...formations, createEmptyFormation()])}
                         className="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-bold tracking-widest text-white uppercase shadow-md transition-all hover:bg-slate-800 active:scale-95"
                     >
-                        <Plus size={16} /> Ajouter
+                        <Plus size={16} /> {t('auth.forms.candidate.add')}
                     </button>
                 </div>
 
@@ -124,7 +126,7 @@ export default function CandidatDetails({
                                             <h5 className="max-w-[200px] truncate font-bold text-slate-900 sm:max-w-md">
                                                 {formation.specialisation_id || formation.ecole_id
                                                     ? `${getTaxonomyLabel(formation.specialisation_id, specialisations)} – ${getTaxonomyLabel(formation.ecole_id, ecoles)}`
-                                                    : 'Nouvelle Formation'}
+                                                    : t('auth.forms.candidate.new_formation')}
                                             </h5>
                                         </div>
                                         <button
@@ -146,8 +148,7 @@ export default function CandidatDetails({
                                             <div className="space-y-5">
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
-                                                        <Building2 size={14} className="text-slate-400" /> École /
-                                                        Université
+                                                        <Building2 size={14} className="text-slate-400" /> {t('auth.forms.candidate.school_label')}
                                                     </label>
                                                     <select
                                                         value={formation.ecole_id}
@@ -156,13 +157,13 @@ export default function CandidatDetails({
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">Sélectionner une institution</option>
+                                                        <option value="">{t('auth.forms.candidate.school_placeholder')}</option>
                                                         {useLoadingTaxonomy(ecoles) ? (
-                                                            <option disabled>Chargement des options...</option>
+                                                            <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
                                                             ecoles.map((ecole) => (
                                                                 <option key={ecole.id} value={ecole.id}>
-                                                                    {ecole.nom}
+                                                                    {getTaxonomyLabel(ecole)}
                                                                 </option>
                                                             ))
                                                         )}
@@ -170,8 +171,7 @@ export default function CandidatDetails({
                                                 </div>
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
-                                                        <BookOpen size={14} className="text-slate-400" /> Niveau
-                                                        d'études
+                                                        <BookOpen size={14} className="text-slate-400" /> {t('auth.forms.candidate.degree_level_label')}
                                                     </label>
                                                     <select
                                                         value={formation.formation_juridique_id}
@@ -184,13 +184,13 @@ export default function CandidatDetails({
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">Sélectionner un niveau</option>
+                                                        <option value="">{t('auth.forms.candidate.degree_level_placeholder')}</option>
                                                         {useLoadingTaxonomy(formationJuridiques) ? (
-                                                            <option disabled>Chargement des options...</option>
+                                                            <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
                                                             formationJuridiques.map((niveau) => (
                                                                 <option key={niveau.id} value={niveau.id}>
-                                                                    {niveau.nom}
+                                                                    {getTaxonomyLabel(niveau)}
                                                                 </option>
                                                             ))
                                                         )}
@@ -201,8 +201,7 @@ export default function CandidatDetails({
                                             <div className="space-y-5">
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
-                                                        <FileText size={14} className="text-slate-400" /> Domaine
-                                                        d'études
+                                                        <FileText size={14} className="text-slate-400" /> {t('auth.forms.candidate.domain_label')}
                                                     </label>
                                                     <select
                                                         value={formation.specialisation_id}
@@ -215,13 +214,13 @@ export default function CandidatDetails({
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">Sélectionner un domaine</option>
+                                                        <option value="">{t('auth.forms.candidate.domain_placeholder')}</option>
                                                         {useLoadingTaxonomy(specialisations) ? (
-                                                            <option disabled>Chargement des options...</option>
+                                                            <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
                                                             specialisations.map((domaine) => (
                                                                 <option key={domaine.id} value={domaine.id}>
-                                                                    {domaine.nom}
+                                                                    {getTaxonomyLabel(domaine)}
                                                                 </option>
                                                             ))
                                                         )}
@@ -229,7 +228,7 @@ export default function CandidatDetails({
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>Début</label>
+                                                        <label className={labelClasses}>{t('auth.forms.candidate.start_date')}</label>
                                                         <div className="relative">
                                                             <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                             <input
@@ -253,7 +252,7 @@ export default function CandidatDetails({
                                                         )}
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>Fin</label>
+                                                        <label className={labelClasses}>{t('auth.forms.candidate.end_date')}</label>
                                                         <div className="relative">
                                                             <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                             <input
@@ -287,7 +286,7 @@ export default function CandidatDetails({
                     {formations.length === 0 && (
                         <div className="rounded-[24px] border-2 border-dashed border-slate-100 bg-slate-50/50 py-10 text-center">
                             <Icon name="GraduationCap" size={32} className="mx-auto mb-3 text-slate-200" />
-                            <p className="text-sm font-bold text-slate-400">Aucune formation ajoutée</p>
+                            <p className="text-sm font-bold text-slate-400">{t('auth.forms.candidate.no_formation')}</p>
                         </div>
                     )}
                 </div>
@@ -299,14 +298,14 @@ export default function CandidatDetails({
                         <div className="rounded-lg bg-slate-900 p-2 text-white shadow-sm">
                             <Briefcase size={20} />
                         </div>
-                        <h4 className="text-lg font-bold text-slate-900">Expériences</h4>
+                        <h4 className="text-lg font-bold text-slate-900">{t('auth.forms.candidate.experiences_header')}</h4>
                     </div>
                     <button
                         type="button"
                         onClick={() => onFieldChange('experiences', [...experiences, createEmptyExperience()])}
                         className="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-bold tracking-widest text-white uppercase shadow-md transition-all hover:bg-slate-800 active:scale-95"
                     >
-                        <Plus size={16} /> Ajouter
+                        <Plus size={16} /> {t('auth.forms.candidate.add')}
                     </button>
                 </div>
 
@@ -345,7 +344,7 @@ export default function CandidatDetails({
                                             <h5 className="max-w-[200px] truncate font-bold text-slate-900 sm:max-w-md">
                                                 {experience.poste_id || experience.entreprise
                                                     ? `${getTaxonomyLabel(experience.poste_id, postes)} @ ${experience.entreprise}`
-                                                    : 'Nouvelle Expérience'}
+                                                    : t('auth.forms.candidate.new_experience')}
                                             </h5>
                                         </div>
                                         <button
@@ -367,11 +366,11 @@ export default function CandidatDetails({
                                             <div className="space-y-5">
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
-                                                        <Building2 size={14} className="text-slate-400" /> Entreprise
+                                                        <Building2 size={14} className="text-slate-400" /> {t('auth.forms.candidate.company_label')}
                                                     </label>
                                                     <input
                                                         type="text"
-                                                        placeholder="Ex: Cabinet Benjelloun"
+                                                        placeholder={t('auth.forms.candidate.company_placeholder')}
                                                         value={experience.entreprise}
                                                         onChange={(event) =>
                                                             updateExperience(
@@ -385,8 +384,7 @@ export default function CandidatDetails({
                                                 </div>
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
-                                                        <FileText size={14} className="text-slate-400" /> Type
-                                                        d'expérience
+                                                        <FileText size={14} className="text-slate-400" /> {t('auth.forms.candidate.exp_type_label')}
                                                     </label>
                                                     <select
                                                         value={experience.type_travail_id}
@@ -399,13 +397,13 @@ export default function CandidatDetails({
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">Sélectionner un type</option>
+                                                        <option value="">{t('auth.forms.candidate.exp_type_placeholder')}</option>
                                                         {useLoadingTaxonomy(typeTravails) ? (
-                                                            <option disabled>Chargement des options...</option>
+                                                            <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
                                                             typeTravails.map((type) => (
                                                                 <option key={type.id} value={type.id}>
-                                                                    {type.nom}
+                                                                    {getTaxonomyLabel(type)}
                                                                 </option>
                                                             ))
                                                         )}
@@ -415,7 +413,7 @@ export default function CandidatDetails({
                                             <div className="space-y-5">
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
-                                                        <Briefcase size={14} className="text-slate-400" /> Poste
+                                                        <Briefcase size={14} className="text-slate-400" /> {t('auth.forms.candidate.position_label')}
                                                     </label>
                                                     <select
                                                         value={experience.poste_id}
@@ -428,13 +426,13 @@ export default function CandidatDetails({
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">Sélectionner un poste</option>
+                                                        <option value="">{t('auth.forms.candidate.position_placeholder')}</option>
                                                         {useLoadingTaxonomy(postes) ? (
-                                                            <option disabled>Chargement des options...</option>
+                                                            <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
                                                             postes.map((poste) => (
                                                                 <option key={poste.id} value={poste.id}>
-                                                                    {poste.nom}
+                                                                    {getTaxonomyLabel(poste)}
                                                                 </option>
                                                             ))
                                                         )}
@@ -442,7 +440,7 @@ export default function CandidatDetails({
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>Début</label>
+                                                        <label className={labelClasses}>{t('auth.forms.candidate.start_date')}</label>
                                                         <div className="relative">
                                                             <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                             <input
@@ -466,7 +464,7 @@ export default function CandidatDetails({
                                                         )}
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>Fin</label>
+                                                        <label className={labelClasses}>{t('auth.forms.candidate.end_date')}</label>
                                                         <div className="relative">
                                                             <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                             <input
@@ -500,7 +498,7 @@ export default function CandidatDetails({
                     {experiences.length === 0 && (
                         <div className="rounded-[24px] border-2 border-dashed border-slate-100 bg-slate-50/50 py-10 text-center">
                             <Icon name="Briefcase" size={32} className="mx-auto mb-3 text-slate-200" />
-                            <p className="text-sm font-bold text-slate-400">Aucune expérience ajoutée</p>
+                            <p className="text-sm font-bold text-slate-400">{t('auth.forms.candidate.no_experience')}</p>
                         </div>
                     )}
                 </div>

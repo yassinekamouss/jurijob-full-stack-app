@@ -1,7 +1,7 @@
 @extends('layouts.legal')
 
-@section('title', "Conditions Générales d'Utilisation (CGU) | JuriJob")
-@section('meta_description', "Conditions Générales d'Utilisation de JURIJOB : règles d'accès, d'inscription, obligations des candidats et recruteurs, limites de responsabilité et droit marocain.")
+@section('title', __t('cgu_page.seo_title'))
+@section('meta_description', __t('cgu_page.seo_description'))
 @section('canonical', url('/cgu'))
 
 @section('content')
@@ -14,21 +14,21 @@
                     <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    Cadre Contractuel & Utilisation
+                    {{ __t('cgu_page.hero.badge') }}
                 </div>
 
                 <h1 class="mt-6 text-4xl font-normal tracking-tight text-[#1a1f1e] sm:text-5xl lg:text-6xl" style="font-family: 'Cormorant Garamond', serif;">
-                    Conditions Générales <span class="italic text-[#C06041]">d'Utilisation</span>
+                    {{ __t('cgu_page.hero.title_part1') }} <span class="italic text-[#C06041]">{{ __t('cgu_page.hero.title_part2') }}</span>
                 </h1>
 
                 <p class="mt-4 text-base font-light leading-relaxed text-[#1a1f1e]/75 sm:text-lg">
-                    Les règles d'accès et d'utilisation de la plateforme JURIJOB, applicables aux candidats comme aux recruteurs.
+                    {{ __t('cgu_page.hero.subtitle') }}
                 </p>
 
                 <div class="mt-6 inline-flex items-center gap-2 text-xs font-medium text-[#1a1f1e]/50">
-                    <span>Dernière mise à jour : août 2026</span>
+                    <span>{{ __t('cgu_page.hero.updated') }}</span>
                     <span>•</span>
-                    <span>Droit Marocain</span>
+                    <span>{{ __t('cgu_page.hero.law') }}</span>
                 </div>
             </div>
         </div>
@@ -42,27 +42,27 @@
                 <div class="sticky top-28 space-y-6 border border-[#1a1f1e]/10 bg-[#FDFCF8] p-6 shadow-sm">
                     <div>
                         <h3 class="text-lg font-normal text-[#1a1f1e]" style="font-family: 'Cormorant Garamond', serif;">
-                            Sommaire interactif
+                            {{ __t('cgu_page.sidebar.title') }}
                         </h3>
                         <p class="text-xs font-light text-[#1a1f1e]/60">
-                            Table des articles des CGU
+                            {{ __t('cgu_page.sidebar.subtitle') }}
                         </p>
                     </div>
 
                     <nav class="space-y-1">
                         @php
                             $articles = [
-                                ['id' => 'article-1', 'num' => 'Article 1', 'title' => "Objet et champ d'application"],
-                                ['id' => 'article-2', 'num' => 'Article 2', 'title' => 'Définitions'],
-                                ['id' => 'article-3', 'num' => 'Article 3', 'title' => 'Accès au service'],
-                                ['id' => 'article-4', 'num' => 'Article 4', 'title' => 'Inscription et compte utilisateur'],
-                                ['id' => 'article-5', 'num' => 'Article 5', 'title' => 'Obligations du candidat'],
-                                ['id' => 'article-6', 'num' => 'Article 6', 'title' => 'Obligations du recruteur'],
-                                ['id' => 'article-7', 'num' => 'Article 7', 'title' => 'Rôle et limites de la Plateforme'],
-                                ['id' => 'article-8', 'num' => 'Article 8', 'title' => 'Propriété intellectuelle'],
-                                ['id' => 'article-9', 'num' => 'Article 9', 'title' => 'Données personnelles'],
-                                ['id' => 'article-10', 'num' => 'Article 10', 'title' => 'Modification des CGU'],
-                                ['id' => 'article-11', 'num' => 'Article 11', 'title' => 'Droit applicable et litiges'],
+                                ['id' => 'article-1', 'num' => __t('cgu_page.articles.art1.num'), 'title' => __t('cgu_page.articles.art1.title')],
+                                ['id' => 'article-2', 'num' => __t('cgu_page.articles.art2.num'), 'title' => __t('cgu_page.articles.art2.title')],
+                                ['id' => 'article-3', 'num' => __t('cgu_page.articles.art3.num'), 'title' => __t('cgu_page.articles.art3.title')],
+                                ['id' => 'article-4', 'num' => __t('cgu_page.articles.art4.num'), 'title' => __t('cgu_page.articles.art4.title')],
+                                ['id' => 'article-5', 'num' => __t('cgu_page.articles.art5.num'), 'title' => __t('cgu_page.articles.art5.title')],
+                                ['id' => 'article-6', 'num' => __t('cgu_page.articles.art6.num'), 'title' => __t('cgu_page.articles.art6.title')],
+                                ['id' => 'article-7', 'num' => __t('cgu_page.articles.art7.num'), 'title' => __t('cgu_page.articles.art7.title')],
+                                ['id' => 'article-8', 'num' => __t('cgu_page.articles.art8.num'), 'title' => __t('cgu_page.articles.art8.title')],
+                                ['id' => 'article-9', 'num' => __t('cgu_page.articles.art9.num'), 'title' => __t('cgu_page.articles.art9.title')],
+                                ['id' => 'article-10', 'num' => __t('cgu_page.articles.art10.num'), 'title' => __t('cgu_page.articles.art10.title')],
+                                ['id' => 'article-11', 'num' => __t('cgu_page.articles.art11.num'), 'title' => __t('cgu_page.articles.art11.title')],
                             ];
                         @endphp
 
@@ -81,9 +81,9 @@
 
                     <div class="border-t border-[#1a1f1e]/10 pt-4">
                         <div class="bg-[#1a1f1e]/5 p-4 text-xs">
-                            <p class="font-semibold text-[#1a1f1e]">Une question sur les CGU ?</p>
+                            <p class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.sidebar.question_title') }}</p>
                             <p class="mt-1 text-[#1a1f1e]/70">
-                                Écrivez-nous directement à notre adresse dédiée :
+                                {{ __t('cgu_page.sidebar.question_sub') }}
                             </p>
                             <a href="mailto:recrutement@sentissilegal.com" class="mt-3 flex w-full items-center justify-center gap-2 border border-[#1a1f1e]/20 bg-[#FDFCF8] px-3 py-1.5 text-xs font-medium text-[#1a1f1e] hover:border-[#1a1f1e]">
                                 <svg class="h-3.5 w-3.5 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,20 +107,20 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 1</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Objet et champ d'application</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art1.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art1.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
                         <p>
-                            Les présentes Conditions Générales d'Utilisation (ci-après les « <strong class="font-semibold text-[#1a1f1e]">CGU</strong> ») définissent les modalités d'accès et d'utilisation de la plateforme <strong class="font-semibold text-[#1a1f1e]">JURIJOB</strong>, accessible à l'adresse <a href="https://www.jurijob.ma" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-4 hover:opacity-80">www.jurijob.ma</a>, éditée par la société <strong class="font-semibold text-[#1a1f1e]">SENTISSI LEGAL ADVISORY SARL AU</strong> (ci-après « SLA » ou « la Plateforme »).
+                            {{ __t('cgu_page.articles.art1.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art1.p1_cgu') }}</strong>{{ __t('cgu_page.articles.art1.p1_mid1') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art1.p1_jurijob') }}</strong>{{ __t('cgu_page.articles.art1.p1_mid2') }}<a href="https://www.jurijob.ma" target="_blank" rel="noopener noreferrer" class="font-medium text-[#C06041] underline underline-offset-4 hover:opacity-80">www.jurijob.ma</a>{{ __t('cgu_page.articles.art1.p1_mid3') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art1.p1_sla') }}</strong>{{ __t('cgu_page.articles.art1.p1_suffix') }}
                         </p>
                         <p>
-                            JURIJOB est un outil de sourcing spécialisé dans les métiers du droit. La Plateforme met en relation des professionnels du droit — <span class="italic">juristes d'entreprise, avocats, notaires, fiscalistes, compliance officers</span> — avec des recruteurs identifiés au Maroc et en Afrique.
+                            {{ __t('cgu_page.articles.art1.p2') }}
                         </p>
                         <div class="border-l-4 border-[#C06041] bg-[#1a1f1e]/5 p-4 font-medium text-[#1a1f1e]">
-                            Toute utilisation de la Plateforme emporte acceptation pleine et entière des présentes CGU. L'utilisateur qui n'accepte pas ces conditions doit renoncer à utiliser le service.
+                            {{ __t('cgu_page.articles.art1.box') }}
                         </div>
                     </div>
                 </section>
@@ -134,37 +134,37 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 2</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Définitions clés</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art2.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art2.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-5 space-y-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Candidat</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art2.candidat_title') }}</span>
                             <p class="text-sm leading-relaxed text-[#1a1f1e]/80">
-                                Toute personne physique créant un profil dans la CVthèque JURIJOB en vue d'être proposée à des recruteurs.
+                                {{ __t('cgu_page.articles.art2.candidat_desc') }}
                             </p>
                         </div>
 
                         <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-5 space-y-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Recruteur</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art2.recruteur_title') }}</span>
                             <p class="text-sm leading-relaxed text-[#1a1f1e]/80">
-                                Toute personne morale ou physique agissant dans le cadre de son activité professionnelle, déposant une demande de sourcing sur la Plateforme.
+                                {{ __t('cgu_page.articles.art2.recruteur_desc') }}
                             </p>
                         </div>
 
                         <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-5 space-y-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Short-list</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art2.shortlist_title') }}</span>
                             <p class="text-sm leading-relaxed text-[#1a1f1e]/80">
-                                Sélection de profils de candidats, évalués puis validés manuellement, transmise à un recruteur en réponse à sa demande.
+                                {{ __t('cgu_page.articles.art2.shortlist_desc') }}
                             </p>
                         </div>
 
                         <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-5 space-y-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">CVthèque</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art2.cvtheque_title') }}</span>
                             <p class="text-sm leading-relaxed text-[#1a1f1e]/80">
-                                Base de données des profils candidats constituée et exploitée exclusivement par SLA.
+                                {{ __t('cgu_page.articles.art2.cvtheque_desc') }}
                             </p>
                         </div>
                     </div>
@@ -179,15 +179,15 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 3</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Accès au service</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art3.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art3.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>La consultation des pages publiques de la Plateforme est libre et gratuite. La création d'un compte est nécessaire pour déposer un profil candidat ou une demande de sourcing.</p>
-                        <p>L'utilisateur est responsable de son équipement informatique et de sa connexion Internet. Les frais d'accès au réseau demeurent à sa charge exclusive.</p>
-                        <p>SLA se réserve le droit de suspendre temporairement l'accès à la Plateforme pour des raisons de maintenance, de mise à jour ou de sécurité, sans que cette interruption puisse ouvrir droit à une quelconque indemnisation.</p>
+                        <p>{{ __t('cgu_page.articles.art3.p1') }}</p>
+                        <p>{{ __t('cgu_page.articles.art3.p2') }}</p>
+                        <p>{{ __t('cgu_page.articles.art3.p3') }}</p>
                     </div>
                 </section>
 
@@ -200,14 +200,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 4</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Inscription et compte utilisateur</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art4.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art4.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>L'inscription requiert la communication d'informations exactes, complètes et à jour. L'utilisateur s'engage à maintenir l'exactitude de ces informations pendant toute la durée d'utilisation du service.</p>
-                        <p>Une adresse e-mail valide est exigée ; son activation peut être soumise à vérification. Chaque utilisateur est seul responsable de la confidentialité de ses identifiants et de toute activité effectuée depuis son compte.</p>
+                        <p>{{ __t('cgu_page.articles.art4.p1') }}</p>
+                        <p>{{ __t('cgu_page.articles.art4.p2') }}</p>
                     </div>
 
                     <div class="border border-[#C06041]/30 bg-[#C06041]/5 p-5 space-y-2">
@@ -215,15 +215,15 @@
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Règle d'unicité de compte par rôle
+                            {{ __t('cgu_page.articles.art4.box_title') }}
                         </div>
                         <p class="text-xs sm:text-sm leading-relaxed text-[#1a1f1e]/85">
-                            Une même adresse e-mail ne peut être associée qu'à un seul rôle — candidat ou recruteur. Pour disposer des deux espaces, l'utilisateur doit créer deux comptes distincts avec des adresses e-mail différentes.
+                            {{ __t('cgu_page.articles.art4.box_desc') }}
                         </p>
                     </div>
 
                     <p class="text-xs text-[#1a1f1e]/70 italic">
-                        SLA se réserve le droit de suspendre ou de supprimer tout compte en cas de manquement aux présentes CGU, notamment en cas d'informations manifestement fausses ou d'usurpation d'identité.
+                        {{ __t('cgu_page.articles.art4.disclaimer') }}
                     </p>
                 </section>
 
@@ -236,20 +236,20 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 5</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Obligations du candidat</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art5.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art5.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 shadow-sm text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
                         <ul class="space-y-3 list-disc list-inside text-[#1a1f1e]/80">
-                            <li><strong class="text-[#1a1f1e]">Sincérité des informations :</strong> Le candidat garantit l'exactitude des informations déclarées (identité, coordonnées, formations, expériences professionnelles, spécialisations et compétences linguistiques).</li>
-                            <li><strong class="text-[#1a1f1e]">Légitimité des données :</strong> Il s'engage à ne renseigner que des données le concernant personnellement et dont il est en droit de disposer.</li>
-                            <li><strong class="text-[#1a1f1e]">Maîtrise du profil :</strong> Le candidat peut consulter, modifier, compléter ou supprimer définitivement son profil à tout moment depuis son espace personnel.</li>
+                            <li><strong class="text-[#1a1f1e]">{{ __t('cgu_page.articles.art5.item1_bold') }}</strong>{{ __t('cgu_page.articles.art5.item1_text') }}</li>
+                            <li><strong class="text-[#1a1f1e]">{{ __t('cgu_page.articles.art5.item2_bold') }}</strong>{{ __t('cgu_page.articles.art5.item2_text') }}</li>
+                            <li><strong class="text-[#1a1f1e]">{{ __t('cgu_page.articles.art5.item3_bold') }}</strong>{{ __t('cgu_page.articles.art5.item3_text') }}</li>
                         </ul>
 
                         <div class="border-t border-[#1a1f1e]/10 pt-4 text-xs text-[#C06041] font-medium">
-                            * Toute déclaration inexact de nature à induire un recruteur en erreur engage la responsabilité exclusive du candidat et peut entraîner la suppression de son profil.
+                            {{ __t('cgu_page.articles.art5.disclaimer') }}
                         </div>
                     </div>
                 </section>
@@ -263,22 +263,22 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 6</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Obligations du recruteur</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art6.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art6.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 shadow-sm text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                        <p>Le recruteur agit exclusivement dans le cadre de son activité professionnelle et garantit disposer des pouvoirs nécessaires pour engager la structure qu'il représente.</p>
-                        <p>Il s'engage à formuler des critères de recherche conformes au droit du travail applicable, notamment aux dispositions prohibant toute discrimination à l'embauche.</p>
+                        <p>{{ __t('cgu_page.articles.art6.p1') }}</p>
+                        <p>{{ __t('cgu_page.articles.art6.p2') }}</p>
 
                         <div class="border border-[#1a1f1e]/10 bg-[#1a1f1e]/5 p-4 text-xs sm:text-sm font-medium text-[#1a1f1e]">
-                            <strong class="text-[#C06041] uppercase tracking-wider block mb-1 text-xs">Usage strictly confidentiel :</strong>
-                            Les profils communiqués sont destinés au seul processus de recrutement au titre duquel ils ont été demandés. Toute extraction, conservation en base interne, revente, cession ou transmission à un tiers est strictly interdite.
+                            <strong class="text-[#C06041] uppercase tracking-wider block mb-1 text-xs">{{ __t('cgu_page.articles.art6.box_title') }}</strong>
+                            {{ __t('cgu_page.articles.art6.box_desc') }}
                         </div>
 
                         <p class="text-xs text-[#1a1f1e]/70">
-                            Le recruteur demeure seul responsable de la conduite des entretiens, de l'appréciation des candidats et de sa décision finale d'embauche.
+                            {{ __t('cgu_page.articles.art6.p3') }}
                         </p>
                     </div>
                 </section>
@@ -292,15 +292,15 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 7</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Rôle et limites de la Plateforme</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art7.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art7.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>JURIJOB agit en qualité d'outil de sourcing et d'intermédiaire technique. La Plateforme n'exerce pas l'activité d'agence de recrutement privée et n'intervient pas dans la relation contractuelle qui peut se nouer entre un candidat et un recruteur.</p>
-                        <p>SLA ne garantit ni l'embauche d'un candidat, ni sa disponibilité effective, ni l'exactitude des informations qu'il a déclarées sous sa propre responsabilité.</p>
-                        <p>La Plateforme ne saurait être tenue responsable du déroulement des processus de recrutement, des engagements pris entre les parties, ni des conséquences d'une embauche.</p>
+                        <p>{{ __t('cgu_page.articles.art7.p1') }}</p>
+                        <p>{{ __t('cgu_page.articles.art7.p2') }}</p>
+                        <p>{{ __t('cgu_page.articles.art7.p3') }}</p>
                     </div>
 
                     <div class="border-l-4 border-[#C06041] border-y border-r border-[#1a1f1e]/15 bg-[#1a1f1e] p-6 text-[#FDFCF8] shadow-md">
@@ -308,10 +308,10 @@
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
                             </svg>
-                            Point Essentiel
+                            {{ __t('cgu_page.articles.art7.box_title') }}
                         </div>
                         <p class="mt-2 text-base font-medium leading-relaxed sm:text-lg">
-                            JURIJOB identifie et présente des profils pertinents. Le recruteur conserve l'intégralité de la maîtrise des entretiens et de la décision d'embauche.
+                            {{ __t('cgu_page.articles.art7.box_desc') }}
                         </p>
                     </div>
                 </section>
@@ -325,16 +325,16 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 8</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Propriété intellectuelle</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art8.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art8.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>La Plateforme, sa structure, son design, ses textes, son logo, sa charte graphique, sa base de données et sa méthodologie de sélection sont protégés par les lois marocaines <strong class="font-semibold text-[#1a1f1e]">2-00</strong> (droits d'auteur et droits voisins) et <strong class="font-semibold text-[#1a1f1e]">17-97</strong> (propriété industrielle).</p>
-                        <p>La marque <span class="italic font-medium">« JURIJOB — Smart Recrutement Juridique »</span> est déposée auprès de l'OMPIC. Toute reproduction ou représentation, totale ou partielle, sans autorisation écrite préalable, est interdite.</p>
+                        <p>{{ __t('cgu_page.articles.art8.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art8.p1_law1') }}</strong>{{ __t('cgu_page.articles.art8.p1_mid') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art8.p1_law2') }}</strong>{{ __t('cgu_page.articles.art8.p1_suffix') }}</p>
+                        <p>{{ __t('cgu_page.articles.art8.p2_prefix') }}<span class="italic font-medium">{{ __t('cgu_page.articles.art8.p2_brand') }}</span>{{ __t('cgu_page.articles.art8.p2_suffix') }}</p>
                         <p class="text-xs text-[#1a1f1e]/70 italic border-t border-[#1a1f1e]/10 pt-3">
-                            Les contenus déposés par les utilisateurs demeurent leur propriété. Ceux-ci concèdent à SLA une licence d'utilisation non exclusive, limitée aux seules finalités de fonctionnement du service.
+                            {{ __t('cgu_page.articles.art8.disclaimer') }}
                         </p>
                     </div>
                 </section>
@@ -348,19 +348,19 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 9</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Données personnelles</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art9.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art9.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>Le traitement des données personnelles est effectué conformément à la <strong class="font-semibold text-[#1a1f1e]">loi 09-08</strong> relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel, et a fait l'objet d'une déclaration auprès de la CNDP.</p>
-                        <p>Les profils candidats ne font l'objet d'aucune diffusion publique. Leur accès est strictement réservé aux recruteurs dont le paiement a été confirmé, et limité aux profils composant la short-list qui leur a été adressée.</p>
+                        <p>{{ __t('cgu_page.articles.art9.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art9.p1_law') }}</strong>{{ __t('cgu_page.articles.art9.p1_suffix') }}</p>
+                        <p>{{ __t('cgu_page.articles.art9.p2') }}</p>
 
                         <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-5 space-y-2">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Droits des utilisateurs</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art9.box_title') }}</span>
                             <p class="text-xs sm:text-sm text-[#1a1f1e]/85">
-                                Chaque utilisateur dispose d'un droit d'accès, de rectification et d'opposition, qu'il peut exercer en écrivant à <a href="mailto:recrutement@sentissilegal.com" class="font-medium text-[#C06041] underline underline-offset-2">recrutement@sentissilegal.com</a>. Les modalités détaillées figurent dans les <a href="/mentions-legales" class="font-medium text-[#C06041] underline underline-offset-2">mentions légales</a>.
+                                {{ __t('cgu_page.articles.art9.box_prefix') }}<a href="mailto:recrutement@sentissilegal.com" class="font-medium text-[#C06041] underline underline-offset-2">recrutement@sentissilegal.com</a>{{ __t('cgu_page.articles.art9.box_mid') }}<a href="/mentions-legales" class="font-medium text-[#C06041] underline underline-offset-2">{{ __t('cgu_page.articles.art9.box_link') }}</a>{{ __t('cgu_page.articles.art9.box_suffix') }}
                             </p>
                         </div>
                     </div>
@@ -375,14 +375,14 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 10</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Modification des CGU</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art10.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art10.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="space-y-4 text-sm leading-relaxed text-[#1a1f1e]/80 sm:text-base">
-                        <p>SLA se réserve le droit de modifier les présentes CGU à tout moment afin de les adapter à l'évolution du service ou de la réglementation.</p>
-                        <p>Les utilisateurs sont informés de toute modification substantielle. La poursuite de l'utilisation de la Plateforme après modification vaut acceptation des nouvelles conditions.</p>
+                        <p>{{ __t('cgu_page.articles.art10.p1') }}</p>
+                        <p>{{ __t('cgu_page.articles.art10.p2') }}</p>
                     </div>
                 </section>
 
@@ -395,17 +395,17 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">Article 11</span>
-                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">Droit applicable et litiges</h2>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-[#C06041]">{{ __t('cgu_page.articles.art11.num') }}</span>
+                            <h2 class="text-2xl font-normal text-[#1a1f1e] sm:text-3xl" style="font-family: 'Cormorant Garamond', serif;">{{ __t('cgu_page.articles.art11.title') }}</h2>
                         </div>
                     </div>
 
                     <div class="border border-[#1a1f1e]/15 bg-[#FDFCF8] p-6 space-y-4 shadow-sm">
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                            Les présentes CGU sont régies par le <strong class="font-semibold text-[#1a1f1e]">droit marocain</strong>.
+                            {{ __t('cgu_page.articles.art11.p1_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art11.p1_bold') }}</strong>{{ __t('cgu_page.articles.art11.p1_suffix') }}
                         </p>
                         <p class="text-sm leading-relaxed text-[#1a1f1e]/85 sm:text-base">
-                            Tout litige relatif à leur interprétation ou à leur exécution relève de la compétence exclusive des <strong class="font-semibold text-[#1a1f1e]">tribunaux de Casablanca</strong>, à défaut de résolution amiable préalable.
+                            {{ __t('cgu_page.articles.art11.p2_prefix') }}<strong class="font-semibold text-[#1a1f1e]">{{ __t('cgu_page.articles.art11.p2_bold') }}</strong>{{ __t('cgu_page.articles.art11.p2_suffix') }}
                         </p>
                     </div>
                 </section>

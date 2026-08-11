@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { router, Head, usePage } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
 import Header from '@/components/layout/Header';
 import SEO from '@/components/SEO';
@@ -17,14 +18,20 @@ import FormRecruiter from '@/components/signup/FormRecruiter';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import Icon from '@/components/signup/FormularIcons';
 
-const recruiterSteps = [
-    { id: 1, label: 'Informations', icon: 'FileText' },
-    { id: 2, label: 'Profil', icon: 'Settings' },
-    { id: 3, label: 'Confirmation', icon: 'ClipboardCheck' },
+const recruiterStepDefinitions = [
+    { id: 1, labelKey: 'auth.steps.infos', icon: 'FileText' },
+    { id: 2, labelKey: 'auth.steps.profile', icon: 'Settings' },
+    { id: 3, labelKey: 'auth.steps.confirmation', icon: 'ClipboardCheck' },
 ];
 
 export default function RegisterRecruteur() {
+    const { t } = useTranslation();
     const { auth } = usePage<{ auth: Auth }>().props;
+
+    const recruiterSteps = recruiterStepDefinitions.map((step) => ({
+        ...step,
+        label: t(step.labelKey),
+    }));
 
     useEffect(() => {
         // Preload Outfit Font if not already
@@ -106,7 +113,7 @@ export default function RegisterRecruteur() {
             router.post('/register', payload, {
                 forceFormData: true,
                 onSuccess: () => {
-                    toast.success('Compte recruteur créé avec succès !');
+                    toast.success(t('auth.register_recruiter.toast_success'));
                     resolve();
                 },
                 onError: (errs) => {
@@ -161,7 +168,7 @@ export default function RegisterRecruteur() {
                     reject(
                         new Error(
                             (firstError as string) ||
-                                "Erreur lors de l'inscription",
+                                t('auth.register_recruiter.toast_error'),
                         ),
                     );
                 },
@@ -187,7 +194,7 @@ export default function RegisterRecruteur() {
                     !value ||
                     (typeof value === 'string' && value.trim() === '')
                 ) {
-                    (newErrors as any)[field] = 'Ce champ est obligatoire';
+                    (newErrors as any)[field] = t('auth.validation.required_field');
                     valid = false;
                 }
             });
@@ -195,7 +202,7 @@ export default function RegisterRecruteur() {
             if (formData.user.password && formData.user.password_confirmation) {
                 if (formData.user.password !== formData.user.password_confirmation) {
                     newErrors.password_confirmation =
-                        'Les mots de passe ne correspondent pas';
+                        t('auth.validation.password_mismatch');
                     valid = false;
                 } else {
                     const p = formData.user.password;
@@ -207,7 +214,7 @@ export default function RegisterRecruteur() {
                         !/[^A-Za-z0-9]/.test(p)
                     ) {
                         newErrors.password =
-                            'Le mot de passe doit contenir au moins 8 caractères, majuscules, minuscules, chiffres et symboles';
+                            t('auth.validation.password_complexity');
                         valid = false;
                     }
                 }
@@ -232,26 +239,26 @@ export default function RegisterRecruteur() {
                     if (!res.ok) {
                         valid = false;
                         if (res.status === 409) {
-                            newErrors.email = 'Cet email est déjà utilisé';
+                            newErrors.email = t('auth.validation.email_taken');
                             toast.error(
-                                'Cet email est déjà associé à un compte.',
+                                t('auth.validation.email_taken_toast'),
                             );
                         } else if (res.status === 422) {
                             const data = await res.json();
-                            newErrors.email = data.message || 'Email invalide';
+                            newErrors.email = data.message || t('auth.validation.invalid_email');
                             toast.error(
                                 data.message ||
-                                    'Veuillez vérifier votre email.',
+                                    t('auth.validation.verify_email'),
                             );
                         } else {
                             toast.error(
-                                "Une erreur est survenue lors de la vérification de l'email.",
+                                t('auth.validation.email_check_error'),
                             );
                         }
                     }
                 } catch (error) {
                     valid = false;
-                    toast.error('Erreur de connexion. Veuillez réessayer.');
+                    toast.error(t('auth.validation.connection_error'));
                 }
             }
         } else if (step === 2) {
@@ -268,7 +275,7 @@ export default function RegisterRecruteur() {
                     !value ||
                     (typeof value === 'string' && value.trim() === '')
                 ) {
-                    (newErrors as any)[field] = 'Ce champ est obligatoire';
+                    (newErrors as any)[field] = t('auth.validation.required_field');
                     valid = false;
                 }
             });
@@ -324,8 +331,8 @@ export default function RegisterRecruteur() {
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
             <SEO
-                title="Inscription Recruteur - Recrutez vos Talents Juridiques | JuriJob"
-                description="Rejoignez JuriJob en tant que recruteur. Définissez vos critères de recherche et recevez une short-list qualifiée de juristes et avocats au Maroc."
+                title={t('auth.register_recruiter.seo_title')}
+                description={t('auth.register_recruiter.seo_description')}
                 canonical="https://jurijob.ma/register/recruteur"
             />
             <Toaster position="top-right" />
@@ -345,7 +352,7 @@ export default function RegisterRecruteur() {
                                             size={14}
                                             className="text-[#C06041]"
                                         />
-                                        Inscription recruteur
+                                        {t('auth.register_recruiter.badge')}
                                     </span>
 
                                     <h1
@@ -355,22 +362,19 @@ export default function RegisterRecruteur() {
                                                 'Cormorant Garamond, serif',
                                         }}
                                     >
-                                        Recrutez les meilleurs talents
-                                        juridiques
+                                        {t('auth.register_recruiter.title')}
                                     </h1>
 
                                     <p className="mt-4 text-lg font-medium text-[#1a1f1e]/70">
-                                        Accédez à un vivier qualifié de juristes
-                                        et avocats prêts à rejoindre votre
-                                        organisation.
+                                        {t('auth.register_recruiter.subtitle')}
                                     </p>
                                 </div>
 
                                 <ul className="space-y-4">
                                     {[
-                                        "Diffusion d'offres ciblées",
-                                        'Matching intelligent',
-                                        'Gestion simplifiée des candidatures',
+                                        t('auth.register_recruiter.feature1'),
+                                        t('auth.register_recruiter.feature2'),
+                                        t('auth.register_recruiter.feature3'),
                                     ].map((text) => (
                                         <li
                                             key={text}
@@ -394,11 +398,10 @@ export default function RegisterRecruteur() {
                                                 size={18}
                                                 className="text-[#C06041]"
                                             />{' '}
-                                            Professionnel
+                                            {t('auth.register_recruiter.pro_title')}
                                         </div>
                                         <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
-                                            Votre profil entreprise est
-                                            valorisé.
+                                            {t('auth.register_recruiter.pro_desc')}
                                         </p>
                                     </div>
                                     <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm">
@@ -408,10 +411,10 @@ export default function RegisterRecruteur() {
                                                 size={18}
                                                 className="text-[#C06041]"
                                             />{' '}
-                                            Efficace
+                                            {t('auth.register_recruiter.efficient_title')}
                                         </div>
                                         <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
-                                            Trouvez le bon profil rapidement.
+                                            {t('auth.register_recruiter.efficient_desc')}
                                         </p>
                                     </div>
                                 </div>
@@ -445,13 +448,13 @@ export default function RegisterRecruteur() {
 
                                 <div className="mt-8 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-6">
                                     <p className="text-sm font-medium text-[#1a1f1e]/50">
-                                        Déjà un compte ?
+                                        {t('auth.register_recruiter.already_account')}
                                     </p>
                                     <a
                                         href="/login"
                                         className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
                                     >
-                                        Se connecter
+                                        {t('auth.register_recruiter.login_link')}
                                     </a>
                                 </div>
                             </div>

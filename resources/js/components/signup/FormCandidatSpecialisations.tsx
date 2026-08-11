@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CandidatFormData } from '@/types';
-import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 
 type FormCandidatSpecialisationsProps = {
     formData: CandidatFormData;
@@ -15,6 +16,7 @@ export default function FormCandidatSpecialisations({
     errors = {},
     className = '',
 }: FormCandidatSpecialisationsProps) {
+    const { t } = useTranslation();
     const { specialisations } = useTaxonomies();
     const selected = formData.specialisations || [];
 
@@ -43,14 +45,14 @@ export default function FormCandidatSpecialisations({
     return (
         <div className={`space-y-8 ${className}`}>
             <div className="mb-8 text-center">
-                <h3 className="mb-2 text-xl font-bold text-slate-900">Spécialisations</h3>
+                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidate.specialisations_title')}</h3>
                 <p className="text-sm text-slate-500">
-                    Sélectionnez une ou plusieurs spécialisations par catégorie
+                    {t('auth.forms.candidate.specialisations_subtitle')}
                 </p>
             </div>
 
             {useLoadingTaxonomy(specialisations) ? (
-                <p className="py-8 text-center text-sm text-slate-500">Chargement des spécialisations...</p>
+                <p className="py-8 text-center text-sm text-slate-500">{t('auth.forms.candidate.loading_specialisations')}</p>
             ) : (
                 <div className="space-y-8">
                     {groupedSpecialisations.map((group) => {
@@ -65,7 +67,7 @@ export default function FormCandidatSpecialisations({
                                     </span>
                                     {selectedInGroup > 0 && (
                                         <span className="text-xs font-semibold text-[#C06041]">
-                                            {selectedInGroup} choisie{selectedInGroup > 1 ? 's' : ''}
+                                            {t('auth.forms.candidate.selected_count', { count: selectedInGroup })}
                                         </span>
                                     )}
                                 </div>
@@ -85,7 +87,7 @@ export default function FormCandidatSpecialisations({
                                                         : 'border-slate-200 bg-white text-slate-700 hover:border-slate-400'
                                                 }`}
                                             >
-                                                <span className="leading-snug break-words">{item.nom}</span>
+                                                <span className="leading-snug break-words">{getTaxonomyLabel(item)}</span>
                                             </button>
                                         );
                                     })}
@@ -102,8 +104,7 @@ export default function FormCandidatSpecialisations({
 
             {selected.length > 0 && (
                 <p className="text-xs font-semibold text-slate-500">
-                    {selected.length} spécialisation{selected.length > 1 ? 's' : ''} sélectionnée
-                    {selected.length > 1 ? 's' : ''}
+                    {t('auth.forms.candidate.total_selected_count', { count: selected.length })}
                 </p>
             )}
         </div>
