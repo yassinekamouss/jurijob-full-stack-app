@@ -77,7 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/recruteur/settings/profile', [RecruiterSettingsController::class, 'updateProfile'])->name('recruteur.settings.update-profile');
 
         Route::get('/recruteur/offres/{offre}/matching', [MatchingController::class, 'index'])->name('offres.matching');
-        Route::resource('/recruteur/offres', OffreController::class);
+        Route::resource('/recruteur/offres', OffreController::class)->except(['edit', 'update']);
     });
 });
 
@@ -96,7 +96,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/admin/candidats/{candidate}/archive', [CandidateController::class, 'archive'])->name('admin.candidates.archive');
     Route::get('/admin/recruteurs', [RecruiterController::class, 'index'])->name('admin.recruteurs.index');
     // Route::get('/admin/recruteurs/{recruteur}/applications', [ApplicationsController::class, 'index'])->name('admin.recruteurs.applications'); // TODO: Create/Import ApplicationsController
-   
+
     Route::get('/admin/recruteurs/{recruteur}/applications', [RecruiterController::class, 'showApplications'])->name('admin.recruteurs.applications');
     Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');

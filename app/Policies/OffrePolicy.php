@@ -36,7 +36,7 @@ class OffrePolicy
      */
     public function update(User $user, Offre $offre): bool
     {
-        return $user->recruteur()->exists() && $user->recruteur->id === $offre->recruteur_id;
+        return false;
     }
 
     /**

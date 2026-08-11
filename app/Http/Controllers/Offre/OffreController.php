@@ -120,49 +120,6 @@ class OffreController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Offre $offre): Response
-    {
-        $this->authorize('update', $offre);
-
-        $offre->load(['criteresMultiples']);
-
-        $offreData = array_merge($offre->toArray(), [
-            'requirements' => $this->transformCriteresMultiplesToRequirements($offre),
-        ]);
-
-        return Inertia::render('Offres/Edit', [
-            'offre' => $offreData,
-            'taxonomies' => TaxonomyRepository::getAll(),
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(StoreOffreRequest $request, Offre $offre): RedirectResponse
-    {
-        $this->authorize('update', $offre);
-        $offreData = OffreData::fromRequest($request);
-
-        DB::beginTransaction();
-        try {
-            $offre->update($offreData->toArray());
-
-            $this->syncCriteresMultiples($offre, $offreData->requirements);
-
-            DB::commit();
-
-            return to_route('offres.index')->with('success', 'Offre mise à jour avec succès.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return back()->with('error', "Erreur lors de la mise à jour de l'offre.");
-        }
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Offre $offre): RedirectResponse
