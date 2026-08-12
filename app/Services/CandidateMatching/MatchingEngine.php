@@ -10,7 +10,9 @@ use Illuminate\Support\Collection;
 
 class MatchingEngine
 {
-    public function __construct(private MatchScorer $scorer) {}
+    public function __construct(private MatchScorer $scorer)
+    {
+    }
 
     /**
      * Rank eligible candidates for an offer.
@@ -29,7 +31,7 @@ class MatchingEngine
 
         $query = Candidat::query()
             ->where('candidats.status', 'accepte')
-            ->whereHas('user', fn (Builder $userQuery) => $userQuery->where('is_active', true));
+            ->whereHas('user', fn(Builder $userQuery) => $userQuery->where('is_active', true));
 
         $this->applyIndispensableLanguageFilter($query, $offre);
         $this->applyProfileHardFilters($query, $offre);
@@ -65,7 +67,7 @@ class MatchingEngine
     private function applyIndispensableLanguageFilter(Builder $query, Offre $offre): void
     {
         $indispensables = $this->languageCriteria($offre)
-            ->filter(fn (OffreCritereMultiple $criterion) => ($criterion->metadata['importance'] ?? '') === 'indispensable')
+            ->filter(fn(OffreCritereMultiple $criterion) => ($criterion->metadata['importance'] ?? '') === 'indispensable')
             ->values();
 
         if ($indispensables->isEmpty()) {
@@ -100,6 +102,29 @@ class MatchingEngine
 
         if ($offre->salaire_id !== null) {
             $query->where('candidats.salaire_id', $offre->salaire_id);
+        }
+
+        if ($offre->urgence_id !== null) {
+            $query->whereNotNull('candidats.urgence_id')
+                ->where('candidats.urgence_id', '>=', $offre->urgence_id);
+        }
+
+        if ($offre->ville_id !== null) {
+            $query->whereHas('villeTravails', function (Builder $villeQuery) use ($offre) {
+                $villeQuery->where('ville_id', $offre->ville_id);
+            });
+        }
+
+        if ($offre->type_travail_id !== null) {
+            $query->whereHas('typeTravails', function (Builder $typeQuery) use ($offre) {
+                $typeQuery->where('type_travail_id', $offre->type_travail_id);
+            });
+        }
+
+        if ($offre->mode_travail_id !== null) {
+            $query->whereHas('modeTravails', function (Builder $modeQuery) use ($offre) {
+                $modeQuery->where('mode_travail_id', $offre->mode_travail_id);
+            });
         }
     }
 

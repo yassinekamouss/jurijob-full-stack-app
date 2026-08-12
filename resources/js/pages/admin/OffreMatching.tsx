@@ -211,7 +211,7 @@ function CandidatesList({
                                         candidat.matching_score,
                                     )}`}
                                 >
-                                    Score {candidat.matching_score}
+                                    Score {Math.min(candidat.matching_score, 100)}
                                 </Badge>
                             </div>
                         </CardContent>

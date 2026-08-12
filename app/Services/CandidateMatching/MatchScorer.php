@@ -17,9 +17,9 @@ class MatchScorer
      * @var array<string, int>
      */
     public const LANGUAGE_PENALTIES = [
-        'important' => 5,
-        'souhaitable' => 3,
-        'facultatif' => 1,
+        'important' => 4,
+        'souhaitable' => 2,
+        'facultatif' => 0,
     ];
 
     /**
@@ -64,7 +64,7 @@ class MatchScorer
             }
 
             // Prefer higher language levels among otherwise equal candidates.
-            $bonus += $candidateLevelId;
+            $bonus += ($candidateLevelId - $requiredLevelId);
         }
 
         return $bonus;
