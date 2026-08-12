@@ -15,6 +15,7 @@ import {
     Info
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -50,6 +51,7 @@ const BASE_CRITERIA = [
 ] as const;
 
 export default function Show({ offre }: Props) {
+    const { t } = useTranslation();
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
 
     const groupedRequirements = useMemo(() => {
@@ -87,7 +89,7 @@ export default function Show({ offre }: Props) {
 
     return (
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
-            <Head title={`${offre.titre} - Détails de l'offre`} />
+            <Head title={`${offre.titre} - ${t('recruiter_offers.show.page_title_suffix')}`} />
 
             <DashboardHeader />
 
@@ -104,7 +106,7 @@ export default function Show({ offre }: Props) {
                             className="group inline-flex items-center text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 hover:text-[#1a1f1e] transition-all"
                         >
                             <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
-                            Retour au tableau de bord
+                            {t('recruiter_offers.show.back_to_dashboard')}
                         </Link>
                         <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-black italic tracking-tight leading-tight">
                             {offre.titre}
@@ -118,16 +120,16 @@ export default function Show({ offre }: Props) {
                                             offre.statut === 'CV_ENVOYES' ? 'bg-emerald-500 text-white' :
                                                 'bg-slate-500 text-white'
                             )}>
-                                {offre.statut === 'EN_TRAITEMENT' ? 'En traitement' :
-                                    offre.statut === 'ATTENTE_PAIEMENT' ? 'En attente de paiement' :
-                                        offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification de paiement' :
-                                            offre.statut === 'CV_ENVOYES' ? 'CV Envoyés' :
-                                                'Offre Archivée'}
+                                {offre.statut === 'EN_TRAITEMENT' ? t('recruiter_offers.show.status_badge.processing') :
+                                    offre.statut === 'ATTENTE_PAIEMENT' ? t('recruiter_offers.show.status_badge.payment') :
+                                        offre.statut === 'VERIFICATION_PAIEMENT' ? t('recruiter_offers.show.status_badge.verification') :
+                                            offre.statut === 'CV_ENVOYES' ? t('recruiter_offers.show.status_badge.sent') :
+                                                t('recruiter_offers.show.status_badge.archived')}
                             </Badge>
                             <span className="h-1 w-1 rounded-full bg-slate-300 mx-1" />
                             <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1.5 uppercase tracking-widest">
                                 <Clock className="h-3 w-3" />
-                                Posté le {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                {t('recruiter_offers.show.posted_on', { date: new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) })}
                             </span>
                         </div>
                     </motion.div>
@@ -144,7 +146,7 @@ export default function Show({ offre }: Props) {
                                 <div className="h-8 w-8 rounded-lg bg-slate-900 flex items-center justify-center">
                                     <LayoutDashboard className="h-4 w-4 text-white" />
                                 </div>
-                                <h2 className="font-serif text-2xl font-bold italic tracking-tight text-slate-900">À propos du rôle</h2>
+                                <h2 className="font-serif text-2xl font-bold italic tracking-tight text-slate-900">{t('recruiter_offers.show.about_role')}</h2>
                             </div>
                             <div className="prose prose-slate max-w-none">
                                 <div className="text-lg leading-relaxed text-slate-600 font-medium font-sans whitespace-pre-line bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm shadow-slate-200/50">
@@ -160,10 +162,10 @@ export default function Show({ offre }: Props) {
                                     <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
                                         <Layers className="h-4 w-4 text-white" />
                                     </div>
-                                    <h2 className="font-serif text-2xl font-bold italic tracking-tight text-slate-900">Critères de l'offre</h2>
+                                    <h2 className="font-serif text-2xl font-bold italic tracking-tight text-slate-900">{t('recruiter_offers.show.offer_criteria')}</h2>
                                 </div>
                                 <div className="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                    <CheckCircle2 className="h-3 w-3 text-emerald-500" /> Vue unifiée des critères
+                                    <CheckCircle2 className="h-3 w-3 text-emerald-500" /> {t('recruiter_offers.show.unified_view')}
                                 </div>
                             </div>
 
@@ -171,11 +173,11 @@ export default function Show({ offre }: Props) {
                                 <div className="space-y-4 rounded-[32px] border border-slate-100 bg-white p-6 sm:p-8 shadow-lg shadow-slate-200/50">
                                     <div className="flex items-center justify-between gap-4 border-b border-slate-50 pb-5">
                                         <div>
-                                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">Critères structurants</h3>
-                                            <p className="text-[11px] font-medium text-slate-400 italic">Les informations structurantes de l'offre.</p>
+                                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">{t('recruiter_offers.show.structuring_criteria')}</h3>
+                                            <p className="text-[11px] font-medium text-slate-400 italic">{t('recruiter_offers.show.structuring_desc')}</p>
                                         </div>
                                         <Badge variant="outline" className="h-8 px-4 rounded-full font-black text-[10px] uppercase tracking-widest shadow-sm bg-slate-900 text-white border-slate-900">
-                                            {baseCriteriaCards.filter((criterion) => criterion.value).length} critères
+                                            {t('recruiter_offers.show.criteria_count', { count: baseCriteriaCards.filter((criterion) => criterion.value).length })}
                                         </Badge>
                                     </div>
 
@@ -192,8 +194,17 @@ export default function Show({ offre }: Props) {
                                                     <item.icon className="h-5 w-5 text-slate-400" />
                                                 </div>
                                                 <div className="space-y-1">
-                                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">{item.label}</p>
-                                                    <p className="font-bold text-slate-900 whitespace-normal break-words leading-snug">{item.value || 'Non renseigné'}</p>
+                                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                                        {item.label === 'Poste' ? t('recruiter_offers.show.base_criteria.position') :
+                                                         item.label === 'Type de contrat' ? t('recruiter_offers.show.base_criteria.contract_type') :
+                                                         item.label === 'Mode de travail' ? t('recruiter_offers.show.base_criteria.work_mode') :
+                                                         item.label === 'Ville' ? t('recruiter_offers.show.base_criteria.city') :
+                                                         item.label === "Niveau d'expérience" ? t('recruiter_offers.show.base_criteria.experience') :
+                                                         item.label === 'Formation juridique' ? t('recruiter_offers.show.base_criteria.education') :
+                                                         item.label === 'Salaire' ? t('recruiter_offers.show.base_criteria.salary') :
+                                                         item.label === 'Urgence' ? t('recruiter_offers.show.base_criteria.urgency') : item.label}
+                                                    </p>
+                                                    <p className="font-bold text-slate-900 whitespace-normal break-words leading-snug">{item.value || t('recruiter_offers.show.not_provided')}</p>
                                                 </div>
                                             </motion.div>
                                         ))}
@@ -219,12 +230,12 @@ export default function Show({ offre }: Props) {
                                                 <Info className="h-5 w-5 text-white" />
                                             </div>
                                             <div>
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Informations</p>
-                                                <h3 className="text-xl font-bold tracking-tight">Synthèse des critères</h3>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{t('recruiter_offers.show.information')}</p>
+                                                <h3 className="text-xl font-bold tracking-tight">{t('recruiter_offers.show.criteria_summary')}</h3>
                                             </div>
                                         </div>
                                         <p className="text-sm text-white/60 leading-relaxed font-sans font-medium">
-                                            Cette vue regroupe les critères structurants de l'offre et les critères complémentaires configurés lors de la publication.
+                                            {t('recruiter_offers.show.summary_desc')}
                                         </p>
                                     </div>
 
@@ -236,11 +247,11 @@ export default function Show({ offre }: Props) {
                                                     offre.statut === 'CV_ENVOYES' ? 'bg-emerald-400' : 'bg-amber-400 animate-pulse'
                                                 )} />
                                                 <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white/80">
-                                                    {offre.statut === 'EN_TRAITEMENT' ? 'En traitement'
-                                                        : offre.statut === 'ATTENTE_PAIEMENT' ? 'Attente de paiement'
-                                                        : offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification du paiement'
-                                                        : offre.statut === 'CV_ENVOYES' ? 'CV Envoyés'
-                                                        : 'Archivée'}
+                                                    {offre.statut === 'EN_TRAITEMENT' ? t('recruiter_offers.show.status_badge.processing')
+                                                        : offre.statut === 'ATTENTE_PAIEMENT' ? t('recruiter_offers.show.status_badge.payment')
+                                                        : offre.statut === 'VERIFICATION_PAIEMENT' ? t('recruiter_offers.show.status_badge.verification')
+                                                        : offre.statut === 'CV_ENVOYES' ? t('recruiter_offers.show.status_badge.sent')
+                                                        : t('recruiter_offers.show.status_badge.archived')}
                                                 </span>
                                             </div>
                                         
@@ -248,11 +259,11 @@ export default function Show({ offre }: Props) {
 
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="rounded-2xl bg-white/5 p-4 space-y-1">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Critères</p>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/30">{t('recruiter_offers.index.position_fallback')} / {t('recruiter_offers.show.offer_criteria')}</p>
                                                 <p className="text-2xl font-black text-white">{totalCriteres}</p>
                                             </div>
                                             <div className="rounded-2xl bg-white/5 p-4 space-y-1">
-                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/30">Publié le</p>
+                                                <p className="text-[10px] font-black uppercase tracking-widest text-white/30">{t('recruiter_offers.show.published_on')}</p>
                                                 <p className="text-sm font-black text-white leading-tight">
                                                     {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                 </p>
@@ -287,8 +298,11 @@ export default function Show({ offre }: Props) {
                                                                     <group.icon className="h-5 w-5" />
                                                                 </div>
                                                                 <div className="min-w-0">
-                                                                    <h4 className="text-sm font-black uppercase tracking-widest text-slate-900 break-words">{group.label}</h4>
-                                                                    <p className="text-[11px] font-medium text-slate-500 italic">Critères complémentaires</p>
+                                                                    <h4 className="text-sm font-black uppercase tracking-widest text-slate-900 break-words">
+                                                                        {group.label === 'Spécialisations' ? t('recruiter_offers.show.categories.specializations') : 
+                                                                         group.label === 'Langues souhaitées' ? t('recruiter_offers.show.categories.languages') : group.label}
+                                                                    </h4>
+                                                                    <p className="text-[11px] font-medium text-slate-500 italic">{t('recruiter_offers.show.additional_criteria')}</p>
                                                                 </div>
                                                             </div>
 
@@ -304,7 +318,7 @@ export default function Show({ offre }: Props) {
                                                                         type="button"
                                                                         onClick={() => toggleGroup(group.type)}
                                                                         className="h-8 w-8 rounded-full border border-slate-200 bg-white text-slate-700 flex items-center justify-center shadow-sm transition-transform hover:scale-105"
-                                                                        aria-label={expandedGroups[group.type] ? `Réduire ${group.label}` : `Afficher plus de ${group.label}`}
+                                                                        aria-label={expandedGroups[group.type] ? t('recruiter_offers.show.collapse_list') : `${t('recruiter_offers.show.view_other', { count: group.items.length - 2 })}`}
                                                                     >
                                                                         <ChevronDown className={cn("h-4 w-4 transition-transform", expandedGroups[group.type] ? "rotate-180" : "rotate-0")} />
                                                                     </button>
@@ -329,14 +343,17 @@ export default function Show({ offre }: Props) {
                                                                             </p>
                                                                             {niveauNom && (
                                                                                 <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 break-words">
-                                                                                    Niveau: {niveauNom}
+                                                                                    {t('recruiter_offers.show.level', { level: niveauNom })}
                                                                                 </p>
                                                                             )}
                                                                         </div>
 
                                                                         {req.taxonomy_type === 'LANGUE' && (
                                                                             <Badge className={cn("flex-shrink-0 h-6 px-3 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border shadow-sm", importance.color)}>
-                                                                                {importance.label}
+                                                                                {importanceValue === 'indispensable' ? t('recruiter_offers.show.importance.indispensable') :
+                                                                                 importanceValue === 'important' ? t('recruiter_offers.show.importance.important') :
+                                                                                 importanceValue === 'souhaitable' ? t('recruiter_offers.show.importance.souhaitable') :
+                                                                                 t('recruiter_offers.show.importance.facultatif')}
                                                                             </Badge>
                                                                         )}
                                                                     </div>
@@ -344,25 +361,25 @@ export default function Show({ offre }: Props) {
                                                             })}
 
                                                             {group.items.length > 2 && !expandedGroups[group.type] && (
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => toggleGroup(group.type)}
-                                                                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:bg-slate-50"
-                                                                >
-                                                                    <ChevronDown className="h-4 w-4" />
-                                                                    Voir {group.items.length - 2} autre{group.items.length - 2 > 1 ? 's' : ''}
-                                                                </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => toggleGroup(group.type)}
+                                                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:bg-slate-50"
+                                                                    >
+                                                                        <ChevronDown className="h-4 w-4" />
+                                                                        {group.items.length - 2 > 1 ? t('recruiter_offers.show.view_other_plural', { count: group.items.length - 2 }) : t('recruiter_offers.show.view_other', { count: group.items.length - 2 })}
+                                                                    </button>
                                                             )}
 
                                                             {group.items.length > 2 && expandedGroups[group.type] && (
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => toggleGroup(group.type)}
-                                                                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:bg-slate-50"
-                                                                >
-                                                                    <ChevronDown className="h-4 w-4 rotate-180" />
-                                                                    Réduire la liste
-                                                                </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => toggleGroup(group.type)}
+                                                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500 transition-colors hover:bg-slate-50"
+                                                                    >
+                                                                        <ChevronDown className="h-4 w-4 rotate-180" />
+                                                                        {t('recruiter_offers.show.collapse_list')}
+                                                                    </button>
                                                             )}
                                                         </div>
                                                     </motion.div>

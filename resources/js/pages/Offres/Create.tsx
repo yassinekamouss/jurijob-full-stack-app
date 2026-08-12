@@ -2,6 +2,7 @@ import { store as offresStore } from '@/routes/offres';
 import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 import { cn } from '@/lib/utils';
 import { CheckCircle2, Sparkles } from 'lucide-react';
@@ -36,17 +37,18 @@ export interface OffreFormData {
 }
 
 export default function Create({ taxonomies }: Props) {
+    const { t } = useTranslation();
     const [step, setStep] = useState(1);
     const stepCardRef = useRef<HTMLDivElement>(null);
     const isFirstStepRender = useRef(true);
 
     const steps = [
-        { id: 1, title: 'Identité', subtitle: 'Titre, métier, description' },
-        { id: 2, title: 'Organisation', subtitle: 'Contrat, mode, lieu, salaire' },
-        { id: 3, title: 'Profil', subtitle: 'Expérience, formation, notes' },
-        { id: 4, title: 'Expertise', subtitle: 'Spécialisations' },
-        { id: 5, title: 'Langues', subtitle: 'Niveau et importance' },
-        { id: 6, title: 'Récapitulatif', subtitle: 'Validation finale' },
+        { id: 1, title: t('recruiter_offers.create.steps.1.title'), subtitle: t('recruiter_offers.create.steps.1.subtitle') },
+        { id: 2, title: t('recruiter_offers.create.steps.2.title'), subtitle: t('recruiter_offers.create.steps.2.subtitle') },
+        { id: 3, title: t('recruiter_offers.create.steps.3.title'), subtitle: t('recruiter_offers.create.steps.3.subtitle') },
+        { id: 4, title: t('recruiter_offers.create.steps.4.title'), subtitle: t('recruiter_offers.create.steps.4.subtitle') },
+        { id: 5, title: t('recruiter_offers.create.steps.5.title'), subtitle: t('recruiter_offers.create.steps.5.subtitle') },
+        { id: 6, title: t('recruiter_offers.create.steps.6.title'), subtitle: t('recruiter_offers.create.steps.6.subtitle') },
     ];
 
     const { data, setData, post, processing, errors } = useForm<OffreFormData>({
@@ -94,7 +96,7 @@ export default function Create({ taxonomies }: Props) {
     return (
         <div className="relative min-h-screen overflow-x-clip bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.95),_rgba(253,252,248,1)_34%,_#f4efe7_100%)] text-[#1a1f1e]">
             <div className="pointer-events-none absolute inset-0 overflow-hidden" />
-            <Head title="Publier une offre - Jurijob" />
+            <Head title={t('recruiter_offers.create.page_title')} />
 
             <DashboardHeader />
 
@@ -108,14 +110,14 @@ export default function Create({ taxonomies }: Props) {
                         >
                             <div className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/70 px-4 py-1.5 text-[10px] font-black tracking-[0.2em] text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
                                 <Sparkles className="h-3.5 w-3.5 text-[#C06041]" />
-                                Nouvelle publication
+                                {t('recruiter_offers.create.badge')}
                             </div>
                             <div className="max-w-3xl space-y-3">
                                 <h1 className="font-serif text-3xl font-bold tracking-tight italic text-[#1a1f1e] sm:text-4xl lg:text-5xl">
-                                    Une offre claire, élégante et facile à parcourir.
+                                    {t('recruiter_offers.create.title')}
                                 </h1>
                                 <p className="max-w-2xl text-base font-medium leading-relaxed text-[#1a1f1e]/55 sm:text-lg">
-                                    Construisez une annonce structurée et professionnelle en six étapes guidées.
+                                    {t('recruiter_offers.create.description')}
                                 </p>
                             </div>
                         </motion.div>
@@ -124,7 +126,7 @@ export default function Create({ taxonomies }: Props) {
                             <div className="overflow-hidden border border-white/70 bg-white/85 p-4 shadow-sm backdrop-blur-sm sm:p-5">
                                 <div className="mb-4 flex items-center justify-between gap-3">
                                     <p className="text-xs font-semibold text-[#1a1f1e]/55">
-                                        Étape <span className="font-black text-[#1a1f1e]">{step}</span> sur {steps.length}
+                                        {t('recruiter_offers.create.step')} <span className="font-black text-[#1a1f1e]">{step}</span> {t('recruiter_offers.create.on')} {steps.length}
                                     </p>
                                     <p className="text-xs font-semibold text-[#C06041]">{steps[step - 1]?.title}</p>
                                 </div>
@@ -264,7 +266,7 @@ export default function Create({ taxonomies }: Props) {
 
                 <div className="mt-12 text-center opacity-40 transition-opacity hover:opacity-100">
                     <p className="text-sm font-bold text-[#1a1f1e]">
-                        Besoin d'aide ?{' '}
+                        {t('recruiter_offers.create.need_help')}{' '}
                         <a
                             href="mailto:recrutement@sentissilegal.com"
                             className="underline decoration-2 underline-offset-4"

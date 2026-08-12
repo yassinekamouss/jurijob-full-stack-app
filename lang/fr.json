@@ -334,7 +334,7 @@
         "job_type_required": "Veuillez sélectionner au moins un type de travail."
       }
     },
-    "specializations": {
+    "specialisations": {
       "title": "Spécialisations",
       "description": "Sélectionnez une ou plusieurs expertises juridiques par catégorie.",
       "loading": "Chargement des spécialisations...",
@@ -1676,6 +1676,65 @@
         "p2_bold": "tribunaux de Casablanca",
         "p2_suffix": ", à défaut de résolution amiable."
       }
+    }
+  },
+  "recruiter_offers": {
+    "index": {
+      "page_title": "Mes Offres - Jurijob",
+      "badge": "Gestion des Annonces",
+      "title": "Mes Offres d'Emploi",
+      "description": "Gérez vos publications, suivez les candidatures et trouvez les meilleurs profils juridiques.",
+      "publish_btn": "Publier une nouvelle offre",
+      "empty_title": "Aucune offre publiée",
+      "empty_desc": "Votre tableau de bord est vide. Commencez à recruter dès maintenant.",
+      "create_first": "Créer ma première offre &rarr;",
+      "position_fallback": "Poste",
+      "status": {
+        "processing": "Traitement",
+        "payment": "Paiement",
+        "verification": "Vérification",
+        "sent": "Envoyés",
+        "archived": "Archivé"
+      },
+      "criteria": "{{count}} critères",
+      "view_details": "Voir les détails"
+    },
+    "show": {
+      "page_title_suffix": "Détails de l'offre",
+      "back_to_dashboard": "Retour au tableau de bord",
+      "status_badge": {
+        "processing": "En traitement",
+        "payment": "En attente de paiement",
+        "verification": "Vérification de paiement",
+        "sent": "CV Envoyés",
+        "archived": "Offre Archivée"
+      },
+      "posted_on": "Posté le",
+      "about_role": "À propos du rôle",
+      "offer_criteria": "Critères de l'offre",
+      "unified_view": "Vue unifiée des critères",
+      "structuring_criteria": "Critères structurants",
+      "structuring_desc": "Les informations structurantes de l'offre.",
+      "criteria_count": "{{count}} critères",
+      "not_provided": "Non renseigné",
+      "information": "Informations",
+      "criteria_summary": "Synthèse des critères",
+      "summary_desc": "Cette vue regroupe les critères structurants de l'offre et les critères complémentaires configurés lors de la publication.",
+      "published_on": "Publié le",
+      "additional_criteria": "Critères complémentaires",
+      "level": "Niveau:",
+      "view_other": "Voir {{count}} autre",
+      "view_other_plural": "Voir {{count}} autres",
+      "collapse_list": "Réduire la liste"
+    },
+    "create": {
+      "page_title": "Publier une offre - Jurijob",
+      "badge": "Nouvelle publication",
+      "title": "Une offre claire, élégante et facile à parcourir.",
+      "description": "Construisez une annonce structurée et professionnelle en six étapes guidées.",
+      "step": "Étape",
+      "on": "sur",
+      "need_help": "Besoin d'aide ?"
     }
   }
 }

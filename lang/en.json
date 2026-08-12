@@ -1677,5 +1677,64 @@
         "p2_suffix": ", failing prior amicable resolution."
       }
     }
+  },
+  "recruiter_offers": {
+    "index": {
+      "page_title": "My Offers - Jurijob",
+      "badge": "Ad Management",
+      "title": "My Job Offers",
+      "description": "Manage your publications, track applications, and find the best legal profiles.",
+      "publish_btn": "Publish a new offer",
+      "empty_title": "No published offer",
+      "empty_desc": "Your dashboard is empty. Start recruiting now.",
+      "create_first": "Create my first offer &rarr;",
+      "position_fallback": "Position",
+      "status": {
+        "processing": "Processing",
+        "payment": "Payment",
+        "verification": "Verification",
+        "sent": "Sent",
+        "archived": "Archived"
+      },
+      "criteria": "{{count}} criteria",
+      "view_details": "View details"
+    },
+    "show": {
+      "page_title_suffix": "Offer details",
+      "back_to_dashboard": "Back to dashboard",
+      "status_badge": {
+        "processing": "Processing",
+        "payment": "Awaiting payment",
+        "verification": "Payment verification",
+        "sent": "CVs Sent",
+        "archived": "Archived Offer"
+      },
+      "posted_on": "Posted on",
+      "about_role": "About the role",
+      "offer_criteria": "Offer criteria",
+      "unified_view": "Unified criteria view",
+      "structuring_criteria": "Structuring criteria",
+      "structuring_desc": "The structuring information of the offer.",
+      "criteria_count": "{{count}} criteria",
+      "not_provided": "Not provided",
+      "information": "Information",
+      "criteria_summary": "Criteria summary",
+      "summary_desc": "This view groups the structuring criteria of the offer and the additional criteria configured during publication.",
+      "published_on": "Published on",
+      "additional_criteria": "Additional criteria",
+      "level": "Level:",
+      "view_other": "View {{count}} other",
+      "view_other_plural": "View {{count}} others",
+      "collapse_list": "Collapse list"
+    },
+    "create": {
+      "page_title": "Publish an offer - Jurijob",
+      "badge": "New publication",
+      "title": "A clear, elegant, and easy to browse offer.",
+      "description": "Build a structured and professional ad in six guided steps.",
+      "step": "Step",
+      "on": "of",
+      "need_help": "Need help?"
+    }
   }
 }

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Briefcase, Plus, Search, CheckCircle2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 import { create as offresCreate, show as offresShow } from '@/routes/offres';
 import type { Offre } from '@/types/offre';
@@ -13,6 +14,7 @@ interface Props {
 
 export default function Index({ offres }: Props) {
     const { flash } = usePage<{ flash?: { success?: string; error?: string } }>().props;
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (flash?.success) {
@@ -61,7 +63,7 @@ export default function Index({ offres }: Props) {
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
-            <Head title="Mes Offres - Jurijob" />
+            <Head title={t('recruiter_offers.index.page_title')} />
             <Toaster position="top-right" />
 
             <DashboardHeader />
@@ -74,13 +76,13 @@ export default function Index({ offres }: Props) {
                 >
                     <div className="space-y-4">
                         <div className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-4 py-1.5 text-[10px] font-black tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
-                            Gestion des Annonces
+                            {t('recruiter_offers.index.badge')}
                         </div>
                         <h1 className="font-serif text-4xl font-bold tracking-tight italic md:text-5xl">
-                            Mes Offres d'Emploi
+                            {t('recruiter_offers.index.title')}
                         </h1>
                         <p className="max-w-xl text-lg font-medium text-[#1a1f1e]/50">
-                            Gérez vos publications, suivez les candidatures et trouvez les meilleurs profils juridiques.
+                            {t('recruiter_offers.index.description')}
                         </p>
                     </div>
 
@@ -89,7 +91,7 @@ export default function Index({ offres }: Props) {
                         className="inline-flex h-14 items-center justify-center rounded-full bg-[#1a1f1e] px-10 text-base font-bold text-white transition-all hover:scale-105 hover:bg-[#1a1f1e]/90 active:scale-95 shadow-xl shadow-[#1a1f1e]/10"
                     >
                         <Plus className="mr-2 h-5 w-5" />
-                        Publier une nouvelle offre
+                        {t('recruiter_offers.index.publish_btn')}
                     </Link>
                 </motion.div>
 
@@ -102,16 +104,15 @@ export default function Index({ offres }: Props) {
                         <div className="bg-[#1a1f1e]/5 p-8 rounded-3xl mb-8">
                             <Briefcase className="h-14 w-14 text-[#1a1f1e]/20" />
                         </div>
-                        <h3 className="text-2xl font-bold text-[#1a1f1e] mb-3">Aucune offre publiée</h3>
+                        <h3 className="text-2xl font-bold text-[#1a1f1e] mb-3">{t('recruiter_offers.index.empty_title')}</h3>
                         <p className="text-lg font-medium text-[#1a1f1e]/40 max-w-sm text-center mb-10">
-                            Votre tableau de bord est vide. Commencez à recruter dès maintenant.
+                            {t('recruiter_offers.index.empty_desc')}
                         </p>
                         <Link
                             href={offresCreate().url}
                             className="text-[#1a1f1e] font-black text-sm tracking-widest uppercase border-b-2 border-[#1a1f1e] pb-1 hover:opacity-70 transition-opacity"
-                        >
-                            Créer ma première offre &rarr;
-                        </Link>
+                            dangerouslySetInnerHTML={{ __html: t('recruiter_offers.index.create_first') }}
+                        />
                     </motion.div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -129,7 +130,7 @@ export default function Index({ offres }: Props) {
                                     <div className="justify-between flex items-center mb-6">
                                         <div className="flex gap-2 items-center">
                                             <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
-                                                {offre.poste?.nom || 'Poste'}
+                                                {offre.poste?.nom || t('recruiter_offers.index.position_fallback')}
                                             </Badge>
                                             <Badge className={`border-none text-[9px] uppercase font-black tracking-wider ${offre.statut === 'EN_TRAITEMENT' ? 'bg-amber-100 text-amber-700' :
                                                 offre.statut === 'ATTENTE_PAIEMENT' ? 'bg-orange-100 text-orange-700' :
@@ -137,11 +138,11 @@ export default function Index({ offres }: Props) {
                                                         offre.statut === 'CV_ENVOYES' ? 'bg-emerald-100 text-emerald-700' :
                                                             'bg-slate-100 text-slate-700'
                                                 }`}>
-                                                {offre.statut === 'EN_TRAITEMENT' ? 'Traitement' :
-                                                    offre.statut === 'ATTENTE_PAIEMENT' ? 'Paiement' :
-                                                        offre.statut === 'VERIFICATION_PAIEMENT' ? 'Vérification' :
-                                                            offre.statut === 'CV_ENVOYES' ? 'Envoyés' :
-                                                                'Archivé'}
+                                                {offre.statut === 'EN_TRAITEMENT' ? t('recruiter_offers.index.status.processing') :
+                                                    offre.statut === 'ATTENTE_PAIEMENT' ? t('recruiter_offers.index.status.payment') :
+                                                        offre.statut === 'VERIFICATION_PAIEMENT' ? t('recruiter_offers.index.status.verification') :
+                                                            offre.statut === 'CV_ENVOYES' ? t('recruiter_offers.index.status.sent') :
+                                                                t('recruiter_offers.index.status.archived')}
                                             </Badge>
                                         </div>
                                         <span className="text-xs font-bold text-[#1a1f1e]/30">
@@ -156,7 +157,7 @@ export default function Index({ offres }: Props) {
                                     <div className="flex items-center gap-4 text-sm font-bold text-[#1a1f1e]/40 mb-8">
                                         <span className="flex items-center gap-1.5">
                                             <Search className="h-3.5 w-3.5" />
-                                            {offre.criteria_count || 0} critères
+                                            {t('recruiter_offers.index.criteria', { count: offre.criteria_count || 0 })}
                                         </span>
                                         <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/10" />
                                         <span>{offre.type_travail?.nom}</span>
@@ -169,7 +170,7 @@ export default function Index({ offres }: Props) {
                                             href={offresShow({ offre: offre.id }).url}
                                             className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
                                         >
-                                            Voir les détails
+                                            {t('recruiter_offers.index.view_details')}
                                         </Link>
                                     </div>
                                 </motion.div>
