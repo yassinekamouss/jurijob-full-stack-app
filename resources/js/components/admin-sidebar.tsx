@@ -45,14 +45,12 @@ export function AdminSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/admin/dashboard" className="flex items-center gap-2">
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden">
-                                    <img src="/images/logo_jurijob.jpg" alt="JuriJob" className="size-8 object-cover" />
-                                </div>
-                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold">JuriJob</span>
-                                    <span className="truncate text-xs text-muted-foreground">Panel Admin</span>
-                                </div>
+                            <Link href="/admin/dashboard" className="flex items-center justify-center py-8 group-data-[collapsible=icon]:hidden">
+                                <img src="/images/logo_jurijob.png"
+                                    alt="JuriJob - Logo"
+                                    width={100}
+                                    height={100}
+                                    className="w-auto h-32" />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -68,8 +66,8 @@ export function AdminSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <div className="px-2 py-1.5">
-                            <p className="text-xs text-muted-foreground truncate">{auth?.user?.name}</p>
-                            <p className="text-xs text-muted-foreground truncate">{auth?.user?.email}</p>
+                            <p className="text-xs text-sidebar-foreground/70 truncate">{auth?.user?.name}</p>
+                            <p className="text-xs text-sidebar-foreground/70 truncate">{auth?.user?.email}</p>
                         </div>
                     </SidebarMenuItem>
                     <SidebarMenuItem>

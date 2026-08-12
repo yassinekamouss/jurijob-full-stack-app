@@ -104,11 +104,6 @@ class MatchingEngine
             $query->where('candidats.salaire_id', $offre->salaire_id);
         }
 
-        if ($offre->urgence_id !== null) {
-            $query->whereNotNull('candidats.urgence_id')
-                ->where('candidats.urgence_id', '>=', $offre->urgence_id);
-        }
-
         if ($offre->ville_id !== null) {
             $query->whereHas('villeTravails', function (Builder $villeQuery) use ($offre) {
                 $villeQuery->where('ville_id', $offre->ville_id);

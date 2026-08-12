@@ -2,8 +2,7 @@ import { Head } from '@inertiajs/react';
 import { Pie, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import AdminLayout from '@/layouts/admin-layout';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, Building2, TrendingUp, PieChart as PieChartIcon } from 'lucide-react';
+import { Users, Building2, TrendingUp } from 'lucide-react';
 
 ChartJS.register(...registerables);
 
@@ -23,16 +22,40 @@ const breadcrumbs = [
     { title: 'Dashboard', href: '/admin/dashboard' },
 ];
 
-export default function Dashboard({ auth, chartData = { totals: { candidats: 0, recruteurs: 0 }, growth: { candidats: [], recruteurs: [] } } }: DashboardProps) {
+const statCards = [
+    {
+        label: 'Total Candidats',
+        sub: 'Inscrits sur la plateforme',
+        icon: Users,
+        key: 'candidats' as const,
+        accent: 'bg-[#C06041]/10 text-[#C06041]',
+    },
+    {
+        label: 'Total Recruteurs',
+        sub: 'Entreprises & Cabinets',
+        icon: Building2,
+        key: 'recruteurs' as const,
+        accent: 'bg-[#1a1f1e]/10 text-[#1a1f1e]',
+    },
+];
+
+export default function Dashboard({
+    auth,
+    chartData = { totals: { candidats: 0, recruteurs: 0 }, growth: { candidats: [], recruteurs: [] } },
+}: DashboardProps) {
+    const total = chartData.totals.candidats + chartData.totals.recruteurs;
+
     const pieData = {
         labels: ['Candidats', 'Recruteurs'],
-        datasets: [{
-            data: [chartData.totals.candidats, chartData.totals.recruteurs],
-            backgroundColor: ['oklch(0.6 0.118 184.704)', 'oklch(0.205 0 0)'], // Consistent with project colors
-            hoverOffset: 12,
-            borderWidth: 0,
-            borderRadius: 8,
-        }],
+        datasets: [
+            {
+                data: [chartData.totals.candidats, chartData.totals.recruteurs],
+                backgroundColor: ['#C06041', '#1a1f1e'],
+                hoverOffset: 8,
+                borderWidth: 0,
+                borderRadius: 4,
+            },
+        ],
     };
 
     const lineData = {
@@ -41,27 +64,29 @@ export default function Dashboard({ auth, chartData = { totals: { candidats: 0, 
             {
                 label: 'Candidats',
                 data: chartData.growth.candidats.map((d: any) => d.total),
-                borderColor: 'oklch(0.6 0.118 184.704)',
-                backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                borderColor: '#C06041',
+                backgroundColor: 'rgba(192,96,65,0.06)',
                 fill: true,
                 tension: 0.4,
-                pointRadius: 4,
-                pointHoverRadius: 6,
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                borderWidth: 2,
             },
             {
                 label: 'Recruteurs',
                 data: chartData.growth.recruteurs.map((d: any) => d.total),
-                borderColor: 'oklch(0.205 0 0)',
-                backgroundColor: 'rgba(31, 41, 55, 0.1)',
+                borderColor: '#1a1f1e',
+                backgroundColor: 'rgba(26,31,30,0.05)',
                 fill: true,
                 tension: 0.4,
-                pointRadius: 4,
-                pointHoverRadius: 6,
-            }
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                borderWidth: 2,
+            },
         ],
     };
 
-    const chartOptions = {
+    const baseOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -70,115 +95,142 @@ export default function Dashboard({ auth, chartData = { totals: { candidats: 0, 
                 labels: {
                     usePointStyle: true,
                     padding: 20,
-                    font: { family: 'Instrument Sans' }
-                }
+                    font: { family: 'Outfit', size: 12 },
+                    color: '#1a1f1e',
+                },
             },
             tooltip: {
-                backgroundColor: '#1f2937',
+                backgroundColor: '#1a1f1e',
                 padding: 12,
-                titleFont: { size: 14, weight: 'bold' as const },
-                bodyFont: { size: 13 },
-                cornerRadius: 8,
-            }
+                titleFont: { size: 13, weight: 'bold' as const, family: 'Outfit' },
+                bodyFont: { size: 12, family: 'Outfit' },
+                cornerRadius: 6,
+            },
         },
+    };
+
+    const lineOptions = {
+        ...baseOptions,
         scales: {
             y: {
                 beginAtZero: true,
-                grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                grid: { color: 'rgba(26,31,30,0.05)' },
+                ticks: { color: '#1a1f1e99', font: { family: 'Outfit', size: 11 } },
+                border: { display: false },
             },
             x: {
                 grid: { display: false },
-            }
-        }
+                ticks: { color: '#1a1f1e99', font: { family: 'Outfit', size: 11 } },
+                border: { display: false },
+            },
+        },
     };
 
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard Admin" />
 
-            <div className="flex flex-col gap-8">
-                {/* Header Section */}
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-foreground">
-                        Bienvenue, {auth.user.name}
+            <div className="flex flex-col gap-10" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                {/* Header */}
+                <div className="border-b border-[#1a1f1e]/10 pb-8">
+                    <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">Panel administrateur</p>
+                    <h1
+                        className="text-4xl md:text-5xl text-[#1a1f1e] font-light leading-tight"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                    >
+                        Bienvenue,{' '}
+                        <span className="italic font-medium">{auth.user.name}</span>
                     </h1>
-                    <p className="text-muted-foreground mt-1">
+                    <p className="text-[#1a1f1e]/50 mt-2 text-sm font-light">
                         Voici un aperçu de l'activité sur JuriJob.
                     </p>
                 </div>
 
-                {/* Stats Grid */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    <Card className="hover:shadow-md transition-shadow">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Candidats</CardTitle>
-                            <Users className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{chartData.totals.candidats}</div>
-                            <p className="text-xs text-muted-foreground">Inscrits sur la plateforme</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="hover:shadow-md transition-shadow">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Recruteurs</CardTitle>
-                            <Building2 className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{chartData.totals.recruteurs}</div>
-                            <p className="text-xs text-muted-foreground">Entreprises & Cabinets</p>
-                        </CardContent>
-                    </Card>
-                    <Card className="hover:shadow-md transition-shadow">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Utilisateurs Global</CardTitle>
-                            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{chartData.totals.candidats + chartData.totals.recruteurs}</div>
-                            <p className="text-xs text-muted-foreground">Activité totale</p>
-                        </CardContent>
-                    </Card>
+                {/* Stat Cards */}
+                <div className="grid gap-4 sm:grid-cols-3">
+                    {statCards.map((s) => (
+                        <div
+                            key={s.key}
+                            className="bg-white border border-[#1a1f1e]/8 p-6 rounded-none relative overflow-hidden group hover:border-[#1a1f1e]/20 transition-colors"
+                        >
+                            <div className="absolute top-0 left-0 w-[2px] h-full bg-[#C06041] opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="flex items-start justify-between mb-4">
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1f1e]/40 font-medium">{s.label}</p>
+                                <div className={`h-8 w-8 rounded flex items-center justify-center ${s.accent}`}>
+                                    <s.icon className="h-4 w-4" />
+                                </div>
+                            </div>
+                            <div
+                                className="text-4xl text-[#1a1f1e] font-light"
+                                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                            >
+                                {chartData.totals[s.key]}
+                            </div>
+                            <p className="text-[11px] text-[#1a1f1e]/40 mt-1">{s.sub}</p>
+                        </div>
+                    ))}
+
+                    <div className="bg-[#1a1f1e] p-6 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                        <div className="flex items-start justify-between mb-4">
+                            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">Utilisateurs global</p>
+                            <div className="h-8 w-8 rounded flex items-center justify-center bg-white/10 text-white">
+                                <TrendingUp className="h-4 w-4" />
+                            </div>
+                        </div>
+                        <div
+                            className="text-4xl text-white font-light"
+                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        >
+                            {total}
+                        </div>
+                        <p className="text-[11px] text-white/40 mt-1">Activité totale sur la plateforme</p>
+                    </div>
                 </div>
 
-                {/* Charts Section */}
-                <div className="grid gap-6 md:grid-cols-7">
-                    <Card className="md:col-span-4">
-                        <CardHeader>
-                            <CardTitle>Croissance des Utilisateurs</CardTitle>
-                            <CardDescription>Évolution des inscriptions mensuelles</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="h-[350px] w-full">
-                                <Line data={lineData} options={chartOptions} />
-                            </div>
-                        </CardContent>
-                    </Card>
+                {/* Charts */}
+                <div className="grid gap-6 lg:grid-cols-7">
+                    <div className="lg:col-span-4 bg-white border border-[#1a1f1e]/8 p-6">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1f1e]/40 font-medium mb-1">Croissance</p>
+                        <h2
+                            className="text-xl text-[#1a1f1e] font-light mb-6"
+                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        >
+                            Évolution des inscriptions
+                        </h2>
+                        <div className="h-[300px] w-full">
+                            <Line data={lineData} options={lineOptions} />
+                        </div>
+                    </div>
 
-                    <Card className="md:col-span-3">
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <PieChartIcon className="h-4 w-4" />
-                                Répartition
-                            </CardTitle>
-                            <CardDescription>Candidats vs Recruteurs</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex justify-center flex-col items-center">
-                            <div className="h-[300px] w-full">
-                                <Pie data={pieData} options={chartOptions} />
+                    <div className="lg:col-span-3 bg-white border border-[#1a1f1e]/8 p-6">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1f1e]/40 font-medium mb-1">Répartition</p>
+                        <h2
+                            className="text-xl text-[#1a1f1e] font-light mb-6"
+                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                        >
+                            Candidats vs Recruteurs
+                        </h2>
+                        <div className="h-[240px]">
+                            <Pie data={pieData} options={baseOptions} />
+                        </div>
+                        <div className="mt-6 space-y-2 border-t border-[#1a1f1e]/8 pt-4">
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="flex items-center gap-2 text-[#1a1f1e]/60">
+                                    <span className="h-2.5 w-2.5 rounded-full bg-[#C06041]" />
+                                    Candidats
+                                </span>
+                                <span className="font-semibold text-[#1a1f1e]">{chartData.totals.candidats}</span>
                             </div>
-                            <div className="mt-4 space-y-2 w-full">
-                                <div className="flex items-center justify-between text-sm">
-                                    <span className="flex items-center gap-2"><div className="size-3 rounded-full bg-[oklch(0.6_0.118_184.704)]" /> Candidats</span>
-                                    <span className="font-semibold">{chartData.totals.candidats}</span>
-                                </div>
-                                <div className="flex items-center justify-between text-sm">
-                                    <span className="flex items-center gap-2"><div className="size-3 rounded-full bg-[oklch(0.205_0_0)]" /> Recruteurs</span>
-                                    <span className="font-semibold">{chartData.totals.recruteurs}</span>
-                                </div>
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="flex items-center gap-2 text-[#1a1f1e]/60">
+                                    <span className="h-2.5 w-2.5 rounded-full bg-[#1a1f1e]" />
+                                    Recruteurs
+                                </span>
+                                <span className="font-semibold text-[#1a1f1e]">{chartData.totals.recruteurs}</span>
                             </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AdminLayout>

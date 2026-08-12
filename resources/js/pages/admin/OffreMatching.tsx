@@ -1,19 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-    ArrowLeft,
-    Building2,
-    Briefcase,
-    GraduationCap,
-    Globe,
-    Mail,
-    Phone,
-    Users,
-    Award,
-} from 'lucide-react';
+import { ArrowLeft, Building2, Briefcase, GraduationCap, Globe, Mail, Phone, Users, Award, Star } from 'lucide-react';
 
 type MatchingBreakdown = {
     score: number;
@@ -32,15 +19,8 @@ type MatchedCandidate = {
     poste?: { nom?: string };
     niveau_experience?: { nom?: string };
     formation_juridique?: { nom?: string };
-    langues?: Array<{
-        id: number;
-        langue?: { nom?: string };
-        niveau_langue?: { nom?: string };
-    }>;
-    specialisations?: Array<{
-        id: number;
-        specialisation?: { nom?: string };
-    }>;
+    langues?: Array<{ id: number; langue?: { nom?: string }; niveau_langue?: { nom?: string } }>;
+    specialisations?: Array<{ id: number; specialisation?: { nom?: string } }>;
 };
 
 type Props = {
@@ -64,204 +44,274 @@ const breadcrumbs = [
     { title: 'Matching', href: '#' },
 ];
 
-function scoreTone(score: number): string {
-    if (score >= 100) {
-        return 'bg-emerald-100 text-emerald-800';
-    }
-    if (score >= 90) {
-        return 'bg-sky-100 text-sky-800';
-    }
-    if (score >= 80) {
-        return 'bg-amber-100 text-amber-800';
-    }
-
-    return 'bg-rose-100 text-rose-800';
-}
-
-function CandidatesList({
-    candidates,
-    nombreCv,
-}: {
-    candidates: MatchedCandidate[];
-    nombreCv: number;
-}) {
-    if (candidates.length === 0) {
-        return (
-            <Card>
-                <CardContent className="py-12 text-center text-muted-foreground">
-                    Aucun candidat ne correspond aux critères durs de cette offre.
-                </CardContent>
-            </Card>
-        );
-    }
-
-    return (
-        <div className="flex flex-col gap-4">
-            <p className="text-sm text-muted-foreground">
-                {candidates.length} profil(s) classé(s) — short-list demandée : {nombreCv} CV
-            </p>
-
-            {candidates.map((candidat, index) => {
-                const inShortlist = index < nombreCv;
-                const breakdown = candidat.matching_breakdown;
-
-                return (
-                    <Card
-                        key={candidat.id}
-                        className={`border-muted shadow-sm transition-shadow hover:shadow-md ${
-                            inShortlist ? 'ring-1 ring-emerald-200' : ''
-                        }`}
-                    >
-                        <CardContent className="p-6">
-                            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                                <div className="min-w-0 flex-1 space-y-3">
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <span className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                                            #{index + 1}
-                                        </span>
-                                        <h3 className="text-lg font-bold">
-                                            {candidat.prenom} {candidat.nom}
-                                        </h3>
-                                        {inShortlist && (
-                                            <Badge className="border-none bg-emerald-100 text-emerald-800">
-                                                Short-list
-                                            </Badge>
-                                        )}
-                                    </div>
-
-                                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
-                                        {candidat.poste?.nom && (
-                                            <span className="inline-flex items-center gap-1.5">
-                                                <Briefcase className="h-4 w-4" />
-                                                {candidat.poste.nom}
-                                            </span>
-                                        )}
-                                        {candidat.niveau_experience?.nom && (
-                                            <span className="inline-flex items-center gap-1.5">
-                                                <Award className="h-4 w-4" />
-                                                {candidat.niveau_experience.nom}
-                                            </span>
-                                        )}
-                                        {candidat.formation_juridique?.nom && (
-                                            <span className="inline-flex items-center gap-1.5">
-                                                <GraduationCap className="h-4 w-4" />
-                                                {candidat.formation_juridique.nom}
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {candidat.specialisations && candidat.specialisations.length > 0 && (
-                                        <div className="flex flex-wrap gap-2">
-                                            {candidat.specialisations.map((spec) => (
-                                                <Badge key={spec.id} variant="secondary">
-                                                    {spec.specialisation?.nom}
-                                                </Badge>
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    {candidat.langues && candidat.langues.length > 0 && (
-                                        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                                            <Globe className="h-4 w-4" />
-                                            <span>
-                                                {candidat.langues
-                                                    .map(
-                                                        (langue) =>
-                                                            `${langue.langue?.nom ?? ''}${
-                                                                langue.niveau_langue?.nom
-                                                                    ? ` (${langue.niveau_langue.nom})`
-                                                                    : ''
-                                                            }`,
-                                                    )
-                                                    .filter(Boolean)
-                                                    .join(' · ')}
-                                            </span>
-                                        </div>
-                                    )}
-
-                                    {breakdown && (
-                                        <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
-                                            <span>Bonus langues +{breakdown.language_bonus}</span>
-                                            <span>Pénalité langues −{breakdown.language_penalty}</span>
-                                            <span>Pénalité spécialités −{breakdown.specialisation_penalty}</span>
-                                        </div>
-                                    )}
-
-                                    <div className="flex flex-wrap gap-4 border-t border-muted/60 pt-3 text-sm">
-                                        {candidat.user?.telephone && (
-                                            <span className="inline-flex items-center gap-1.5">
-                                                <Phone className="h-4 w-4 text-muted-foreground" />
-                                                {candidat.user.telephone}
-                                            </span>
-                                        )}
-                                        {candidat.user?.email && (
-                                            <a
-                                                href={`mailto:${candidat.user.email}`}
-                                                className="inline-flex items-center gap-1.5 hover:underline"
-                                            >
-                                                <Mail className="h-4 w-4 text-muted-foreground" />
-                                                {candidat.user.email}
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <Badge
-                                    className={`shrink-0 border-none px-3 py-1 text-sm font-bold ${scoreTone(
-                                        candidat.matching_score,
-                                    )}`}
-                                >
-                                    Score {Math.min(candidat.matching_score, 100)}
-                                </Badge>
-                            </div>
-                        </CardContent>
-                    </Card>
-                );
-            })}
-        </div>
-    );
+function scoreColor(score: number): { bar: string; text: string; bg: string } {
+    if (score >= 100) return { bar: 'bg-emerald-500', text: 'text-emerald-700', bg: 'bg-emerald-50 border-emerald-200' };
+    if (score >= 90) return { bar: 'bg-sky-500', text: 'text-sky-700', bg: 'bg-sky-50 border-sky-200' };
+    if (score >= 80) return { bar: 'bg-amber-500', text: 'text-amber-700', bg: 'bg-amber-50 border-amber-200' };
+    return { bar: 'bg-rose-500', text: 'text-rose-700', bg: 'bg-rose-50 border-rose-200' };
 }
 
 export default function OffreMatching({ offre, candidates }: Props) {
+    const shortlist = candidates.slice(0, offre.nombre_cv);
+    const rest = candidates.slice(offre.nombre_cv);
+
     return (
         <AdminLayout breadcrumbs={breadcrumbs}>
             <Head title={`Matching — ${offre.titre}`} />
 
-            <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="space-y-2">
-                        <Button variant="ghost" size="sm" asChild className="-ml-2 w-fit">
-                            <Link href="/admin/offres?statut=EN_TRAITEMENT">
-                                <ArrowLeft className="mr-1 h-4 w-4" />
-                                Retour aux offres
-                            </Link>
-                        </Button>
-                        <h1 className="text-3xl font-bold tracking-tight">{offre.titre}</h1>
-                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
-                            {offre.recruteur?.nom_entreprise && (
-                                <span className="inline-flex items-center gap-1.5">
-                                    <Building2 className="h-4 w-4" />
-                                    {offre.recruteur.nom_entreprise}
-                                </span>
-                            )}
-                            {offre.poste?.nom && (
-                                <span className="inline-flex items-center gap-1.5">
-                                    <Briefcase className="h-4 w-4" />
-                                    {offre.poste.nom}
-                                </span>
-                            )}
-                            {offre.niveau_experience?.nom && <span>{offre.niveau_experience.nom}</span>}
-                            {offre.formation_juridique?.nom && <span>{offre.formation_juridique.nom}</span>}
-                            <span className="inline-flex items-center gap-1.5">
-                                <Users className="h-4 w-4" />
-                                {offre.nombre_cv} CV demandés
+            <div className="flex flex-col gap-8" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                {/* Back + Header */}
+                <div className="border-b border-[#1a1f1e]/10 pb-8">
+                    <Link
+                        href="/admin/offres?statut=EN_TRAITEMENT"
+                        className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-[#1a1f1e]/40 hover:text-[#C06041] transition-colors mb-6"
+                    >
+                        <ArrowLeft className="h-3.5 w-3.5" />
+                        Retour aux offres
+                    </Link>
+
+                    <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">Résultats de matching</p>
+                    <h1
+                        className="text-3xl md:text-4xl text-[#1a1f1e] font-light leading-tight"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                    >
+                        {offre.titre}
+                    </h1>
+
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3 text-xs text-[#1a1f1e]/50">
+                        {offre.recruteur?.nom_entreprise && (
+                            <span className="flex items-center gap-1.5">
+                                <Building2 className="h-3.5 w-3.5" />
+                                {offre.recruteur.nom_entreprise}
                             </span>
+                        )}
+                        {offre.poste?.nom && (
+                            <span className="flex items-center gap-1.5">
+                                <Briefcase className="h-3.5 w-3.5" />
+                                {offre.poste.nom}
+                            </span>
+                        )}
+                        {offre.niveau_experience?.nom && <span>{offre.niveau_experience.nom}</span>}
+                        <span className="flex items-center gap-1.5">
+                            <Users className="h-3.5 w-3.5" />
+                            {offre.nombre_cv} CV demandés
+                        </span>
+                    </div>
+
+                    {/* Stats bar */}
+                    <div className="flex flex-wrap gap-4 mt-5">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#1a1f1e]/8">
+                            <span className="text-xl font-medium text-[#1a1f1e]">
+                                {candidates.length}
+                            </span>
+                            <span className="text-[10px] uppercase tracking-wider text-[#1a1f1e]/40">profil(s) matchés</span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200">
+                            <Star className="h-4 w-4 text-emerald-600" />
+                            <span className="text-xl font-medium text-emerald-700">
+                                {Math.min(offre.nombre_cv, candidates.length)}
+                            </span>
+                            <span className="text-[10px] uppercase tracking-wider text-emerald-600">en short-list</span>
                         </div>
                     </div>
                 </div>
 
-                <CandidatesList candidates={candidates ?? []} nombreCv={offre.nombre_cv} />
+                {/* Empty state */}
+                {candidates.length === 0 && (
+                    <div className="bg-white border border-[#1a1f1e]/8 py-20 text-center">
+                        <p className="text-[#1a1f1e]/25 text-sm uppercase tracking-widest mb-2">Aucun résultat</p>
+                        <p className="text-[#1a1f1e]/40 text-xs">Aucun candidat ne correspond aux critères de cette offre.</p>
+                    </div>
+                )}
+
+                {/* Short-list section */}
+                {shortlist.length > 0 && (
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className="h-px flex-1 bg-emerald-200" />
+                            <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-600 font-medium flex items-center gap-1.5">
+                                <Star className="h-3 w-3" />
+                                Short-list — {shortlist.length} profil{shortlist.length > 1 ? 's' : ''}
+                            </span>
+                            <span className="h-px flex-1 bg-emerald-200" />
+                        </div>
+
+                        {shortlist.map((candidat, index) => {
+                            const colors = scoreColor(candidat.matching_score);
+                            const displayScore = Math.min(candidat.matching_score, 100);
+                            return (
+                                <CandidateCard
+                                    key={candidat.id}
+                                    candidat={candidat}
+                                    index={index}
+                                    colors={colors}
+                                    displayScore={displayScore}
+                                    inShortlist
+                                />
+                            );
+                        })}
+                    </div>
+                )}
+
+                {/* Rest of candidates */}
+                {rest.length > 0 && (
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className="h-px flex-1 bg-[#1a1f1e]/8" />
+                            <span className="text-[10px] uppercase tracking-[0.2em] text-[#1a1f1e]/30 font-medium">
+                                Autres candidats — {rest.length}
+                            </span>
+                            <span className="h-px flex-1 bg-[#1a1f1e]/8" />
+                        </div>
+
+                        {rest.map((candidat, index) => {
+                            const colors = scoreColor(candidat.matching_score);
+                            const displayScore = Math.min(candidat.matching_score, 100);
+                            return (
+                                <CandidateCard
+                                    key={candidat.id}
+                                    candidat={candidat}
+                                    index={shortlist.length + index}
+                                    colors={colors}
+                                    displayScore={displayScore}
+                                    inShortlist={false}
+                                />
+                            );
+                        })}
+                    </div>
+                )}
             </div>
         </AdminLayout>
+    );
+}
+
+function CandidateCard({
+    candidat,
+    index,
+    colors,
+    displayScore,
+    inShortlist,
+}: {
+    candidat: MatchedCandidate;
+    index: number;
+    colors: { bar: string; text: string; bg: string };
+    displayScore: number;
+    inShortlist: boolean;
+}) {
+    const breakdown = candidat.matching_breakdown;
+
+    return (
+        <div
+            className={`bg-white border p-5 relative overflow-hidden group transition-colors ${
+                inShortlist ? 'border-emerald-200 hover:border-emerald-300' : 'border-[#1a1f1e]/8 hover:border-[#1a1f1e]/20'
+            }`}
+        >
+            <div className={`absolute left-0 top-0 w-[2px] h-full ${inShortlist ? 'bg-emerald-400' : 'bg-[#C06041] opacity-0 group-hover:opacity-100'} transition-opacity`} />
+
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                <div className="flex-1 min-w-0 space-y-3">
+                    {/* Name row */}
+                    <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-[10px] uppercase tracking-widest text-[#1a1f1e]/25 font-medium">#{index + 1}</span>
+                        <h3 className="text-base font-semibold text-[#1a1f1e]">
+                            {candidat.prenom} {candidat.nom}
+                        </h3>
+                        {inShortlist && (
+                            <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-widest border border-emerald-300 text-emerald-600 px-2 py-0.5 bg-emerald-50">
+                                <Star className="h-2.5 w-2.5" />
+                                Short-list
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Meta */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#1a1f1e]/50">
+                        {candidat.poste?.nom && (
+                            <span className="flex items-center gap-1.5">
+                                <Briefcase className="h-3 w-3" />
+                                {candidat.poste.nom}
+                            </span>
+                        )}
+                        {candidat.niveau_experience?.nom && (
+                            <span className="flex items-center gap-1.5">
+                                <Award className="h-3 w-3" />
+                                {candidat.niveau_experience.nom}
+                            </span>
+                        )}
+                        {candidat.formation_juridique?.nom && (
+                            <span className="flex items-center gap-1.5">
+                                <GraduationCap className="h-3 w-3" />
+                                {candidat.formation_juridique.nom}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Specialisations */}
+                    {candidat.specialisations && candidat.specialisations.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                            {candidat.specialisations.map((spec) => (
+                                <span
+                                    key={spec.id}
+                                    className="text-[10px] uppercase tracking-wider border border-[#1a1f1e]/12 text-[#1a1f1e]/50 px-2 py-0.5"
+                                >
+                                    {spec.specialisation?.nom}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Langues */}
+                    {candidat.langues && candidat.langues.length > 0 && (
+                        <p className="flex items-center gap-1.5 text-xs text-[#1a1f1e]/50">
+                            <Globe className="h-3 w-3 text-[#C06041]/50" />
+                            {candidat.langues
+                                .map((l) => `${l.langue?.nom ?? ''}${l.niveau_langue?.nom ? ` (${l.niveau_langue.nom})` : ''}`)
+                                .filter(Boolean)
+                                .join(' · ')}
+                        </p>
+                    )}
+
+                    {/* Breakdown */}
+                    {breakdown && (
+                        <div className="flex flex-wrap gap-3 text-[10px] text-[#1a1f1e]/35 uppercase tracking-wider">
+                            <span className="text-emerald-600">+{breakdown.language_bonus} bonus langues</span>
+                            {breakdown.language_penalty > 0 && (
+                                <span className="text-rose-500">−{breakdown.language_penalty} malus langues</span>
+                            )}
+                            {breakdown.specialisation_penalty > 0 && (
+                                <span className="text-rose-500">−{breakdown.specialisation_penalty} malus spécialités</span>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Contact */}
+                    <div className="flex flex-wrap gap-4 text-xs text-[#1a1f1e]/40 border-t border-[#1a1f1e]/6 pt-2">
+                        {candidat.user?.telephone && (
+                            <span className="flex items-center gap-1.5">
+                                <Phone className="h-3 w-3" />
+                                {candidat.user.telephone}
+                            </span>
+                        )}
+                        {candidat.user?.email && (
+                            <a
+                                href={`mailto:${candidat.user.email}`}
+                                className="flex items-center gap-1.5 hover:text-[#C06041] transition-colors"
+                            >
+                                <Mail className="h-3 w-3" />
+                                {candidat.user.email}
+                            </a>
+                        )}
+                    </div>
+                </div>
+
+                {/* Score */}
+                <div className={`flex flex-col items-center justify-center shrink-0 px-5 py-4 border ${colors.bg} min-w-[80px]`}>
+                    <span className={`text-3xl font-medium ${colors.text}`}>
+                        {displayScore}
+                    </span>
+                    <span className={`text-[9px] uppercase tracking-widest ${colors.text} opacity-70`}>score</span>
+                </div>
+            </div>
+        </div>
     );
 }
