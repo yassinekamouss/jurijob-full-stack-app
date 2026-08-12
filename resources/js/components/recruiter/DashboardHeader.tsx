@@ -5,6 +5,7 @@ import { dashboard as recruiterDashboard, settings as recruiterSettings } from '
 import { index as offresIndex, create as offresCreate } from '@/routes/offres';
 import { Briefcase, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const Brand = () => {
     const { t } = useTranslation();
@@ -78,6 +79,8 @@ export default function DashboardHeader() {
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
+                    <LanguageSwitcher />
+                    <div className="h-6 w-px bg-[#e5e7eb] hidden sm:block"></div>
                     <div className="flex items-center gap-1 sm:gap-2">
                         <button className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg" title={t('recruiter_dashboard_header.notifications')}>
                             <Bell className="h-5 w-5" />

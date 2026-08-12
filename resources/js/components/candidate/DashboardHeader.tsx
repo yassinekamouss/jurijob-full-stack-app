@@ -3,6 +3,7 @@ import { LogOut, LayoutDashboard, Bell, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { logout } from '@/routes';
 import { dashboard as candidateDashboard, settings as candidateSettings } from '@/routes/candidate';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // --- Sous-composant Brand ---
 const Brand = () => {
@@ -57,6 +58,8 @@ export default function DashboardHeader() {
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
+                    <LanguageSwitcher />
+                    <div className="h-6 w-px bg-[#e5e7eb] hidden sm:block"></div>
                     <div className="flex items-center gap-1 sm:gap-2">
                         <button className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg" title={t('candidate_dashboard_header.notifications')}>
                             <Bell className="h-5 w-5" />
