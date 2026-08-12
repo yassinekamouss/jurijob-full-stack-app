@@ -23,4 +23,9 @@ trait HasLocalizedTaxonomyLabel
     {
         return Attribute::get(fn (): string => $this->localizedNom());
     }
+
+    public function initializeHasLocalizedTaxonomyLabel(): void
+    {
+        $this->append('nom');
+    }
 }

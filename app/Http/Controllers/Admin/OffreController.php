@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Offre\Offre;
 use App\Models\Recruteur\Recruteur;
+use App\Services\CandidateMatching\MatchingEngine;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class OffreController extends Controller
 {
+    public function __construct(private MatchingEngine $matchingEngine) {}
+
     /**
      * Affiche les offres filtrées par statut pour l'admin.
      */
@@ -82,6 +85,28 @@ class OffreController extends Controller
         return Inertia::render('admin/Demandes-recruteurs', [
             'recruteur' => $recruteur,
             'offres' => $offres,
+        ]);
+    }
+
+    /**
+     * Affiche les candidats matchés pour une offre (admin).
+     */
+    public function matching(Offre $offre): Response
+    {
+        $offre->load([
+            'recruteur.user',
+            'poste',
+            'ville',
+            'typeTravail',
+            'modeTravail',
+            'niveauExperience',
+            'formationJuridique',
+            'criteresMultiples',
+        ]);
+
+        return Inertia::render('admin/OffreMatching', [
+            'offre' => $offre,
+            'candidates' => $this->matchingEngine->getMatches($offre),
         ]);
     }
 

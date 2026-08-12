@@ -13,6 +13,7 @@ import {
     Clock,
     CheckCircle2,
     FileText,
+    Users,
 } from 'lucide-react';
 
 type OffreStatut =
@@ -114,13 +115,6 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                     ))}
                 </div>
 
-                {currentStatut === 'EN_TRAITEMENT' && (
-                    <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                        Le matching et la sélection des candidats seront disponibles ici prochainement.
-                        Le passage vers « Attente paiement » lancera ce processus.
-                    </p>
-                )}
-
                 <div className="flex flex-col gap-4">
                     {offres.data.length === 0 ? (
                         <Card>
@@ -198,6 +192,14 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                         </div>
 
                                         <div className="flex shrink-0 flex-wrap gap-2">
+                                            {currentStatut === 'EN_TRAITEMENT' && (
+                                                <Button variant="outline" size="sm" asChild>
+                                                    <Link href={`/admin/offres/${offre.id}/matching`}>
+                                                        <Users className="mr-1 h-4 w-4" />
+                                                        Voir le matching
+                                                    </Link>
+                                                </Button>
+                                            )}
                                             {currentStatut === 'VERIFICATION_PAIEMENT' && (
                                                 <Button
                                                     onClick={() => handleConfirmPayment(offre.id)}

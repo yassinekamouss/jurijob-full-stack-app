@@ -101,6 +101,7 @@ class OffreController extends Controller
 
         $offre->load([
             'poste',
+            'ville',
             'typeTravail',
             'modeTravail',
             'niveauExperience',
