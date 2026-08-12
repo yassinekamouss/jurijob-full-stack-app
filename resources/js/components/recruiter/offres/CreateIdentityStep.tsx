@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { Briefcase, CheckCircle2 } from 'lucide-react';
 import { FormEventHandler } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     data: any;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function CreateIdentityStep({ data, setData, errors, onNext, taxonomies }: Props) {
+    const { t } = useTranslation();
     const handleNext: FormEventHandler = (e) => {
         e.preventDefault();
         if (onNext) {
@@ -25,14 +27,14 @@ export default function CreateIdentityStep({ data, setData, errors, onNext, taxo
         <form onSubmit={handleNext} className="space-y-8">
             <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/55">
-                    Étape 1 · Identité
+                    {t('offer_creation.identity.step_indicator')}
                 </div>
                 <div>
                     <h2 className="font-serif text-3xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-4xl">
-                        Positionnez l'annonce rapidement
+                        {t('offer_creation.identity.title')}
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#1a1f1e]/55 sm:text-base">
-                        Commencez par un titre clair, le métier visé et une description concise pour cadrer l'offre.
+                        {t('offer_creation.identity.description')}
                     </p>
                 </div>
             </div>
@@ -40,13 +42,13 @@ export default function CreateIdentityStep({ data, setData, errors, onNext, taxo
             <section className="rounded-[32px] border border-slate-100 bg-[#FCFCFB] p-5 shadow-sm sm:p-7 lg:p-8">
                 <div className="space-y-3">
                     <Label htmlFor="titre" className="text-sm font-semibold text-slate-900 sm:text-[15px]">
-                        Titre de l'annonce
+                        {t('offer_creation.identity.job_title_label')}
                     </Label>
                     <Input
                         id="titre"
                         value={data.titre}
                         onChange={(e) => setData('titre', e.target.value)}
-                        placeholder="Ex: Juriste corporate senior"
+                        placeholder={t('offer_creation.identity.job_title_placeholder')}
                         className="h-12 rounded-2xl border-slate-200 bg-white text-base focus-visible:ring-[#C06041]/20"
                     />
                     {errors.titre && <p className="text-sm text-red-500">{errors.titre}</p>}
@@ -56,12 +58,12 @@ export default function CreateIdentityStep({ data, setData, errors, onNext, taxo
             <section className="space-y-5 rounded-[32px] border border-slate-100 bg-white p-5 shadow-sm sm:p-7 lg:p-8">
                 <div className="flex items-start justify-between gap-3 border-b border-slate-100 pb-5">
                     <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Métier visé</p>
-                        <h3 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Choix direct</h3>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.identity.target_job_label')}</p>
+                        <h3 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">{t('offer_creation.identity.direct_choice')}</h3>
                     </div>
                     <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 sm:flex">
                         <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                        {data.poste_id ? 'Sélectionné' : 'À choisir'}
+                        {data.poste_id ? t('offer_creation.identity.selected') : t('offer_creation.identity.to_choose')}
                     </div>
                 </div>
 
@@ -102,14 +104,14 @@ export default function CreateIdentityStep({ data, setData, errors, onNext, taxo
             <section className="rounded-[32px] border border-slate-100 bg-white p-5 shadow-sm sm:p-7 lg:p-8">
                 <div className="space-y-3">
                     <Label htmlFor="description" className="text-sm font-semibold text-slate-900 sm:text-[15px]">
-                        Description de l'offre
+                        {t('offer_creation.identity.job_desc_label')}
                     </Label>
                     <textarea
                         id="description"
                         value={data.description}
                         onChange={(e) => setData('description', e.target.value)}
                         rows={8}
-                        placeholder="Missions, contexte, profil attendu, environnement..."
+                        placeholder={t('offer_creation.identity.job_desc_placeholder')}
                         className="flex min-h-[200px] w-full rounded-2xl border border-slate-200 bg-[#FCFCFB] px-4 py-4 text-sm leading-7 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C06041]/20 sm:text-[15px]"
                     />
                     {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
@@ -122,7 +124,7 @@ export default function CreateIdentityStep({ data, setData, errors, onNext, taxo
                     className="h-12 rounded-full bg-[#1a1f1e] px-8 text-sm font-semibold text-white shadow-lg shadow-[#1a1f1e]/10 sm:px-10"
                     disabled={!data.titre || !data.poste_id || !data.description}
                 >
-                    Suivant : organisation
+                    {t('offer_creation.identity.next_organization')}
                 </Button>
             </div>
         </form>

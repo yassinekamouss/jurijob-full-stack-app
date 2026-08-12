@@ -12,25 +12,26 @@ import {
 } from '@/components/ui/sidebar';
 import { NavMain } from '@/components/nav-main';
 import type { NavItem } from '@/types';
+import { useTranslation } from 'react-i18next';
 
-const adminNavItems: NavItem[] = [
+const adminNavItems = (t: any): NavItem[] => [
     {
-        title: 'Dashboard',
+        title: t('sidebar.dashboard'),
         href: '/admin/dashboard',
         icon: LayoutGrid,
     },
     {
-        title: 'Candidats',
+        title: t('sidebar.candidates'),
         href: '/admin/candidats',
         icon: Users,
     },
     {
-        title: 'Recruteurs',
+        title: t('sidebar.recruiters'),
         href: '/admin/recruteurs',
         icon: Building2,
     },
     {
-        title: 'Offres',
+        title: t('sidebar.offers'),
         href: '/admin/offres',
         icon: Briefcase,
     },
@@ -38,6 +39,7 @@ const adminNavItems: NavItem[] = [
 
 export function AdminSidebar() {
     const { auth } = usePage().props as any;
+    const { t } = useTranslation();
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -58,7 +60,7 @@ export function AdminSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={adminNavItems} />
+                <NavMain items={adminNavItems(t)} />
             </SidebarContent>
 
             <SidebarFooter>
@@ -74,7 +76,7 @@ export function AdminSidebar() {
                         <SidebarMenuButton asChild className="text-destructive hover:bg-destructive/10 hover:text-destructive">
                             <Link href="/admin/logout" method="post" as="button" className="w-full">
                                 <LogOut className="size-4" />
-                                <span>Déconnexion</span>
+                                <span>{t('sidebar.logout')}</span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

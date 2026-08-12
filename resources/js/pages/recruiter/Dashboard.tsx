@@ -10,7 +10,7 @@ import {
     Briefcase,
 } from 'lucide-react';
 import { useTaxonomies, getTaxonomyLabel } from '@/hooks/use-taxonomies';
-
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 
 interface Props {
@@ -19,11 +19,12 @@ interface Props {
 }
 
 export default function Dashboard({ recruteur, user }: Props) {
+    const { t } = useTranslation();
     const { typeOrganisations, tailleEntreprises } = useTaxonomies();
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
-            <Head title="Espace Recruteur - Jurijob" />
+            <Head title={t('recruiter_dashboard.page_title')} />
 
             <DashboardHeader />
 
@@ -42,18 +43,15 @@ export default function Dashboard({ recruteur, user }: Props) {
                                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
                                     <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
                                 </span>
-                                Interface Recruteur
+                                {t('recruiter_dashboard.interface_label')}
                             </div>
 
                             <h1 className="font-serif text-4xl font-bold tracking-tight italic md:text-5xl lg:text-6xl">
-                                Bienvenue,{' '}
-                                {recruteur?.nom_entreprise || 'Recruteur'}
+                                {t('recruiter_dashboard.welcome', { name: recruteur?.nom_entreprise || t('recruiter_dashboard.default_name') })}
                             </h1>
 
                             <p className="max-w-xl text-lg leading-relaxed font-medium text-[#1a1f1e]/50">
-                                Trouvez les meilleurs talents juridiques pour
-                                votre entreprise. Gérez vos offres et découvrez
-                                les profils qui correspondent à vos besoins.
+                                {t('recruiter_dashboard.description')}
                             </p>
                         </motion.div>
 
@@ -67,14 +65,14 @@ export default function Dashboard({ recruteur, user }: Props) {
                                         />
                                         <h3 className="text-lg font-bold">
                                             {user.is_active
-                                                ? 'Compte Actif'
-                                                : 'Compte en attente'}
+                                                ? t('recruiter_dashboard.account_active')
+                                                : t('recruiter_dashboard.account_pending')}
                                         </h3>
                                     </div>
                                     <p className="max-w-md text-sm font-medium text-[#1a1f1e]/50">
                                         {user.is_active
-                                            ? 'Votre compte est validé. Vous pouvez dès à présent consulter les profils.'
-                                            : 'Veuillez compléter votre profil pour profiter de toutes les fonctionnalités.'}
+                                            ? t('recruiter_dashboard.active_desc')
+                                            : t('recruiter_dashboard.pending_desc')}
                                     </p>
                                 </div>
 
@@ -82,7 +80,7 @@ export default function Dashboard({ recruteur, user }: Props) {
                                     href="/recruteur/settings"
                                     className="inline-flex h-12 items-center justify-center rounded-full bg-[#1a1f1e] px-8 text-sm font-bold text-white transition-all hover:scale-105 hover:bg-[#1a1f1e]/90 active:scale-95"
                                 >
-                                    Mettre à jour le profil
+                                    {t('recruiter_dashboard.update_profile')}
                                 </Link>
                             </div>
                         </div>
@@ -91,14 +89,14 @@ export default function Dashboard({ recruteur, user }: Props) {
                         <div className="space-y-8">
                             <div className="flex items-center justify-between px-2">
                                 <h3 className="text-sm font-black tracking-[0.2em] text-[#1a1f1e]/30 uppercase">
-                                    Informations de l'entreprise
+                                    {t('recruiter_dashboard.company_info')}
                                 </h3>
 
                                 <Link
                                     href="/recruteur/settings"
                                     className="flex items-center gap-1.5 text-xs font-bold hover:underline"
                                 >
-                                    Modifier
+                                    {t('recruiter_dashboard.edit')}
                                     <Search className="h-3 w-3" />
                                 </Link>
                             </div>
@@ -111,12 +109,12 @@ export default function Dashboard({ recruteur, user }: Props) {
                                         </div>
                                         <div>
                                             <p className="mb-1 text-xs font-bold tracking-wider text-[#1a1f1e]/50 uppercase">
-                                                Type d'organisation
+                                                {t('recruiter_dashboard.org_type')}
                                             </p>
                                             <p className="font-semibold">
                                                 {recruteur?.type_organisation_id
                                                     ? getTaxonomyLabel(recruteur.type_organisation_id, typeOrganisations)
-                                                    : 'Non défini'}
+                                                    : t('recruiter_dashboard.not_defined')}
                                             </p>
                                         </div>
                                     </div>
@@ -128,12 +126,12 @@ export default function Dashboard({ recruteur, user }: Props) {
                                         </div>
                                         <div>
                                             <p className="mb-1 text-xs font-bold tracking-wider text-[#1a1f1e]/50 uppercase">
-                                                Taille de l'entreprise
+                                                {t('recruiter_dashboard.company_size')}
                                             </p>
                                             <p className="font-semibold">
                                                 {recruteur?.taille_entreprise_id
                                                     ? getTaxonomyLabel(recruteur.taille_entreprise_id, tailleEntreprises)
-                                                    : 'Non défini'}
+                                                    : t('recruiter_dashboard.not_defined')}
                                             </p>
                                         </div>
                                     </div>
@@ -162,11 +160,11 @@ export default function Dashboard({ recruteur, user }: Props) {
 
                                         <h3 className="mb-1 font-serif text-2xl font-bold italic">
                                             {recruteur?.nom_entreprise ||
-                                                'Entreprise'}
+                                                t('recruiter_dashboard.company_default')}
                                         </h3>
 
                                         <p className="mb-8 text-sm font-bold tracking-widest text-[#FDFCF8]/50 uppercase">
-                                            {recruteur?.poste || 'Recruteur'}
+                                            {recruteur?.poste || t('recruiter_dashboard.default_name')}
                                         </p>
 
                                         <div className="w-full space-y-4 border-t border-[#FDFCF8]/10 pt-8 text-left">
@@ -185,7 +183,7 @@ export default function Dashboard({ recruteur, user }: Props) {
                                                 </div>
                                                 <span className="opacity-80">
                                                     {user.telephone ||
-                                                        '+212 -- -- -- --'}
+                                                        t('recruiter_dashboard.phone_default')}
                                                 </span>
                                             </div>
 
@@ -195,7 +193,7 @@ export default function Dashboard({ recruteur, user }: Props) {
                                                 </div>
                                                 <span className="opacity-80">
                                                     {recruteur?.ville ||
-                                                        'Ville non définie'}
+                                                        t('recruiter_dashboard.city_not_defined')}
                                                 </span>
                                             </div>
 
@@ -231,16 +229,15 @@ export default function Dashboard({ recruteur, user }: Props) {
                                 </div>
 
                                 <h4 className="text-lg font-bold">
-                                    Attirez les meilleurs talents
+                                    {t('recruiter_dashboard.attract_talents')}
                                 </h4>
 
                                 <p className="mt-2 text-sm leading-relaxed text-[#1a1f1e]/60">
-                                    Un profil complet valorise votre marque
-                                    employeur auprès des candidats.
+                                    {t('recruiter_dashboard.attract_desc')}
                                 </p>
 
                                 <div className="mt-6 flex items-center gap-2 text-xs font-black tracking-widest text-blue-700 uppercase">
-                                    Mettre à jour
+                                    {t('recruiter_dashboard.update')}
                                     <ExternalLink className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                                 </div>
                             </div>

@@ -1,4 +1,5 @@
 import { Head } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/candidate/DashboardHeader';
 import PendingVerificationBanner, {
     type ProfileCompletion,
@@ -22,10 +23,11 @@ interface Props {
 }
 
 export default function Dashboard({ candidat, user, profileCompletion }: Props) {
+    const { t } = useTranslation('translation');
     const isPending = candidat?.status === 'en_attente';
     return (
         <div className="relative min-h-screen bg-[#FDFCF8] text-[#1a1f1e] overflow-x-hidden">
-            <Head title="Espace Candidat - Jurijob" />
+            <Head title={t('candidate_dashboard.page_title')} />
 
             <DashboardHeader />
 
@@ -46,17 +48,17 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
                                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${isPending ? 'bg-amber-400' : 'bg-emerald-400'}`}></span>
                                     <span className={`relative inline-flex h-2 w-2 rounded-full ${isPending ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>
                                 </span>
-                                {isPending ? 'Validation en cours' : 'Tableau de bord professionnel'}
+                                {isPending ? t('candidate_dashboard.validation_pending') : t('candidate_dashboard.professional_dashboard')}
                             </div>
 
                             <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl font-serif italic">
-                                Bonjour, {candidat?.prenom || 'Candidat'}
+                                {t('candidate_dashboard.hello', { name: candidat?.prenom || t('candidate_dashboard.candidate_default_name') })}
                             </h1>
 
                             <p className="max-w-xl text-lg font-medium text-[#1a1f1e]/50 leading-relaxed">
                                 {isPending
-                                    ? 'Complétez votre dossier pour qu’il soit examiné par notre équipe et intégré au matching.'
-                                    : "Votre profil est l'atout majeur de votre carrière juridique. Gérez votre visibilité et gardez vos informations à jour pour les recruteurs."}
+                                    ? t('candidate_dashboard.pending_description')
+                                    : t('candidate_dashboard.active_description')}
                             </p>
                         </motion.div>
 
@@ -74,14 +76,14 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
                         <div className="space-y-8">
                             <div className="flex items-center justify-between px-2">
                                 <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#1a1f1e]/30">
-                                    Aperçu de votre expertise
+                                    {t('candidate_dashboard.expertise_overview')}
                                 </h3>
 
                                 <a
                                     href="/candidate/settings"
                                     className="flex items-center gap-1.5 text-xs font-bold hover:underline"
                                 >
-                                    Modifier mon profil
+                                    {t('candidate_dashboard.edit_profile')}
                                     <Search className="h-3 w-3" />
                                 </a>
                             </div>
@@ -115,7 +117,7 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
                                         </h3>
 
                                         <p className="text-[#FDFCF8]/50 text-sm font-bold uppercase tracking-widest mb-8">
-                                            {candidat?.poste_recherche || 'Juriste'}
+                                            {candidat?.poste_recherche || t('candidate_dashboard.juriste')}
                                         </p>
 
                                         <div className="w-full space-y-4 text-left border-t border-[#FDFCF8]/10 pt-8">
@@ -140,7 +142,7 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
                                                     <MapPin className="h-4 w-4 opacity-70" />
                                                 </div>
                                                 <span className="opacity-80">
-                                                    Région {candidat?.ville_travails?.[0]?.ville || 'Maroc'}
+                                                    {t('candidate_dashboard.region', { region: candidat?.ville_travails?.[0]?.ville || t('candidate_dashboard.morocco') })}
                                                 </span>
                                             </div>
                                         </div>
@@ -155,12 +157,11 @@ export default function Dashboard({ candidat, user, profileCompletion }: Props) 
                                 </div>
 
                                 <h4 className="font-bold text-lg">
-                                    Comment être sélectionné ?
-                                </h4>
+                                                    {t('candidate_dashboard.how_to_be_selected')}
+                                                </h4>
 
                                 <p className="mt-2 text-sm text-[#1a1f1e]/60 leading-relaxed">
-                                    Les recruteurs utilisent notre matching intelligent.
-                                    Un profil complet augmente vos chances d'être contacté.
+                                    {t('candidate_dashboard.how_to_be_selected_desc')}
                                 </p>
 
                             </div>

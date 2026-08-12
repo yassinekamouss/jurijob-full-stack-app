@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 import { ArrowLeft, Building2, MapPin, ShieldCheck, Wallet } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     data: any;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function CreateOrganizationStep({ data, setData, errors, onNext, onPrev, taxonomies }: Props) {
+    const { t } = useTranslation();
     const [selectedPaysId, setSelectedPaysId] = useState<string>('');
 
     const selectedMode = useMemo(() => {
@@ -92,29 +94,29 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
         <div className="space-y-8">
             <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/55">
-                    Étape 2 · Organisation
+                    {t('offer_creation.organization.step_indicator')}
                 </div>
                 <div>
                     <h2 className="font-serif text-3xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-4xl">
-                        Cadrez l'organisation du poste
+                        {t('offer_creation.organization.title')}
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#1a1f1e]/55 sm:text-base">
-                        Type de contrat, mode de travail, localisation et salaire sont regroupés pour une lecture rapide.
+                        {t('offer_creation.organization.description')}
                     </p>
                 </div>
             </div>
 
             <section className="space-y-8 rounded-[32px] border border-slate-100 bg-[#FCFCFB] p-5 sm:p-7 lg:p-8">
                 <div className="border-b border-slate-200/70 pb-5">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Organisation du poste</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.organization.organization_label')}</p>
                     <h3 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-                        Contrat, mode de travail et localisation
+                        {t('offer_creation.organization.contract_mode_location')}
                     </h3>
                 </div>
 
                 <div className="space-y-8">
                     <div className="space-y-4">
-                        <Label className="text-sm font-semibold text-slate-900 sm:text-[15px]">Type de contrat</Label>
+                        <Label className="text-sm font-semibold text-slate-900 sm:text-[15px]">{t('offer_creation.organization.contract_type')}</Label>
                         <ChoiceGrid
                             items={taxonomies.typeTravails || []}
                             value={String(data.type_travail_id || '')}
@@ -126,7 +128,7 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                     </div>
 
                     <div className="space-y-4">
-                        <Label className="text-sm font-semibold text-slate-900 sm:text-[15px]">Mode de travail</Label>
+                        <Label className="text-sm font-semibold text-slate-900 sm:text-[15px]">{t('offer_creation.organization.work_mode')}</Label>
                         <ChoiceGrid
                             items={taxonomies.modeTravails || []}
                             value={String(data.mode_travail_id || '')}
@@ -144,15 +146,15 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                     </div>
 
                     <div className="space-y-4">
-                        <Label className="text-sm font-semibold text-slate-900 sm:text-[15px]">Localisation</Label>
+                        <Label className="text-sm font-semibold text-slate-900 sm:text-[15px]">{t('offer_creation.organization.location')}</Label>
                         {isRemoteMode ? (
                             <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-5 py-6 text-sm leading-relaxed text-slate-500">
-                                Localisation non requise pour le mode télétravail.
+                                {t('offer_creation.organization.location_not_required')}
                             </div>
                         ) : (
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <Label className="text-sm font-medium text-slate-700">Pays</Label>
+                                    <Label className="text-sm font-medium text-slate-700">{t('offer_creation.organization.country')}</Label>
                                     <Select
                                         value={selectedPaysId || undefined}
                                         onValueChange={(paysId) => {
@@ -161,7 +163,7 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                                         }}
                                     >
                                         <SelectTrigger className="h-12 w-full rounded-2xl border-slate-200 bg-white text-sm focus:ring-[#C06041]/20 sm:text-[15px]">
-                                            <SelectValue placeholder="Sélectionnez un pays" />
+                                            <SelectValue placeholder={t('offer_creation.organization.select_country')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {(taxonomies.pays || []).map((item: any) => (
@@ -175,7 +177,7 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
 
                                 {!selectedPaysId ? (
                                     <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-5 py-6 text-sm leading-relaxed text-slate-500">
-                                        Sélectionnez d'abord un pays pour afficher ses villes.
+                                        {t('offer_creation.organization.select_country_first')}
                                     </div>
                                 ) : (
                                     <div className="max-h-[320px] overflow-auto rounded-2xl border border-slate-100 bg-white p-3 sm:p-4">
@@ -203,9 +205,9 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                                 <Wallet className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Rémunération</p>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.organization.remuneration')}</p>
                                 <Label htmlFor="salaire_id" className="text-base font-bold text-slate-900 sm:text-lg">
-                                    Salaire proposé
+                                    {t('offer_creation.organization.proposed_salary')}
                                 </Label>
                             </div>
                         </div>
@@ -214,10 +216,10 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                             onValueChange={(val) => setData('salaire_id', val === 'confidentiel' ? '' : val)}
                         >
                             <SelectTrigger className="h-12 w-full rounded-2xl border-slate-200 bg-[#FCFCFB] text-sm focus:ring-[#C06041]/20 sm:text-[15px]">
-                                <SelectValue placeholder="Budget confidentiel" />
+                                <SelectValue placeholder={t('offer_creation.organization.confidential_budget')} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="confidentiel">Budget confidentiel</SelectItem>
+                                <SelectItem value="confidentiel">{t('offer_creation.organization.confidential_budget')}</SelectItem>
                                 {taxonomies.salaires?.map((item: any) => (
                                     <SelectItem key={item.id} value={String(item.id)}>
                                         {item.nom}
@@ -237,7 +239,7 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                     onClick={onPrev}
                     className="h-12 px-6 text-sm font-medium text-slate-500 hover:text-slate-900"
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Retour
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {t('offer_creation.organization.back')}
                 </Button>
                 <Button
                     type="button"
@@ -245,7 +247,7 @@ export default function CreateOrganizationStep({ data, setData, errors, onNext, 
                     className="h-12 rounded-full bg-[#1a1f1e] px-8 text-sm font-semibold text-white sm:px-10"
                     disabled={!data.type_travail_id || !data.mode_travail_id || (!isRemoteMode && !data.ville_id)}
                 >
-                    Suivant : profil
+                    {t('offer_creation.organization.next_profile')}
                 </Button>
             </div>
         </div>

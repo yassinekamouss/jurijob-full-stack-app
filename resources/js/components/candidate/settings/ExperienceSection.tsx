@@ -4,6 +4,7 @@ import { Briefcase, Plus, Trash2, X, Calendar, CheckCircle2 } from 'lucide-react
 import Icon from '@/components/signup/FormularIcons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
+import { useTranslation } from 'react-i18next';
 import { store, update, destroy } from '@/routes/candidate/experiences';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function ExperienceSection({ experiences }: Props) {
+  const { t } = useTranslation();
   const { postes, typeTravails } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -44,7 +46,7 @@ export default function ExperienceSection({ experiences }: Props) {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (form.data.debut && form.data.fin && form.data.fin < form.data.debut) {
-      form.setError('fin', 'La date de fin doit être postérieure ou égale à la date de début.');
+      form.setError('fin', t('candidate_settings.experience.date_error'));
       return;
     }
 
@@ -60,7 +62,7 @@ export default function ExperienceSection({ experiences }: Props) {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette expérience ?')) {
+    if (confirm(t('candidate_settings.experience.delete_confirm'))) {
       form.delete(destroy(id).url);
     }
   };
@@ -69,8 +71,8 @@ export default function ExperienceSection({ experiences }: Props) {
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold font-serif italic mb-1">Mes Expériences</h3>
-          <p className="text-sm text-[#1a1f1e]/50 font-medium">Gérez votre parcours professionnel.</p>
+          <h3 className="text-xl font-bold font-serif italic mb-1">{t('candidate_settings.experience.title')}</h3>
+          <p className="text-sm text-[#1a1f1e]/50 font-medium">{t('candidate_settings.experience.description')}</p>
         </div>
         {!isAdding && !editingId && (
           <button
@@ -78,7 +80,7 @@ export default function ExperienceSection({ experiences }: Props) {
             className="flex items-center gap-2 bg-[#1a1f1e] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#343a38] transition-all"
           >
             <Plus className="h-4 w-4" />
-            Ajouter
+            {t('candidate_settings.experience.add_button')}
           </button>
         )}
       </div>
@@ -94,16 +96,16 @@ export default function ExperienceSection({ experiences }: Props) {
             <form onSubmit={submit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Poste occupé</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.experience.labels.job')}</label>
                   <select
                     value={form.data.poste_id}
                     onChange={e => form.setData('poste_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
-                    <option value="">Choisir un poste</option>
+                    <option value="">{t('candidate_settings.experience.placeholders.job')}</option>
                     {useLoadingTaxonomy(postes) ? (
-                      <option disabled>Chargement...</option>
+                      <option disabled>{t('candidate_settings.experience.loading')}</option>
                     ) : (
                       postes.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
@@ -111,13 +113,13 @@ export default function ExperienceSection({ experiences }: Props) {
                   {form.errors.poste_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.poste_id}</p>}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Entreprise / Cabinet</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.experience.labels.company')}</label>
                   <input
                     type="text"
                     value={form.data.entreprise}
                     onChange={e => form.setData('entreprise', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
-                    placeholder="Ex: Cabinet Alpha"
+                    placeholder={t('candidate_settings.experience.placeholders.company')}
                     required
                   />
                   {form.errors.entreprise && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.entreprise}</p>}
@@ -126,16 +128,16 @@ export default function ExperienceSection({ experiences }: Props) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Type de contrat</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.experience.labels.contract_type')}</label>
                   <select
                     value={form.data.type_travail_id}
                     onChange={e => form.setData('type_travail_id', e.target.value)}
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
-                    <option value="">Choisir un type</option>
+                    <option value="">{t('candidate_settings.experience.placeholders.contract_type')}</option>
                     {useLoadingTaxonomy(typeTravails) ? (
-                      <option disabled>Chargement...</option>
+                      <option disabled>{t('candidate_settings.experience.loading')}</option>
                     ) : (
                       typeTravails.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
                     )}
@@ -147,7 +149,7 @@ export default function ExperienceSection({ experiences }: Props) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Date de début</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.experience.labels.start_date')}</label>
                   <div className="relative">
                     <Calendar className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30 pointer-events-none" />
                     <input
@@ -162,7 +164,7 @@ export default function ExperienceSection({ experiences }: Props) {
                   {form.errors.debut && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.debut}</p>}
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">Date de fin</label>
+                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.experience.labels.end_date')}</label>
                   <div className="relative">
                     <Calendar className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30 pointer-events-none" />
                     <input
@@ -183,7 +185,7 @@ export default function ExperienceSection({ experiences }: Props) {
                   onClick={resetForm}
                   className="px-6 py-3 text-sm font-bold text-[#1a1f1e]/40 hover:text-[#1a1f1e] transition-all"
                 >
-                  Annuler
+                  {t('candidate_settings.experience.cancel_button')}
                 </button>
                 <button
                   type="submit"
@@ -191,7 +193,7 @@ export default function ExperienceSection({ experiences }: Props) {
                   className="bg-[#1a1f1e] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-[#343a38] transition-all disabled:opacity-50 flex items-center gap-2"
                 >
                   <CheckCircle2 className="h-4 w-4" />
-                  {editingId ? 'Mettre à jour' : 'Ajouter'}
+                  {editingId ? t('candidate_settings.experience.update_button') : t('candidate_settings.experience.add_button')}
                 </button>
               </div>
             </form>
@@ -218,7 +220,7 @@ export default function ExperienceSection({ experiences }: Props) {
                         <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/20" />
                         <p className="text-[10px] font-black uppercase tracking-widest text-[#C06041]">{getTaxonomyLabel(exp.type_travail_id, typeTravails)}</p>
                       </div>
-                      <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{exp.debut} — {exp.fin || 'Présent'}</p>
+                      <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{exp.debut} — {exp.fin || t('candidate_settings.experience.present')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -239,7 +241,7 @@ export default function ExperienceSection({ experiences }: Props) {
               ))
             ) : (
               <div className="text-center py-12 rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10">
-                <p className="text-[#1a1f1e]/30 font-bold italic">Aucune expérience enregistrée.</p>
+                <p className="text-[#1a1f1e]/30 font-bold italic">{t('candidate_settings.experience.no_experience')}</p>
               </div>
             )}
           </div>

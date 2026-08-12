@@ -1,11 +1,13 @@
 import { LayoutGrid, Search, BookOpen, Folder } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isActive: boolean;
 }
 
 export default function StatusCard({ isActive }: Props) {
+  const { t } = useTranslation();
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -20,13 +22,13 @@ export default function StatusCard({ isActive }: Props) {
             <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
               {isActive ? <LayoutGrid className="h-5 w-5" /> : <Folder className="h-5 w-5" />}
             </div>
-            <h2 className="text-xl font-bold font-serif italic text-[#1a1f1e]">Statut de visibilité</h2>
+            <h2 className="text-xl font-bold font-serif italic text-[#1a1f1e]">{t('candidate_status_card.title')}</h2>
           </div>
           
           <p className="max-w-md text-sm leading-relaxed text-[#1a1f1e]/60">
             {isActive 
-              ? "Votre profil est actuellement actif et visible par notre réseau de recruteurs. Vous serez contacté dès qu'un projet correspond à votre expertise."
-              : "Votre profil est actuellement masqué. Les recruteurs ne peuvent pas vous trouver ou vous proposer des opportunités de matching."
+              ? t('candidate_status_card.active_desc')
+              : t('candidate_status_card.inactive_desc')
             }
           </p>
         </div>
@@ -40,18 +42,18 @@ export default function StatusCard({ isActive }: Props) {
             {isActive ? (
               <>
                 <Search className="h-4 w-4" />
-                Profil Actif
+                {t('candidate_status_card.profile_active')}
               </>
             ) : (
               <>
                 <BookOpen className="h-4 w-4" />
-                Profil Inactif
+                {t('candidate_status_card.profile_inactive')}
               </>
             )}
           </div>
           
           <p className="text-[10px] font-bold uppercase tracking-widest text-[#1a1f1e]/30">
-            Géré via vos paramètres de compte
+            {t('candidate_status_card.managed_via_settings')}
           </p>
         </div>
       </div>

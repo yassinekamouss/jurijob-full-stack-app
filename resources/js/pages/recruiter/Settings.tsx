@@ -18,6 +18,7 @@ import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
 
 interface Props {
@@ -28,6 +29,7 @@ interface Props {
 type TabType = 'profile' | 'security';
 
 export default function Settings({ recruteur, user }: Props) {
+    const { t } = useTranslation();
     const { typeOrganisations, tailleEntreprises, pays, villes } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [selectedPaysId, setSelectedPaysId] = useState<string>('');
@@ -121,7 +123,7 @@ export default function Settings({ recruteur, user }: Props) {
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
-            <Head title="Paramètres Recruteur - Jurijob" />
+            <Head title={t('recruiter_settings.page_title')} />
 
             <DashboardHeader />
 
@@ -132,14 +134,13 @@ export default function Settings({ recruteur, user }: Props) {
                         className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-[#1a1f1e]/50 transition-colors hover:text-[#1a1f1e]"
                     >
                         <ArrowLeft className="h-4 w-4" />
-                        Retour au tableau de bord
+                        {t('recruiter_settings.back_to_dashboard')}
                     </Link>
                     <h1 className="font-serif text-4xl font-bold tracking-tight italic md:text-5xl">
-                        Paramètres de l'entreprise
+                        {t('recruiter_settings.page_header')}
                     </h1>
                     <p className="font-medium text-[#1a1f1e]/50">
-                        Gérez vos informations d'entreprise et la sécurité de
-                        votre accès.
+                        {t('recruiter_settings.page_desc')}
                     </p>
                 </div>
 
@@ -155,7 +156,7 @@ export default function Settings({ recruteur, user }: Props) {
                                     }`}
                             >
                                 <Building className="h-4 w-4" />
-                                Profil Entreprise
+                                {t('recruiter_settings.tabs.profile')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('security')}
@@ -165,7 +166,7 @@ export default function Settings({ recruteur, user }: Props) {
                                     }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />
-                                Sécurité & 2FA
+                                {t('recruiter_settings.tabs.security')}
                             </button>
                         </nav>
                     </div>
@@ -191,7 +192,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <Building2 className="h-4 w-4 opacity-50" />
-                                                        Nom de l'entreprise *
+                                                        {t('recruiter_settings.form.company_name')}
                                                     </label>
                                                     <input
                                                         type="text"
@@ -220,7 +221,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <Briefcase className="h-4 w-4 opacity-50" />
-                                                        Votre Poste *
+                                                        {t('recruiter_settings.form.job_title')}
                                                     </label>
                                                     <input
                                                         type="text"
@@ -245,7 +246,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <Building2 className="h-4 w-4 opacity-50" />
-                                                        Type d'organisation *
+                                                        {t('recruiter_settings.form.org_type')}
                                                     </label>
                                                     <select
                                                         value={
@@ -264,10 +265,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                             value=""
                                                             disabled
                                                         >
-                                                            Sélectionner le type
+                                                            {t('recruiter_settings.form.select_type')}
                                                         </option>
                                                         {useLoadingTaxonomy(typeOrganisations) ? (
-                                                            <option disabled>Chargement...</option>
+                                                            <option disabled>{t('recruiter_settings.form.loading')}</option>
                                                         ) : (
                                                             typeOrganisations.map(opt => (
                                                                 <option key={opt.id} value={opt.id}>{opt.nom}</option>
@@ -287,7 +288,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <Users className="h-4 w-4 opacity-50" />
-                                                        Taille de l'entreprise *
+                                                        {t('recruiter_settings.form.company_size')}
                                                     </label>
                                                     <select
                                                         value={
@@ -306,11 +307,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                             value=""
                                                             disabled
                                                         >
-                                                            Sélectionner la
-                                                            taille
+                                                            {t('recruiter_settings.form.select_size')}
                                                         </option>
                                                         {useLoadingTaxonomy(tailleEntreprises) ? (
-                                                            <option disabled>Chargement...</option>
+                                                            <option disabled>{t('recruiter_settings.form.loading')}</option>
                                                         ) : (
                                                             tailleEntreprises.map(opt => (
                                                                 <option key={opt.id} value={opt.id}>{opt.nom}</option>
@@ -330,7 +330,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <MapPin className="h-4 w-4 opacity-50" />
-                                                        Pays *
+                                                        {t('recruiter_settings.form.country')}
                                                     </label>
                                                     <select
                                                         value={selectedPaysId}
@@ -342,10 +342,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                         required
                                                     >
                                                         <option value="" disabled>
-                                                            Sélectionner un pays
+                                                            {t('recruiter_settings.form.select_country')}
                                                         </option>
                                                         {useLoadingTaxonomy(pays) ? (
-                                                            <option disabled>Chargement...</option>
+                                                            <option disabled>{t('recruiter_settings.form.loading')}</option>
                                                         ) : (
                                                             pays.map((opt) => (
                                                                 <option key={opt.id} value={opt.id}>
@@ -359,7 +359,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <MapPin className="h-4 w-4 opacity-50" />
-                                                        Ville *
+                                                        {t('recruiter_settings.form.city')}
                                                     </label>
                                                     <select
                                                         value={data.ville_id}
@@ -375,11 +375,11 @@ export default function Settings({ recruteur, user }: Props) {
                                                     >
                                                         <option value="" disabled>
                                                             {selectedPaysId
-                                                                ? 'Sélectionner une ville'
-                                                                : "Sélectionnez d'abord un pays"}
+                                                                ? t('recruiter_settings.form.select_city')
+                                                                : t('recruiter_settings.form.select_country_first')}
                                                         </option>
                                                         {useLoadingTaxonomy(villes) ? (
-                                                            <option disabled>Chargement...</option>
+                                                            <option disabled>{t('recruiter_settings.form.loading')}</option>
                                                         ) : (
                                                             citiesForCountry.map((opt) => (
                                                                 <option key={opt.id} value={opt.id}>
@@ -399,7 +399,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <div className="space-y-2">
                                                     <label className="flex items-center gap-2 text-sm font-bold">
                                                         <Globe className="h-4 w-4 opacity-50" />
-                                                        Site Web (Optionnel)
+                                                        {t('recruiter_settings.form.website')}
                                                     </label>
                                                     <input
                                                         type="url"
@@ -428,8 +428,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                     className="inline-flex items-center gap-2 rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
                                                 >
                                                     <Save className="h-4 w-4" />
-                                                    Enregistrer les
-                                                    modifications
+                                                    {t('recruiter_settings.form.save')}
                                                 </button>
                                             </div>
                                         </form>
@@ -455,12 +454,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                         <ShieldAlert className="h-8 w-8" />
                                                     </div>
                                                     <h4 className="mb-2 font-serif text-xl font-bold italic">
-                                                        Sécurité standard
+                                                        {t('recruiter_settings.security.title_standard')}
                                                     </h4>
                                                     <p className="mb-8 max-w-xs text-sm text-[#1a1f1e]/40">
-                                                        Votre compte est
-                                                        uniquement protégé par
-                                                        votre mot de passe.
+                                                        {t('recruiter_settings.security.desc_standard')}
                                                     </p>
                                                     <button
                                                         onClick={
@@ -472,8 +469,8 @@ export default function Settings({ recruteur, user }: Props) {
                                                         className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 disabled:opacity-50"
                                                     >
                                                         {enablingTwoFactor
-                                                            ? 'Activation...'
-                                                            : 'Activer le 2FA'}
+                                                            ? t('recruiter_settings.security.btn_enabling')
+                                                            : t('recruiter_settings.security.btn_enable')}
                                                     </button>
                                                 </div>
                                             ) : (
@@ -484,12 +481,10 @@ export default function Settings({ recruteur, user }: Props) {
                                                         </div>
                                                         <div>
                                                             <div className="font-bold text-emerald-900">
-                                                                2FA Activé
+                                                                {t('recruiter_settings.security.title_active')}
                                                             </div>
                                                             <div className="text-sm text-emerald-700/70">
-                                                                Votre compte est
-                                                                hautement
-                                                                sécurisé.
+                                                                {t('recruiter_settings.security.desc_active')}
                                                             </div>
                                                         </div>
                                                         <button
@@ -498,7 +493,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                             }
                                                             className="ml-auto text-xs font-black tracking-widest text-red-500 uppercase transition-colors hover:text-red-700"
                                                         >
-                                                            Désactiver
+                                                            {t('recruiter_settings.security.btn_disable')}
                                                         </button>
                                                     </div>
 

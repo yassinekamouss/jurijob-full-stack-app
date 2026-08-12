@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { MapPin } from 'lucide-react';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { sync } from '@/routes/candidate/preferences';
@@ -24,7 +25,8 @@ function ChipGroup({
     loading?: boolean;
 }) {
     if (loading) {
-        return <p className="py-4 text-sm font-medium text-[#1a1f1e]/40">Chargement...</p>;
+        const { t } = useTranslation();
+        return <p className="py-4 text-sm font-medium text-[#1a1f1e]/40">{t('candidate_settings.preferences.loading')}</p>;
     }
 
     return (
@@ -56,6 +58,7 @@ export default function PreferencesSection({
     modeTravails,
     typeTravails,
 }: Props) {
+    const { t } = useTranslation();
     const { pays, villes, modeTravails: modeOptions, typeTravails: typeOptions } = useTaxonomies();
 
     const initialVilleIds = useMemo(
@@ -138,20 +141,20 @@ export default function PreferencesSection({
         let hasErrors = false;
 
         if (!selectedPaysId) {
-            form.setError('ville_ids', 'Veuillez sélectionner un pays.');
+            form.setError('ville_ids', t('candidate_settings.preferences.errors.country_required'));
             hasErrors = true;
         } else if (form.data.ville_ids.length === 0) {
-            form.setError('ville_ids', 'Veuillez sélectionner au moins une ville.');
+            form.setError('ville_ids', t('candidate_settings.preferences.errors.city_required'));
             hasErrors = true;
         }
 
         if (form.data.mode_travail_ids.length === 0) {
-            form.setError('mode_travail_ids', 'Veuillez sélectionner au moins un mode de travail.');
+            form.setError('mode_travail_ids', t('candidate_settings.preferences.errors.work_mode_required'));
             hasErrors = true;
         }
 
         if (form.data.type_travail_ids.length === 0) {
-            form.setError('type_travail_ids', 'Veuillez sélectionner au moins un type de travail.');
+            form.setError('type_travail_ids', t('candidate_settings.preferences.errors.job_type_required'));
             hasErrors = true;
         }
 
@@ -176,9 +179,9 @@ export default function PreferencesSection({
     return (
         <section className="space-y-8">
             <div>
-                <h3 className="mb-1 font-serif text-xl font-bold italic">Préférences de recherche</h3>
+                <h3 className="mb-1 font-serif text-xl font-bold italic">{t('candidate_settings.preferences.title')}</h3>
                 <p className="text-sm font-medium text-[#1a1f1e]/50">
-                    Pays, villes, modes et types de travail recherchés.
+                    {t('candidate_settings.preferences.description')}
                 </p>
             </div>
 
@@ -187,22 +190,22 @@ export default function PreferencesSection({
                     <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-[#C06041]" />
                         <h4 className="text-sm font-black tracking-widest text-[#1a1f1e]/50 uppercase">
-                            Localisation
+                            {t('candidate_settings.preferences.sections.location')}
                         </h4>
                     </div>
 
                     <div className="space-y-2">
                         <label className="text-[10px] font-bold tracking-[0.2em] text-[#1a1f1e]/40 uppercase">
-                            Pays
+                            {t('candidate_settings.preferences.sections.country')}
                         </label>
                         <select
                             value={selectedPaysId}
                             onChange={(e) => handleCountryChange(e.target.value)}
                             className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold outline-none transition-all focus:border-[#C06041]"
                         >
-                            <option value="">Sélectionnez un pays</option>
+                            <option value="">{t('candidate_settings.preferences.placeholders.country')}</option>
                             {useLoadingTaxonomy(pays) ? (
-                                <option disabled>Chargement...</option>
+                                <option disabled>{t('candidate_settings.preferences.loading')}</option>
                             ) : (
                                 pays.map((country) => (
                                     <option key={country.id} value={country.id}>
@@ -215,11 +218,11 @@ export default function PreferencesSection({
 
                     <div className="space-y-2">
                         <label className="text-[10px] font-bold tracking-[0.2em] text-[#1a1f1e]/40 uppercase">
-                            Villes
+                            {t('candidate_settings.preferences.sections.cities')}
                         </label>
                         {!selectedPaysId ? (
                             <p className="rounded-2xl border border-dashed border-[#1a1f1e]/10 bg-white px-4 py-5 text-sm text-[#1a1f1e]/45">
-                                Sélectionnez d&apos;abord un pays pour afficher ses villes.
+                                {t('candidate_settings.preferences.messages.select_country_first')}
                             </p>
                         ) : (
                             <ChipGroup
@@ -237,7 +240,7 @@ export default function PreferencesSection({
 
                 <div className="space-y-4 rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6">
                     <h4 className="text-sm font-black tracking-widest text-[#1a1f1e]/50 uppercase">
-                        Mode de travail
+                        {t('candidate_settings.preferences.sections.work_mode')}
                     </h4>
                     <ChipGroup
                         options={modeOptions}
@@ -252,7 +255,7 @@ export default function PreferencesSection({
 
                 <div className="space-y-4 rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6">
                     <h4 className="text-sm font-black tracking-widest text-[#1a1f1e]/50 uppercase">
-                        Type de travail
+                        {t('candidate_settings.preferences.sections.job_type')}
                     </h4>
                     <ChipGroup
                         options={typeOptions}
@@ -271,7 +274,7 @@ export default function PreferencesSection({
                         disabled={form.processing || !isDirty}
                         className="rounded-full bg-[#1a1f1e] px-8 py-3 text-xs font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:cursor-not-allowed disabled:opacity-40"
                     >
-                        {form.processing ? 'Enregistrement...' : 'Enregistrer les préférences'}
+                        {form.processing ? t('candidate_settings.preferences.saving') : t('candidate_settings.preferences.save_button')}
                     </button>
                 </div>
             </form>

@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, CheckCircle2, Info, Languages, ShieldAlert } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     data: any;
@@ -12,41 +13,39 @@ interface Props {
     taxonomies: any;
 }
 
-const importanceLevels = [
+const importanceLevels = (t: any) => [
     {
-        label: 'Indispensable',
+        label: t('offer_creation.languages.levels.indispensable.label'),
         value: 'indispensable',
         className: 'bg-rose-50 text-rose-700 border-rose-200',
-        title: 'Éliminatoire',
-        description:
-            "Si le candidat n'a pas cette langue au niveau demandé, il est éliminé — même s'il correspond parfaitement aux autres critères.",
+        title: t('offer_creation.languages.levels.indispensable.title'),
+        description: t('offer_creation.languages.levels.indispensable.desc'),
     },
     {
-        label: 'Important',
+        label: t('offer_creation.languages.levels.important.label'),
         value: 'important',
         className: 'bg-amber-50 text-amber-700 border-amber-200',
-        title: 'Fortement attendu',
-        description:
-            "Critère très valorisé dans le tri. En cas de doute sur le niveau d'exigence, choisissez simplement « Important ».",
+        title: t('offer_creation.languages.levels.important.title'),
+        description: t('offer_creation.languages.levels.important.desc'),
     },
     {
-        label: 'Souhaitable',
+        label: t('offer_creation.languages.levels.souhaitable.label'),
         value: 'souhaitable',
         className: 'bg-sky-50 text-sky-700 border-sky-200',
-        title: 'Atout supplémentaire',
-        description:
-            "Un plus apprécié, mais l'absence de cette langue n'élimine pas automatiquement le candidat.",
+        title: t('offer_creation.languages.levels.souhaitable.title'),
+        description: t('offer_creation.languages.levels.souhaitable.desc'),
     },
     {
-        label: 'Facultatif',
+        label: t('offer_creation.languages.levels.facultatif.label'),
         value: 'facultatif',
         className: 'bg-slate-50 text-slate-600 border-slate-200',
-        title: 'Optionnel',
-        description: "Mention utile à titre indicatif, sans impact fort sur la sélection.",
+        title: t('offer_creation.languages.levels.facultatif.title'),
+        description: t('offer_creation.languages.levels.facultatif.desc'),
     },
 ];
 
 export default function CreateLanguagesStep({ data, setData, errors, onNext, onPrev, taxonomies }: Props) {
+    const { t } = useTranslation();
     const selectedLanguages = data.requirements.filter((req: any) => req.taxonomy_type === 'LANGUE');
 
     const isSelected = (taxonomyId: number) => {
@@ -103,14 +102,14 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
         <div className="space-y-8">
             <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/55">
-                    Étape 5 · Langues
+                    {t('offer_creation.languages.step_indicator')}
                 </div>
                 <div>
                     <h2 className="font-serif text-3xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-4xl">
-                        Définissez les langues attendues
+                        {t('offer_creation.languages.title')}
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#1a1f1e]/55 sm:text-base">
-                        Sélectionnez les langues, puis précisez le niveau et l'importance pour chaque choix.
+                        {t('offer_creation.languages.description')}
                     </p>
                 </div>
             </div>
@@ -121,13 +120,13 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
                         <Info className="h-5 w-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Comprendre l'importance</p>
-                        <h3 className="mt-1 text-lg font-bold text-slate-900">Que signifie chaque niveau ?</h3>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.languages.understand_importance')}</p>
+                        <h3 className="mt-1 text-lg font-bold text-slate-900">{t('offer_creation.languages.meaning_levels')}</h3>
                     </div>
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                    {importanceLevels.map((level) => (
+                    {importanceLevels(t).map((level) => (
                         <div key={level.value} className="rounded-2xl border border-slate-200 bg-white p-4">
                             <div className="flex flex-wrap items-center gap-2">
                                 {level.value === 'indispensable' ? (
@@ -144,8 +143,8 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
                 </div>
 
                 <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50/80 px-4 py-3 text-sm leading-relaxed text-amber-900/80">
-                    <strong className="font-semibold">Conseil :</strong> si vous ne savez pas quoi choisir, sélectionnez{' '}
-                    <span className="font-semibold">Important</span>.
+                    <strong className="font-semibold">{t('offer_creation.languages.tip')}</strong> {t('offer_creation.languages.tip_desc')}{' '}
+                    <span className="font-semibold">{t('offer_creation.languages.tip_important')}</span>.
                 </div>
             </section>
 
@@ -156,20 +155,22 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
                             <Languages className="h-5 w-5" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Langues</p>
-                            <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">Sélection et réglages</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.languages.languages_label')}</p>
+                            <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.languages.selection_settings')}</h3>
                         </div>
                     </div>
                     <Badge
                         variant="outline"
                         className="w-fit rounded-full border-slate-200 bg-slate-50 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500"
                     >
-                        {selectedLanguages.length} sélectionnée{selectedLanguages.length > 1 ? 's' : ''}
+                        {selectedLanguages.length > 1
+                            ? t('offer_creation.languages.selected_plural', { count: selectedLanguages.length })
+                            : t('offer_creation.languages.selected', { count: selectedLanguages.length })}
                     </Badge>
                 </div>
 
                 <div className="space-y-4">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Choisir les langues</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{t('offer_creation.languages.choose_languages')}</p>
                     <div className="flex flex-wrap gap-2.5">
                         {(taxonomies.langues || []).map((language: any) => {
                             const active = isSelected(language.id);
@@ -196,19 +197,19 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
 
                 <div className="space-y-4 border-t border-slate-100 pt-6">
                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                        Ajuster niveau et importance
+                        {t('offer_creation.languages.adjust_level')}
                     </p>
 
                     {selectedLanguages.length === 0 ? (
                         <div className="rounded-2xl border border-dashed border-slate-200 bg-[#FCFCFB] px-5 py-8 text-center text-sm text-slate-500">
-                            Sélectionnez une langue pour configurer son niveau et son importance.
+                            {t('offer_creation.languages.empty_selection')}
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {selectedLanguages.map((req: any) => {
                                 const label =
                                     taxonomies.langues?.find((item: any) => String(item.id) === String(req.taxonomy_id))
-                                        ?.nom || 'Inconnu';
+                                        ?.nom || t('offer_creation.languages.unknown');
 
                                 return (
                                     <div key={req.taxonomy_id} className="rounded-[24px] border border-slate-200 bg-[#FCFCFB] p-4 sm:p-5">
@@ -217,7 +218,7 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
                                         <div className="mt-4 space-y-4">
                                             <div>
                                                 <p className="mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                                                    Niveau requis
+                                                    {t('offer_creation.languages.required_level')}
                                                 </p>
                                                 <div className="flex flex-wrap gap-2">
                                                     {(taxonomies.niveauLangues || []).map((level: any) => {
@@ -245,10 +246,10 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
 
                                             <div>
                                                 <p className="mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                                                    Importance
+                                                    {t('offer_creation.languages.importance')}
                                                 </p>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {importanceLevels.map((importance) => {
+                                                    {importanceLevels(t).map((importance) => {
                                                         const active = req.metadata?.importance === importance.value;
 
                                                         return (
@@ -273,8 +274,7 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
                                                 {req.metadata?.importance === 'indispensable' && (
                                                     <p className="mt-3 flex items-start gap-2 text-xs leading-relaxed text-rose-700">
                                                         <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                                                        Critère éliminatoire : sans cette langue au niveau demandé, le
-                                                        candidat est écarté.
+                                                        {t('offer_creation.languages.eliminatory_criteria')}
                                                     </p>
                                                 )}
                                             </div>
@@ -296,14 +296,14 @@ export default function CreateLanguagesStep({ data, setData, errors, onNext, onP
                     onClick={onPrev}
                     className="h-12 px-6 text-sm font-medium text-slate-500 hover:text-slate-900"
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Retour
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {t('offer_creation.languages.back')}
                 </Button>
                 <Button
                     type="button"
                     onClick={onNext}
                     className="h-12 rounded-full bg-[#1a1f1e] px-8 text-sm font-semibold text-white sm:px-10"
                 >
-                    Suivant : récapitulatif
+                    {t('offer_creation.languages.next_summary')}
                 </Button>
             </div>
         </div>

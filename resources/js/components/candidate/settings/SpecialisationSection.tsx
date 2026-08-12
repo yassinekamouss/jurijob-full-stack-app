@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useForm } from '@inertiajs/react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useTaxonomies, useLoadingTaxonomy } from '@/hooks/use-taxonomies';
 import { sync } from '@/routes/candidate/specialisations';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function SpecialisationSection({ specialisations }: Props) {
+    const { t } = useTranslation();
     const { specialisations: specialisationOptions } = useTaxonomies();
 
     const initialSelectedIds = useMemo(
@@ -56,7 +58,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
         e.preventDefault();
 
         if (form.data.specialisation_ids.length === 0) {
-            form.setError('specialisation_ids', 'Veuillez sélectionner au moins une spécialisation.');
+            form.setError('specialisation_ids', t('candidate_settings.specializations.errors.specialization_required'));
             return;
         }
 
@@ -74,9 +76,9 @@ export default function SpecialisationSection({ specialisations }: Props) {
     return (
         <section className="space-y-6">
             <div>
-                <h3 className="mb-1 font-serif text-xl font-bold italic">Spécialisations</h3>
+                <h3 className="mb-1 font-serif text-xl font-bold italic">{t('candidate_settings.specializations.title')}</h3>
                 <p className="text-sm font-medium text-[#1a1f1e]/50">
-                    Sélectionnez une ou plusieurs expertises juridiques par catégorie.
+                    {t('candidate_settings.specializations.description')}
                 </p>
             </div>
 
@@ -88,7 +90,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
             >
                 {useLoadingTaxonomy(specialisationOptions) ? (
                     <p className="py-8 text-center text-sm text-[#1a1f1e]/40">
-                        Chargement des spécialisations...
+                        {t('candidate_settings.specializations.loading')}
                     </p>
                 ) : (
                     <div className="space-y-8">
@@ -108,8 +110,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
                                         </span>
                                         {selectedInGroup > 0 && (
                                             <span className="text-xs font-semibold text-[#C06041]">
-                                                {selectedInGroup} choisie
-                                                {selectedInGroup > 1 ? 's' : ''}
+                                                {selectedInGroup} {selectedInGroup > 1 ? t('candidate_settings.specializations.chosen_plural') : t('candidate_settings.specializations.chosen')}
                                             </span>
                                         )}
                                     </div>
@@ -153,8 +154,8 @@ export default function SpecialisationSection({ specialisations }: Props) {
                 <div className="flex items-center justify-between border-t border-[#1a1f1e]/5 pt-4">
                     <p className="text-xs font-semibold text-[#1a1f1e]/40">
                         {selectedCount > 0
-                            ? `${selectedCount} spécialisation${selectedCount > 1 ? 's' : ''} sélectionnée${selectedCount > 1 ? 's' : ''}`
-                            : 'Aucune spécialisation sélectionnée'}
+                            ? `${selectedCount} ${selectedCount > 1 ? t('candidate_settings.specializations.selected_plural') : t('candidate_settings.specializations.selected')}`
+                            : t('candidate_settings.specializations.none_selected')}
                     </p>
 
                     <button
@@ -162,7 +163,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
                         disabled={form.processing || !isDirty}
                         className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
                     >
-                        Enregistrer
+                        {t('candidate_settings.specializations.save_button')}
                     </button>
                 </div>
             </motion.form>

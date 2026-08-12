@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     data: any;
@@ -14,11 +15,12 @@ interface Props {
 }
 
 export default function CreateExpertiseStep({ data, setData, errors, onNext, onPrev, taxonomies }: Props) {
+    const { t } = useTranslation();
     const groupedSpecialisations = useMemo(() => {
         const groups: Record<string, any[]> = {};
 
         (taxonomies.specialisations || []).forEach((item: any) => {
-            const domaine = item.domaine || 'Autre';
+            const domaine = item.domaine || t('offer_creation.expertise.other');
             if (!groups[domaine]) {
                 groups[domaine] = [];
             }
@@ -61,14 +63,14 @@ export default function CreateExpertiseStep({ data, setData, errors, onNext, onP
         <div className="space-y-8">
             <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/55">
-                    Étape 4 · Expertise
+                    {t('offer_creation.expertise.step_indicator')}
                 </div>
                 <div>
                     <h2 className="font-serif text-3xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-4xl">
-                        Choisissez les spécialisations
+                        {t('offer_creation.expertise.title')}
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#1a1f1e]/55 sm:text-base">
-                        Toutes les spécialisations sont visibles ci-dessous, regroupées par domaine. Cliquez pour sélectionner.
+                        {t('offer_creation.expertise.description')}
                     </p>
                 </div>
             </div>
@@ -76,16 +78,18 @@ export default function CreateExpertiseStep({ data, setData, errors, onNext, onP
             <section className="space-y-6 rounded-[32px] border border-slate-100 bg-white p-5 shadow-sm sm:p-7 lg:p-8">
                 <div className="flex flex-col gap-3 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Expertise</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.expertise.expertise_label')}</p>
                         <h3 className="mt-2 text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
-                            Spécialisations et compétences
+                            {t('offer_creation.expertise.specializations_skills')}
                         </h3>
                     </div>
                     <Badge
                         variant="outline"
                         className="w-fit rounded-full border-slate-200 bg-slate-50 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500"
                     >
-                        {selectedSpecialisations.length} sélectionnée{selectedSpecialisations.length > 1 ? 's' : ''}
+                        {selectedSpecialisations.length > 1
+                            ? t('offer_creation.expertise.selected_plural', { count: selectedSpecialisations.length })
+                            : t('offer_creation.expertise.selected', { count: selectedSpecialisations.length })}
                     </Badge>
                 </div>
 
@@ -105,7 +109,9 @@ export default function CreateExpertiseStep({ data, setData, errors, onNext, onP
                                     </Badge>
                                     {selectedInGroup > 0 && (
                                         <span className="text-xs font-semibold text-[#C06041]">
-                                            {selectedInGroup} choisie{selectedInGroup > 1 ? 's' : ''}
+                                            {selectedInGroup > 1
+                                                ? t('offer_creation.expertise.chosen_plural', { count: selectedInGroup })
+                                                : t('offer_creation.expertise.chosen', { count: selectedInGroup })}
                                         </span>
                                     )}
                                 </div>
@@ -147,7 +153,7 @@ export default function CreateExpertiseStep({ data, setData, errors, onNext, onP
                     onClick={onPrev}
                     className="h-12 px-6 text-sm font-medium text-slate-500 hover:text-slate-900"
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Retour
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {t('offer_creation.expertise.back')}
                 </Button>
                 <Button
                     type="button"
@@ -155,7 +161,7 @@ export default function CreateExpertiseStep({ data, setData, errors, onNext, onP
                     className="h-12 rounded-full bg-[#1a1f1e] px-8 text-sm font-semibold text-white sm:px-10"
                     disabled={selectedSpecialisations.length === 0}
                 >
-                    Suivant : langues
+                    {t('offer_creation.expertise.next_languages')}
                 </Button>
             </div>
         </div>

@@ -1,31 +1,36 @@
 import { Head, Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import { Building2, Globe, ExternalLink, ArrowLeft, Briefcase, MapPin, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-const breadcrumbs = [
+const breadcrumbs = (t: any) => [
     { title: 'Admin', href: '/admin/dashboard' },
-    { title: 'Recruteurs', href: '/admin/recruteurs' },
+    { title: t('admin_recruiters.breadcrumb'), href: '/admin/recruteurs' },
 ];
 
 export default function Recruteurs({ recruteurs }: any) {
+    const { t, i18n } = useTranslation();
+
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title="Gestion des Recruteurs" />
+        <AdminLayout breadcrumbs={breadcrumbs(t)}>
+            <Head title={t('admin_recruiters.page_title')} />
 
             <div className="flex flex-col gap-8" style={{ fontFamily: 'Outfit, sans-serif' }}>
                 {/* Header */}
                 <div className="border-b border-[#1a1f1e]/10 pb-8">
                     <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">
-                        Administration
+                        {t('admin_recruiters.admin_label')}
                     </p>
                     <h1
                         className="text-4xl md:text-5xl text-[#1a1f1e] font-light leading-tight"
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
                     >
-                        Entreprises <span className="italic">& cabinets</span>
+                        {t('admin_recruiters.title_part1')} <span className="italic">{t('admin_recruiters.title_part2')}</span>
                     </h1>
                     <p className="text-[#1a1f1e]/40 mt-2 text-sm">
-                        {recruteurs.total} recruteur{recruteurs.total > 1 ? 's' : ''} inscrits
+                        {recruteurs.total > 1 
+                            ? t('admin_recruiters.total_count_plural', { count: recruteurs.total })
+                            : t('admin_recruiters.total_count', { count: recruteurs.total })}
                     </p>
                 </div>
 
@@ -34,7 +39,16 @@ export default function Recruteurs({ recruteurs }: any) {
                     <table className="w-full text-left border-collapse" style={{ minWidth: '900px' }}>
                         <thead>
                             <tr className="border-b border-[#1a1f1e]/10">
-                                {['Entreprise', 'Contact', 'Poste occupé', 'Ville', 'Type / Taille', 'Site web', 'Inscrit le', 'Offres'].map((h) => (
+                                {[
+                                    t('admin_recruiters.table.company'),
+                                    t('admin_recruiters.table.contact'),
+                                    t('admin_recruiters.table.position'),
+                                    t('admin_recruiters.table.city'),
+                                    t('admin_recruiters.table.type_size'),
+                                    t('admin_recruiters.table.website'),
+                                    t('admin_recruiters.table.joined'),
+                                    t('admin_recruiters.table.offers')
+                                ].map((h) => (
                                     <th
                                         key={h}
                                         className="px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-[#1a1f1e]/40 font-medium whitespace-nowrap"
@@ -48,7 +62,7 @@ export default function Recruteurs({ recruteurs }: any) {
                             {recruteurs.data.length === 0 && (
                                 <tr>
                                     <td colSpan={8} className="px-4 py-12 text-center text-sm text-[#1a1f1e]/30 uppercase tracking-wider">
-                                        Aucun recruteur trouvé
+                                        {t('admin_recruiters.empty_state')}
                                     </td>
                                 </tr>
                             )}
@@ -116,7 +130,7 @@ export default function Recruteurs({ recruteurs }: any) {
                                                 className="inline-flex items-center gap-1 text-xs text-[#C06041] hover:underline"
                                             >
                                                 <ExternalLink className="h-3 w-3" />
-                                                Visiter
+                                                {t('admin_recruiters.actions.visit')}
                                             </a>
                                         ) : (
                                             <span className="text-xs text-[#1a1f1e]/25">—</span>
@@ -125,7 +139,7 @@ export default function Recruteurs({ recruteurs }: any) {
 
                                     {/* Date */}
                                     <td className="px-4 py-4 text-xs text-[#1a1f1e]/40">
-                                        {new Date(recruteur.created_at).toLocaleDateString('fr-FR')}
+                                        {new Date(recruteur.created_at).toLocaleDateString(i18n.language || 'fr-FR')}
                                     </td>
 
                                     {/* Link to offres */}
@@ -135,7 +149,7 @@ export default function Recruteurs({ recruteurs }: any) {
                                             className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider border border-[#1a1f1e]/20 text-[#1a1f1e]/60 px-2 py-1 hover:bg-[#1a1f1e] hover:text-white hover:border-[#1a1f1e] transition-colors"
                                         >
                                             <Briefcase className="h-3 w-3" />
-                                            Voir
+                                            {t('admin_recruiters.actions.view')}
                                         </Link>
                                     </td>
                                 </tr>

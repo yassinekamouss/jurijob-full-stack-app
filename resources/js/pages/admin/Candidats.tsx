@@ -2,20 +2,22 @@ import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import { Check, X, GraduationCap, Briefcase, Globe, Clock, MapPin, Phone, Mail, Archive, Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-const breadcrumbs = [
+const breadcrumbs = (t: any) => [
     { title: 'Admin', href: '/admin/dashboard' },
-    { title: 'Candidats', href: '/admin/candidats' },
+    { title: t('admin_candidates.breadcrumb'), href: '/admin/candidats' },
 ];
 
-const statusTabs = [
-    { value: 'en_attente', label: 'En attente' },
-    { value: 'accepte', label: 'Acceptés' },
-    { value: 'refuse', label: 'Refusés' },
-    { value: 'archive', label: 'Archivés' },
+const statusTabs = (t: any) => [
+    { value: 'en_attente', label: t('admin_candidates.tabs.pending') },
+    { value: 'accepte', label: t('admin_candidates.tabs.accepted') },
+    { value: 'refuse', label: t('admin_candidates.tabs.rejected') },
+    { value: 'archive', label: t('admin_candidates.tabs.archived') },
 ];
 
 export default function Candidats({ candidates, currentStatus, filters }: any) {
+    const { t } = useTranslation();
     const [search, setSearch] = useState(filters?.search || '');
 
     const handleSearch = (e: React.FormEvent) => {
@@ -39,24 +41,26 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
         `${prenom?.charAt(0) || ''}${nom?.charAt(0) || ''}`.toUpperCase();
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title="Gestion des Candidats" />
+        <AdminLayout breadcrumbs={breadcrumbs(t)}>
+            <Head title={t('admin_candidates.page_title')} />
 
             <div className="flex flex-col gap-8" style={{ fontFamily: 'Outfit, sans-serif' }}>
                 {/* Header */}
                 <div className="border-b border-[#1a1f1e]/10 pb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">
-                            Administration
+                            {t('admin_candidates.admin_label')}
                         </p>
                         <h1
                             className="text-4xl md:text-5xl text-[#1a1f1e] font-light leading-tight"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Profils <span className="italic">candidats</span>
+                            {t('admin_candidates.title_part1')} <span className="italic">{t('admin_candidates.title_part2')}</span>
                         </h1>
                         <p className="text-[#1a1f1e]/40 mt-2 text-sm">
-                            {candidates.total} candidat{candidates.total > 1 ? 's' : ''} au total
+                            {candidates.total > 1 
+                                ? t('admin_candidates.total_count_plural', { count: candidates.total }) 
+                                : t('admin_candidates.total_count', { count: candidates.total })}
                         </p>
                     </div>
 
@@ -65,7 +69,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
                             <input
                                 type="text"
-                                placeholder="Nom, email..."
+                                placeholder={t('admin_candidates.search_placeholder')}
                                 className="w-full pl-9 border border-[#1a1f1e]/20 bg-white h-10 text-sm outline-none focus:border-[#C06041] transition-colors px-3"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
@@ -75,14 +79,14 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                             type="submit"
                             className="bg-[#1a1f1e] text-white h-10 px-4 text-xs uppercase tracking-wider hover:bg-[#1a1f1e]/80 transition-colors shrink-0"
                         >
-                            Chercher
+                            {t('admin_candidates.search_btn')}
                         </button>
                     </form>
                 </div>
 
                 {/* Status tabs */}
                 <div className="flex overflow-x-auto border-b border-[#1a1f1e]/10 -mt-4">
-                    {statusTabs.map((tab) => (
+                    {statusTabs(t).map((tab) => (
                         <Link
                             key={tab.value}
                             href={`/admin/candidats?status=${tab.value}${search ? `&search=${search}` : ''}`}
@@ -101,7 +105,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                 <div className="flex flex-col gap-4">
                     {candidates.data.length === 0 && (
                         <div className="bg-white border border-[#1a1f1e]/8 py-16 text-center">
-                            <p className="text-[#1a1f1e]/30 text-sm uppercase tracking-wider">Aucun candidat pour ce statut</p>
+                            <p className="text-[#1a1f1e]/30 text-sm uppercase tracking-wider">{t('admin_candidates.empty_state')}</p>
                         </div>
                     )}
 
@@ -127,22 +131,22 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                         </h3>
                                         {currentStatus === 'en_attente' && (
                                             <span className="text-[9px] uppercase tracking-widest border border-amber-300 text-amber-600 px-2 py-0.5 bg-amber-50">
-                                                En attente
+                                                {t('admin_candidates.badges.pending')}
                                             </span>
                                         )}
                                         {currentStatus === 'accepte' && (
                                             <span className="text-[9px] uppercase tracking-widest border border-emerald-300 text-emerald-600 px-2 py-0.5 bg-emerald-50">
-                                                Accepté
+                                                {t('admin_candidates.badges.accepted')}
                                             </span>
                                         )}
                                         {currentStatus === 'refuse' && (
                                             <span className="text-[9px] uppercase tracking-widest border border-rose-300 text-rose-600 px-2 py-0.5 bg-rose-50">
-                                                Refusé
+                                                {t('admin_candidates.badges.rejected')}
                                             </span>
                                         )}
                                         {currentStatus === 'archive' && (
                                             <span className="text-[9px] uppercase tracking-widest border border-slate-200 text-slate-400 px-2 py-0.5 bg-slate-50">
-                                                Archivé
+                                                {t('admin_candidates.badges.archived')}
                                             </span>
                                         )}
                                     </div>
@@ -181,14 +185,14 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                                 className="inline-flex items-center gap-1 text-xs uppercase tracking-wider border border-emerald-500 text-emerald-700 px-3 py-1.5 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-colors"
                                             >
                                                 <Check className="h-3 w-3" />
-                                                Accepter
+                                                {t('admin_candidates.actions.approve')}
                                             </button>
                                             <button
                                                 onClick={() => handleReject(candidat.id)}
                                                 className="inline-flex items-center gap-1 text-xs uppercase tracking-wider border border-rose-400 text-rose-600 px-3 py-1.5 hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-colors"
                                             >
                                                 <X className="h-3 w-3" />
-                                                Refuser
+                                                {t('admin_candidates.actions.reject')}
                                             </button>
                                         </>
                                     )}
@@ -198,7 +202,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                             className="inline-flex items-center gap-1 text-xs uppercase tracking-wider border border-emerald-500 text-emerald-700 px-3 py-1.5 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-colors"
                                         >
                                             <Check className="h-3 w-3" />
-                                            Accepter
+                                            {t('admin_candidates.actions.approve')}
                                         </button>
                                     )}
                                     {currentStatus === 'accepte' && (
@@ -207,7 +211,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                             className="inline-flex items-center gap-1 text-xs uppercase tracking-wider border border-rose-400 text-rose-600 px-3 py-1.5 hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-colors"
                                         >
                                             <X className="h-3 w-3" />
-                                            Refuser
+                                            {t('admin_candidates.actions.reject')}
                                         </button>
                                     )}
                                     {currentStatus !== 'archive' && (
@@ -216,7 +220,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                             className="inline-flex items-center gap-1 text-xs uppercase tracking-wider border border-[#1a1f1e]/20 text-[#1a1f1e]/50 px-3 py-1.5 hover:bg-[#1a1f1e]/5 transition-colors"
                                         >
                                             <Archive className="h-3 w-3" />
-                                            Archiver
+                                            {t('admin_candidates.actions.archive')}
                                         </button>
                                     )}
                                 </div>
@@ -227,7 +231,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                 {candidat.formations?.length > 0 && (
                                     <div>
                                         <p className="text-[10px] uppercase tracking-[0.15em] text-[#1a1f1e]/30 font-medium mb-1.5 flex items-center gap-1.5">
-                                            <GraduationCap className="h-3 w-3" /> Formation
+                                            <GraduationCap className="h-3 w-3" /> {t('admin_candidates.details.education')}
                                         </p>
                                         <div className="space-y-0.5">
                                             {candidat.formations.map((form: any) => (
@@ -244,12 +248,12 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                 {candidat.experiences?.length > 0 && (
                                     <div>
                                         <p className="text-[10px] uppercase tracking-[0.15em] text-[#1a1f1e]/30 font-medium mb-1.5 flex items-center gap-1.5">
-                                            <Briefcase className="h-3 w-3" /> Expérience
+                                            <Briefcase className="h-3 w-3" /> {t('admin_candidates.details.experience')}
                                         </p>
                                         <div className="space-y-0.5">
                                             {candidat.experiences.map((exp: any) => (
                                                 <p key={exp.id} className="text-xs text-[#1a1f1e]/60">
-                                                    {exp.poste?.nom} — {exp.entreprise} ({exp.debut} – {exp.fin || 'Présent'})
+                                                    {exp.poste?.nom} — {exp.entreprise} ({exp.debut} – {exp.fin || t('admin_candidates.details.present')})
                                                 </p>
                                             ))}
                                         </div>
@@ -318,7 +322,11 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                 {candidates.total > 0 && (
                     <div className="flex items-center justify-between border-t border-[#1a1f1e]/8 pt-6">
                         <p className="text-xs text-[#1a1f1e]/40">
-                            Affichage de {candidates.from} à {candidates.to} sur {candidates.total} candidats
+                            {t('admin_candidates.pagination.info', {
+                                from: candidates.from,
+                                to: candidates.to,
+                                total: candidates.total
+                            })}
                         </p>
                         <div className="flex gap-1.5">
                             {candidates.links.map((link: any, index: number) => {
@@ -330,7 +338,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                             onClick={() => link.url && router.get(link.url)}
                                             className="px-3 py-1.5 text-xs border border-[#1a1f1e]/15 text-[#1a1f1e]/60 hover:border-[#1a1f1e]/40 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                                         >
-                                            Préc.
+                                            {t('admin_candidates.pagination.prev')}
                                         </button>
                                     );
                                 }
@@ -342,7 +350,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                             onClick={() => link.url && router.get(link.url)}
                                             className="px-3 py-1.5 text-xs border border-[#1a1f1e]/15 text-[#1a1f1e]/60 hover:border-[#1a1f1e]/40 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                                         >
-                                            Suiv.
+                                            {t('admin_candidates.pagination.next')}
                                         </button>
                                     );
                                 }

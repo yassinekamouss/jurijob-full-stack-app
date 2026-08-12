@@ -16,34 +16,37 @@ import {
 import { dashboard } from '@/routes';
 import { index as offresIndex } from '@/routes/offres';
 import type { NavItem } from '@/types';
+import { useTranslation } from 'react-i18next';
 
-const mainNavItems: NavItem[] = [
+const mainNavItems = (t: any): NavItem[] => [
     {
-        title: 'Dashboard',
+        title: t('sidebar.dashboard'),
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Gestion des Offres',
+        title: t('sidebar.manage_offers'),
         href: offresIndex().url,
         icon: Briefcase,
     },
 ];
 
-const footerNavItems: NavItem[] = [
+const footerNavItems = (t: any): NavItem[] => [
     {
-        title: 'Repository',
+        title: t('sidebar.repository'),
         href: 'https://github.com/laravel/react-starter-kit',
         icon: Folder,
     },
     {
-        title: 'Documentation',
+        title: t('sidebar.documentation'),
         href: 'https://laravel.com/docs/starter-kits#react',
         icon: BookOpen,
     },
 ];
 
 export function AppSidebar() {
+    const { t } = useTranslation();
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -59,11 +62,11 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems(t)} />
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                <NavFooter items={footerNavItems(t)} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

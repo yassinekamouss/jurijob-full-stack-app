@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Languages, Plus, Trash2, Check, X, ChevronDown, Pencil } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { store, update, destroy } from '@/routes/candidate/langues';
 
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function LanguageSection({ langues }: Props) {
+  const { t } = useTranslation();
   const { langues: langueOptions, niveauLangues } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -53,7 +55,7 @@ export default function LanguageSection({ langues }: Props) {
   };
 
   const handleDelete = (id: number) => {
-    if (confirm('Supprimer cette langue ?')) {
+    if (confirm(t('candidate_settings.languages.delete_confirm'))) {
       form.delete(destroy(id).url);
     }
   };
@@ -62,8 +64,8 @@ export default function LanguageSection({ langues }: Props) {
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold font-serif italic mb-1">Langues</h3>
-          <p className="text-sm text-[#1a1f1e]/50 font-medium">Maîtrise linguistique.</p>
+          <h3 className="text-xl font-bold font-serif italic mb-1">{t('candidate_settings.languages.title')}</h3>
+          <p className="text-sm text-[#1a1f1e]/50 font-medium">{t('candidate_settings.languages.description')}</p>
         </div>
         {!isAdding && !editingId && (
           <button
@@ -71,7 +73,7 @@ export default function LanguageSection({ langues }: Props) {
             className="flex items-center gap-2 bg-[#1a1f1e] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#343a38] transition-all"
           >
             <Plus className="h-4 w-4" />
-            Ajouter
+            {t('candidate_settings.languages.add_button')}
           </button>
         )}
       </div>
@@ -86,7 +88,7 @@ export default function LanguageSection({ langues }: Props) {
           >
             <form onSubmit={submit} className="flex flex-col sm:flex-row gap-6 items-end">
               <div className="flex-[2] space-y-2 w-full">
-                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">Langue</label>
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">{t('candidate_settings.languages.labels.language')}</label>
                 <div className="relative group">
                   <select
                     value={form.data.langue_id}
@@ -94,9 +96,9 @@ export default function LanguageSection({ langues }: Props) {
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
-                    <option value="">Choisir une langue</option>
+                    <option value="">{t('candidate_settings.languages.placeholders.language')}</option>
                     {useLoadingTaxonomy(langueOptions) ? (
-                      <option disabled>Chargement...</option>
+                      <option disabled>{t('candidate_settings.languages.loading')}</option>
                     ) : (
                       langueOptions
                         .filter(opt => !langues.some(l => l.langue_id === opt.id && l.id !== editingId))
@@ -109,7 +111,7 @@ export default function LanguageSection({ langues }: Props) {
               </div>
 
               <div className="flex-1 space-y-2 w-full">
-                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">Niveau</label>
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1a1f1e]/40 ml-1">{t('candidate_settings.languages.labels.level')}</label>
                 <div className="relative group">
                   <select
                     value={form.data.niveau_langue_id}
@@ -117,9 +119,9 @@ export default function LanguageSection({ langues }: Props) {
                     className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
-                    <option value="">Niveau</option>
+                    <option value="">{t('candidate_settings.languages.placeholders.level')}</option>
                     {useLoadingTaxonomy(niveauLangues) ? (
-                      <option disabled>Chargement...</option>
+                      <option disabled>{t('candidate_settings.languages.loading')}</option>
                     ) : (
                       niveauLangues.map(n => <option key={n.id} value={n.id}>{n.nom}</option>)
                     )}
@@ -134,7 +136,7 @@ export default function LanguageSection({ langues }: Props) {
                   type="submit"
                   disabled={form.processing || !form.isDirty}
                   className="flex-1 sm:flex-none bg-[#1a1f1e] text-white p-4 px-6 rounded-2xl flex items-center justify-center hover:bg-[#343a38] transition-all disabled:opacity-50 shadow-xl shadow-[#1a1f1e]/10 active:scale-95"
-                  title={editingId ? 'Mettre à jour' : 'Ajouter'}
+                  title={editingId ? t('candidate_settings.languages.update_button') : t('candidate_settings.languages.add_button')}
                 >
                   {editingId ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
                 </button>
@@ -142,7 +144,7 @@ export default function LanguageSection({ langues }: Props) {
                   type="button"
                   onClick={() => resetForm()}
                   className="p-4 rounded-2xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:bg-white hover:text-[#1a1f1e] hover:border-[#1a1f1e]/20 transition-all active:scale-95"
-                  title="Annuler"
+                  title={t('candidate_settings.languages.cancel_button')}
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -190,7 +192,7 @@ export default function LanguageSection({ langues }: Props) {
           ))
         ) : (
           <div className="col-span-1 sm:col-span-2 text-center py-12 rounded-[32px] border-2 border-dashed border-[#1a1f1e]/10">
-            <p className="text-[#1a1f1e]/30 font-bold italic">Aucune langue ajoutée.</p>
+            <p className="text-[#1a1f1e]/30 font-bold italic">{t('candidate_settings.languages.no_languages')}</p>
           </div>
         )}
       </div>

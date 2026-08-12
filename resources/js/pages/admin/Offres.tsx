@@ -5,32 +5,36 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Building2, MapPin, Briefcase, Clock, CheckCircle2, FileText, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type OffreStatut = 'EN_TRAITEMENT' | 'ATTENTE_PAIEMENT' | 'VERIFICATION_PAIEMENT' | 'CV_ENVOYES' | 'ARCHIVE';
 
-const breadcrumbs = [
+const breadcrumbs = (t: any) => [
     { title: 'Admin', href: '/admin/dashboard' },
-    { title: 'Offres', href: '/admin/offres' },
+    { title: t('admin_offers.breadcrumb'), href: '/admin/offres' },
 ];
 
-const statutTabs: { value: OffreStatut; label: string }[] = [
-    { value: 'EN_TRAITEMENT', label: 'En traitement' },
-    { value: 'ATTENTE_PAIEMENT', label: 'Attente paiement' },
-    { value: 'VERIFICATION_PAIEMENT', label: 'Vérif. paiement' },
-    { value: 'CV_ENVOYES', label: 'CV envoyés' },
-    { value: 'ARCHIVE', label: 'Archivées' },
+const statutTabs = (t: any): { value: OffreStatut; label: string }[] => [
+    { value: 'EN_TRAITEMENT', label: t('admin_offers.tabs.processing') },
+    { value: 'ATTENTE_PAIEMENT', label: t('admin_offers.tabs.awaiting_payment') },
+    { value: 'VERIFICATION_PAIEMENT', label: t('admin_offers.tabs.payment_verification') },
+    { value: 'CV_ENVOYES', label: t('admin_offers.tabs.cv_sent') },
+    { value: 'ARCHIVE', label: t('admin_offers.tabs.archived') },
 ];
 
-const statutStyles: Record<OffreStatut, { dot: string; badge: string; label: string }> = {
-    EN_TRAITEMENT: { dot: 'bg-amber-400', badge: 'bg-amber-50 text-amber-700 border-amber-200', label: 'En traitement' },
-    ATTENTE_PAIEMENT: { dot: 'bg-orange-400', badge: 'bg-orange-50 text-orange-700 border-orange-200', label: 'Attente paiement' },
-    VERIFICATION_PAIEMENT: { dot: 'bg-blue-400', badge: 'bg-blue-50 text-blue-700 border-blue-200', label: 'Vérif. paiement' },
-    CV_ENVOYES: { dot: 'bg-emerald-400', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', label: 'CV envoyés' },
-    ARCHIVE: { dot: 'bg-slate-300', badge: 'bg-slate-50 text-slate-600 border-slate-200', label: 'Archivée' },
-};
+const getStatutStyles = (t: any): Record<OffreStatut, { dot: string; badge: string; label: string }> => ({
+    EN_TRAITEMENT: { dot: 'bg-amber-400', badge: 'bg-amber-50 text-amber-700 border-amber-200', label: t('admin_offers.tabs.processing') },
+    ATTENTE_PAIEMENT: { dot: 'bg-orange-400', badge: 'bg-orange-50 text-orange-700 border-orange-200', label: t('admin_offers.tabs.awaiting_payment') },
+    VERIFICATION_PAIEMENT: { dot: 'bg-blue-400', badge: 'bg-blue-50 text-blue-700 border-blue-200', label: t('admin_offers.tabs.payment_verification') },
+    CV_ENVOYES: { dot: 'bg-emerald-400', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', label: t('admin_offers.tabs.cv_sent') },
+    ARCHIVE: { dot: 'bg-slate-300', badge: 'bg-slate-50 text-slate-600 border-slate-200', label: t('admin_offers.tabs.archived') },
+});
 
 export default function Offres({ offres, currentStatut, filters }: any) {
+    const { t, i18n } = useTranslation();
     const [search, setSearch] = useState(filters?.search || '');
+    
+    const statutStyles = getStatutStyles(t);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -44,24 +48,26 @@ export default function Offres({ offres, currentStatut, filters }: any) {
     const searchQuery = search ? `&search=${encodeURIComponent(search)}` : '';
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title="Gestion des Offres" />
+        <AdminLayout breadcrumbs={breadcrumbs(t)}>
+            <Head title={t('admin_offers.page_title')} />
 
             <div className="flex flex-col gap-8" style={{ fontFamily: 'Outfit, sans-serif' }}>
                 {/* Header */}
                 <div className="border-b border-[#1a1f1e]/10 pb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">
-                            Administration
+                            {t('admin_offers.admin_label')}
                         </p>
                         <h1
                             className="text-4xl md:text-5xl text-[#1a1f1e] font-light leading-tight"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            Offres <span className="italic">recruteurs</span>
+                            {t('admin_offers.title_part1')} <span className="italic">{t('admin_offers.title_part2')}</span>
                         </h1>
                         <p className="text-[#1a1f1e]/40 mt-2 text-sm">
-                            {offres.total} offre{offres.total > 1 ? 's' : ''} au total
+                            {offres.total > 1
+                                ? t('admin_offers.total_count_plural', { count: offres.total })
+                                : t('admin_offers.total_count', { count: offres.total })}
                         </p>
                     </div>
 
@@ -70,7 +76,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
                             <Input
                                 type="text"
-                                placeholder="Titre, entreprise..."
+                                placeholder={t('admin_offers.search_placeholder')}
                                 className="pl-9 border-[#1a1f1e]/20 bg-white rounded-none h-10 text-sm focus-visible:ring-[#C06041] focus-visible:border-[#C06041]"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
@@ -80,14 +86,14 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                             type="submit"
                             className="bg-[#1a1f1e] text-white hover:bg-[#1a1f1e]/80 rounded-none h-10 px-4 text-xs uppercase tracking-wider"
                         >
-                            Chercher
+                            {t('admin_offers.search_btn')}
                         </Button>
                     </form>
                 </div>
 
                 {/* Status tabs */}
                 <div className="flex overflow-x-auto border-b border-[#1a1f1e]/10 -mt-4 gap-0">
-                    {statutTabs.map((tab) => (
+                    {statutTabs(t).map((tab) => (
                         <Link
                             key={tab.value}
                             href={`/admin/offres?statut=${tab.value}${searchQuery}`}
@@ -106,7 +112,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                 <div className="flex flex-col gap-3">
                     {offres.data.length === 0 ? (
                         <div className="bg-white border border-[#1a1f1e]/8 py-16 text-center">
-                            <p className="text-[#1a1f1e]/30 text-sm uppercase tracking-wider">Aucune offre pour ce statut</p>
+                            <p className="text-[#1a1f1e]/30 text-sm uppercase tracking-wider">{t('admin_offers.empty_state')}</p>
                         </div>
                     ) : (
                         offres.data.map((offre: any) => {
@@ -133,7 +139,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[#1a1f1e]/50">
                                                 <span className="inline-flex items-center gap-1.5">
                                                     <Building2 className="h-3.5 w-3.5" />
-                                                    {offre.recruteur?.nom_entreprise || 'Entreprise N/A'}
+                                                    {offre.recruteur?.nom_entreprise || t('admin_offers.company_na')}
                                                 </span>
                                                 {offre.poste?.nom && (
                                                     <span className="inline-flex items-center gap-1.5">
@@ -149,11 +155,11 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                                 )}
                                                 <span className="inline-flex items-center gap-1.5">
                                                     <FileText className="h-3.5 w-3.5" />
-                                                    {offre.nombre_cv} CV
+                                                    {t('admin_offers.cv_count', { count: offre.nombre_cv || 0 })}
                                                 </span>
                                                 <span className="inline-flex items-center gap-1.5">
                                                     <Clock className="h-3.5 w-3.5" />
-                                                    {new Date(offre.created_at).toLocaleDateString('fr-FR')}
+                                                    {new Date(offre.created_at).toLocaleDateString(i18n.language || 'fr-FR')}
                                                 </span>
                                             </div>
 
@@ -185,7 +191,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                                     className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider border border-[#1a1f1e]/20 text-[#1a1f1e] px-4 py-2 hover:bg-[#1a1f1e] hover:text-white transition-colors"
                                                 >
                                                     <Users className="h-3.5 w-3.5" />
-                                                    Matching
+                                                    {t('admin_offers.actions.matching')}
                                                 </Link>
                                             )}
                                             {currentStatut === 'VERIFICATION_PAIEMENT' && (
@@ -194,7 +200,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                                     className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider border border-emerald-600 text-emerald-700 px-4 py-2 hover:bg-emerald-600 hover:text-white transition-colors"
                                                 >
                                                     <CheckCircle2 className="h-3.5 w-3.5" />
-                                                    Confirmer paiement
+                                                    {t('admin_offers.actions.confirm_payment')}
                                                 </button>
                                             )}
                                         </div>

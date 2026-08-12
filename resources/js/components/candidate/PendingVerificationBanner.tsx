@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
     AlertCircle,
@@ -31,20 +32,21 @@ interface Props {
 }
 
 const sections = [
-    { key: 'profile' as const, label: 'Profil général', icon: User },
-    { key: 'experiences' as const, label: 'Expériences', icon: Briefcase },
-    { key: 'formations' as const, label: 'Formations', icon: GraduationCap },
-    { key: 'specialisations' as const, label: 'Spécialisations', icon: Folder },
-    { key: 'langues' as const, label: 'Langues', icon: Languages },
-    { key: 'localisation' as const, label: 'Localisation', icon: MapPin },
-    { key: 'mode_travails' as const, label: 'Mode de travail', icon: Building2 },
-    { key: 'type_travails' as const, label: 'Type de travail', icon: Briefcase },
+    { key: 'profile' as const, i18nKey: 'candidate_pending_banner.sections.profile', icon: User },
+    { key: 'experiences' as const, i18nKey: 'candidate_pending_banner.sections.experiences', icon: Briefcase },
+    { key: 'formations' as const, i18nKey: 'candidate_pending_banner.sections.formations', icon: GraduationCap },
+    { key: 'specialisations' as const, i18nKey: 'candidate_pending_banner.sections.specialisations', icon: Folder },
+    { key: 'langues' as const, i18nKey: 'candidate_pending_banner.sections.langues', icon: Languages },
+    { key: 'localisation' as const, i18nKey: 'candidate_pending_banner.sections.localisation', icon: MapPin },
+    { key: 'mode_travails' as const, i18nKey: 'candidate_pending_banner.sections.mode_travails', icon: Building2 },
+    { key: 'type_travails' as const, i18nKey: 'candidate_pending_banner.sections.type_travails', icon: Briefcase },
 ];
 
 export default function PendingVerificationBanner({
     profileCompletion,
     showSettingsLink = false,
 }: Props) {
+    const { t } = useTranslation();
     const isComplete = profileCompletion?.is_complete ?? false;
     const missingCount = profileCompletion
         ? sections.filter(({ key }) => !profileCompletion[key]).length
@@ -66,20 +68,15 @@ export default function PendingVerificationBanner({
                         </div>
                         <div className="space-y-2">
                             <div className="inline-flex items-center gap-2 rounded-full bg-amber-100/80 px-3 py-1 text-[10px] font-black tracking-widest text-amber-800 uppercase">
-                                Profil en attente de validation
+                                {t('candidate_pending_banner.status_pending')}
                             </div>
                             <h2 className="font-serif text-2xl font-bold italic text-[#1a1f1e]">
-                                Complétez et vérifiez vos informations
+                                {t('candidate_pending_banner.title')}
                             </h2>
                             <p className="max-w-2xl text-sm leading-relaxed font-medium text-[#1a1f1e]/60">
-                                Pour être accepté et intégré au matching, renseignez
-                                avec exactitude votre parcours, vos préférences de
-                                recherche (pays, villes, modes et types de travail)
-                                ainsi que vos langues et spécialisations.
-                                Une fois vos données authentifiées par notre équipe,
-                                votre profil sera validé sous{' '}
+                                {t('candidate_pending_banner.description')}
                                 <span className="font-bold text-[#1a1f1e]">
-                                    24 heures maximum
+                                    {t('candidate_pending_banner.hours_max')}
                                 </span>
                                 .
                             </p>
@@ -91,7 +88,7 @@ export default function PendingVerificationBanner({
                             href="/candidate/settings"
                             className="inline-flex h-12 shrink-0 items-center justify-center rounded-full bg-[#1a1f1e] px-7 text-sm font-bold text-white transition-all hover:scale-105 hover:bg-[#1a1f1e]/90 active:scale-95"
                         >
-                            Compléter mon profil
+                            {t('candidate_pending_banner.complete_profile')}
                         </Link>
                     )}
                 </div>
@@ -102,18 +99,18 @@ export default function PendingVerificationBanner({
                             {isComplete ? (
                                 <>
                                     <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-                                    Dossier complet — en cours d&apos;examen
+                                    {t('candidate_pending_banner.dossier_complete')}
                                 </>
                             ) : (
                                 <>
                                     <AlertCircle className="h-3.5 w-3.5 text-amber-600" />
-                                    {missingCount} section{missingCount > 1 ? 's' : ''} à renseigner
+                                    {t(missingCount === 1 ? 'candidate_pending_banner.sections_to_fill_one' : 'candidate_pending_banner.sections_to_fill_other', { count: missingCount })}
                                 </>
                             )}
                         </div>
 
                         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
-                            {sections.map(({ key, label, icon: Icon }) => {
+                            {sections.map(({ key, i18nKey, icon: Icon }) => {
                                 const done = profileCompletion[key];
 
                                 return (
@@ -126,7 +123,7 @@ export default function PendingVerificationBanner({
                                         }`}
                                     >
                                         <Icon className="h-4 w-4 shrink-0" />
-                                        <span className="truncate">{label}</span>
+                                        <span className="truncate">{t(i18nKey)}</span>
                                         {done ? (
                                             <CheckCircle2 className="ml-auto h-4 w-4 shrink-0 text-emerald-600" />
                                         ) : (

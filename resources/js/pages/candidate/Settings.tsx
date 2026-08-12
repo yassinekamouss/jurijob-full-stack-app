@@ -1,4 +1,5 @@
 import { Head, useForm, usePage, Deferred, router } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/candidate/DashboardHeader';
 import {
     User,
@@ -66,6 +67,7 @@ export default function Settings({
     typeTravails = [],
     profileCompletion,
 }: Props) {
+    const { t } = useTranslation();
     const { flash } = usePage().props as any;
     const isPending = candidat?.status === 'en_attente';
     const { postes, niveauExperiences, formationJuridiques, salaires, urgences } = useTaxonomies();
@@ -191,13 +193,13 @@ export default function Settings({
         profileForm.clearErrors();
 
         const requiredFields: Array<{ key: keyof typeof profileForm.data; message: string }> = [
-            { key: 'prenom', message: 'Le prénom est requis.' },
-            { key: 'nom', message: 'Le nom est requis.' },
-            { key: 'poste_id', message: 'Veuillez sélectionner un poste.' },
-            { key: 'niveau_experience_id', message: 'Veuillez sélectionner un niveau d\'expérience.' },
-            { key: 'formation_juridique_id', message: 'Veuillez sélectionner une formation.' },
-            { key: 'salaire_id', message: 'Veuillez sélectionner un salaire souhaité.' },
-            { key: 'urgence_id', message: 'Veuillez indiquer votre disponibilité.' },
+            { key: 'prenom', message: t('candidate_settings.validation.firstname_required') },
+            { key: 'nom', message: t('candidate_settings.validation.lastname_required') },
+            { key: 'poste_id', message: t('candidate_settings.validation.job_required') },
+            { key: 'niveau_experience_id', message: t('candidate_settings.validation.experience_required') },
+            { key: 'formation_juridique_id', message: t('candidate_settings.validation.education_required') },
+            { key: 'salaire_id', message: t('candidate_settings.validation.salary_required') },
+            { key: 'urgence_id', message: t('candidate_settings.validation.availability_required') },
         ];
 
         let hasErrors = false;
@@ -225,18 +227,17 @@ export default function Settings({
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
-            <Head title="Paramètres - Jurijob" />
+            <Head title={t('candidate_settings.page_title')} />
 
             <DashboardHeader />
 
             <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
                 <div className="mb-12">
                     <h1 className="mb-2 font-serif text-4xl font-bold italic">
-                        Paramètres du compte
+                        {t('candidate_settings.page_heading')}
                     </h1>
                     <p className="font-medium text-[#1a1f1e]/50">
-                        Gérez vos informations personnelles et la sécurité de
-                        votre accès.
+                        {t('candidate_settings.page_description')}
                     </p>
                 </div>
 
@@ -260,7 +261,7 @@ export default function Settings({
                                     }`}
                             >
                                 <User className="h-4 w-4" />
-                                Profil Général
+                                {t('candidate_settings.tabs.profile')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('preferences')}
@@ -270,7 +271,7 @@ export default function Settings({
                                     }`}
                             >
                                 <MapPin className="h-4 w-4" />
-                                Préférences
+                                {t('candidate_settings.tabs.preferences')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('experiences')}
@@ -280,7 +281,7 @@ export default function Settings({
                                     }`}
                             >
                                 <LayoutGrid className="h-4 w-4" />
-                                Expériences
+                                {t('candidate_settings.tabs.experiences')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('formations')}
@@ -290,7 +291,7 @@ export default function Settings({
                                     }`}
                             >
                                 <GraduationCap className="h-4 w-4" />
-                                Formations
+                                {t('candidate_settings.tabs.formations')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('specialisations')}
@@ -300,7 +301,7 @@ export default function Settings({
                                     }`}
                             >
                                 <Folder className="h-4 w-4" />
-                                Spécialisations
+                                {t('candidate_settings.tabs.specialisations')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('langues')}
@@ -310,7 +311,7 @@ export default function Settings({
                                     }`}
                             >
                                 <Languages className="h-4 w-4" />
-                                Langues
+                                {t('candidate_settings.tabs.languages')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('security')}
@@ -320,7 +321,7 @@ export default function Settings({
                                     }`}
                             >
                                 <ShieldCheck className="h-4 w-4" />
-                                2FA (Bientôt)
+                                {t('candidate_settings.tabs.security')}
                             </button>
                         </nav>
                     </div>
@@ -345,7 +346,7 @@ export default function Settings({
                                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                                 <div className="space-y-2">
                                                     <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                        Prénom
+                                                        {t('candidate_settings.form.firstname')}
                                                     </label>
                                                     <input
                                                         type="text"
@@ -369,7 +370,7 @@ export default function Settings({
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                        Nom
+                                                        {t('candidate_settings.form.lastname')}
                                                     </label>
                                                     <input
                                                         type="text"
@@ -394,7 +395,7 @@ export default function Settings({
 
                                             <div className="space-y-2">
                                                 <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    Email professionnel
+                                                    {t('candidate_settings.form.email')}
                                                 </label>
                                                 <div className="relative">
                                                     <Mail className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
@@ -406,13 +407,13 @@ export default function Settings({
                                                     />
                                                 </div>
                                                 <p className="ml-1 text-xs font-medium text-[#1a1f1e]/40">
-                                                    L'adresse email ne peut pas être modifiée.
+                                                    {t('candidate_settings.form.email_help')}
                                                 </p>
                                             </div>
 
                                             <div className="space-y-2">
                                                 <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    Poste Recherché
+                                                    {t('candidate_settings.form.job_title')}
                                                 </label>
                                                 <div className="relative">
                                                     <Briefcase className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
@@ -430,10 +431,10 @@ export default function Settings({
                                                         className={`w-full cursor-pointer appearance-none rounded-2xl py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('poste_id')}`}
                                                     >
                                                         <option value="">
-                                                            Choisir un poste
+                                                            {t('candidate_settings.form.select_job')}
                                                         </option>
                                                         {useLoadingTaxonomy(postes) ? (
-                                                            <option disabled>Chargement...</option>
+                                                            <option disabled>{t('candidate_settings.form.loading')}</option>
                                                         ) : (
                                                             postes.map((opt) => (
                                                                 <option
@@ -456,7 +457,7 @@ export default function Settings({
                                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                                                 <div className="space-y-2">
                                                     <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                        Niveau d'expérience
+                                                        {t('candidate_settings.form.experience_level')}
                                                     </label>
                                                     <select
                                                         value={
@@ -472,10 +473,10 @@ export default function Settings({
                                                         className={`w-full cursor-pointer appearance-none rounded-2xl px-5 py-4 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('niveau_experience_id')}`}
                                                     >
                                                         <option value="">
-                                                            Choisir un niveau
+                                                            {t('candidate_settings.form.select_experience')}
                                                         </option>
                                                         {useLoadingTaxonomy(niveauExperiences) ? (
-                                                            <option disabled>Chargement...</option>
+                                                            <option disabled>{t('candidate_settings.form.loading')}</option>
                                                         ) : (
                                                             niveauExperiences.map(
                                                                 (opt) => (
@@ -496,7 +497,7 @@ export default function Settings({
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                        Formation Majuscule
+                                                        {t('candidate_settings.form.education')}
                                                     </label>
                                                     <div className="relative">
                                                         <GraduationCap className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
@@ -515,11 +516,10 @@ export default function Settings({
                                                             className={`w-full cursor-pointer appearance-none rounded-2xl py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('formation_juridique_id')}`}
                                                         >
                                                             <option value="">
-                                                                Choisir une
-                                                                formation
+                                                                {t('candidate_settings.form.select_education')}
                                                             </option>
                                                             {useLoadingTaxonomy(formationJuridiques) ? (
-                                                                <option disabled>Chargement...</option>
+                                                                <option disabled>{t('candidate_settings.form.loading')}</option>
                                                             ) : (
                                                                 formationJuridiques.map(
                                                                     (opt) => (
@@ -547,7 +547,7 @@ export default function Settings({
 
                                             <div className="space-y-2">
                                                 <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    Salaire souhaité
+                                                    {t('candidate_settings.form.salary')}
                                                 </label>
                                                 <select
                                                     value={profileForm.data.salaire_id}
@@ -560,10 +560,10 @@ export default function Settings({
                                                     className={`w-full cursor-pointer appearance-none rounded-2xl px-5 py-4 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('salaire_id')}`}
                                                 >
                                                     <option value="">
-                                                        Choisir une fourchette salariale
+                                                        {t('candidate_settings.form.select_salary')}
                                                     </option>
                                                     {useLoadingTaxonomy(salaires) ? (
-                                                        <option disabled>Chargement...</option>
+                                                        <option disabled>{t('candidate_settings.form.loading')}</option>
                                                     ) : (
                                                         salaires.map((option) => (
                                                             <option key={option.id} value={option.id}>
@@ -581,15 +581,15 @@ export default function Settings({
 
                                             <div className="space-y-2">
                                                 <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    Disponibilité
+                                                    {t('candidate_settings.form.availability')}
                                                 </label>
                                                 <p className="ml-1 text-xs font-medium text-[#1a1f1e]/40">
-                                                    Quand souhaitez-vous commencer ?
+                                                    {t('candidate_settings.form.availability_help')}
                                                 </p>
                                                 <div className="flex flex-wrap gap-2.5">
                                                     {useLoadingTaxonomy(urgences) ? (
                                                         <p className="w-full py-4 text-center text-sm text-[#1a1f1e]/40">
-                                                            Chargement...
+                                                            {t('candidate_settings.form.loading')}
                                                         </p>
                                                     ) : (
                                                         urgences.map((option) => {
@@ -647,7 +647,7 @@ export default function Settings({
                                                         <div className="peer h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-emerald-500 peer-focus:outline-none after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full"></div>
                                                     </label>
                                                     <span className="text-sm font-bold">
-                                                        Activer ma visibilité
+                                                        {t('candidate_settings.form.active_visibility')}
                                                     </span>
                                                 </div>
 
@@ -656,7 +656,7 @@ export default function Settings({
                                                     disabled={profileForm.processing}
                                                     className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
                                                 >
-                                                    Enregistrer
+                                                    {t('candidate_settings.form.save')}
                                                 </button>
                                             </div>
                                         </form>
@@ -771,12 +771,10 @@ export default function Settings({
                                                         <ShieldAlert className="h-8 w-8" />
                                                     </div>
                                                     <h4 className="mb-2 font-serif text-xl font-bold italic">
-                                                        Sécurité standard
+                                                        {t('candidate_settings.security.standard')}
                                                     </h4>
                                                     <p className="mb-8 max-w-xs text-sm text-[#1a1f1e]/40">
-                                                        Votre compte est
-                                                        uniquement protégé par
-                                                        votre mot de passe.
+                                                        {t('candidate_settings.security.standard_desc')}
                                                     </p>
                                                     <button
                                                         onClick={
@@ -788,8 +786,8 @@ export default function Settings({
                                                         className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 disabled:opacity-50"
                                                     >
                                                         {enablingTwoFactor
-                                                            ? 'Activation...'
-                                                            : 'Activer le 2FA'}
+                                                            ? t('candidate_settings.security.enabling')
+                                                            : t('candidate_settings.security.enable_2fa')}
                                                     </button>
                                                 </div>
                                             ) : (
@@ -800,12 +798,10 @@ export default function Settings({
                                                         </div>
                                                         <div>
                                                             <div className="font-bold text-emerald-900">
-                                                                2FA Activé
+                                                                {t('candidate_settings.security.enabled')}
                                                             </div>
                                                             <div className="text-sm text-emerald-700/70">
-                                                                Votre compte est
-                                                                hautement
-                                                                sécurisé.
+                                                                {t('candidate_settings.security.enabled_desc')}
                                                             </div>
                                                         </div>
                                                         <button
@@ -814,7 +810,7 @@ export default function Settings({
                                                             }
                                                             className="ml-auto text-xs font-black tracking-widest text-red-500 uppercase transition-colors hover:text-red-700"
                                                         >
-                                                            Désactiver
+                                                            {t('candidate_settings.security.disable')}
                                                         </button>
                                                     </div>
 

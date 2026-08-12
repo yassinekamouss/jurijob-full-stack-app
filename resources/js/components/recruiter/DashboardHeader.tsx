@@ -4,13 +4,15 @@ import { logout } from '@/routes';
 import { dashboard as recruiterDashboard, settings as recruiterSettings } from '@/routes/recruteur';
 import { index as offresIndex, create as offresCreate } from '@/routes/offres';
 import { Briefcase, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-
-const Brand = () => (
+const Brand = () => {
+    const { t } = useTranslation();
+    return (
     <Link
         href="/"
         className="flex items-center tracking-tight"
-        aria-label="Accueil JuriJob"
+        aria-label={t('recruiter_dashboard_header.home')}
     >
         <img
             src="/images/logo_jurijob.png"
@@ -20,9 +22,11 @@ const Brand = () => (
             className="w-auto h-32"
         />
     </Link>
-);
+    );
+};
 
 export default function DashboardHeader() {
+    const { t } = useTranslation();
     const { auth } = usePage().props as any;
     const { url } = usePage();
 
@@ -45,7 +49,7 @@ export default function DashboardHeader() {
                                 }`}
                         >
                             <LayoutDashboard className="h-4 w-4" />
-                            Tableau de bord
+                            {t('recruiter_dashboard_header.dashboard')}
                         </Link>
 
                         <Link
@@ -56,7 +60,7 @@ export default function DashboardHeader() {
                                 }`}
                         >
                             <Briefcase className="h-4 w-4" />
-                            Mes Offres
+                            {t('recruiter_dashboard_header.my_offers')}
                         </Link>
 
                         <Link
@@ -67,7 +71,7 @@ export default function DashboardHeader() {
                                 }`}
                         >
                             <Plus className="h-4 w-4" />
-                            Publier
+                            {t('recruiter_dashboard_header.publish')}
                         </Link>
                     </nav>
                 </div>
@@ -75,7 +79,7 @@ export default function DashboardHeader() {
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1 sm:gap-2">
-                        <button className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg" title="Notifications">
+                        <button className="relative p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg" title={t('recruiter_dashboard_header.notifications')}>
                             <Bell className="h-5 w-5" />
                             <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-red-500 border-2 border-[#FDFCF8]"></span>
                         </button>
@@ -86,7 +90,7 @@ export default function DashboardHeader() {
                                 ? 'bg-[#1a1f1e]/5 text-[#1a1f1e]'
                                 : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5'
                                 }`}
-                            title="Paramètres"
+                            title={t('recruiter_dashboard_header.settings')}
                         >
                             <Settings className="h-5 w-5" />
                         </Link>
@@ -96,7 +100,7 @@ export default function DashboardHeader() {
                             method="post"
                             as="button"
                             className="relative p-2 text-red-500 transition-colors hover:text-red-700 hover:bg-red-50 rounded-lg"
-                            title="Déconnexion"
+                            title={t('recruiter_dashboard_header.logout')}
                         >
                             <LogOut className="h-5 w-5" />
                         </Link>
@@ -110,19 +114,19 @@ export default function DashboardHeader() {
                             <p className="text-sm font-semibold text-[#1a1f1e]">
                                 {auth?.user?.email?.split('@')[0]}
                             </p>
-                            <p className="text-xs text-[#1a1f1e]/40 font-medium">Recruteur</p>
+                            <p className="text-xs text-[#1a1f1e]/40 font-medium">{t('recruiter_dashboard_header.recruiter')}</p>
                         </div>
                         <div className="flex h-10 w-10 items-center justify-center rounded-full overflow-hidden border border-[#1a1f1e]/10 bg-white">
                             {auth?.user?.recruteur?.logo_url ? (
                                 <img
                                     src={`${import.meta.env.VITE_APP_URL}/recruteur/logo-image/${auth.user.recruteur.id}`}
-                                    alt="Logo Entreprise"
+                                    alt={t('recruiter_dashboard_header.logo_alt')}
                                     className="h-full w-full object-cover"
                                 />
                             ) : (
                                 <img
                                     src="/images/default_profile_image.avif"
-                                    alt="Profil par défaut"
+                                    alt={t('recruiter_dashboard_header.default_profile')}
                                     className="h-full w-full object-cover"
                                 />
                             )}

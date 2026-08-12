@@ -175,6 +175,694 @@
       "button": "Start my search"
     }
   },
+  "candidate_dashboard": {
+    "page_title": "Candidate Portal - Jurijob",
+    "validation_pending": "Validation in progress",
+    "professional_dashboard": "Professional Dashboard",
+    "hello": "Hello, {{name}}",
+    "candidate_default_name": "Candidate",
+    "pending_description": "Complete your profile so it can be reviewed by our team and included in our matching system.",
+    "active_description": "Your profile is the greatest asset of your legal career. Manage your visibility and keep your information up to date for recruiters.",
+    "expertise_overview": "Overview of your expertise",
+    "edit_profile": "Edit my profile",
+    "juriste": "Lawyer",
+    "morocco": "Morocco",
+    "region": "Region {{region}}",
+    "how_to_be_selected": "How to get selected?",
+    "how_to_be_selected_desc": "Recruiters use our smart matching system. A complete profile increases your chances of being contacted."
+  },
+  "candidate_settings": {
+    "page_title": "Settings - Jurijob",
+    "page_heading": "Account Settings",
+    "page_description": "Manage your personal information and account security.",
+    "tabs": {
+      "profile": "General Profile",
+      "preferences": "Preferences",
+      "experiences": "Experience",
+      "formations": "Education",
+      "specialisations": "Specializations",
+      "languages": "Languages",
+      "security": "2FA (Coming Soon)"
+    },
+    "form": {
+      "firstname": "First Name",
+      "lastname": "Last Name",
+      "email": "Professional Email",
+      "email_help": "Email address cannot be modified.",
+      "job_title": "Desired Position",
+      "select_job": "Select a position",
+      "loading": "Loading...",
+      "experience_level": "Experience Level",
+      "select_experience": "Select a level",
+      "education": "Legal Education",
+      "select_education": "Select an education",
+      "salary": "Desired Salary",
+      "select_salary": "Select a salary range",
+      "availability": "Availability",
+      "availability_help": "When do you wish to start?",
+      "active_visibility": "Enable my visibility",
+      "save": "Save"
+    },
+    "security": {
+      "standard": "Standard Security",
+      "standard_desc": "Your account is only protected by your password.",
+      "enable_2fa": "Enable 2FA",
+      "enabling": "Enabling...",
+      "enabled": "2FA Enabled",
+      "enabled_desc": "Your account is highly secure.",
+      "disable": "Disable"
+    },
+    "validation": {
+      "firstname_required": "First name is required.",
+      "lastname_required": "Last name is required.",
+      "job_required": "Please select a position.",
+      "experience_required": "Please select an experience level.",
+      "education_required": "Please select an education.",
+      "salary_required": "Please select a desired salary.",
+      "availability_required": "Please indicate your availability."
+    },
+    "experience": {
+      "title": "My Experiences",
+      "description": "Manage your professional career.",
+      "add_button": "Add",
+      "update_button": "Update",
+      "cancel_button": "Cancel",
+      "loading": "Loading...",
+      "present": "Present",
+      "no_experience": "No experience recorded.",
+      "delete_confirm": "Are you sure you want to delete this experience?",
+      "date_error": "The end date must be after or equal to the start date.",
+      "labels": {
+        "job": "Job Title",
+        "company": "Company / Firm",
+        "contract_type": "Contract Type",
+        "start_date": "Start Date",
+        "end_date": "End Date"
+      },
+      "placeholders": {
+        "job": "Select a job",
+        "company": "E.g. Alpha Firm",
+        "contract_type": "Select a type"
+      }
+    },
+    "education": {
+      "title": "My Education",
+      "description": "Degrees and academic background.",
+      "add_button": "Add",
+      "update_button": "Update",
+      "cancel_button": "Cancel",
+      "loading": "Loading...",
+      "not_applicable": "N/A",
+      "in": "in",
+      "no_education": "No education recorded.",
+      "delete_confirm": "Delete this education?",
+      "date_error": "The end year must be after or equal to the start year.",
+      "labels": {
+        "level": "Level",
+        "field": "Field of Study",
+        "school": "School / University",
+        "start_year": "Start Year",
+        "end_year": "End Year"
+      },
+      "placeholders": {
+        "level": "Select a level",
+        "field": "Select a field",
+        "school": "Select an institution"
+      }
+    },
+    "languages": {
+      "title": "Languages",
+      "description": "Linguistic proficiency.",
+      "add_button": "Add",
+      "update_button": "Update",
+      "cancel_button": "Cancel",
+      "loading": "Loading...",
+      "no_languages": "No languages added.",
+      "delete_confirm": "Delete this language?",
+      "labels": {
+        "language": "Language",
+        "level": "Level"
+      },
+      "placeholders": {
+        "language": "Select a language",
+        "level": "Level"
+      }
+    },
+    "preferences": {
+      "title": "Search Preferences",
+      "description": "Targeted countries, cities, work modes, and job types.",
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "save_button": "Save preferences",
+      "sections": {
+        "location": "Location",
+        "country": "Country",
+        "cities": "Cities",
+        "work_mode": "Work Mode",
+        "job_type": "Job Type"
+      },
+      "placeholders": {
+        "country": "Select a country"
+      },
+      "messages": {
+        "select_country_first": "Select a country first to display its cities."
+      },
+      "errors": {
+        "country_required": "Please select a country.",
+        "city_required": "Please select at least one city.",
+        "work_mode_required": "Please select at least one work mode.",
+        "job_type_required": "Please select at least one job type."
+      }
+    },
+    "specializations": {
+      "title": "Specializations",
+      "description": "Select one or more legal expertise per category.",
+      "loading": "Loading specializations...",
+      "save_button": "Save",
+      "chosen": "chosen",
+      "chosen_plural": "chosen",
+      "selected": "specialization selected",
+      "selected_plural": "specializations selected",
+      "none_selected": "No specialization selected",
+      "errors": {
+        "specialization_required": "Please select at least one specialization."
+      }
+    }
+  },
+  "candidate_pending_banner": {
+    "status_pending": "Profile pending validation",
+    "title": "Complete and verify your information",
+    "description": "To be accepted and included in the matching, accurately enter your background, your search preferences (countries, cities, work modes and types) as well as your languages and specializations. Once your data is authenticated by our team, your profile will be validated within ",
+    "hours_max": "24 hours maximum",
+    "complete_profile": "Complete my profile",
+    "dossier_complete": "Complete file — under review",
+    "sections_to_fill_one": "{{count}} section to fill",
+    "sections_to_fill_other": "{{count}} sections to fill",
+    "sections": {
+      "profile": "General profile",
+      "experiences": "Experiences",
+      "formations": "Education",
+      "specialisations": "Specializations",
+      "langues": "Languages",
+      "localisation": "Localization",
+      "mode_travails": "Work mode",
+      "type_travails": "Work type"
+    }
+  },
+  "candidate_profile_grid": {
+    "see_more": "See more",
+    "experiences_title": "Experiences",
+    "present": "Present",
+    "no_experience": "No experience recorded",
+    "formations_title": "Education",
+    "formation_in": "{{formation}} in {{specialisation}}",
+    "no_formation": "No education recorded",
+    "specialisations_title": "Specializations",
+    "no_specialisation": "No specialization added",
+    "languages_title": "Languages",
+    "no_language": "No language added"
+  },
+  "candidate_status_card": {
+    "title": "Visibility status",
+    "active_desc": "Your profile is currently active and visible to our recruiter network. You will be contacted as soon as a project matches your expertise.",
+    "inactive_desc": "Your profile is currently hidden. Recruiters cannot find you or propose matching opportunities.",
+    "profile_active": "Active Profile",
+    "profile_inactive": "Inactive Profile",
+    "managed_via_settings": "Managed via your account settings"
+  },
+  "candidate_dashboard_header": {
+    "home": "JuriJob Home",
+    "dashboard": "Dashboard",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "logout": "Logout",
+    "candidate": "Candidate"
+  },
+  "recruiter_dashboard": {
+    "page_title": "Recruiter Portal - Jurijob",
+    "interface_label": "Recruiter Interface",
+    "welcome": "Welcome, {{name}}",
+    "default_name": "Recruiter",
+    "description": "Find the best legal talents for your company. Manage your job offers and discover profiles that match your needs.",
+    "account_active": "Active Account",
+    "account_pending": "Pending Account",
+    "active_desc": "Your account is validated. You can now consult profiles.",
+    "pending_desc": "Please complete your profile to enjoy all features.",
+    "update_profile": "Update profile",
+    "company_info": "Company Information",
+    "edit": "Edit",
+    "org_type": "Organization Type",
+    "not_defined": "Not defined",
+    "company_size": "Company Size",
+    "company_default": "Company",
+    "phone_default": "+212 -- -- -- --",
+    "city_not_defined": "City not defined",
+    "attract_talents": "Attract the best talents",
+    "attract_desc": "A complete profile enhances your employer brand among candidates.",
+    "update": "Update"
+  },
+  "recruiter_settings": {
+    "page_title": "Recruiter Settings - Jurijob",
+    "back_to_dashboard": "Back to dashboard",
+    "page_header": "Company Settings",
+    "page_desc": "Manage your company information and access security.",
+    "tabs": {
+      "profile": "Company Profile",
+      "security": "Security & 2FA"
+    },
+    "form": {
+      "company_name": "Company Name *",
+      "job_title": "Your Position *",
+      "org_type": "Organization Type *",
+      "select_type": "Select type",
+      "loading": "Loading...",
+      "company_size": "Company Size *",
+      "select_size": "Select size",
+      "country": "Country *",
+      "select_country": "Select a country",
+      "city": "City *",
+      "select_city": "Select a city",
+      "select_country_first": "Select a country first",
+      "website": "Website (Optional)",
+      "save": "Save changes"
+    },
+    "security": {
+      "title_standard": "Standard security",
+      "desc_standard": "Your account is only protected by your password.",
+      "btn_enable": "Enable 2FA",
+      "btn_enabling": "Enabling...",
+      "title_active": "2FA Enabled",
+      "desc_active": "Your account is highly secure.",
+      "btn_disable": "Disable"
+    }
+  },
+  "recruiter_dashboard_header": {
+    "home": "JuriJob Home",
+    "dashboard": "Dashboard",
+    "my_offers": "My Offers",
+    "publish": "Publish",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "logout": "Logout",
+    "recruiter": "Recruiter",
+    "logo_alt": "Company Logo",
+    "default_profile": "Default Profile"
+  },
+  "admin_dashboard": {
+    "page_title": "Admin Dashboard",
+    "panel_title": "Administrator Panel",
+    "welcome": "Welcome, {{name}}",
+    "overview": "Here is an overview of the activity on JuriJob.",
+    "total_candidates": "Total Candidates",
+    "candidates_sub": "Registered on the platform",
+    "total_recruiters": "Total Recruiters",
+    "recruiters_sub": "Companies & Agencies",
+    "global_users": "Global Users",
+    "total_activity": "Total activity on the platform",
+    "growth": "Growth",
+    "evolution": "Registration Evolution",
+    "distribution": "Distribution",
+    "distribution_title": "Candidates vs Recruiters",
+    "candidates": "Candidates",
+    "recruiters": "Recruiters"
+  },
+  "admin_candidates": {
+    "page_title": "Candidate Management",
+    "breadcrumb": "Candidates",
+    "admin_label": "Administration",
+    "title_part1": "Candidate",
+    "title_part2": "profiles",
+    "total_count": "{{count}} candidate in total",
+    "total_count_plural": "{{count}} candidates in total",
+    "search_placeholder": "Name, email...",
+    "search_btn": "Search",
+    "empty_state": "No candidates for this status",
+    "tabs": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "archived": "Archived"
+    },
+    "badges": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "archived": "Archived"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "archive": "Archive"
+    },
+    "details": {
+      "education": "Education",
+      "experience": "Experience",
+      "present": "Present"
+    },
+    "pagination": {
+      "info": "Showing {{from}} to {{to}} of {{total}} candidates",
+      "prev": "Prev",
+      "next": "Next"
+    }
+  },
+  "admin_recruiters": {
+    "page_title": "Recruiter Management",
+    "breadcrumb": "Recruiters",
+    "admin_label": "Administration",
+    "title_part1": "Companies",
+    "title_part2": "& agencies",
+    "total_count": "{{count}} registered recruiter",
+    "total_count_plural": "{{count}} registered recruiters",
+    "table": {
+      "company": "Company",
+      "contact": "Contact",
+      "position": "Position",
+      "city": "City",
+      "type_size": "Type / Size",
+      "website": "Website",
+      "joined": "Joined",
+      "offers": "Offers"
+    },
+    "empty_state": "No recruiters found",
+    "actions": {
+      "visit": "Visit",
+      "view": "View"
+    }
+  },
+  "admin_offers": {
+    "page_title": "Offer Management",
+    "breadcrumb": "Offers",
+    "admin_label": "Administration",
+    "title_part1": "Recruiter",
+    "title_part2": "offers",
+    "total_count": "{{count}} offer in total",
+    "total_count_plural": "{{count}} offers in total",
+    "search_placeholder": "Title, company...",
+    "search_btn": "Search",
+    "empty_state": "No offers for this status",
+    "company_na": "Company N/A",
+    "cv_count": "{{count}} CV",
+    "tabs": {
+      "processing": "Processing",
+      "awaiting_payment": "Awaiting Payment",
+      "payment_verification": "Payment Verif.",
+      "cv_sent": "CV Sent",
+      "archived": "Archived"
+    },
+    "actions": {
+      "matching": "Matching",
+      "confirm_payment": "Confirm Payment"
+    }
+  },
+  "admin_matching": {
+    "page_title": "Matching — {{title}}",
+    "breadcrumb": "Matching",
+    "back_to_offers": "Back to offers",
+    "matching_results": "Matching results",
+    "cv_requested": "{{count}} CV requested",
+    "profiles_matched": "profile(s) matched",
+    "in_shortlist": "in short-list",
+    "empty_state": "No results",
+    "empty_desc": "No candidates match the criteria for this offer.",
+    "shortlist_title": "Short-list — {{count}} profile",
+    "shortlist_title_plural": "Short-list — {{count}} profiles",
+    "other_candidates": "Other candidates — {{count}}",
+    "score": "score",
+    "bonus_languages": "+{{count}} languages bonus",
+    "penalty_languages": "−{{count}} languages penalty",
+    "penalty_specialities": "−{{count}} specialities penalty"
+  },
+  "admin_requests": {
+    "page_title": "Requests — {{company}}",
+    "breadcrumb_recruiters": "Recruiters",
+    "back_to_recruiters": "Back to recruiters",
+    "recruiter_requests": "Recruiter requests",
+    "offers_submitted": "{{count}} offer submitted",
+    "offers_submitted_plural": "{{count}} offers submitted",
+    "empty_state": "No requests for this recruiter",
+    "view_matching": "View matching"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "candidates": "Candidates",
+    "recruiters": "Recruiters",
+    "offers": "Offers",
+    "manage_offers": "Manage Offers",
+    "logout": "Logout",
+    "repository": "Repository",
+    "documentation": "Documentation",
+    "platform": "Platform"
+  },
+  "offer_creation": {
+    "identity": {
+      "step_indicator": "Step 1 · Identity",
+      "title": "Position the ad quickly",
+      "description": "Start with a clear title, the target profession, and a concise description to frame the offer.",
+      "job_title_label": "Ad title",
+      "job_title_placeholder": "Ex: Senior corporate lawyer",
+      "target_job_label": "Target profession",
+      "direct_choice": "Direct choice",
+      "selected": "Selected",
+      "to_choose": "To choose",
+      "job_desc_label": "Offer description",
+      "job_desc_placeholder": "Missions, context, expected profile, environment...",
+      "next_organization": "Next: organization"
+    },
+    "expertise": {
+      "other": "Other",
+      "step_indicator": "Step 4 · Expertise",
+      "title": "Choose specializations",
+      "description": "All specializations are visible below, grouped by domain. Click to select.",
+      "expertise_label": "Expertise",
+      "specializations_skills": "Specializations and skills",
+      "selected": "{{count}} selected",
+      "selected_plural": "{{count}} selected",
+      "chosen": "{{count}} chosen",
+      "chosen_plural": "{{count}} chosen",
+      "back": "Back",
+      "next_languages": "Next: languages"
+    },
+    "organization": {
+      "step_indicator": "Step 2 · Organization",
+      "title": "Frame the organization of the position",
+      "description": "Contract type, work mode, location and salary are grouped for a quick read.",
+      "organization_label": "Organization of the position",
+      "contract_mode_location": "Contract, work mode and location",
+      "contract_type": "Contract type",
+      "work_mode": "Work mode",
+      "location": "Location",
+      "location_not_required": "Location not required for remote mode.",
+      "country": "Country",
+      "select_country": "Select a country",
+      "select_country_first": "Select a country first to show its cities.",
+      "remuneration": "Remuneration",
+      "proposed_salary": "Proposed salary",
+      "confidential_budget": "Confidential budget",
+      "back": "Back",
+      "next_profile": "Next: profile"
+    },
+    "profile": {
+      "step_indicator": "Step 3 · Profile",
+      "title": "Specify the expected level",
+      "description": "Group experience, education and internal context to give a clear direction to profile sorting.",
+      "experience": "Experience",
+      "experience_level": "Experience level",
+      "education": "Education",
+      "legal_education": "Legal education",
+      "priority": "Priority",
+      "urgency_volume": "Urgency and volume",
+      "urgency_level": "Urgency level",
+      "desired_cv_count": "Desired number of CVs",
+      "cv": "CV",
+      "estimated_total": "Estimated total",
+      "context": "Context",
+      "additional_notes": "Additional notes",
+      "notes_placeholder": "Constraints, timing, context, internal priorities...",
+      "back": "Back",
+      "next_expertise": "Next: expertise"
+    },
+    "review": {
+      "step_indicator": "Step 6 · Review",
+      "title": "Review before publishing",
+      "description": "Check the essential information in a clear and professional format.",
+      "unknown": "Unknown",
+      "not_specified": "Not specified",
+      "remote": "Remote",
+      "confidential_budget": "Confidential budget",
+      "info_labels": {
+        "job": "Job",
+        "contract": "Contract",
+        "mode": "Mode",
+        "location": "Location",
+        "salary": "Salary",
+        "urgency": "Urgency",
+        "desired_cvs": "Desired CVs"
+      },
+      "cv": "CV",
+      "preview": "Preview",
+      "untitled": "Untitled",
+      "description_label": "Description",
+      "no_description": "No description provided.",
+      "additional_notes": "Additional notes",
+      "experience_education": "Experience and education",
+      "experience_level": "Experience level",
+      "legal_education": "Legal education",
+      "summary": "Summary",
+      "criteria_added": "criterion added",
+      "criteria_added_plural": "criteria added",
+      "expertise": "Expertise",
+      "languages": "Languages",
+      "no_expertise": "No expertise criteria selected.",
+      "no_languages": "No languages selected.",
+      "level": "Level",
+      "back": "Back",
+      "publishing": "Publishing...",
+      "publish_offer": "Publish my offer"
+    },
+    "expert_advice": {
+      "human_support": "Human Support",
+      "step_progress": "Step {{current}} of {{total}}",
+      "expert_advice_title": "Advice from our Experts",
+      "golden_rule": "Golden rule",
+      "how_experts_analyze": "How do our experts analyze your offers?",
+      "analysis_description": "Each defined criterion serves as a compass for our recruiters to evaluate CVs and conduct the pre-qualification of candidates. By targeting the essentials, you benefit from a tailor-made and responsive selection.",
+      "steps": {
+        "1": {
+          "intro_start": "Our consultants specialized in legal recruitment rely on your explanations to understand ",
+          "intro_bold": "the exact context of your need",
+          "intro_end": ".",
+          "tips": [
+            {
+              "title": "Title & Description",
+              "body": "Be precise about the main mission and the targeted profession: a clear title immediately guides our research."
+            }
+          ],
+          "golden_rule": "A clear and well-structured description allows our experts to immediately target the best lawyers."
+        },
+        "2": {
+          "intro_start": "Contract, work mode, location and salary help our teams to ",
+          "intro_bold": "filter compatible profiles",
+          "intro_end": " with your organization.",
+          "tips": [
+            {
+              "title": "Job framework",
+              "body": "Indicate the mode (on-site, hybrid, remote) and the actual location to avoid unsuitable candidates."
+            },
+            {
+              "title": "Salary transparency",
+              "body": "A realistic range accelerates exchanges and limits refusals during the process."
+            }
+          ],
+          "golden_rule": "The clearer the organizational framework, the faster our consultants can qualify applications."
+        },
+        "3": {
+          "intro_start": "Experience, education and internal notes give our experts ",
+          "intro_bold": "the expected level of seniority",
+          "intro_end": " for sorting profiles.",
+          "tips": [
+            {
+              "title": "Expected level",
+              "body": "Align experience and education with the actual need of the position, without unnecessarily over-qualifying."
+            },
+            {
+              "title": "Additional notes",
+              "body": "Add useful context (team, challenges, constraints) that only your consultants need to know."
+            }
+          ],
+          "golden_rule": "A realistic target profile widens the talent pool without diluting the quality of the pre-selection."
+        },
+        "4": {
+          "intro_start": "Our consultants rely ",
+          "intro_bold": "strictly on the selected specializations",
+          "intro_end": " to find your ideal talent.",
+          "tips": [
+            {
+              "title": "Target the essentials",
+              "body": "Only keep the domains truly essential to the mission, not all the « nice to have » expertise."
+            },
+            {
+              "title": "Avoid over-selection",
+              "body": "Too many specializations artificially reduces the number of relevant profiles."
+            }
+          ],
+          "golden_rule": "For optimal targeting by our teams, select only the essential specializations."
+        },
+        "5": {
+          "intro_start": "The level and importance of each language determine ",
+          "intro_bold": "if a candidate is discarded or simply less prioritized",
+          "intro_end": ".",
+          "tips": [
+            {
+              "title": "Real importance",
+              "body": "If English is an asset but not an obligation, choose « Important » or « Desirable », not « Essential »."
+            },
+            {
+              "title": "Eliminatory criterion",
+              "body": "Reserve « Essential » for truly blocking languages, otherwise excellent lawyers will be discarded."
+            }
+          ],
+          "golden_rule": "Calibrate the importance of languages so as never to eliminate a profile that nevertheless perfectly matches your need."
+        },
+        "6": {
+          "intro_start": "Review the summary of your offer. Upon validation, our recruiters ",
+          "intro_bold": "will launch the active search",
+          "intro_end": " and the pre-selection of candidates.",
+          "tips": [
+            {
+              "title": "Fast handling",
+              "body": "Our experts check your offer within 24 hours and contact you as soon as the first responsive profiles are qualified."
+            }
+          ],
+          "golden_rule": "A complete and validated offer guarantees responsive support from our consultants."
+        }
+      }
+    },
+    "languages": {
+      "step_indicator": "Step 5 · Languages",
+      "title": "Define expected languages",
+      "description": "Select the languages, then specify the level and importance for each choice.",
+      "understand_importance": "Understand importance",
+      "meaning_levels": "What does each level mean?",
+      "tip": "Tip:",
+      "tip_desc": "if you don't know what to choose, select ",
+      "tip_important": "Important",
+      "languages_label": "Languages",
+      "selection_settings": "Selection and settings",
+      "selected": "{{count}} selected",
+      "selected_plural": "{{count}} selected",
+      "choose_languages": "Choose languages",
+      "adjust_level": "Adjust level and importance",
+      "empty_selection": "Select a language to configure its level and importance.",
+      "unknown": "Unknown",
+      "required_level": "Required level",
+      "importance": "Importance",
+      "eliminatory_criteria": "Eliminatory criteria: without this language at the required level, the candidate is discarded.",
+      "back": "Back",
+      "next_summary": "Next: summary",
+      "levels": {
+        "indispensable": {
+          "label": "Indispensable",
+          "title": "Eliminatory",
+          "desc": "If the candidate does not have this language at the requested level, they are eliminated — even if they perfectly match the other criteria."
+        },
+        "important": {
+          "label": "Important",
+          "title": "Highly expected",
+          "desc": "Highly valued criterion in sorting. If in doubt about the level of requirement, simply choose « Important »."
+        },
+        "souhaitable": {
+          "label": "Desirable",
+          "title": "Additional asset",
+          "desc": "A plus, but the absence of this language does not automatically eliminate the candidate."
+        },
+        "facultatif": {
+          "label": "Optional",
+          "title": "Optional",
+          "desc": "Useful mention for information, without strong impact on selection."
+        }
+      }
+    }
+  },
   "footer": {
     "description": "The benchmark ecosystem in Morocco and Africa for sourcing and recruiting all legal profiles, specialized counsel, and attorneys.",
     "specialized_badge": "Specialized in legal careers",

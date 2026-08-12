@@ -2,19 +2,21 @@ import { LayoutGrid, Folder, BookOpen, Languages, Plus } from 'lucide-react';
 import ProfileSectionCard from './ProfileSectionCard';
 import { useTaxonomies , getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   candidat: any;
 }
 
 export default function ProfileGrid({ candidat }: Props) {
+  const { t } = useTranslation();
   const { specialisations, langues, ecoles, formationJuridiques, niveauLangues } = useTaxonomies();
   const VoirPlusLink = ({ tab }: { tab: string }) => (
     <Link 
       href={`/candidate/settings?tab=${tab}`}
       className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 hover:text-[#1a1f1e] transition-colors group/link"
     >
-      Voir plus
+      {t('candidate_profile_grid.see_more')}
       <Plus className="h-3 w-3 transition-transform group-hover/link:rotate-90" />
     </Link>
   );
@@ -24,7 +26,7 @@ export default function ProfileGrid({ candidat }: Props) {
       {/* Experience & Education */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ProfileSectionCard 
-          title="Expériences" 
+          title={t('candidate_profile_grid.experiences_title')} 
           icon={LayoutGrid} 
           delay={0.1}
           footer={candidat?.experiences?.length > 1 && <VoirPlusLink tab="experiences" />}
@@ -35,17 +37,17 @@ export default function ProfileGrid({ candidat }: Props) {
                 <div key={i} className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-2 before:w-2 before:rounded-full before:bg-[#C06041]">
                   <h4 className="font-bold text-[#1a1f1e] text-lg">{exp.poste}</h4>
                   <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">{exp.entreprise}</p>
-                  <p className="mt-1 text-xs font-bold text-[#1a1f1e]/40">{exp.debut} — {exp.fin || 'Présent'}</p>
+                  <p className="mt-1 text-xs font-bold text-[#1a1f1e]/40">{exp.debut} — {exp.fin || t('candidate_profile_grid.present')}</p>
                 </div>
               ))
             ) : (
-              <p className="text-sm italic text-[#1a1f1e]/40">Aucune expérience renseignée</p>
+              <p className="text-sm italic text-[#1a1f1e]/40">{t('candidate_profile_grid.no_experience')}</p>
             )}
           </div>
         </ProfileSectionCard>
 
         <ProfileSectionCard 
-          title="Formations" 
+          title={t('candidate_profile_grid.formations_title')} 
           icon={BookOpen} 
           delay={0.2}
           footer={candidat?.formations?.length > 1 && <VoirPlusLink tab="formations" />}
@@ -54,13 +56,18 @@ export default function ProfileGrid({ candidat }: Props) {
             {candidat?.formations?.length > 0 ? (
               candidat.formations.slice(0, 1).map((form: any, i: number) => (
                 <div key={i} className="relative pl-6 before:absolute before:left-0 before:top-2 before:h-2 before:w-2 before:rounded-full before:bg-[#1a1f1e]">
-                  <h4 className="font-bold text-[#1a1f1e] text-lg">{getTaxonomyLabel(form.formation_juridique_id , formationJuridiques)} en {getTaxonomyLabel(form.specialisation_id, specialisations)}</h4>
+                  <h4 className="font-bold text-[#1a1f1e] text-lg">
+                    {t('candidate_profile_grid.formation_in', {
+                      formation: getTaxonomyLabel(form.formation_juridique_id , formationJuridiques),
+                      specialisation: getTaxonomyLabel(form.specialisation_id, specialisations)
+                    })}
+                  </h4>
                   <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">{getTaxonomyLabel(form.ecole, ecoles)}</p>
                   <p className="mt-1 text-xs font-bold text-[#1a1f1e]/40">{form.annee_debut} — {form.annee_fin || 'N/A'}</p>
                 </div>
               ))
             ) : (
-              <p className="text-sm italic text-[#1a1f1e]/40">Aucune formation renseignée</p>
+              <p className="text-sm italic text-[#1a1f1e]/40">{t('candidate_profile_grid.no_formation')}</p>
             )}
           </div>
         </ProfileSectionCard>
@@ -69,7 +76,7 @@ export default function ProfileGrid({ candidat }: Props) {
       {/* Skills & Langs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <ProfileSectionCard 
-          title="Spécialisations" 
+          title={t('candidate_profile_grid.specialisations_title')} 
           icon={Folder} 
           delay={0.3}
           footer={candidat?.specialisations?.length > 1 && <VoirPlusLink tab="specialisations" />}
@@ -82,13 +89,13 @@ export default function ProfileGrid({ candidat }: Props) {
                 </span>
               ))
             ) : (
-              <p className="text-sm italic text-[#1a1f1e]/40">Aucune spécialisation ajoutée</p>
+              <p className="text-sm italic text-[#1a1f1e]/40">{t('candidate_profile_grid.no_specialisation')}</p>
             )}
           </div>
         </ProfileSectionCard>
 
         <ProfileSectionCard 
-          title="Langues" 
+          title={t('candidate_profile_grid.languages_title')} 
           icon={Languages} 
           delay={0.4}
           footer={candidat?.langues?.length > 1 && <VoirPlusLink tab="langues" />}
@@ -104,7 +111,7 @@ export default function ProfileGrid({ candidat }: Props) {
                 </div>
               ))
             ) : (
-              <p className="text-sm italic text-[#1a1f1e]/40">Aucune langue ajoutée</p>
+              <p className="text-sm italic text-[#1a1f1e]/40">{t('candidate_profile_grid.no_language')}</p>
             )}
           </div>
         </ProfileSectionCard>

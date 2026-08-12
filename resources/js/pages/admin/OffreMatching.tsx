@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import { ArrowLeft, Building2, Briefcase, GraduationCap, Globe, Mail, Phone, Users, Award, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type MatchingBreakdown = {
     score: number;
@@ -38,10 +39,10 @@ type Props = {
     candidates: MatchedCandidate[];
 };
 
-const breadcrumbs = [
+const breadcrumbs = (t: any) => [
     { title: 'Admin', href: '/admin/dashboard' },
-    { title: 'Offres', href: '/admin/offres?statut=EN_TRAITEMENT' },
-    { title: 'Matching', href: '#' },
+    { title: t('admin_offers.breadcrumb'), href: '/admin/offres?statut=EN_TRAITEMENT' },
+    { title: t('admin_matching.breadcrumb'), href: '#' },
 ];
 
 function scoreColor(score: number): { bar: string; text: string; bg: string } {
@@ -52,12 +53,13 @@ function scoreColor(score: number): { bar: string; text: string; bg: string } {
 }
 
 export default function OffreMatching({ offre, candidates }: Props) {
+    const { t } = useTranslation();
     const shortlist = candidates.slice(0, offre.nombre_cv);
     const rest = candidates.slice(offre.nombre_cv);
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <Head title={`Matching — ${offre.titre}`} />
+        <AdminLayout breadcrumbs={breadcrumbs(t)}>
+            <Head title={t('admin_matching.page_title', { title: offre.titre })} />
 
             <div className="flex flex-col gap-8" style={{ fontFamily: 'Outfit, sans-serif' }}>
                 {/* Back + Header */}
@@ -67,10 +69,10 @@ export default function OffreMatching({ offre, candidates }: Props) {
                         className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-[#1a1f1e]/40 hover:text-[#C06041] transition-colors mb-6"
                     >
                         <ArrowLeft className="h-3.5 w-3.5" />
-                        Retour aux offres
+                        {t('admin_matching.back_to_offers')}
                     </Link>
 
-                    <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">Résultats de matching</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">{t('admin_matching.matching_results')}</p>
                     <h1
                         className="text-3xl md:text-4xl text-[#1a1f1e] font-light leading-tight"
                         style={{ fontFamily: 'Cormorant Garamond, serif' }}
@@ -94,7 +96,7 @@ export default function OffreMatching({ offre, candidates }: Props) {
                         {offre.niveau_experience?.nom && <span>{offre.niveau_experience.nom}</span>}
                         <span className="flex items-center gap-1.5">
                             <Users className="h-3.5 w-3.5" />
-                            {offre.nombre_cv} CV demandés
+                            {t('admin_matching.cv_requested', { count: offre.nombre_cv })}
                         </span>
                     </div>
 
@@ -104,14 +106,14 @@ export default function OffreMatching({ offre, candidates }: Props) {
                             <span className="text-xl font-medium text-[#1a1f1e]">
                                 {candidates.length}
                             </span>
-                            <span className="text-[10px] uppercase tracking-wider text-[#1a1f1e]/40">profil(s) matchés</span>
+                            <span className="text-[10px] uppercase tracking-wider text-[#1a1f1e]/40">{t('admin_matching.profiles_matched')}</span>
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200">
                             <Star className="h-4 w-4 text-emerald-600" />
                             <span className="text-xl font-medium text-emerald-700">
                                 {Math.min(offre.nombre_cv, candidates.length)}
                             </span>
-                            <span className="text-[10px] uppercase tracking-wider text-emerald-600">en short-list</span>
+                            <span className="text-[10px] uppercase tracking-wider text-emerald-600">{t('admin_matching.in_shortlist')}</span>
                         </div>
                     </div>
                 </div>
@@ -119,8 +121,8 @@ export default function OffreMatching({ offre, candidates }: Props) {
                 {/* Empty state */}
                 {candidates.length === 0 && (
                     <div className="bg-white border border-[#1a1f1e]/8 py-20 text-center">
-                        <p className="text-[#1a1f1e]/25 text-sm uppercase tracking-widest mb-2">Aucun résultat</p>
-                        <p className="text-[#1a1f1e]/40 text-xs">Aucun candidat ne correspond aux critères de cette offre.</p>
+                        <p className="text-[#1a1f1e]/25 text-sm uppercase tracking-widest mb-2">{t('admin_matching.empty_state')}</p>
+                        <p className="text-[#1a1f1e]/40 text-xs">{t('admin_matching.empty_desc')}</p>
                     </div>
                 )}
 
@@ -131,7 +133,9 @@ export default function OffreMatching({ offre, candidates }: Props) {
                             <span className="h-px flex-1 bg-emerald-200" />
                             <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-600 font-medium flex items-center gap-1.5">
                                 <Star className="h-3 w-3" />
-                                Short-list — {shortlist.length} profil{shortlist.length > 1 ? 's' : ''}
+                                {shortlist.length > 1
+                                    ? t('admin_matching.shortlist_title_plural', { count: shortlist.length })
+                                    : t('admin_matching.shortlist_title', { count: shortlist.length })}
                             </span>
                             <span className="h-px flex-1 bg-emerald-200" />
                         </div>
@@ -159,7 +163,7 @@ export default function OffreMatching({ offre, candidates }: Props) {
                         <div className="flex items-center gap-3 mb-2">
                             <span className="h-px flex-1 bg-[#1a1f1e]/8" />
                             <span className="text-[10px] uppercase tracking-[0.2em] text-[#1a1f1e]/30 font-medium">
-                                Autres candidats — {rest.length}
+                                {t('admin_matching.other_candidates', { count: rest.length })}
                             </span>
                             <span className="h-px flex-1 bg-[#1a1f1e]/8" />
                         </div>
@@ -198,6 +202,7 @@ function CandidateCard({
     displayScore: number;
     inShortlist: boolean;
 }) {
+    const { t } = useTranslation();
     const breakdown = candidat.matching_breakdown;
 
     return (
@@ -274,12 +279,12 @@ function CandidateCard({
                     {/* Breakdown */}
                     {breakdown && (
                         <div className="flex flex-wrap gap-3 text-[10px] text-[#1a1f1e]/35 uppercase tracking-wider">
-                            <span className="text-emerald-600">+{breakdown.language_bonus} bonus langues</span>
+                            <span className="text-emerald-600">{t('admin_matching.bonus_languages', { count: breakdown.language_bonus })}</span>
                             {breakdown.language_penalty > 0 && (
-                                <span className="text-rose-500">−{breakdown.language_penalty} malus langues</span>
+                                <span className="text-rose-500">{t('admin_matching.penalty_languages', { count: breakdown.language_penalty })}</span>
                             )}
                             {breakdown.specialisation_penalty > 0 && (
-                                <span className="text-rose-500">−{breakdown.specialisation_penalty} malus spécialités</span>
+                                <span className="text-rose-500">{t('admin_matching.penalty_specialities', { count: breakdown.specialisation_penalty })}</span>
                             )}
                         </div>
                     )}
@@ -309,7 +314,7 @@ function CandidateCard({
                     <span className={`text-3xl font-medium ${colors.text}`}>
                         {displayScore}
                     </span>
-                    <span className={`text-[9px] uppercase tracking-widest ${colors.text} opacity-70`}>score</span>
+                    <span className={`text-[9px] uppercase tracking-widest ${colors.text} opacity-70`}>{t('admin_matching.score')}</span>
                 </div>
             </div>
         </div>

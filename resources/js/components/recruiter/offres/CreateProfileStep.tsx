@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { AlertTriangle, ArrowLeft, GraduationCap, Minus, NotebookText, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     data: any;
@@ -24,6 +25,7 @@ const formatMad = (amount: number) =>
     }).format(amount);
 
 export default function CreateProfileStep({ data, setData, errors, onNext, onPrev, taxonomies }: Props) {
+    const { t } = useTranslation();
     const parsedCv = Number.parseInt(String(data.nombre_cv), 10);
     const cvCount = Number.isNaN(parsedCv) ? CV_MIN : Math.min(CV_MAX, Math.max(CV_MIN, parsedCv));
     const totalPrice = cvCount * CV_UNIT_PRICE_MAD;
@@ -70,14 +72,14 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
         <div className="space-y-8">
             <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/55">
-                    Étape 3 · Profil
+                    {t('offer_creation.profile.step_indicator')}
                 </div>
                 <div>
                     <h2 className="font-serif text-3xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-4xl">
-                        Précisez le niveau attendu
+                        {t('offer_creation.profile.title')}
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#1a1f1e]/55 sm:text-base">
-                        Regroupez expérience, formation et contexte interne pour donner une direction nette au tri des profils.
+                        {t('offer_creation.profile.description')}
                     </p>
                 </div>
             </div>
@@ -90,8 +92,8 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <GraduationCap className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Expérience</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">Niveau d'expérience</h3>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.experience')}</p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.experience_level')}</h3>
                             </div>
                         </div>
                         <PillGrid
@@ -112,8 +114,8 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <GraduationCap className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Formation</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">Formation juridique</h3>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.education')}</p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.legal_education')}</h3>
                             </div>
                         </div>
                         <PillGrid
@@ -136,13 +138,13 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <AlertTriangle className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Priorité</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">Urgence et volume</h3>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.priority')}</p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.urgency_volume')}</h3>
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <Label className="text-sm font-semibold text-slate-900">Niveau d'urgence</Label>
+                            <Label className="text-sm font-semibold text-slate-900">{t('offer_creation.profile.urgency_level')}</Label>
                             <PillGrid
                                 items={taxonomies.urgences || []}
                                 value={String(data.urgence_id || '')}
@@ -155,7 +157,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                         <div className="space-y-4 border-t border-slate-100 pt-5">
                             <div>
                                 <Label className="text-sm font-semibold text-slate-900">
-                                    Nombre de CV souhaités
+                                    {t('offer_creation.profile.desired_cv_count')}
                                 </Label>
                                 <p className="mt-1 text-xs text-slate-500">
                                     1 CV = {formatMad(CV_UNIT_PRICE_MAD)} HT
@@ -204,7 +206,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                         className="w-16 border-0 bg-transparent text-center text-xl font-black tabular-nums text-slate-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                     />
                                     <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                                        CV
+                                        {t('offer_creation.profile.cv')}
                                     </span>
                                 </div>
 
@@ -228,10 +230,10 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <div className="flex items-end justify-between gap-3">
                                     <div>
                                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#C06041]">
-                                            Total estimé
+                                            {t('offer_creation.profile.estimated_total')}
                                         </p>
                                         <p className="mt-1 text-xs text-slate-500">
-                                            {cvCount} CV × {formatMad(CV_UNIT_PRICE_MAD)}
+                                            {cvCount} {t('offer_creation.profile.cv')} × {formatMad(CV_UNIT_PRICE_MAD)}
                                         </p>
                                     </div>
                                     <p className="text-xl font-black tabular-nums text-[#1a1f1e]">
@@ -252,8 +254,8 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <NotebookText className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">Contexte</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">Notes complémentaires</h3>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.context')}</p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.additional_notes')}</h3>
                             </div>
                         </div>
                         <textarea
@@ -261,7 +263,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                             value={data.notes_complementaires || ''}
                             onChange={(e) => setData('notes_complementaires', e.target.value)}
                             rows={10}
-                            placeholder="Contraintes, timing, contexte, priorités internes..."
+                            placeholder={t('offer_creation.profile.notes_placeholder')}
                             className="min-h-[220px] flex-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm leading-7 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C06041]/20 sm:text-[15px]"
                         />
                         {errors.notes_complementaires && (
@@ -278,7 +280,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                     onClick={onPrev}
                     className="h-12 px-6 text-sm font-medium text-slate-500 hover:text-slate-900"
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Retour
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {t('offer_creation.profile.back')}
                 </Button>
                 <Button
                     type="button"
@@ -286,7 +288,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                     className="h-12 rounded-full bg-[#1a1f1e] px-8 text-sm font-semibold text-white sm:px-10"
                     disabled={!data.niveau_experience_id || !data.urgence_id}
                 >
-                    Suivant : expertise
+                    {t('offer_creation.profile.next_expertise')}
                 </Button>
             </div>
         </div>

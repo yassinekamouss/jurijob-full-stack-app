@@ -10,12 +10,14 @@ import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
 import type { User } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     user: User;
 };
 
 export function UserMenuContent({ user }: Props) {
+    const { t } = useTranslation();
     const cleanup = useMobileNavigation();
 
     const handleLogout = () => {
@@ -39,7 +41,7 @@ export function UserMenuContent({ user }: Props) {
                         onClick={cleanup}
                     >
                         <Settings className="mr-2" />
-                        Dashboard
+                        {t('sidebar.dashboard')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -53,7 +55,7 @@ export function UserMenuContent({ user }: Props) {
                     data-test="logout-button"
                 >
                     <LogOut className="mr-2" />
-                    Log out
+                    {t('sidebar.logout')}
                 </Link>
             </DropdownMenuItem>
         </>
