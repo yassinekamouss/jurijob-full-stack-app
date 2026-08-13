@@ -155,30 +155,33 @@ export default function Settings({ recruteur, user }: Props) {
 
                 <div className="flex flex-col gap-12 lg:flex-row">
                     {/* Sidebar Tabs */}
-                    <div className="flex-shrink-0 lg:w-64">
-                        <nav className="flex gap-2 rounded-2xl bg-[#1a1f1e]/5 p-1 lg:flex-col">
-                            <button
-                                onClick={() => setActiveTab('profile')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'profile'
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                    }`}
-                            >
-                                <Building className="h-4 w-4" />
-                                {t('recruiter_settings.tabs.profile')}
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('security')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
-                                    ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
-                                    }`}
-                            >
-                                <ShieldCheck className="h-4 w-4" />
-                                {t('recruiter_settings.tabs.security')}
-                            </button>
-                        </nav>
-                    </div>
+<div className="w-full flex-shrink-0 lg:w-64">
+    <nav className="flex w-full gap-2 overflow-x-auto rounded-2xl bg-[#1a1f1e]/5 p-1 lg:flex-col lg:overflow-visible">
+        <button
+            onClick={() => setActiveTab('profile')}
+            className={`flex flex-1 lg:flex-none items-center justify-center lg:justify-start gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                activeTab === 'profile'
+                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+            }`}
+        >
+            <Building className="h-4 w-4 flex-shrink-0" />
+            {t('recruiter_settings.tabs.profile')}
+        </button>
+        
+        <button
+            onClick={() => setActiveTab('security')}
+            className={`flex flex-1 lg:flex-none items-center justify-center lg:justify-start gap-3 whitespace-nowrap rounded-xl px-4 py-3 text-sm font-bold transition-all ${
+                activeTab === 'security'
+                    ? 'bg-white text-[#1a1f1e] shadow-sm'
+                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+            }`}
+        >
+            <ShieldCheck className="h-4 w-4 flex-shrink-0" />
+            {t('recruiter_settings.tabs.security')}
+        </button>
+    </nav>
+</div>
 
                     {/* Content Area */}
                     <div className="max-w-2xl flex-1">
@@ -191,7 +194,7 @@ export default function Settings({ recruteur, user }: Props) {
                                     exit={{ opacity: 0, y: -10 }}
                                     className="space-y-10"
                                 >
-                                    <section className="relative overflow-hidden rounded-xl border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                    <section className="relative overflow-hidden rounded-xl border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-8 shadow-sm">
                                         <form
                                             onSubmit={submit}
                                             className="relative z-10 space-y-8"
@@ -214,7 +217,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     />
                                                     {errors.nom_entreprise && (
@@ -241,7 +244,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     />
                                                     {errors.poste && (
@@ -267,7 +270,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     >
                                                         <option
@@ -309,7 +312,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     >
                                                         <option
@@ -347,7 +350,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                             setSelectedPaysId(e.target.value);
                                                             setData('ville_id', '');
                                                         }}
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                     >
                                                         <option value="" disabled>
@@ -378,7 +381,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                                 e.target.value,
                                                             )
                                                         }
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
                                                         disabled={!selectedPaysId}
                                                     >
@@ -420,7 +423,7 @@ export default function Settings({ recruteur, user }: Props) {
                                                             )
                                                         }
                                                         placeholder="https://www.exemple.com"
-                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-[#FDFCF8] px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                                                        className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                     />
                                                     {errors.site_web && (
                                                         <div className="text-xs text-red-500">
