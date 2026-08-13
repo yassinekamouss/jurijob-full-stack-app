@@ -43,18 +43,29 @@ export function AdminSidebar() {
 
     return (
         <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+            <SidebarHeader className="border-b border-sidebar-border/40 px-0">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        {/* On retire le SidebarMenuButton qui impose une hauteur fixe */}
-                        <Link 
-                            href="/admin/dashboard" 
-                            className="group-data-[collapsible=icon]:hidden"
+                        <Link
+                            href="/admin/dashboard"
+                            className="
+                                flex h-[120px] w-full items-center justify-center
+                                px-6
+                                transition-opacity duration-200
+                                hover:opacity-90
+                                group-data-[collapsible=icon]:hidden
+                            "
                         >
-                            <img 
+                            <img
                                 src="/images/logo_jurijob.png"
-                                alt="JuriJob - Logo"
-                                className="" 
+                                alt="JuriJob"
+                                className="
+                                    block
+                                    h-auto
+                                    w-full
+                                    max-w-[215px]
+                                    object-contain
+                                "
                             />
                         </Link>
                     </SidebarMenuItem>

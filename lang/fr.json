@@ -484,6 +484,20 @@
     "logo_alt": "Logo Entreprise",
     "default_profile": "Profil par défaut"
   },
+  "admin_login": {
+    "page_title": "Connexion Administrateur — JuriJob",
+    "badge": "Espace d'Administration",
+    "title_part1": "Connexion",
+    "title_part2": "Administrateur",
+    "subtitle": "Accès réservé au personnel autorisé de la plateforme JuriJob.",
+    "email_label": "Adresse Email",
+    "email_placeholder": "admin@jurijob.ma",
+    "password_label": "Mot de passe",
+    "password_placeholder": "••••••••••••",
+    "submit": "Se connecter au panel",
+    "submitting": "Connexion en cours…",
+    "footer_note": "Plateforme d'administration sécurisée JuriJob"
+  },
   "admin_dashboard": {
     "page_title": "Dashboard Admin",
     "panel_title": "Panel administrateur",

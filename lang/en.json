@@ -484,6 +484,20 @@
     "logo_alt": "Company Logo",
     "default_profile": "Default Profile"
   },
+  "admin_login": {
+    "page_title": "Administrator Login — JuriJob",
+    "badge": "Administration Area",
+    "title_part1": "Administrator",
+    "title_part2": "Login",
+    "subtitle": "Restricted access to authorized JuriJob platform personnel.",
+    "email_label": "Email Address",
+    "email_placeholder": "admin@jurijob.ma",
+    "password_label": "Password",
+    "password_placeholder": "••••••••••••",
+    "submit": "Sign in to Dashboard",
+    "submitting": "Signing in…",
+    "footer_note": "JuriJob Secure Administration Platform"
+  },
   "admin_dashboard": {
     "page_title": "Admin Dashboard",
     "panel_title": "Administrator Panel",
