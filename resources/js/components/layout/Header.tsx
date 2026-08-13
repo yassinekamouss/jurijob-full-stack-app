@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { ChevronDown, Building2, GraduationCap } from 'lucide-react';
+import { ChevronDown, Building2, GraduationCap, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -19,7 +19,7 @@ const Brand = () => {
                 alt={t('navigation.brand_alt')}
                 width={100}
                 height={100}
-                className="w-auto h-32"
+                className="w-auto h-24 sm:h-28 lg:h-32"
             />
         </Link>
     );
@@ -29,6 +29,7 @@ const Brand = () => {
 export default function Header() {
     const { t } = useTranslation();
     const [showMenu, setShowMenu] = useState(false);
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
     const nav = [
         { href: '/#home', label: t('navigation.home') },
@@ -40,6 +41,7 @@ export default function Header() {
     ];
 
     const handleNavClick = (e: React.MouseEvent<Element>, href: string) => {
+        setMobileNavOpen(false);
         if (!href.includes('#')) {
             return;
         }
@@ -85,7 +87,7 @@ export default function Header() {
 
                         {/* Navigation Desktop */}
                         <nav
-                            className="hidden space-x-12 md:flex"
+                            className="hidden lg:flex space-x-8 xl:space-x-12"
                             aria-label={t('navigation.home')}
                         >
                             {nav.map((item, index) => (
@@ -111,51 +113,120 @@ export default function Header() {
                             ))}
                         </nav>
 
-                        {/* Actions */}
-                        <Reveal direction="left" duration={0.8}>
-                            <div className="flex items-center space-x-4 md:space-x-6">
-                                <LanguageSwitcher />
-                                <Link
-                                    href="/login"
-                                    className="px-2 py-2 text-sm font-medium text-[#1a1f1e] transition-opacity hover:opacity-70"
-                                >
-                                    {t('navigation.login')}
-                                </Link>
-                                <div className="relative">
-                                    <button
-                                        onClick={() => setShowMenu(!showMenu)}
-                                        className="flex items-center gap-2 bg-[#1a1f1e] px-6 py-2.5 text-sm font-medium text-[#FDFCF8] transition-all hover:bg-[#343a38]"
+                        {/* Actions Desktop */}
+                        <div className="hidden lg:flex items-center space-x-4 md:space-x-6">
+                            <Reveal direction="left" duration={0.8}>
+                                <div className="flex items-center space-x-4 md:space-x-6">
+                                    <LanguageSwitcher />
+                                    <Link
+                                        href="/login"
+                                        className="px-2 py-2 text-sm font-medium text-[#1a1f1e] transition-opacity hover:opacity-70"
                                     >
-                                        {t('navigation.register')}
-                                        <ChevronDown
-                                            className={`h-3.5 w-3.5 transition-transform ${showMenu ? 'rotate-180' : ''}`}
-                                        />
-                                    </button>
+                                        {t('navigation.login')}
+                                    </Link>
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setShowMenu(!showMenu)}
+                                            className="flex items-center gap-2 bg-[#1a1f1e] px-6 py-2.5 text-sm font-medium text-[#FDFCF8] transition-all hover:bg-[#343a38]"
+                                        >
+                                            {t('navigation.register')}
+                                            <ChevronDown
+                                                className={`h-3.5 w-3.5 transition-transform ${showMenu ? 'rotate-180' : ''}`}
+                                            />
+                                        </button>
 
-                                    {showMenu && (
-                                        <div className="absolute right-0 z-50 mt-3 w-56 border border-[#1a1f1e]/10 bg-[#FDFCF8] py-1 shadow-2xl">
-                                            <Link
-                                                href="/register/recruteur"
-                                                className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
-                                            >
-                                                <Building2 className="h-4 w-4 text-[#C06041]" />
-                                                {t('navigation.as_recruiter')}
-                                            </Link>
-                                            <Link
-                                                href="/register/candidat"
-                                                className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
-                                            >
-                                                <GraduationCap className="h-4 w-4 text-[#C06041]" />
-                                                {t('navigation.as_candidate')}
-                                            </Link>
-                                        </div>
-                                    )}
+                                        {showMenu && (
+                                            <div className="absolute right-0 z-50 mt-3 w-56 border border-[#1a1f1e]/10 bg-[#FDFCF8] py-1 shadow-2xl">
+                                                <Link
+                                                    href="/register/recruteur"
+                                                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
+                                                >
+                                                    <Building2 className="h-4 w-4 text-[#C06041]" />
+                                                    {t('navigation.as_recruiter')}
+                                                </Link>
+                                                <Link
+                                                    href="/register/candidat"
+                                                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-[#1a1f1e] transition-colors hover:bg-[#1a1f1e]/5"
+                                                >
+                                                    <GraduationCap className="h-4 w-4 text-[#C06041]" />
+                                                    {t('navigation.as_candidate')}
+                                                </Link>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </Reveal>
+                            </Reveal>
+                        </div>
+
+                        {/* Hamburger Button Mobile */}
+                        <div className="flex lg:hidden items-center gap-3">
+                            <LanguageSwitcher />
+                            <button
+                                onClick={() => setMobileNavOpen(!mobileNavOpen)}
+                                className="p-2 text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-md transition-colors"
+                                aria-label="Toggle Navigation Menu"
+                            >
+                                {mobileNavOpen ? (
+                                    <X className="h-6 w-6" />
+                                ) : (
+                                    <Menu className="h-6 w-6" />
+                                )}
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                {/* Mobile Navigation Drawer */}
+                {mobileNavOpen && (
+                    <div className="lg:hidden border-t border-[#1a1f1e]/10 bg-[#FDFCF8] px-6 pt-4 pb-6 shadow-xl animate-in slide-in-from-top-2 duration-200">
+                        <nav className="flex flex-col space-y-4 mb-6">
+                            {nav.map((item) => (
+                                <a
+                                    key={item.href}
+                                    href={item.href}
+                                    onClick={(e) => handleNavClick(e, item.href)}
+                                    className="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2"
+                                >
+                                    {item.label}
+                                </a>
+                            ))}
+                        </nav>
+
+                        <div className="flex flex-col gap-3 pt-2 border-t border-[#1a1f1e]/10">
+                            <Link
+                                href="/login"
+                                onClick={() => setMobileNavOpen(false)}
+                                className="w-full text-center border border-[#1a1f1e] py-3 text-sm font-medium text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-colors"
+                            >
+                                {t('navigation.login')}
+                            </Link>
+
+                            <div className="flex flex-col gap-2 pt-1">
+                                <span className="text-xs uppercase tracking-wider text-[#1a1f1e]/60 font-semibold mb-1">
+                                    {t('navigation.register')}
+                                </span>
+                                <Link
+                                    href="/register/recruteur"
+                                    onClick={() => setMobileNavOpen(false)}
+                                    className="flex items-center gap-3 bg-[#1a1f1e] text-[#FDFCF8] px-4 py-3 text-sm font-medium hover:bg-[#343a38] transition-colors"
+                                >
+                                    <Building2 className="h-4 w-4 text-[#C06041]" />
+                                    {t('navigation.as_recruiter')}
+                                </Link>
+                                <Link
+                                    href="/register/candidat"
+                                    onClick={() => setMobileNavOpen(false)}
+                                    className="flex items-center gap-3 border border-[#1a1f1e] text-[#1a1f1e] px-4 py-3 text-sm font-medium hover:bg-[#1a1f1e]/5 transition-colors"
+                                >
+                                    <GraduationCap className="h-4 w-4 text-[#C06041]" />
+                                    {t('navigation.as_candidate')}
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </header>
         </Reveal>
     );
 }
+

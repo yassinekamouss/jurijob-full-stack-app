@@ -7,24 +7,24 @@ export default function HowItWorks() {
     return (
         <section
             id="how-it-works"
-            className="overflow-hidden border-b border-[#1a1f1e]/10 bg-[#FDFCF8] py-24 text-[#1a1f1e] antialiased md:py-32"
+            className="overflow-hidden border-b border-[#1a1f1e]/10 bg-[#FDFCF8] py-16 lg:py-32 text-[#1a1f1e] antialiased"
         >
-            <div className="mx-auto max-w-7xl px-8 md:px-16">
+            <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-16">
                 {/* Header Section */}
-                <div className="mb-20 flex flex-col items-end justify-between border-b border-[#1a1f1e]/20 pb-8 md:mb-32 md:flex-row">
-                    <Reveal direction="up" className="mb-6 md:mb-0">
+                <div className="mb-12 lg:mb-32 flex flex-col items-start lg:items-end justify-between border-b border-[#1a1f1e]/20 pb-6 lg:pb-8 lg:flex-row gap-4 lg:gap-0">
+                    <Reveal direction="up" className="mb-2 lg:mb-0">
                         <h2
-                            className="text-5xl leading-[1] tracking-tight md:text-7xl"
+                            className="text-4xl sm:text-5xl lg:text-7xl leading-[1] tracking-tight"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            {t('home.how_it_works.title_part1')}
+                            {t('home.how_it_works.title_part1')}{' '}
                             <span className="font-light text-[#C06041] italic">
                                 {t('home.how_it_works.title_part2')}
                             </span>
                         </h2>
                     </Reveal>
                     <Reveal direction="up" delay={0.1}>
-                        <p className="max-w-sm text-lg leading-relaxed font-light text-[#1a1f1e]/70 md:text-xl">
+                        <p className="max-w-sm text-base sm:text-lg lg:text-xl leading-relaxed font-light text-[#1a1f1e]/70">
                             {t('home.how_it_works.subtitle')}
                         </p>
                     </Reveal>
@@ -32,15 +32,15 @@ export default function HowItWorks() {
 
                 {/* Steps Container */}
                 <div className="relative">
-                    <div className="relative z-10 grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-12">
+                    <div className="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
                         {/* Step 1 */}
-                        <div className="flex flex-col border border-[#1a1f1e] bg-white p-8 shadow-[8px_8px_0_0_rgba(26,31,30,1)] md:p-10">
+                        <div className="flex flex-col border border-[#1a1f1e] bg-white p-6 sm:p-8 lg:p-10 shadow-[8px_8px_0_0_rgba(26,31,30,1)]">
                             <Reveal direction="up" delay={0.2}>
-                                <div className="mb-6 text-sm font-medium tracking-widest text-[#C06041]">
+                                <div className="mb-4 lg:mb-6 text-sm font-medium tracking-widest text-[#C06041]">
                                     {t('home.how_it_works.step1.number')}
                                 </div>
                                 <h3
-                                    className="mb-4 text-2xl"
+                                    className="mb-3 lg:mb-4 text-xl sm:text-2xl"
                                     style={{
                                         fontFamily: 'Cormorant Garamond, serif',
                                     }}
@@ -54,13 +54,13 @@ export default function HowItWorks() {
                         </div>
 
                         {/* Step 2 */}
-                        <div className="flex translate-y-0 transform flex-col border border-[#1a1f1e] bg-[#1a1f1e] p-8 text-[#FDFCF8] shadow-[8px_8px_0_0_rgba(192,96,65,1)] md:translate-y-8 md:p-10">
+                        <div className="flex translate-y-0 lg:translate-y-8 transform flex-col border border-[#1a1f1e] bg-[#1a1f1e] p-6 sm:p-8 lg:p-10 text-[#FDFCF8] shadow-[8px_8px_0_0_rgba(192,96,65,1)]">
                             <Reveal direction="up" delay={0.3}>
-                                <div className="mb-6 text-sm font-medium tracking-widest text-[#C06041]">
+                                <div className="mb-4 lg:mb-6 text-sm font-medium tracking-widest text-[#C06041]">
                                     {t('home.how_it_works.step2.number')}
                                 </div>
                                 <h3
-                                    className="mb-4 text-2xl"
+                                    className="mb-3 lg:mb-4 text-xl sm:text-2xl"
                                     style={{
                                         fontFamily: 'Cormorant Garamond, serif',
                                     }}
@@ -74,13 +74,13 @@ export default function HowItWorks() {
                         </div>
 
                         {/* Step 3 */}
-                        <div className="flex flex-col border border-[#1a1f1e] bg-white p-8 shadow-[8px_8px_0_0_rgba(26,31,30,1)] md:p-10">
+                        <div className="flex flex-col border border-[#1a1f1e] bg-white p-6 sm:p-8 lg:p-10 shadow-[8px_8px_0_0_rgba(26,31,30,1)]">
                             <Reveal direction="up" delay={0.4}>
-                                <div className="mb-6 text-sm font-medium tracking-widest text-[#C06041]">
+                                <div className="mb-4 lg:mb-6 text-sm font-medium tracking-widest text-[#C06041]">
                                     {t('home.how_it_works.step3.number')}
                                 </div>
                                 <h3
-                                    className="mb-4 text-2xl"
+                                    className="mb-3 lg:mb-4 text-xl sm:text-2xl"
                                     style={{
                                         fontFamily: 'Cormorant Garamond, serif',
                                     }}
@@ -98,3 +98,4 @@ export default function HowItWorks() {
         </section>
     );
 }
+
