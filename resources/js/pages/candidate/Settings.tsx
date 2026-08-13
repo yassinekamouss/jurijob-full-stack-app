@@ -234,96 +234,96 @@ export default function Settings({
 
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-5xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
-                <div className="mb-12">
-                    <h1 className="mb-2 font-serif text-4xl font-bold italic">
+            <main className="relative z-10 mx-auto max-w-5xl px-4 pt-20 sm:pt-28 pb-20 sm:px-6 lg:px-8">
+                <div className="mb-8 sm:mb-12">
+                    <h1 className="mb-2 font-serif text-3xl sm:text-4xl font-bold italic">
                         {t('candidate_settings.page_heading')}
                     </h1>
-                    <p className="font-medium text-[#1a1f1e]/50">
+                    <p className="text-sm sm:text-base font-medium text-[#1a1f1e]/50">
                         {t('candidate_settings.page_description')}
                     </p>
                 </div>
 
                 {isPending && (
-                    <div className="mb-12">
+                    <div className="mb-8 sm:mb-12">
                         <PendingVerificationBanner
                             profileCompletion={profileCompletion}
                         />
                     </div>
                 )}
 
-                <div className="flex flex-col gap-12 lg:flex-row">
+                <div className="flex flex-col gap-8 lg:gap-12 lg:flex-row">
                     {/* Sidebar Tabs */}
-                    <div className="flex-shrink-0 lg:w-64">
-                        <nav className="flex gap-2 rounded-2xl bg-[#1a1f1e]/5 p-1 lg:flex-col">
+                    <div className="flex-shrink-0 lg:w-64 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+                        <nav className="flex gap-1.5 sm:gap-2 rounded-2xl bg-[#1a1f1e]/5 p-1.5 lg:flex-col min-w-max lg:min-w-0">
                             <button
                                 onClick={() => setActiveTab('profile')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'profile'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'profile'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <User className="h-4 w-4" />
+                                <User className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.profile')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('preferences')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'preferences'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'preferences'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <MapPin className="h-4 w-4" />
+                                <MapPin className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.preferences')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('experiences')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'experiences'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'experiences'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <LayoutGrid className="h-4 w-4" />
+                                <LayoutGrid className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.experiences')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('formations')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'formations'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'formations'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <GraduationCap className="h-4 w-4" />
+                                <GraduationCap className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.formations')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('specialisations')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'specialisations'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'specialisations'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <Folder className="h-4 w-4" />
+                                <Folder className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.specialisations')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('langues')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'langues'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'langues'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <Languages className="h-4 w-4" />
+                                <Languages className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.languages')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('security')}
-                                className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all ${activeTab === 'security'
+                                className={`flex items-center gap-2.5 sm:gap-3 rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold transition-all shrink-0 ${activeTab === 'security'
                                     ? 'bg-white text-[#1a1f1e] shadow-sm'
-                                    : 'text-[#1a1f1e]/40 hover:text-[#1a1f1e]/60'
+                                    : 'text-[#1a1f1e]/50 hover:text-[#1a1f1e]'
                                     }`}
                             >
-                                <ShieldCheck className="h-4 w-4" />
+                                <ShieldCheck className="h-4 w-4 shrink-0" />
                                 {t('candidate_settings.tabs.security')}
                             </button>
                         </nav>

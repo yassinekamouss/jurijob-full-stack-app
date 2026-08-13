@@ -12,7 +12,7 @@ export default function StatusCard({ isActive }: Props) {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm transition-all hover:shadow-md"
+      className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] border border-[#1a1f1e]/10 bg-white p-5 sm:p-8 shadow-sm transition-all hover:shadow-md"
     >
       <div className="absolute top-0 right-0 -mr-12 -mt-12 h-48 w-48 rounded-full bg-[#1a1f1e]/5 blur-3xl" />
       

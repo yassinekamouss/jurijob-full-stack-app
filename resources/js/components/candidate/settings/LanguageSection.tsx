@@ -172,7 +172,7 @@ export default function LanguageSection({ langues }: Props) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => handleEdit(l)}
                   className="p-2 rounded-xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-all"
@@ -182,7 +182,7 @@ export default function LanguageSection({ langues }: Props) {
                 </button>
                 <button
                   onClick={() => handleDelete(l.id)}
-                  className="text-red-300 hover:text-red-500 transition-all"
+                  className="p-2 rounded-xl border border-red-100 text-red-300 hover:text-red-500 hover:bg-red-50 transition-all"
                   title="Supprimer"
                 >
                   <Trash2 className="h-4 w-4" />

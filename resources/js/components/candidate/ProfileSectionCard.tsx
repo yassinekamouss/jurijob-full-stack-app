@@ -16,14 +16,14 @@ export default function ProfileSectionCard({ title, icon: Icon, children, footer
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      className="group rounded-3xl border border-[#1a1f1e]/10 bg-white p-8 shadow-sm transition-all hover:shadow-md hover:border-[#1a1f1e]/20"
+      className="group rounded-2xl sm:rounded-3xl border border-[#1a1f1e]/10 bg-white p-5 sm:p-8 shadow-sm transition-all hover:shadow-md hover:border-[#1a1f1e]/20"
     >
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1a1f1e]/5 text-[#1a1f1e] transition-colors group-hover:bg-[#1a1f1e] group-hover:text-white">
-            <Icon className="h-5 w-5" />
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-[#1a1f1e]/5 text-[#1a1f1e] transition-colors group-hover:bg-[#1a1f1e] group-hover:text-white shrink-0">
+            <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
           </div>
-          <h2 className="text-2xl font-bold font-serif italic text-[#1a1f1e] tracking-tight">{title}</h2>
+          <h2 className="text-xl sm:text-2xl font-bold font-serif italic text-[#1a1f1e] tracking-tight">{title}</h2>
         </div>
       </div>
 

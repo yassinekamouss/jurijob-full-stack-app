@@ -207,23 +207,23 @@ export default function ExperienceSection({ experiences }: Props) {
                   layout
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-white rounded-[24px] border border-[#1a1f1e]/10 p-6 flex items-center justify-between group transition-all hover:border-[#1a1f1e]/20 hover:shadow-sm"
+                  className="bg-white rounded-[24px] border border-[#1a1f1e]/10 p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-all hover:border-[#1a1f1e]/20 hover:shadow-sm"
                 >
-                  <div className="flex items-center gap-6">
-                    <div className="h-12 w-12 rounded-2xl bg-[#1a1f1e]/5 flex items-center justify-center text-[#1a1f1e]">
+                  <div className="flex items-start sm:items-center gap-4 sm:gap-6">
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-2xl bg-[#1a1f1e]/5 flex items-center justify-center text-[#1a1f1e]">
                       <Briefcase className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">{getTaxonomyLabel(exp.poste_id, postes)}</h4>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{exp.entreprise}</p>
-                        <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/20" />
+                      <h4 className="font-bold text-base sm:text-lg">{getTaxonomyLabel(exp.poste_id, postes)}</h4>
+                      <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                        <p className="text-xs sm:text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{exp.entreprise}</p>
+                        <span className="h-1 w-1 rounded-full bg-[#1a1f1e]/20 hidden sm:inline-block" />
                         <p className="text-[10px] font-black uppercase tracking-widest text-[#C06041]">{getTaxonomyLabel(exp.type_travail_id, typeTravails)}</p>
                       </div>
                       <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{exp.debut} — {exp.fin || t('candidate_settings.experience.present')}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-2 self-end sm:self-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleEdit(exp)}
                       className="p-2 rounded-xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-all"

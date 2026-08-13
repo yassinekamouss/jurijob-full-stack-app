@@ -151,7 +151,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
                     </p>
                 )}
 
-                <div className="flex items-center justify-between border-t border-[#1a1f1e]/5 pt-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-t border-[#1a1f1e]/5 pt-4">
                     <p className="text-xs font-semibold text-[#1a1f1e]/40">
                         {selectedCount > 0
                             ? `${selectedCount} ${selectedCount > 1 ? t('candidate_settings.specializations.selected_plural') : t('candidate_settings.specializations.selected')}`

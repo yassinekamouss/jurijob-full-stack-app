@@ -197,19 +197,19 @@ export default function FormationSection({ formations }: Props) {
                 <motion.div
                   key={f.id}
                   layout
-                  className="bg-white rounded-[24px] border border-[#1a1f1e]/10 p-6 flex items-center justify-between group transition-all hover:border-[#1a1f1e]/20"
+                  className="bg-white rounded-[24px] border border-[#1a1f1e]/10 p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group transition-all hover:border-[#1a1f1e]/20"
                 >
-                  <div className="flex items-center gap-6">
-                    <div className="h-12 w-12 rounded-2xl bg-[#1a1f1e]/5 flex items-center justify-center text-[#1a1f1e]">
+                  <div className="flex items-start sm:items-center gap-4 sm:gap-6">
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-2xl bg-[#1a1f1e]/5 flex items-center justify-center text-[#1a1f1e]">
                       <GraduationCap className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">{getTaxonomyLabel(f.formation_juridique_id, formationJuridiques)} {t('candidate_settings.education.in')} {getTaxonomyLabel(f.specialisation_id, specialisations)}</h4>
-                      <p className="text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{getTaxonomyLabel(f.ecole_id, ecoles)}</p>
+                      <h4 className="font-bold text-base sm:text-lg">{getTaxonomyLabel(f.formation_juridique_id, formationJuridiques)} {t('candidate_settings.education.in')} {getTaxonomyLabel(f.specialisation_id, specialisations)}</h4>
+                      <p className="text-xs sm:text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{getTaxonomyLabel(f.ecole_id, ecoles)}</p>
                       <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{f.annee_debut} — {f.annee_fin || t('candidate_settings.education.not_applicable')}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-2 self-end sm:self-center sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <button onClick={() => handleEdit(f)} className="p-2 rounded-xl border border-[#1a1f1e]/10 text-[#1a1f1e]/40 hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5">
                         <Icon name="Pencil" size={16} />
                     </button>

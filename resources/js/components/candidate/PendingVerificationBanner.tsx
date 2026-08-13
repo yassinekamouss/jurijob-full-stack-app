@@ -56,7 +56,7 @@ export default function PendingVerificationBanner({
         <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden rounded-[32px] border border-amber-200/80 bg-gradient-to-br from-amber-50 via-white to-[#FDFCF8] p-8 shadow-sm"
+            className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] border border-amber-200/80 bg-gradient-to-br from-amber-50 via-white to-[#FDFCF8] p-5 sm:p-8 shadow-sm"
         >
             <div className="absolute top-0 right-0 -mt-16 -mr-16 h-48 w-48 rounded-full bg-amber-200/30 blur-3xl" />
 
