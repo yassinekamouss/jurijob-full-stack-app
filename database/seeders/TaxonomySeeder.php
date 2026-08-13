@@ -12,6 +12,9 @@ class TaxonomySeeder extends Seeder
      */
     public function run(): void
     {
+        if (DB::table('pays')->exists()) {
+            return;
+        }
         /**
          * @var list<array{nom_fr: string, nom_en: string, domaine_fr: string, domaine_en: string}> $specialisations
          */

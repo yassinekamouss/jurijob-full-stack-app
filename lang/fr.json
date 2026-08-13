@@ -585,9 +585,39 @@
       "cv_sent": "CV envoyés",
       "archived": "Archivées"
     },
+    "status": {
+      "EN_TRAITEMENT": "En traitement",
+      "ATTENTE_PAIEMENT": "Attente paiement",
+      "VERIFICATION_PAIEMENT": "Vérif. paiement",
+      "CV_ENVOYES": "CV envoyés",
+      "ARCHIVE": "Archivée"
+    },
     "actions": {
       "matching": "Matching",
-      "confirm_payment": "Confirmer paiement"
+      "confirm_payment": "Confirmer paiement",
+      "revert_to_traitement": "Repasser en traitement",
+      "archive": "Archiver"
+    },
+    "confirm_payment_modal": {
+      "title": "Confirmer le paiement",
+      "description": "Confirmez-vous avoir reçu le paiement pour « {{title}} » ? L’offre passera en CV envoyés et les profils complets seront débloqués pour le recruteur.",
+      "cancel": "Annuler",
+      "confirm": "Oui, confirmer",
+      "confirming": "Confirmation…"
+    },
+    "archive_modal": {
+      "title": "Archiver l'offre",
+      "description": "Voulez-vous archiver « {{title}} » ? L'offre sera déplacée dans l'onglet Archivées et ne sera plus active.",
+      "cancel": "Annuler",
+      "confirm": "Oui, archiver",
+      "archiving": "Archivage…"
+    },
+    "revert_modal": {
+      "title": "Repasser en traitement",
+      "description": "Êtes-vous sûr(e) ? Les profils choisis pour cette offre seront supprimés immédiatement.",
+      "cancel": "Annuler",
+      "confirm": "Oui, repasser",
+      "reverting": "Retour…"
     }
   },
   "admin_matching": {

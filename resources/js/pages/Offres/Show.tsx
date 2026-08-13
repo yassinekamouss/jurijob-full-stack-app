@@ -170,7 +170,7 @@ export default function Show({ offre }: Props) {
                             </div>
 
                             <div className="space-y-6">
-                                <div className="space-y-4 border border-slate-100 bg-white p-6 sm:p-8 shadow-lg shadow-slate-200/50">
+                                <div className="space-y-4 border border-slate-100 bg-white p-6 sm:p-8 shadow-sm shadow-slate-200/50">
                                     <div className="flex items-center justify-between gap-4 border-b border-slate-50 pb-5">
                                         <div>
                                             <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">{t('recruiter_offers.show.structuring_criteria')}</h3>
@@ -271,7 +271,7 @@ export default function Show({ offre }: Props) {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.5 }}
                             >
-                                <Card className="border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50 overflow-hidden mt-8">
+                                <Card className="border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/50 overflow-hidden mt-8">
                                     <div className="space-y-4">
                                        
 
@@ -287,7 +287,7 @@ export default function Show({ offre }: Props) {
                                                     >
                                                         <div className="flex items-start justify-between gap-3 pb-3 border-b border-slate-100">
                                                             <div className="flex items-center gap-3 min-w-0">
-                                                                <div className={cn("h-10 w-10 rounded-xl flex items-center justify-center shadow-lg shrink-0", group.color)}>
+                                                                <div className={cn("h-10 w-10 rounded-xl flex items-center justify-center shrink-0", group.color)}>
                                                                     <group.icon className="h-5 w-5" />
                                                                 </div>
                                                                 <div className="min-w-0">

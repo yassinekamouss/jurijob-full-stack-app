@@ -46,15 +46,17 @@ export function AdminSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href="/admin/dashboard" className="flex items-center justify-center py-8 group-data-[collapsible=icon]:hidden">
-                                <img src="/images/logo_jurijob.png"
-                                    alt="JuriJob - Logo"
-                                    width={100}
-                                    height={100}
-                                    className="w-auto h-32" />
-                            </Link>
-                        </SidebarMenuButton>
+                        {/* On retire le SidebarMenuButton qui impose une hauteur fixe */}
+                        <Link 
+                            href="/admin/dashboard" 
+                            className="group-data-[collapsible=icon]:hidden"
+                        >
+                            <img 
+                                src="/images/logo_jurijob.png"
+                                alt="JuriJob - Logo"
+                                className="" 
+                            />
+                        </Link>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
