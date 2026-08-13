@@ -3,6 +3,7 @@ import { router, Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import SEO from '@/components/SEO';
 import AlreadyAuthenticatedCard from '@/components/auth/AlreadyAuthenticatedCard';
 import RegisterSocialPrompt from '@/components/auth/RegisterSocialPrompt';
@@ -420,6 +421,23 @@ export default function RegisterRecruteur() {
 
                         {/* Right: form wizard */}
                         <section className="lg:col-span-2">
+                            {/* Mobile title banner */}
+                            <div className="mb-6 text-center lg:hidden">
+                                <span className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-3.5 py-1 text-[11px] font-bold tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
+                                    <Icon name="Sparkles" size={12} className="text-[#C06041]" />
+                                    {t('auth.register_recruiter.badge')}
+                                </span>
+                                <h1
+                                    className="mt-3 text-2xl font-bold tracking-tight text-[#1a1f1e] sm:text-3xl"
+                                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                                >
+                                    {t('auth.register_recruiter.title')}
+                                </h1>
+                                <p className="mt-1 text-sm font-medium text-[#1a1f1e]/70">
+                                    {t('auth.register_recruiter.subtitle')}
+                                </p>
+                            </div>
+
                             {!auth.user && (
                                 <RegisterSocialPrompt
                                     role="recruteur"
@@ -427,7 +445,7 @@ export default function RegisterRecruteur() {
                                 />
                             )}
 
-                            <div className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/10 bg-white/50 p-6 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
+                            <div className="relative z-10 mx-auto w-full max-w-2xl  border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-4 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
                                 {auth.user ? (
                                     <AlreadyAuthenticatedCard user={auth.user} />
                                 ) : (
@@ -455,6 +473,7 @@ export default function RegisterRecruteur() {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 }

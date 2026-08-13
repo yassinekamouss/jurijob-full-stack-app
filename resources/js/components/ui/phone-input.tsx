@@ -5,6 +5,10 @@ import { CheckIcon, ChevronsUpDown } from "lucide-react"
 import * as RPNInput from "react-phone-number-input"
 import flags from "react-phone-number-input/flags"
 
+import frLabels from "react-phone-number-input/locale/fr.json"
+import enLabels from "react-phone-number-input/locale/en.json"
+import { useTranslation } from "react-i18next"
+
 import {
   Command,
   CommandEmpty,
@@ -43,38 +47,46 @@ const PhoneInput = React.forwardRef<
       className,
       containerClassName,
       inputClassName,
-      searchPlaceholder = "Rechercher un pays...",
+      searchPlaceholder,
       onChange,
       value,
       defaultCountry = getDefaultCountry(),
       countries = PHONE_COUNTRIES,
+      labels: customLabels,
       ...props
     },
     ref,
-  ) => (
-    <div
-      className={cn(
-        "flex items-center rounded-lg border border-input bg-background shadow-xs transition-[color,box-shadow]",
-        containerClassName,
-      )}
-    >
-      <RPNInput.default
-        ref={ref}
-        className={cn("flex w-full items-center", className)}
-        flagComponent={FlagComponent}
-        countrySelectComponent={CountrySelect}
-        inputComponent={InputComponent}
-        defaultCountry={defaultCountry as RPNInput.Country}
-        countries={countries as RPNInput.Country[]}
-        smartCaret={false}
-        value={value || undefined}
-        onChange={(next) => onChange?.(next || ("" as RPNInput.Value))}
-        numberInputProps={{ inputClassName }}
-        countrySelectProps={{ searchPlaceholder }}
-        {...props}
-      />
-    </div>
-  ),
+  ) => {
+    const { i18n } = useTranslation()
+    const activeLocaleLabels = i18n.language?.startsWith('fr') ? frLabels : enLabels
+    const activeSearchPlaceholder = searchPlaceholder || (i18n.language?.startsWith('fr') ? "Rechercher un pays..." : "Search country...")
+
+    return (
+      <div
+        className={cn(
+          "flex items-center rounded-lg border border-input bg-background shadow-xs transition-[color,box-shadow]",
+          containerClassName,
+        )}
+      >
+        <RPNInput.default
+          ref={ref}
+          className={cn("flex w-full items-center", className)}
+          flagComponent={FlagComponent}
+          countrySelectComponent={CountrySelect}
+          inputComponent={InputComponent}
+          defaultCountry={defaultCountry as RPNInput.Country}
+          countries={countries as RPNInput.Country[]}
+          labels={customLabels || activeLocaleLabels}
+          smartCaret={false}
+          value={value || undefined}
+          onChange={(next) => onChange?.(next || ("" as RPNInput.Value))}
+          numberInputProps={{ inputClassName }}
+          countrySelectProps={{ searchPlaceholder: activeSearchPlaceholder }}
+          {...props}
+        />
+      </div>
+    )
+  },
 )
 PhoneInput.displayName = "PhoneInput"
 
@@ -112,6 +124,7 @@ const CountrySelect = ({
   onChange,
   searchPlaceholder = "Rechercher un pays...",
 }: CountrySelectProps) => {
+  const { i18n } = useTranslation()
   const [searchValue, setSearchValue] = React.useState("")
   const [isOpen, setIsOpen] = React.useState(false)
   const scrollAreaRef = React.useRef<HTMLDivElement>(null)
@@ -157,7 +170,7 @@ const CountrySelect = ({
           />
           <CommandList>
             <ScrollArea ref={scrollAreaRef} className="h-72">
-              <CommandEmpty>Aucun pays trouvé.</CommandEmpty>
+              <CommandEmpty>{i18n.language?.startsWith('fr') ? "Aucun pays trouvé." : "No country found."}</CommandEmpty>
               <CommandGroup>
                 {countryList.map(({ value, label }) =>
                   value ? (

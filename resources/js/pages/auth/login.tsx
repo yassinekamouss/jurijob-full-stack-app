@@ -41,27 +41,27 @@ export default function Login({
 
             <Header />
 
-            <main className="relative flex flex-1 items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
+            <main className="relative flex flex-1 items-center justify-center px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
                 {/* Decorative Elements for luxury aesthetic */}
                 <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
                     <div className="absolute -top-[10%] -right-[15%] h-[70%] w-[50%] rounded-full bg-[#E5D5C5] opacity-30 blur-[120px]" />
                     <div className="absolute -bottom-[20%] -left-[10%] h-[70%] w-[50%] rounded-full bg-[#E5D5C5] opacity-20 blur-[120px]" />
                 </div>
 
-                <div className="z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-16 lg:grid-cols-2 lg:gap-24">
+                <div className="z-10 grid w-full max-w-6xl grid-cols-1 items-center gap-10 sm:gap-16 lg:grid-cols-2 lg:gap-24">
                     {/* Left Column: Login Form */}
                     <Reveal
                         direction="up"
                         duration={0.8}
                         className="mx-auto w-full max-w-md lg:mr-0 lg:ml-auto"
                     >
-                        <div className="relative overflow-hidden border border-[#1a1f1e]/10 bg-white/60 p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] backdrop-blur-xl sm:p-12">
+                        <div className="relative overflow-hidden border border-[#1a1f1e]/10 bg-white/60 p-6 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] backdrop-blur-xl sm:p-12">
                             {/* Subtle inner border accent */}
                             <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-[#1a1f1e] to-transparent opacity-20"></div>
 
-                            <div className="mb-10 text-center lg:text-left">
+                            <div className="mb-8 text-center sm:mb-10 lg:text-left">
                                 <h1
-                                    className="mb-3 text-4xl font-light tracking-tight text-[#1a1f1e]"
+                                    className="mb-3 text-3xl font-light tracking-tight text-[#1a1f1e] sm:text-4xl"
                                     style={{
                                         fontFamily:
                                             "'Cormorant Garamond', serif",
@@ -69,7 +69,7 @@ export default function Login({
                                 >
                                     {t('auth.login.title')}
                                 </h1>
-                                <p className="text-base text-gray-600">
+                                <p className="text-sm text-gray-600 sm:text-base">
                                     {t('auth.login.subtitle')}
                                 </p>
                             </div>
@@ -218,7 +218,7 @@ export default function Login({
                     >
                         <div>
                             <h2
-                                className="mb-6 text-5xl leading-[1.1] font-light tracking-tight text-[#1a1f1e] sm:text-6xl"
+                                className="mb-4 text-3xl leading-[1.15] font-light tracking-tight text-[#1a1f1e] sm:mb-6 sm:text-5xl lg:text-6xl"
                                 style={{
                                     fontFamily: "'Cormorant Garamond', serif",
                                 }}
@@ -228,21 +228,21 @@ export default function Login({
                                     {t('auth.login.hero_title_2')}
                                 </span>
                             </h2>
-                            <p className="text-lg leading-relaxed font-light text-gray-700">
+                            <p className="text-base leading-relaxed font-light text-gray-700 sm:text-lg">
                                 {t('auth.login.hero_desc')}
                             </p>
                         </div>
 
-                        <div className="space-y-8 border-t border-[#1a1f1e]/10 pt-6">
+                        <div className="space-y-6 border-t border-[#1a1f1e]/10 pt-6 sm:space-y-8">
                             <div className="flex items-start">
                                 <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1a1f1e]/20 bg-[#1a1f1e]/5">
                                     <div className="h-2 w-2 rounded-full bg-[#1a1f1e]" />
                                 </div>
-                                <div className="ml-5">
+                                <div className="ml-4 sm:ml-5">
                                     <h3 className="text-sm font-semibold tracking-widest text-[#1a1f1e] uppercase">
                                         {t('auth.login.feature1_title')}
                                     </h3>
-                                    <p className="mt-2 text-base font-light text-gray-600">
+                                    <p className="mt-2 text-sm font-light text-gray-600 sm:text-base">
                                         {t('auth.login.feature1_desc')}
                                     </p>
                                 </div>
@@ -251,11 +251,11 @@ export default function Login({
                                 <div className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1a1f1e]/20 bg-[#1a1f1e]/5">
                                     <div className="h-2 w-2 rounded-full bg-[#1a1f1e]" />
                                 </div>
-                                <div className="ml-5">
+                                <div className="ml-4 sm:ml-5">
                                     <h3 className="text-sm font-semibold tracking-widest text-[#1a1f1e] uppercase">
                                         {t('auth.login.feature2_title')}
                                     </h3>
-                                    <p className="mt-2 text-base font-light text-gray-600">
+                                    <p className="mt-2 text-sm font-light text-gray-600 sm:text-base">
                                         {t('auth.login.feature2_desc')}
                                     </p>
                                 </div>

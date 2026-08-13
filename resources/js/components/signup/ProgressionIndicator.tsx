@@ -35,8 +35,10 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
         return 'bg-slate-100 h-1';
     };
 
+    const currentStepObj = steps.find((s) => s.id === currentStep);
+
     return (
-        <div className="w-full max-w-2xl mx-auto my-12 px-4">
+        <div className="mx-auto my-6 w-full max-w-2xl px-2 sm:my-12 sm:px-4">
             <div className="flex items-center justify-center">
                 {steps.map((step, index) => {
                     const status = getStepStatus(step.id);
@@ -46,17 +48,17 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
                         <React.Fragment key={step.id}>
                             <div className="relative flex flex-col items-center">
                                 <div
-                                    className={`flex h-10 w-10 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-500 sm:h-12 sm:w-12 ${getStepClasses(status)}`}
+                                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-500 sm:h-12 sm:w-12 ${getStepClasses(status)}`}
                                 >
                                     {status === 'completed' ? (
-                                        <Icon name="Check" size={20} />
+                                        <Icon name="Check" className="h-4 w-4 sm:h-5 sm:w-5" />
                                     ) : (
-                                        <Icon name={step.icon as any} size={20} />
+                                        <Icon name={step.icon as any} className="h-4 w-4 sm:h-5 sm:w-5" />
                                     )}
                                 </div>
-                                <div className="absolute top-14 w-20 flex justify-center sm:w-24">
+                                <div className="absolute top-14 hidden justify-center sm:flex sm:w-24">
                                     <span
-                                        className={`text-[9px] font-black uppercase tracking-widest transition-colors duration-500 text-center sm:text-[10px] ${
+                                        className={`text-center text-[9px] font-black uppercase tracking-widest transition-colors duration-500 sm:text-[10px] ${
                                             status === 'current'
                                                 ? 'text-slate-900'
                                                 : status === 'completed'
@@ -70,7 +72,7 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
                             </div>
 
                             {!isLast && (
-                                <div className="mx-1 flex-1 sm:mx-3">
+                                <div className="mx-0.5 flex-1 sm:mx-3">
                                     <div className={`rounded-full transition-all duration-700 ${getConnectorClasses(step.id)}`} />
                                 </div>
                             )}
@@ -79,15 +81,24 @@ const ProgressIndicator = ({ currentStep, steps }: ProgressIndicatorProps) => {
                 })}
             </div>
 
+            {/* Mobile active step label */}
+            {currentStepObj && (
+                <div className="mt-3 text-center sm:hidden">
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-slate-900">
+                        {currentStepObj.label}
+                    </span>
+                </div>
+            )}
+
             {/* Progress bar and percentage */}
-            <div className="mt-20 px-8">
-                <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">
+            <div className="mt-6 px-2 sm:mt-20 sm:px-8">
+                <div className="mb-2 flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400 sm:mb-3">
                     <span>{t('auth.forms.navigator.progress')}</span>
                     <span className="text-slate-900">{Math.round((currentStep / totalSteps) * 100)}%</span>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
                     <div
-                        className="bg-slate-900 h-1.5 rounded-full transition-all duration-700 ease-out"
+                        className="h-1.5 rounded-full bg-slate-900 transition-all duration-700 ease-out"
                         style={{ width: `${(currentStep / totalSteps) * 100}%` }}
                     />
                 </div>
