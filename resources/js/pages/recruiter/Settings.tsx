@@ -11,6 +11,8 @@ import {
     ShieldCheck,
     ShieldAlert,
     Building,
+    Loader2,
+    Check,
 } from 'lucide-react';
 import { useState, useEffect, useMemo, FormEvent } from 'react';
 
@@ -34,7 +36,7 @@ export default function Settings({ recruteur, user }: Props) {
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [selectedPaysId, setSelectedPaysId] = useState<string>('');
 
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, put, processing, recentlySuccessful, errors } = useForm({
         nom_entreprise: recruteur?.nom_entreprise || '',
         poste: recruteur?.poste || '',
         type_organisation_id: recruteur?.type_organisation_id || '',
@@ -425,10 +427,58 @@ export default function Settings({ recruteur, user }: Props) {
                                                 <button
                                                     type="submit"
                                                     disabled={processing}
-                                                    className="inline-flex items-center gap-2 rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all disabled:pointer-events-none disabled:opacity-50"
+                                                    className={`group relative inline-flex min-w-[220px] items-center justify-center overflow-hidden rounded-xl px-8 py-3.5 text-xs font-black tracking-widest uppercase transition-all duration-300 shadow-sm ${
+                                                        recentlySuccessful
+                                                            ? 'bg-emerald-700 text-white shadow-emerald-900/20'
+                                                            : processing
+                                                              ? 'bg-[#1a1f1e]/85 text-white/90 cursor-wait'
+                                                              : 'bg-[#1a1f1e] text-white hover:bg-[#343a38] active:scale-[0.98]'
+                                                    } disabled:pointer-events-none`}
                                                 >
-                                                    <Save className="h-4 w-4" />
-                                                    {t('recruiter_settings.form.save')}
+                                                    {processing && (
+                                                        <motion.div
+                                                            initial={{ x: '-100%' }}
+                                                            animate={{ x: '100%' }}
+                                                            transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
+                                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
+                                                        />
+                                                    )}
+                                                    <AnimatePresence mode="wait">
+                                                        {processing ? (
+                                                            <motion.span
+                                                                key="saving"
+                                                                initial={{ opacity: 0, y: 5 }}
+                                                                animate={{ opacity: 1, y: 0 }}
+                                                                exit={{ opacity: 0, y: -5 }}
+                                                                className="inline-flex items-center gap-2.5"
+                                                            >
+                                                                <Loader2 className="h-4 w-4 animate-spin text-[#C06041]" />
+                                                                <span>{t('recruiter_settings.form.saving', 'Enregistrement...')}</span>
+                                                            </motion.span>
+                                                        ) : recentlySuccessful ? (
+                                                            <motion.span
+                                                                key="saved"
+                                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                                animate={{ opacity: 1, scale: 1 }}
+                                                                exit={{ opacity: 0, scale: 0.9 }}
+                                                                className="inline-flex items-center gap-2.5 text-emerald-100"
+                                                            >
+                                                                <Check className="h-4 w-4 text-emerald-300 stroke-[3]" />
+                                                                <span>{t('recruiter_settings.form.saved', 'Modifications enregistrées !')}</span>
+                                                            </motion.span>
+                                                        ) : (
+                                                            <motion.span
+                                                                key="idle"
+                                                                initial={{ opacity: 0, y: 5 }}
+                                                                animate={{ opacity: 1, y: 0 }}
+                                                                exit={{ opacity: 0, y: -5 }}
+                                                                className="inline-flex items-center gap-2.5"
+                                                            >
+                                                                <Save className="h-4 w-4 transition-transform group-hover:scale-110" />
+                                                                <span>{t('recruiter_settings.form.save')}</span>
+                                                            </motion.span>
+                                                        )}
+                                                    </AnimatePresence>
                                                 </button>
                                             </div>
                                         </form>

@@ -444,7 +444,9 @@
       "select_city": "Sélectionner une ville",
       "select_country_first": "Sélectionnez d'abord un pays",
       "website": "Site Web (Optionnel)",
-      "save": "Enregistrer les modifications"
+      "save": "Enregistrer les modifications",
+      "saving": "Enregistrement en cours...",
+      "saved": "Modifications enregistrées !"
     },
     "security": {
       "title_standard": "Sécurité standard",
@@ -1734,7 +1736,15 @@
       "description": "Construisez une annonce structurée et professionnelle en six étapes guidées.",
       "step": "Étape",
       "on": "sur",
-      "need_help": "Besoin d'aide ?"
+      "need_help": "Besoin d'aide ?",
+      "steps":{
+        "1":{ "title": "Identité", "subtitle": "Titre, métier, description" },
+        "2":{ "title": "Organisation", "subtitle": "Contrat, mode, lieu, salaire" },
+        "3":{ "title": "Profil", "subtitle": "Expérience, formation, notes" },
+        "4":{ "title": "Expertise", "subtitle": "Spécialisations" },
+        "5":{ "title": "Langues", "subtitle": "Niveau et importance" },
+        "6":{ "title": "Récapitulatif", "subtitle": "Validation finale" }
+      }
     }
   }
 }

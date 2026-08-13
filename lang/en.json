@@ -444,7 +444,9 @@
       "select_city": "Select a city",
       "select_country_first": "Select a country first",
       "website": "Website (Optional)",
-      "save": "Save changes"
+      "save": "Save changes",
+      "saving": "Saving changes...",
+      "saved": "Changes saved!"
     },
     "security": {
       "title_standard": "Standard security",
