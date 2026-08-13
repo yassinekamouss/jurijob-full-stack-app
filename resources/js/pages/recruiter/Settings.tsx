@@ -421,11 +421,11 @@ export default function Settings({ recruteur, user }: Props) {
                                                 </div>
                                             </div>
 
-                                            <div className="flex justify-end border-t border-[#1a1f1e]/10 pt-6">
+                                           <div className="flex justify-end border-t border-[#1a1f1e]/10 pt-6">
                                                 <button
                                                     type="submit"
                                                     disabled={processing}
-                                                    className="inline-flex items-center gap-2 rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:scale-105 active:scale-95 disabled:pointer-events-none disabled:opacity-50"
+                                                    className="inline-flex items-center gap-2 rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all disabled:pointer-events-none disabled:opacity-50"
                                                 >
                                                     <Save className="h-4 w-4" />
                                                     {t('recruiter_settings.form.save')}
