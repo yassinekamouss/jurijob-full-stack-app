@@ -613,9 +613,45 @@
     },
     "actions": {
       "matching": "Matching",
+      "custom_matching": "Lancer un matching",
       "confirm_payment": "Confirmer paiement",
       "revert_to_traitement": "Repasser en traitement",
       "archive": "Archiver"
+    },
+    "custom_matching": {
+      "modal_title": "Lancer un matching",
+      "modal_description": "Ajustez les critères de recherche pour cette offre. Ces modifications ne sont pas enregistrées sur l’offre : elles servent uniquement à lancer cette recherche.",
+      "filters_title": "Critères de sélection",
+      "filters_hint": "Décochez un critère pour l’ignorer lors de la recherche, ou changez sa valeur.",
+      "filters": {
+        "poste": "Poste",
+        "niveau_experience": "Niveau d’expérience",
+        "formation_juridique": "Formation juridique",
+        "salaire": "Salaire",
+        "ville": "Ville",
+        "type_travail": "Type de travail",
+        "mode_travail": "Mode de travail"
+      },
+      "languages_title": "Langues",
+      "languages_level": "Niveau",
+      "languages_empty": "Aucune langue requise.",
+      "add_language": "Ajouter une langue",
+      "specialisations_title": "Spécialisations",
+      "specialisations_empty": "Aucune spécialisation requise.",
+      "add_specialisation": "Ajouter une spécialisation",
+      "remove": "Retirer",
+      "select_placeholder": "Choisir…",
+      "none": "Aucun",
+      "importance": {
+        "indispensable": "Indispensable",
+        "important": "Important",
+        "souhaitable": "Souhaitable",
+        "facultatif": "Facultatif"
+      },
+      "cancel": "Annuler",
+      "launch": "Lancer le matching",
+      "launching": "Lancement…",
+      "error_generic": "Impossible de lancer le matching."
     },
     "confirm_payment_modal": {
       "title": "Confirmer le paiement",
@@ -655,7 +691,22 @@
     "score": "score",
     "bonus_languages": "+{{count}} bonus langues",
     "penalty_languages": "−{{count}} malus langues",
-    "penalty_specialities": "−{{count}} malus spécialités"
+    "penalty_specialities": "−{{count}} malus spécialités",
+    "applied_criteria": {
+      "title": "Critères appliqués au matching",
+      "description": "Ce matching a été lancé avec des critères personnalisés. Les modifications ne sont pas enregistrées sur l’offre.",
+      "fields": {
+        "poste": "Poste",
+        "niveau_experience": "Expérience",
+        "formation_juridique": "Formation",
+        "salaire": "Salaire",
+        "ville": "Ville",
+        "type_travail": "Type",
+        "mode_travail": "Mode"
+      },
+      "language": "Langue",
+      "specialisation": "Spécialisation"
+    }
   },
   "admin_requests": {
     "page_title": "Demandes — {{company}}",

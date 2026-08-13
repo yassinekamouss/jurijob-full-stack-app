@@ -6,14 +6,15 @@ use App\Enums\OffreStatut;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ArchiveOffreRequest;
 use App\Http\Requests\Admin\ConfirmPaymentRequest;
+use App\Http\Requests\Admin\CustomMatchingRequest;
 use App\Http\Requests\Admin\SendOffreMatchesRequest;
 use App\Models\Offre\Offre;
 use App\Models\Offre\OffreMatch;
 use App\Models\Recruteur\Recruteur;
-use App\Models\Taxonomy\Langue;
-use App\Models\Taxonomy\NiveauLangue;
-use App\Models\Taxonomy\Specialisation;
+use App\Repositories\TaxonomyRepository;
+use App\Services\CandidateMatching\MatchingCriteria;
 use App\Services\CandidateMatching\MatchingEngine;
+use App\Services\Offre\OffreRequirementsPresenter;
 use App\Services\Offre\OffreStatusTransition;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class OffreController extends Controller
     public function __construct(
         private MatchingEngine $matchingEngine,
         private OffreStatusTransition $statusTransition,
+        private OffreRequirementsPresenter $requirementsPresenter,
     ) {}
 
     /**
@@ -51,6 +53,9 @@ class OffreController extends Controller
                 'modeTravail',
                 'niveauExperience',
                 'urgence',
+                'formationJuridique',
+                'salaire',
+                'criteresMultiples',
             ])
             ->where('statut', $statut);
 
@@ -67,10 +72,17 @@ class OffreController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $offres->getCollection()->transform(function (Offre $offre) {
+            $offre->setAttribute('requirements', $this->requirementsPresenter->forOffre($offre));
+
+            return $offre;
+        });
+
         return Inertia::render('admin/Offres', [
             'offres' => $offres,
             'currentStatut' => $statut,
             'filters' => request()->only(['search']),
+            'taxonomies' => TaxonomyRepository::getAll(),
         ]);
     }
 
@@ -115,49 +127,70 @@ class OffreController extends Controller
             'matches',
         ]);
 
-        $offre->setAttribute(
-            'requirements',
-            $this->transformCriteresMultiplesToRequirements($offre)
-        );
+        $offre->setAttribute('requirements', $this->requirementsPresenter->forOffre($offre));
 
         return Inertia::render('admin/OffreMatching', [
             'offre' => $offre,
             'candidates' => $this->matchingEngine->getMatches($offre),
+            'appliedCriteria' => null,
             'alreadySent' => $offre->matches()->exists() || $offre->statut !== OffreStatut::EnTraitement->value,
         ]);
     }
 
     /**
-     * Enregistre la short-list et passe l'offre en attente de paiement.
+     * Lance un matching personnalisé : l'admin ajuste / désactive des critères
+     * puis reçoit les candidats correspondants. Les critères ne sont pas
+     * persistés sur l'offre.
+     */
+    public function customMatching(CustomMatchingRequest $request, Offre $offre): Response
+    {
+        $criteria = MatchingCriteria::fromRequest($request->validated());
+
+        $offre->load([
+            'recruteur.user',
+            'poste',
+            'ville',
+            'typeTravail',
+            'modeTravail',
+            'niveauExperience',
+            'formationJuridique',
+            'salaire',
+            'urgence',
+            'criteresMultiples',
+        ]);
+
+        $offre->setAttribute('requirements', $this->requirementsPresenter->forOffre($offre));
+
+        return Inertia::render('admin/OffreMatching', [
+            'offre' => $offre,
+            'candidates' => $this->matchingEngine->getMatches($offre, $criteria),
+            'appliedCriteria' => $this->presentAppliedCriteria($offre, $criteria),
+            'alreadySent' => false,
+        ]);
+    }
+
+    /**
+     * Enregistre la short-list (avec les scores fournis par l'admin) et passe
+     * l'offre en attente de paiement.
      */
     public function sendMatches(SendOffreMatchesRequest $request, Offre $offre): RedirectResponse
     {
-        $candidatIds = collect($request->validated('candidat_ids'))
-            ->map(fn ($id) => (int) $id)
+        $candidates = collect($request->validated('candidates'))
+            ->map(fn (array $candidate): array => [
+                'id' => (int) $candidate['id'],
+                'score' => (int) $candidate['score'],
+            ])
             ->values();
 
-        $stale = false;
-
         try {
-            DB::transaction(function () use ($offre, $candidatIds, &$stale): void {
-                $matches = $this->matchingEngine->getMatches($offre)
-                    ->keyBy('id');
-
-                $missing = $candidatIds->reject(fn (int $id) => $matches->has($id));
-
-                if ($missing->isNotEmpty()) {
-                    $stale = true;
-
-                    return;
-                }
-
+            DB::transaction(function () use ($offre, $candidates): void {
                 $offre->matches()->delete();
 
-                foreach ($candidatIds as $candidatId) {
+                foreach ($candidates as $candidate) {
                     OffreMatch::query()->create([
                         'offre_id' => $offre->id,
-                        'candidat_id' => $candidatId,
-                        'score' => (int) $matches->get($candidatId)->matching_score,
+                        'candidat_id' => $candidate['id'],
+                        'score' => $candidate['score'],
                     ]);
                 }
 
@@ -172,11 +205,6 @@ class OffreController extends Controller
             });
         } catch (\RuntimeException|InvalidArgumentException) {
             return redirect()->back()->with('error', 'Impossible de traiter cette offre : statut invalide.');
-        }
-
-        if ($stale) {
-            return redirect()->back()
-                ->with('error', 'Certains candidats sélectionnés ne correspondent plus à cette offre.');
         }
 
         return redirect()
@@ -247,41 +275,27 @@ class OffreController extends Controller
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * Présente les critères appliqués lors d'un matching personnalisé, avec
+     * leurs libellés, pour affichage côté frontend.
+     *
+     * @return array<string, mixed>
      */
-    private function transformCriteresMultiplesToRequirements(Offre $offre): array
+    private function presentAppliedCriteria(Offre $offre, MatchingCriteria $criteria): array
     {
-        $requirements = [];
+        $relation = fn (?int $id, string $relationName): ?array => $id !== null && $offre->$relationName !== null
+            ? ['id' => $id, 'nom' => $offre->$relationName->nom]
+            : null;
 
-        $langueIds = $offre->criteresMultiples->where('type_critere', 'LANGUE')->pluck('critere_id');
-        $specialisationIds = $offre->criteresMultiples->where('type_critere', 'SPECIALISATION')->pluck('critere_id');
-
-        $langues = Langue::query()->whereIn('id', $langueIds)->get()->keyBy('id');
-        $specialisations = Specialisation::query()->whereIn('id', $specialisationIds)->get()->keyBy('id');
-        $niveauLangues = NiveauLangue::query()->get()->keyBy('id');
-
-        foreach ($offre->criteresMultiples as $critere) {
-            $label = match ($critere->type_critere) {
-                'LANGUE' => $langues[$critere->critere_id]?->nom ?? 'Inconnu',
-                'SPECIALISATION' => $specialisations[$critere->critere_id]?->nom ?? 'Inconnu',
-                default => 'Inconnu',
-            };
-
-            $metadata = $critere->metadata ?? [];
-
-            if ($critere->type_critere === 'LANGUE' && isset($metadata['niveau_langue_id'])) {
-                $metadata['niveau_nom'] = $niveauLangues[$metadata['niveau_langue_id']]?->nom ?? null;
-            }
-
-            $requirements[] = [
-                'taxonomy_id' => $critere->critere_id,
-                'taxonomy_type' => $critere->type_critere,
-                'label' => $label,
-                'metadata' => $metadata,
-            ];
-        }
-
-        return $requirements;
+        return [
+            'poste' => $relation($criteria->posteId, 'poste'),
+            'niveau_experience' => $relation($criteria->niveauExperienceId, 'niveauExperience'),
+            'formation_juridique' => $relation($criteria->formationJuridiqueId, 'formationJuridique'),
+            'salaire' => $relation($criteria->salaireId, 'salaire'),
+            'ville' => $relation($criteria->villeId, 'ville'),
+            'type_travail' => $relation($criteria->typeTravailId, 'typeTravail'),
+            'mode_travail' => $relation($criteria->modeTravailId, 'modeTravail'),
+            'requirements' => $this->requirementsPresenter->forCriteria($criteria),
+        ];
     }
 
     private function generatePaymentReference(Offre $offre): string

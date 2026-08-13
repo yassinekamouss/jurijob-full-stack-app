@@ -44,7 +44,7 @@ class LargeCandidatSeeder extends Seeder
             return;
         }
 
-        $total = 10000;
+        $total = 1000;
         $batchSize = 250;
         $password = Hash::make('password');
 
