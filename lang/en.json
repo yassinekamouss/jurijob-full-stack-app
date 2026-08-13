@@ -613,9 +613,45 @@
     },
     "actions": {
       "matching": "Matching",
+      "custom_matching": "Run Matching",
       "confirm_payment": "Confirm Payment",
       "revert_to_traitement": "Revert to Processing",
       "archive": "Archive"
+    },
+    "custom_matching": {
+      "modal_title": "Run Matching",
+      "modal_description": "Adjust the search criteria for this offer. These changes are not saved on the offer: they are only used to launch this search.",
+      "filters_title": "Selection Criteria",
+      "filters_hint": "Uncheck a criterion to ignore it during the search, or change its value.",
+      "filters": {
+        "poste": "Position",
+        "niveau_experience": "Experience level",
+        "formation_juridique": "Legal training",
+        "salaire": "Salary",
+        "ville": "City",
+        "type_travail": "Work type",
+        "mode_travail": "Work mode"
+      },
+      "languages_title": "Languages",
+      "languages_level": "Level",
+      "languages_empty": "No required language.",
+      "add_language": "Add a language",
+      "specialisations_title": "Specialisations",
+      "specialisations_empty": "No required specialisation.",
+      "add_specialisation": "Add a specialisation",
+      "remove": "Remove",
+      "select_placeholder": "Choose…",
+      "none": "None",
+      "importance": {
+        "indispensable": "Essential",
+        "important": "Important",
+        "souhaitable": "Desirable",
+        "facultatif": "Optional"
+      },
+      "cancel": "Cancel",
+      "launch": "Run Matching",
+      "launching": "Launching…",
+      "error_generic": "Unable to run the matching."
     },
     "confirm_payment_modal": {
       "title": "Confirm Payment",
@@ -655,7 +691,22 @@
     "score": "score",
     "bonus_languages": "+{{count}} languages bonus",
     "penalty_languages": "−{{count}} languages penalty",
-    "penalty_specialities": "−{{count}} specialities penalty"
+    "penalty_specialities": "−{{count}} specialities penalty",
+    "applied_criteria": {
+      "title": "Criteria applied to the matching",
+      "description": "This matching was run with custom criteria. The changes are not saved on the offer.",
+      "fields": {
+        "poste": "Position",
+        "niveau_experience": "Experience",
+        "formation_juridique": "Training",
+        "salaire": "Salary",
+        "ville": "City",
+        "type_travail": "Type",
+        "mode_travail": "Mode"
+      },
+      "language": "Language",
+      "specialisation": "Specialisation"
+    }
   },
   "admin_requests": {
     "page_title": "Requests — {{company}}",

@@ -10,9 +10,9 @@ use App\Http\Requests\Offre\ConfirmTransferRequest;
 use App\Http\Requests\Offre\StoreOffreRequest;
 use App\Models\Offre\Offre;
 use App\Models\Taxonomy\Langue;
-use App\Models\Taxonomy\NiveauLangue;
 use App\Models\Taxonomy\Specialisation;
 use App\Repositories\TaxonomyRepository;
+use App\Services\Offre\OffreRequirementsPresenter;
 use App\Services\Offre\OffreStatusTransition;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +24,10 @@ class OffreController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private OffreStatusTransition $statusTransition) {}
+    public function __construct(
+        private OffreStatusTransition $statusTransition,
+        private OffreRequirementsPresenter $requirementsPresenter,
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -125,7 +128,7 @@ class OffreController extends Controller
         ]);
 
         $offreData = array_merge($offre->toArray(), [
-            'requirements' => $this->transformCriteresMultiplesToRequirements($offre),
+            'requirements' => $this->requirementsPresenter->forOffre($offre),
         ]);
 
         return Inertia::render('Offres/Show', [
@@ -366,45 +369,5 @@ class OffreController extends Controller
                 'metadata' => empty($req->metadata) ? null : $req->metadata,
             ]);
         }
-    }
-
-    /**
-     * Transform criteresMultiples back to requirements format for frontend compatibility.
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    private function transformCriteresMultiplesToRequirements(Offre $offre): array
-    {
-        $requirements = [];
-
-        $langueIds = $offre->criteresMultiples->where('type_critere', 'LANGUE')->pluck('critere_id');
-        $specialisationIds = $offre->criteresMultiples->where('type_critere', 'SPECIALISATION')->pluck('critere_id');
-
-        $langues = Langue::whereIn('id', $langueIds)->get()->keyBy('id');
-        $specialisations = Specialisation::whereIn('id', $specialisationIds)->get()->keyBy('id');
-        $niveauLangues = NiveauLangue::all()->keyBy('id');
-
-        foreach ($offre->criteresMultiples as $critere) {
-            $label = match ($critere->type_critere) {
-                'LANGUE' => $langues[$critere->critere_id]?->nom ?? 'Inconnu',
-                'SPECIALISATION' => $specialisations[$critere->critere_id]?->nom ?? 'Inconnu',
-                default => 'Inconnu',
-            };
-
-            $metadata = $critere->metadata ?? [];
-
-            if ($critere->type_critere === 'LANGUE' && isset($metadata['niveau_langue_id'])) {
-                $metadata['niveau_nom'] = $niveauLangues[$metadata['niveau_langue_id']]?->nom ?? null;
-            }
-
-            $requirements[] = [
-                'taxonomy_id' => $critere->critere_id,
-                'taxonomy_type' => $critere->type_critere,
-                'label' => $label,
-                'metadata' => $metadata,
-            ];
-        }
-
-        return $requirements;
     }
 }

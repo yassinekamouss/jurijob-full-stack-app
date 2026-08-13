@@ -29,7 +29,7 @@ class OffreStatusTransition
                 OffreStatut::AttentePaiement->value,
                 OffreStatut::Archive->value,
             ],
-            OffreStatut::AttentePaiement->value => [OffreStatut::Archive->value , OffreStatut::EnTraitement->value],
+            OffreStatut::AttentePaiement->value => [OffreStatut::Archive->value, OffreStatut::EnTraitement->value],
             OffreStatut::VerificationPaiement->value => [
                 OffreStatut::CvEnvoyes->value,
                 OffreStatut::AttentePaiement->value,

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Enums\OffreStatut;
+use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,17 +25,23 @@ class SendOffreMatchesRequest extends FormRequest
         $offre = $this->route('offre');
 
         return [
-            'candidat_ids' => [
+            'candidates' => [
                 'required',
                 'array',
                 'min:1',
                 'max:'.$offre->nombre_cv,
             ],
-            'candidat_ids.*' => [
+            'candidates.*.id' => [
                 'required',
                 'integer',
                 'distinct',
                 'exists:candidats,id',
+            ],
+            'candidates.*.score' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:100',
             ],
         ];
     }
@@ -48,11 +55,17 @@ class SendOffreMatchesRequest extends FormRequest
         $offre = $this->route('offre');
 
         return [
-            'candidat_ids.required' => 'Sélectionnez les candidats à envoyer.',
-            'candidat_ids.min' => 'Sélectionnez au moins un candidat.',
-            'candidat_ids.max' => 'Vous ne pouvez pas sélectionner plus de '.$offre->nombre_cv.' candidat(s).',
-            'candidat_ids.*.distinct' => 'Chaque candidat ne peut être sélectionné qu\'une seule fois.',
-            'candidat_ids.*.exists' => 'Un des candidats sélectionnés est invalide.',
+            'candidates.required' => 'Sélectionnez les candidats à envoyer.',
+            'candidates.min' => 'Sélectionnez au moins un candidat.',
+            'candidates.max' => 'Vous ne pouvez pas sélectionner plus de '.$offre->nombre_cv.' candidat(s).',
+            'candidates.*.id.required' => 'Chaque candidat sélectionné est invalide.',
+            'candidates.*.id.integer' => 'Chaque candidat sélectionné est invalide.',
+            'candidates.*.id.distinct' => 'Chaque candidat ne peut être sélectionné qu\'une seule fois.',
+            'candidates.*.id.exists' => 'Un des candidats sélectionnés est invalide.',
+            'candidates.*.score.required' => 'Le score de chaque candidat est obligatoire.',
+            'candidates.*.score.integer' => 'Le score doit être un nombre entier.',
+            'candidates.*.score.min' => 'Le score doit être supérieur ou égal à 0.',
+            'candidates.*.score.max' => 'Le score doit être inférieur ou égal à 100.',
         ];
     }
 
@@ -68,6 +81,39 @@ class SendOffreMatchesRequest extends FormRequest
                     'Seules les offres en traitement peuvent recevoir un matching.'
                 );
             }
+
+            $this->validateCandidateEligibility($validator);
         });
+    }
+
+    /**
+     * Ensure every selected candidate is accepted and its account active.
+     */
+    private function validateCandidateEligibility(Validator $validator): void
+    {
+        $candidateIds = collect($this->input('candidates', []))
+            ->pluck('id')
+            ->unique()
+            ->values();
+
+        if ($candidateIds->isEmpty()) {
+            return;
+        }
+
+        $eligibleIds = Candidat::query()
+            ->whereIn('id', $candidateIds)
+            ->where('status', 'accepte')
+            ->whereHas('user', fn ($query) => $query->where('is_active', true))
+            ->pluck('id')
+            ->all();
+
+        $invalidIds = $candidateIds->reject(fn ($id) => in_array((int) $id, $eligibleIds, true));
+
+        if ($invalidIds->isNotEmpty()) {
+            $validator->errors()->add(
+                'candidates',
+                'Certains candidats sélectionnés ne sont plus éligibles.'
+            );
+        }
     }
 }

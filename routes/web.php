@@ -105,6 +105,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');
     Route::get('/admin/offres', [AdminOffreController::class, 'index'])->name('admin.offres.index');
     Route::get('/admin/offres/{offre}/matching', [AdminOffreController::class, 'matching'])->name('admin.offres.matching');
+    Route::post('/admin/offres/{offre}/matching/custom', [AdminOffreController::class, 'customMatching'])->name('admin.offres.matching.custom');
     Route::post('/admin/offres/{offre}/matching', [AdminOffreController::class, 'sendMatches'])->name('admin.offres.matching.send');
     Route::post('/admin/offres/{offre}/confirm-payment', [AdminOffreController::class, 'confirmPayment'])->name('admin.offres.confirm-payment');
     Route::post('/admin/offres/{offre}/archive', [AdminOffreController::class, 'archive'])->name('admin.offres.archive');

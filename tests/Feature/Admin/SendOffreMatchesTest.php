@@ -55,7 +55,7 @@ test('admin can send selected matches and move offre to attente paiement', funct
 
     $this->actingAs($admin, 'admin')
         ->post(route('admin.offres.matching.send', $offre), [
-            'candidat_ids' => $candidates->pluck('id')->all(),
+            'candidates' => $candidates->map(fn ($candidat) => ['id' => $candidat->id, 'score' => 85])->all(),
         ])
         ->assertRedirect(route('admin.offres.index', ['statut' => 'ATTENTE_PAIEMENT']))
         ->assertSessionHas('success');
@@ -67,6 +67,7 @@ test('admin can send selected matches and move offre to attente paiement', funct
         $this->assertDatabaseHas('offre_matches', [
             'offre_id' => $offre->id,
             'candidat_id' => $candidat->id,
+            'score' => 85,
         ]);
     }
 });
@@ -83,7 +84,7 @@ test('admin can send fewer candidates than nombre_cv', function () {
 
     $this->actingAs($admin, 'admin')
         ->post(route('admin.offres.matching.send', $offre), [
-            'candidat_ids' => [$candidat->id],
+            'candidates' => [['id' => $candidat->id, 'score' => 70]],
         ])
         ->assertRedirect(route('admin.offres.index', ['statut' => 'ATTENTE_PAIEMENT']))
         ->assertSessionHas('success');
@@ -108,10 +109,10 @@ test('admin cannot send more candidates than nombre_cv', function () {
     $this->actingAs($admin, 'admin')
         ->from(route('admin.offres.matching', $offre))
         ->post(route('admin.offres.matching.send', $offre), [
-            'candidat_ids' => $candidates->pluck('id')->all(),
+            'candidates' => $candidates->map(fn ($candidat) => ['id' => $candidat->id, 'score' => 90])->all(),
         ])
         ->assertRedirect(route('admin.offres.matching', $offre))
-        ->assertSessionHasErrors('candidat_ids');
+        ->assertSessionHasErrors('candidates');
 
     expect($offre->fresh()->statut)->toBe('EN_TRAITEMENT')
         ->and(OffreMatch::query()->where('offre_id', $offre->id)->exists())->toBeFalse();
@@ -130,7 +131,7 @@ test('admin cannot send matches for offre not in traitement', function () {
     $this->actingAs($admin, 'admin')
         ->from(route('admin.offres.matching', $offre))
         ->post(route('admin.offres.matching.send', $offre), [
-            'candidat_ids' => [$candidat->id],
+            'candidates' => [['id' => $candidat->id, 'score' => 80]],
         ])
         ->assertRedirect(route('admin.offres.matching', $offre))
         ->assertSessionHasErrors('offre');
