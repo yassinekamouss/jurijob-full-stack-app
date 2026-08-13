@@ -93,7 +93,7 @@ export default function Show({ offre }: Props) {
 
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-6xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-7xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
                 {/* Navigation & Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
                     <motion.div
@@ -149,7 +149,7 @@ export default function Show({ offre }: Props) {
                                 <h2 className="font-serif text-2xl font-bold italic tracking-tight text-slate-900">{t('recruiter_offers.show.about_role')}</h2>
                             </div>
                             <div className="prose prose-slate max-w-none">
-                                <div className="text-lg leading-relaxed text-slate-600 font-medium font-sans whitespace-pre-line bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm shadow-slate-200/50">
+                                <div className="text-lg leading-relaxed text-slate-600 font-medium font-sans whitespace-pre-line bg-white p-8 border border-slate-100 shadow-sm shadow-slate-200/50">
                                     {offre.description}
                                 </div>
                             </div>
@@ -159,7 +159,7 @@ export default function Show({ offre }: Props) {
                         <section className="space-y-8">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+                                    <div className="h-8 w-8 rounded-lg bg-black flex items-center justify-center">
                                         <Layers className="h-4 w-4 text-white" />
                                     </div>
                                     <h2 className="font-serif text-2xl font-bold italic tracking-tight text-slate-900">{t('recruiter_offers.show.offer_criteria')}</h2>
@@ -170,7 +170,7 @@ export default function Show({ offre }: Props) {
                             </div>
 
                             <div className="space-y-6">
-                                <div className="space-y-4 rounded-[32px] border border-slate-100 bg-white p-6 sm:p-8 shadow-lg shadow-slate-200/50">
+                                <div className="space-y-4 border border-slate-100 bg-white p-6 sm:p-8 shadow-lg shadow-slate-200/50">
                                     <div className="flex items-center justify-between gap-4 border-b border-slate-50 pb-5">
                                         <div>
                                             <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">{t('recruiter_offers.show.structuring_criteria')}</h3>
@@ -271,7 +271,7 @@ export default function Show({ offre }: Props) {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.5 }}
                             >
-                                <Card className="rounded-[32px] border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50 overflow-hidden mt-8">
+                                <Card className="border border-slate-200 bg-white p-6 shadow-lg shadow-slate-200/50 overflow-hidden mt-8">
                                     <div className="space-y-4">
                                        
 
