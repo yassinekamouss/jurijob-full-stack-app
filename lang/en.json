@@ -1711,20 +1711,40 @@
         "sent": "CVs Sent",
         "archived": "Archived Offer"
       },
-      "posted_on": "Posted on",
+      "posted_on": "Posted on {{date}}",
       "about_role": "About the role",
       "offer_criteria": "Offer criteria",
       "unified_view": "Unified criteria view",
       "structuring_criteria": "Structuring criteria",
       "structuring_desc": "The structuring information of the offer.",
       "criteria_count": "{{count}} criteria",
+      "base_criteria": {
+        "position": "Position",
+        "contract_type": "Contract type",
+        "work_mode": "Work mode",
+        "city": "City",
+        "experience": "Experience level",
+        "education": "Legal education",
+        "salary": "Salary",
+        "urgency": "Urgency"
+      },
       "not_provided": "Not provided",
       "information": "Information",
       "criteria_summary": "Criteria summary",
       "summary_desc": "This view groups the structuring criteria of the offer and the additional criteria configured during publication.",
       "published_on": "Published on",
+      "categories": {
+        "specializations": "Specializations",
+        "languages": "Desired languages"
+      },
       "additional_criteria": "Additional criteria",
-      "level": "Level:",
+      "level": "Level: {{level}}",
+      "importance": {
+        "indispensable": "Essential",
+        "important": "Important",
+        "souhaitable": "Desirable",
+        "facultatif": "Optional"
+      },
       "view_other": "View {{count}} other",
       "view_other_plural": "View {{count}} others",
       "collapse_list": "Collapse list"

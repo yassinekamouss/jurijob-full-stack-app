@@ -51,7 +51,7 @@ const BASE_CRITERIA = [
 ] as const;
 
 export default function Show({ offre }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
 
     const groupedRequirements = useMemo(() => {
@@ -129,7 +129,7 @@ export default function Show({ offre }: Props) {
                             <span className="h-1 w-1 rounded-full bg-slate-300 mx-1" />
                             <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1.5 uppercase tracking-widest">
                                 <Clock className="h-3 w-3" />
-                                {t('recruiter_offers.show.posted_on', { date: new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) })}
+                                {t('recruiter_offers.show.posted_on', { date: new Date(offre.created_at).toLocaleDateString(i18n.language?.startsWith('en') ? 'en-US' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) })}
                             </span>
                         </div>
                     </motion.div>
@@ -265,7 +265,7 @@ export default function Show({ offre }: Props) {
                                             <div className="rounded-2xl bg-white/5 p-4 space-y-1">
                                                 <p className="text-[10px] font-black uppercase tracking-widest text-white/30">{t('recruiter_offers.show.published_on')}</p>
                                                 <p className="text-sm font-black text-white leading-tight">
-                                                    {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                    {new Date(offre.created_at).toLocaleDateString(i18n.language?.startsWith('en') ? 'en-US' : 'fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                 </p>
                                             </div>
                                         </div>

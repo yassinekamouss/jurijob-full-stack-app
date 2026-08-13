@@ -1711,20 +1711,40 @@
         "sent": "CV Envoyés",
         "archived": "Offre Archivée"
       },
-      "posted_on": "Posté le",
+      "posted_on": "Posté le {{date}}",
       "about_role": "À propos du rôle",
       "offer_criteria": "Critères de l'offre",
       "unified_view": "Vue unifiée des critères",
       "structuring_criteria": "Critères structurants",
       "structuring_desc": "Les informations structurantes de l'offre.",
       "criteria_count": "{{count}} critères",
+      "base_criteria": {
+        "position": "Poste",
+        "contract_type": "Type de contrat",
+        "work_mode": "Mode de travail",
+        "city": "Ville",
+        "experience": "Niveau d'expérience",
+        "education": "Formation juridique",
+        "salary": "Salaire",
+        "urgency": "Urgence"
+      },
       "not_provided": "Non renseigné",
       "information": "Informations",
       "criteria_summary": "Synthèse des critères",
       "summary_desc": "Cette vue regroupe les critères structurants de l'offre et les critères complémentaires configurés lors de la publication.",
       "published_on": "Publié le",
+      "categories": {
+        "specializations": "Spécialisations",
+        "languages": "Langues souhaitées"
+      },
       "additional_criteria": "Critères complémentaires",
-      "level": "Niveau:",
+      "level": "Niveau : {{level}}",
+      "importance": {
+        "indispensable": "Indispensable",
+        "important": "Important",
+        "souhaitable": "Souhaitable",
+        "facultatif": "Facultatif"
+      },
       "view_other": "Voir {{count}} autre",
       "view_other_plural": "Voir {{count}} autres",
       "collapse_list": "Réduire la liste"

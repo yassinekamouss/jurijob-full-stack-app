@@ -37,11 +37,10 @@ export function LanguageSwitcher({ className = '' }: LanguageSwitcherProps) {
                 onClick={() => handleSwitch('fr')}
                 disabled={isPending || currentLocale === 'fr'}
                 aria-label={t('language.french', 'Français')}
-                className={`px-2 py-1 transition-colors ${
-                    currentLocale === 'fr'
+                className={`px-2 py-1 transition-colors ${currentLocale === 'fr'
                         ? 'font-bold text-[#1a1f1e] underline underline-offset-4'
                         : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e]'
-                }`}
+                    }`}
             >
                 FR
             </button>
@@ -51,11 +50,10 @@ export function LanguageSwitcher({ className = '' }: LanguageSwitcherProps) {
                 onClick={() => handleSwitch('en')}
                 disabled={isPending || currentLocale === 'en'}
                 aria-label={t('language.english', 'English')}
-                className={`px-2 py-1 transition-colors ${
-                    currentLocale === 'en'
+                className={`px-2 py-1 transition-colors ${currentLocale === 'en'
                         ? 'font-bold text-[#1a1f1e] underline underline-offset-4'
                         : 'text-[#1a1f1e]/60 hover:text-[#1a1f1e]'
-                }`}
+                    }`}
             >
                 EN
             </button>
