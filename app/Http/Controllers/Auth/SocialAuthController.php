@@ -28,7 +28,7 @@ class SocialAuthController extends Controller
     public function redirectToProvider(Request $request, string $provider): RedirectResponse
     {
         if (! in_array($provider, $this->supportedProviders, true)) {
-            return redirect()->route('login')->withErrors(['error' => 'Provider non supporté.']);
+            return redirect()->route('login')->withErrors(['error' => __t('auth.social.provider_not_supported')]);
         }
 
         // Store role in session if specified in the query parameter (candidat/recruteur)
@@ -45,7 +45,7 @@ class SocialAuthController extends Controller
     public function handleProviderCallback(string $provider): RedirectResponse
     {
         if (! in_array($provider, $this->supportedProviders, true)) {
-            return redirect()->route('login')->withErrors(['error' => 'Provider non supporté.']);
+            return redirect()->route('login')->withErrors(['error' => __t('auth.social.provider_not_supported')]);
         }
 
         try {
@@ -53,7 +53,7 @@ class SocialAuthController extends Controller
         } catch (Exception $e) {
             Log::error("Social Auth callback failed for provider {$provider}: ".$e->getMessage());
 
-            return redirect()->route('login')->withErrors(['error' => "Authentification avec {$provider} échouée."]);
+            return redirect()->route('login')->withErrors(['error' => __t('auth.social.auth_failed', ['provider' => $provider])]);
         }
 
         // 1. Search for an existing social account link
@@ -85,7 +85,7 @@ class SocialAuthController extends Controller
         // 2. Check if a user with the same email already exists
         $email = $socialUser->getEmail();
         if (empty($email)) {
-            return redirect()->route('login')->withErrors(['error' => 'Impossible de récupérer l\'adresse email de votre compte social.']);
+            return redirect()->route('login')->withErrors(['error' => __t('auth.social.email_not_available')]);
         }
 
         $user = User::where('email', $email)->first();
@@ -134,7 +134,7 @@ class SocialAuthController extends Controller
             ]);
 
             // Redirect to login with a message explaining the user must pick a registration type first
-            return redirect()->route('login')->with('status', 'Pour vous inscrire via Google ou LinkedIn, veuillez d\'abord choisir votre profil : Candidat ou Recruteur, depuis la page d\'inscription.');
+            return redirect()->route('login')->with('status', __t('auth.social.choose_profile_first'));
         }
 
         return DB::transaction(function () use ($socialUser, $provider, $email, $role) {
@@ -197,7 +197,7 @@ class SocialAuthController extends Controller
 
         $socialData = session('social_registration_data');
         if (! $socialData) {
-            return redirect()->route('login')->withErrors(['error' => 'La session d\'inscription sociale a expiré. Veuillez vous reconnecter.']);
+            return redirect()->route('login')->withErrors(['error' => __t('auth.social.session_expired')]);
         }
 
         $role = $request->input('role');
@@ -290,7 +290,7 @@ class SocialAuthController extends Controller
         $defaultUrgenceId = DB::table('urgences')->orderBy('id')->value('id');
 
         if (! $defaultSalaireId || ! $defaultUrgenceId) {
-            throw new \RuntimeException('Les taxonomies salaire et urgence doivent être initialisées.');
+            throw new \RuntimeException(__t('auth.social.taxonomy_missing'));
         }
 
         $user->candidat()->create([

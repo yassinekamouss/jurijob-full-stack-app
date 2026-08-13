@@ -1043,7 +1043,13 @@
       "quick_signup_desc": "Create your account in one click with Google or LinkedIn.",
       "candidate_quick": "Candidate: instant time saver",
       "recruiter_quick": "Recruiter: fast setup via LinkedIn or Google",
-      "no_password_needed": "No password needed. Your basic information will be prefilled."
+      "no_password_needed": "No password needed. Your basic information will be prefilled.",
+      "provider_not_supported": "Unsupported provider.",
+      "auth_failed": "Authentication with :provider failed.",
+      "email_not_available": "Unable to retrieve the email address from your social account.",
+      "choose_profile_first": "To sign up via Google or LinkedIn, please first choose your profile: Candidate or Recruiter, from the registration page.",
+      "session_expired": "The social registration session has expired. Please sign in again.",
+      "taxonomy_missing": "The salary and urgency taxonomies must be initialized."
     },
     "already_authenticated": {
       "title": "Already Logged In",
