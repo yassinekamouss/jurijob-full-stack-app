@@ -1,12 +1,14 @@
 import { router, usePage } from '@inertiajs/react';
 import { useTransition } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useI18nSync } from '@/hooks/use-i18n-sync';
 
 interface LanguageSwitcherProps {
     className?: string;
 }
 
 export function LanguageSwitcher({ className = '' }: LanguageSwitcherProps) {
+    useI18nSync();
     const { props } = usePage();
     const currentLocale = (props.locale as string) || 'fr';
     const [isPending, startTransition] = useTransition();
@@ -22,9 +24,6 @@ export function LanguageSwitcher({ className = '' }: LanguageSwitcherProps) {
                 {
                     preserveState: false,
                     preserveScroll: true,
-                    onSuccess: () => {
-                        window.location.reload();
-                    },
                 },
             );
         });

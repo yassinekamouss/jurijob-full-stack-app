@@ -2,6 +2,7 @@ import { usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import type { AppVariant } from '@/types';
+import { useI18nSync } from '@/hooks/use-i18n-sync';
 
 type Props = {
     children: ReactNode;
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export function AppShell({ children, variant = 'sidebar' }: Props) {
+    useI18nSync();
     const isOpen = usePage().props.sidebarOpen;
 
     if (variant === 'header') {

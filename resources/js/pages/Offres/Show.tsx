@@ -28,26 +28,26 @@ interface Props {
 }
 
 const CATEGORIES = [
-    { label: 'Spécialisations', type: 'SPECIALISATION', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50' },
-    { label: 'Langues souhaitées', type: 'LANGUE', icon: Globe, color: 'text-sky-600 bg-sky-50' },
+    { type: 'SPECIALISATION', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50' },
+    { type: 'LANGUE', icon: Globe, color: 'text-sky-600 bg-sky-50' },
 ];
 
 const IMPORTANCE_LEVELS = {
-    indispensable: { label: 'Indispensable', color: 'bg-rose-50 text-rose-700 border-rose-200' },
-    important: { label: 'Important', color: 'bg-amber-50 text-amber-700 border-amber-200' },
-    souhaitable: { label: 'Souhaitable', color: 'bg-sky-50 text-sky-700 border-sky-200' },
-    facultatif: { label: 'Facultatif', color: 'bg-slate-50 text-slate-600 border-slate-200' },
+    indispensable: { color: 'bg-rose-50 text-rose-700 border-rose-200' },
+    important: { color: 'bg-amber-50 text-amber-700 border-amber-200' },
+    souhaitable: { color: 'bg-sky-50 text-sky-700 border-sky-200' },
+    facultatif: { color: 'bg-slate-50 text-slate-600 border-slate-200' },
 };
 
 const BASE_CRITERIA = [
-    { label: 'Poste', icon: Briefcase, value: (offre: Offre) => offre.poste?.nom },
-    { label: 'Type de contrat', icon: ShieldCheck, value: (offre: Offre) => offre.type_travail?.nom },
-    { label: 'Mode de travail', icon: MapPin, value: (offre: Offre) => offre.mode_travail?.nom },
-    { label: 'Ville', icon: Globe, value: (offre: Offre) => offre.ville?.nom },
-    { label: "Niveau d'expérience", icon: GraduationCap, value: (offre: Offre) => offre.niveau_experience?.nom },
-    { label: 'Formation juridique', icon: LayoutDashboard, value: (offre: Offre) => offre.formation_juridique?.nom },
-    { label: 'Salaire', icon: Layers, value: (offre: Offre) => offre.salaire?.nom },
-    { label: 'Urgence', icon: Clock, value: (offre: Offre) => offre.urgence?.nom },
+    { key: 'position', icon: Briefcase, value: (offre: Offre) => offre.poste?.nom },
+    { key: 'contract_type', icon: ShieldCheck, value: (offre: Offre) => offre.type_travail?.nom },
+    { key: 'work_mode', icon: MapPin, value: (offre: Offre) => offre.mode_travail?.nom },
+    { key: 'city', icon: Globe, value: (offre: Offre) => offre.ville?.nom },
+    { key: 'experience', icon: GraduationCap, value: (offre: Offre) => offre.niveau_experience?.nom },
+    { key: 'education', icon: LayoutDashboard, value: (offre: Offre) => offre.formation_juridique?.nom },
+    { key: 'salary', icon: Layers, value: (offre: Offre) => offre.salaire?.nom },
+    { key: 'urgency', icon: Clock, value: (offre: Offre) => offre.urgence?.nom },
 ] as const;
 
 export default function Show({ offre }: Props) {
@@ -184,7 +184,7 @@ export default function Show({ offre }: Props) {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {baseCriteriaCards.map((item, i) => (
                                             <motion.div
-                                                key={item.label}
+                                                key={item.key}
                                                 initial={{ opacity: 0, y: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: i * 0.05 }}
@@ -195,14 +195,7 @@ export default function Show({ offre }: Props) {
                                                 </div>
                                                 <div className="space-y-1">
                                                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                                        {item.label === 'Poste' ? t('recruiter_offers.show.base_criteria.position') :
-                                                         item.label === 'Type de contrat' ? t('recruiter_offers.show.base_criteria.contract_type') :
-                                                         item.label === 'Mode de travail' ? t('recruiter_offers.show.base_criteria.work_mode') :
-                                                         item.label === 'Ville' ? t('recruiter_offers.show.base_criteria.city') :
-                                                         item.label === "Niveau d'expérience" ? t('recruiter_offers.show.base_criteria.experience') :
-                                                         item.label === 'Formation juridique' ? t('recruiter_offers.show.base_criteria.education') :
-                                                         item.label === 'Salaire' ? t('recruiter_offers.show.base_criteria.salary') :
-                                                         item.label === 'Urgence' ? t('recruiter_offers.show.base_criteria.urgency') : item.label}
+                                                        {t(`recruiter_offers.show.base_criteria.${item.key}`)}
                                                     </p>
                                                     <p className="font-bold text-slate-900 whitespace-normal break-words leading-snug">{item.value || t('recruiter_offers.show.not_provided')}</p>
                                                 </div>

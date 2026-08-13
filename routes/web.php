@@ -26,9 +26,7 @@ use Inertia\Inertia;
 
 Route::post('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 
-Route::inertia('/', 'Home')
-    ->middleware('cacheResponse:86400')
-    ->name('home');
+Route::inertia('/', 'Home')->name('home');
 Route::view('/services', 'pages.services')->name('services');
 Route::view('/faq', 'pages.faq')->name('faq');
 Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legales');

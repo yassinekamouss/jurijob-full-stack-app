@@ -1,4 +1,4 @@
-import { createInertiaApp, router } from '@inertiajs/react';
+import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -37,12 +37,6 @@ createInertiaApp({
     progress: {
         color: '#4B5563',
     },
-});
-
-router.on('navigate', (event) => {
-    const locale = (event.detail.page.props.locale as string) || 'fr';
-    const translations = event.detail.page.props.translations as Record<string, unknown>;
-    updateI18nLocale(locale, translations);
 });
 
 // This will set light / dark mode on load...

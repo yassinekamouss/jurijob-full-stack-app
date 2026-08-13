@@ -94,11 +94,18 @@
     --sidebar-accent: rgba(192, 96, 65, 0.15);
     --sidebar-accent-foreground: #C06041;
     --sidebar-border: rgba(253, 252, 248, 0.1);
-    --sidebar-ring: #C06041;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;     
+    --sidebar-ring: #C06041;   
+}
+
+::selection {
+    background-color: #C06041;
+    color: #ffffff; /* Ajouté pour que le texte reste lisible sur le fond sombre */
+}
+
+/* Optionnel : Pour la rétrocompatibilité avec d'anciennes versions de Firefox */
+::-moz-selection {
+    background-color: #C06041;
+    color: #ffffff;
 }
 
 @layer base {
