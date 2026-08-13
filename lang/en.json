@@ -1736,7 +1736,15 @@
       "description": "Build a structured and professional ad in six guided steps.",
       "step": "Step",
       "on": "of",
-      "need_help": "Need help?"
+      "need_help": "Need help?",
+      "steps":{
+        "1":{ "title": "Identity", "subtitle": "Title, job, description" },
+        "2":{ "title": "Organization", "subtitle": "Contract, mode, location, salary" },
+        "3":{ "title": "Profile", "subtitle": "Experience, education, notes" },
+        "4":{ "title": "Expertise", "subtitle": "Specializations" },
+        "5":{ "title": "Languages", "subtitle": "Level and importance" },
+        "6":{ "title": "Summary", "subtitle": "Final validation" }
+      }
     }
   }
 }
