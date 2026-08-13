@@ -23,7 +23,8 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "phone_country_search": "Search country..."
   },
   "home": {
     "seo": {
@@ -209,6 +210,8 @@
       "lastname": "Last Name",
       "email": "Professional Email",
       "email_help": "Email address cannot be modified.",
+      "phone": "Phone Number",
+      "phone_placeholder": "+212612345678",
       "job_title": "Desired Position",
       "select_job": "Select a position",
       "loading": "Loading...",
@@ -458,6 +461,8 @@
       "select_city": "Select a city",
       "select_country_first": "Select a country first",
       "website": "Website (Optional)",
+      "phone": "Phone Number",
+      "phone_placeholder": "+212612345678",
       "save": "Save changes",
       "saving": "Saving changes...",
       "saved": "Changes saved!"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Recruiter;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\TaxonomyRepository;
+use App\Rules\ValidPhoneNumber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -33,6 +34,7 @@ class SettingsController extends Controller
             'taille_entreprise_id' => 'required|integer|exists:taille_entreprises,id',
             'site_web' => 'nullable|url|max:255',
             'ville_id' => 'required|integer|exists:villes,id',
+            'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
         ]);
 
         $user = $request->user();
@@ -45,6 +47,8 @@ class SettingsController extends Controller
 
         try {
             $recruteur->update($validated);
+
+            $user->update(['telephone' => $validated['telephone'] ?? null]);
 
             return back()->with('success', 'Profil mis à jour avec succès.');
         } catch (\Exception $e) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Candidate;
 
+use App\Rules\ValidPhoneNumber;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,6 +31,7 @@ class UpdateProfileRequest extends FormRequest
             'formation_juridique_id' => ['required', 'integer', 'exists:formation_juridiques,id'],
             'salaire_id' => ['required', 'integer', 'exists:salaires,id'],
             'urgence_id' => ['required', 'integer', 'exists:urgences,id'],
+            'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
             'is_active' => ['required', 'boolean'],
         ];
     }

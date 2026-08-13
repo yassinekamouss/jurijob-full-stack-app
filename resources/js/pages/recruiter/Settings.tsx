@@ -13,15 +13,18 @@ import {
     Building,
     Loader2,
     Check,
+    Phone,
 } from 'lucide-react';
-import { useState, useEffect, useMemo, FormEvent } from 'react';
+import type { FormEvent } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
-import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
-import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
-import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
-import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
 import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
+import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
+import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
+import { PhoneInput } from '@/components/ui/phone-input';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
+import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 
 interface Props {
     recruteur: any;
@@ -43,6 +46,7 @@ export default function Settings({ recruteur, user }: Props) {
         taille_entreprise_id: recruteur?.taille_entreprise_id || '',
         site_web: recruteur?.site_web || '',
         ville_id: recruteur?.ville_id || '',
+        telephone: user.telephone || '',
     });
 
     useEffect(() => {
@@ -51,6 +55,7 @@ export default function Settings({ recruteur, user }: Props) {
         }
 
         const selectedCity = villes.find((ville) => String(ville.id) === String(data.ville_id));
+
         if (selectedCity?.pays_id) {
             setSelectedPaysId(String(selectedCity.pays_id));
         }
@@ -118,6 +123,7 @@ export default function Settings({ recruteur, user }: Props) {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const tab = params.get('tab') as TabType;
+
         if (tab && ['profile', 'security'].includes(tab)) {
             setActiveTab(tab);
         }
@@ -418,6 +424,30 @@ export default function Settings({ recruteur, user }: Props) {
                                                     {errors.site_web && (
                                                         <div className="text-xs text-red-500">
                                                             {errors.site_web}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Téléphone */}
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center gap-2 text-sm font-bold">
+                                                        <Phone className="h-4 w-4 opacity-50" />
+                                                        {t('recruiter_settings.form.phone')}
+                                                    </label>
+                                                    <PhoneInput
+                                                        value={data.telephone}
+                                                        onChange={(value) =>
+                                                            setData('telephone', value || '')
+                                                        }
+                                                        placeholder={t('recruiter_settings.form.phone_placeholder')}
+                                                        containerClassName="rounded-xl border-[#1a1f1e]/10 bg-[#FDFCF8] focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500"
+                                                        inputClassName="h-11 px-0 text-sm"
+                                                        searchPlaceholder={t('common.phone_country_search')}
+                                                        aria-invalid={!!errors.telephone}
+                                                    />
+                                                    {errors.telephone && (
+                                                        <div className="text-xs text-red-500">
+                                                            {errors.telephone}
                                                         </div>
                                                     )}
                                                 </div>

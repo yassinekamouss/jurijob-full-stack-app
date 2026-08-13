@@ -23,7 +23,8 @@
     "loading": "Chargement...",
     "error": "Une erreur est survenue",
     "save": "Enregistrer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "phone_country_search": "Rechercher un pays..."
   },
   "home": {
     "seo": {
@@ -209,6 +210,8 @@
       "lastname": "Nom",
       "email": "Email professionnel",
       "email_help": "L'adresse email ne peut pas être modifiée.",
+      "phone": "Téléphone",
+      "phone_placeholder": "+212612345678",
       "job_title": "Poste Recherché",
       "select_job": "Choisir un poste",
       "loading": "Chargement...",
@@ -458,6 +461,8 @@
       "select_city": "Sélectionner une ville",
       "select_country_first": "Sélectionnez d'abord un pays",
       "website": "Site Web (Optionnel)",
+      "phone": "Téléphone",
+      "phone_placeholder": "+212612345678",
       "save": "Enregistrer les modifications",
       "saving": "Enregistrement en cours...",
       "saved": "Modifications enregistrées !"
