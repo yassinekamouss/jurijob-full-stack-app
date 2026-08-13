@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm, Head } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -16,14 +16,7 @@ export default function Login() {
         password: '',
     });
 
-    useEffect(() => {
-        // Preload luxury typography fonts
-        const link = document.createElement('link');
-        link.href =
-            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-    }, []);
+
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();

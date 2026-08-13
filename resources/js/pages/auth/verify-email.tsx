@@ -1,18 +1,11 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { useEffect } from 'react';
 import TextLink from '@/components/text-link';
 import { Spinner } from '@/components/ui/spinner';
 import { home, logout } from '@/routes';
 import { send } from '@/routes/verification';
 
 export default function VerifyEmail({ status }: { status?: string }) {
-    useEffect(() => {
-        const link = document.createElement('link');
-        link.href =
-            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-    }, []);
+
 
     return (
         <div
