@@ -1699,7 +1699,9 @@
         "archived": "Archived"
       },
       "criteria": "{{count}} criteria",
-      "view_details": "View details"
+      "view_details": "View details",
+      "paiment" : "Proceed to payment",
+      "view_profiles": "View unlocked profiles"
     },
     "show": {
       "page_title_suffix": "Offer details",
