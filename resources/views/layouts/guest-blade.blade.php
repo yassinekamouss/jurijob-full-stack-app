@@ -57,7 +57,7 @@
                     </a>
 
                     <!-- Navigation Desktop -->
-                    <nav class="hidden space-x-12 md:flex" aria-label="{{ __t('navigation.home') }}">
+                    <nav class="hidden space-x-8 xl:space-x-12 lg:flex" aria-label="{{ __t('navigation.home') }}">
                         <a href="/#home" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.home') }}</a>
                         <a href="/services" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.services') }}</a>
                         <a href="/#how-it-works" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.how_it_works') }}</a>
@@ -66,8 +66,8 @@
                         <a href="/faq" class="text-gray-700 transition-colors hover:text-black">{{ __t('navigation.faq') }}</a>
                     </nav>
 
-                    <!-- Actions -->
-                    <div class="flex items-center space-x-4 md:space-x-6">
+                    <!-- Actions Desktop -->
+                    <div class="hidden lg:flex items-center space-x-4 md:space-x-6">
                         <div class="inline-flex items-center gap-1 text-xs font-medium">
                             <form action="/locale/fr" method="POST" class="inline">
                                 @csrf
@@ -105,6 +105,65 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Mobile Controls (Language + Hamburger Button) -->
+                    <div class="flex items-center gap-3 lg:hidden">
+                        <div class="inline-flex items-center gap-1 text-xs font-medium">
+                            <form action="/locale/fr" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="px-1.5 py-1 transition-colors {{ app()->getLocale() === 'fr' ? 'font-bold text-[#1a1f1e] underline underline-offset-4' : 'text-[#1a1f1e]/60' }}">FR</button>
+                            </form>
+                            <span class="text-[#1a1f1e]/30">|</span>
+                            <form action="/locale/en" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="px-1.5 py-1 transition-colors {{ app()->getLocale() === 'en' ? 'font-bold text-[#1a1f1e] underline underline-offset-4' : 'text-[#1a1f1e]/60' }}">EN</button>
+                            </form>
+                        </div>
+                        <button id="mobile-menu-toggle" aria-label="Toggle Navigation Menu" class="p-2 text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-md transition-colors">
+                            <svg id="hamburger-icon" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                            <svg id="close-icon" class="h-6 w-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Drawer -->
+            <div id="mobile-menu-drawer" class="hidden lg:hidden border-t border-[#1a1f1e]/10 bg-[#FDFCF8] px-6 pt-4 pb-6 shadow-xl">
+                <nav class="flex flex-col space-y-3 mb-6">
+                    <a href="/#home" class="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2">{{ __t('navigation.home') }}</a>
+                    <a href="/services" class="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2">{{ __t('navigation.services') }}</a>
+                    <a href="/#how-it-works" class="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2">{{ __t('navigation.how_it_works') }}</a>
+                    <a href="/#about" class="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2">{{ __t('navigation.about') }}</a>
+                    <a href="/#pricing" class="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2">{{ __t('navigation.pricing') }}</a>
+                    <a href="/faq" class="text-base font-medium text-[#1a1f1e] hover:text-[#C06041] transition-colors border-b border-[#1a1f1e]/5 pb-2">{{ __t('navigation.faq') }}</a>
+                </nav>
+
+                <div class="flex flex-col gap-3 pt-2 border-t border-[#1a1f1e]/10">
+                    <a href="/login" class="w-full text-center border border-[#1a1f1e] py-2.5 text-sm font-medium text-[#1a1f1e] hover:bg-[#1a1f1e]/5 transition-colors">
+                        {{ __t('navigation.login') }}
+                    </a>
+                    <div class="flex flex-col gap-2 pt-1">
+                        <span class="text-xs uppercase tracking-wider text-[#1a1f1e]/60 font-semibold mb-1">
+                            {{ __t('navigation.register') }}
+                        </span>
+                        <a href="/register/recruteur" class="flex items-center gap-3 bg-[#1a1f1e] text-[#FDFCF8] px-4 py-3 text-sm font-medium hover:bg-[#343a38] transition-colors">
+                            <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            {{ __t('navigation.as_recruiter') }}
+                        </a>
+                        <a href="/register/candidat" class="flex items-center gap-3 border border-[#1a1f1e] text-[#1a1f1e] px-4 py-3 text-sm font-medium hover:bg-[#1a1f1e]/5 transition-colors">
+                            <svg class="h-4 w-4 text-[#C06041]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                            </svg>
+                            {{ __t('navigation.as_candidate') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -164,6 +223,29 @@
     </div>
 
     @stack('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('mobile-menu-toggle');
+            const menuDrawer = document.getElementById('mobile-menu-drawer');
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            if (toggleBtn && menuDrawer) {
+                toggleBtn.addEventListener('click', () => {
+                    const isOpen = !menuDrawer.classList.contains('hidden');
+                    if (isOpen) {
+                        menuDrawer.classList.add('hidden');
+                        hamburgerIcon?.classList.remove('hidden');
+                        closeIcon?.classList.add('hidden');
+                    } else {
+                        menuDrawer.classList.remove('hidden');
+                        hamburgerIcon?.classList.add('hidden');
+                        closeIcon?.classList.remove('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
