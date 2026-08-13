@@ -104,11 +104,11 @@ export default function Payment({ offre, payment }: Props) {
             <Head title={`${t('recruiter.payment.seo_title')} — ${offre.titre}`} />
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-3xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-3xl px-4 pb-16 pt-24 sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="space-y-10"
+                    className="space-y-8 sm:space-y-10"
                 >
                     <div className="space-y-4">
                         <Link
@@ -122,7 +122,7 @@ export default function Payment({ offre, payment }: Props) {
                         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">
                             {t('recruiter.payment.eyebrow')}
                         </p>
-                        <h1 className="font-serif text-4xl font-bold italic tracking-tight md:text-5xl">
+                        <h1 className="font-serif text-3xl font-bold italic tracking-tight sm:text-4xl md:text-5xl">
                             {offre.titre}
                         </h1>
                     </div>
@@ -139,7 +139,7 @@ export default function Payment({ offre, payment }: Props) {
                         </div>
                     )}
 
-                    <section className="space-y-6 border border-[#1a1f1e]/8 bg-white p-8 shadow-sm shadow-[#1a1f1e]/5">
+                    <section className="space-y-6 border border-[#1a1f1e]/8 bg-white p-5 sm:p-8 shadow-sm shadow-[#1a1f1e]/5">
                         <div className="space-y-2 text-center sm:text-left">
                             <p className="font-serif text-2xl font-bold italic tracking-tight md:text-3xl">
                                 {t('recruiter.payment.profiles_selected', { count })}

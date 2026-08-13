@@ -138,11 +138,11 @@ export default function Profiles({ offre, profiles }: Props) {
             <Head title={`${t('recruiter.profiles.seo_title')} — ${offre.titre}`} />
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-5xl px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-5xl px-4 pb-16 pt-24 sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-12 space-y-4"
+                    className="mb-8 space-y-4 sm:mb-12"
                 >
                     <Link
                         href={offresIndex().url}
@@ -155,22 +155,22 @@ export default function Profiles({ offre, profiles }: Props) {
                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">
                         {t('recruiter.profiles.eyebrow')}
                     </p>
-                    <h1 className="font-serif text-4xl font-bold italic tracking-tight md:text-5xl">
+                    <h1 className="font-serif text-3xl font-bold italic tracking-tight sm:text-4xl md:text-5xl">
                         {offre.titre}
                     </h1>
-                    <p className="max-w-2xl text-base font-medium text-[#1a1f1e]/50">
+                    <p className="max-w-2xl text-sm font-medium text-[#1a1f1e]/50 sm:text-base">
                         {t('recruiter.profiles.subtitle', { count: profiles.length })}
                     </p>
                 </motion.div>
 
                 {profiles.length === 0 ? (
-                    <div className="border border-[#1a1f1e]/8 bg-white px-8 py-16 text-center">
+                    <div className="border border-[#1a1f1e]/8 bg-white px-6 py-12 text-center sm:px-8 sm:py-16">
                         <p className="text-sm uppercase tracking-widest text-[#1a1f1e]/35">
                             {t('recruiter.profiles.empty')}
                         </p>
                     </div>
                 ) : (
-                    <div className="space-y-10">
+                    <div className="space-y-6 sm:space-y-10">
                         {profiles.map((profile, index) => {
                             const score = displayScore(profile.match_score);
                             const specialisations = uniqueLabels(profile.specialisations);
@@ -193,13 +193,13 @@ export default function Profiles({ offre, profiles }: Props) {
                                     transition={{ delay: index * 0.08 }}
                                     className="overflow-hidden border border-[#1a1f1e]/8 bg-white shadow-sm shadow-[#1a1f1e]/5"
                                 >
-                                    <div className="border-b border-[#1a1f1e]/8 bg-[#1a1f1e] px-8 py-8 text-white">
+                                    <div className="border-b border-[#1a1f1e]/8 bg-[#1a1f1e] px-5 py-6 sm:px-8 sm:py-8 text-white">
                                         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
                                             <div className="space-y-3">
                                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
                                                     {t('recruiter.profiles.profile_label', { number: index + 1 })}
                                                 </p>
-                                                <h2 className="font-serif text-3xl font-bold italic tracking-tight md:text-4xl">
+                                                <h2 className="font-serif text-2xl font-bold italic tracking-tight sm:text-3xl md:text-4xl">
                                                     {profile.prenom} {profile.nom}
                                                 </h2>
                                                 <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-white/70">
@@ -246,7 +246,7 @@ export default function Profiles({ offre, profiles }: Props) {
                                     </div>
 
                                     <div className="grid gap-0 lg:grid-cols-12">
-                                        <aside className="space-y-8 border-b border-[#1a1f1e]/8 bg-[#FDFCF8] px-8 py-8 lg:col-span-4 lg:border-b-0 lg:border-r">
+                                        <aside className="space-y-8 border-b border-[#1a1f1e]/8 bg-[#FDFCF8] px-5 py-6 sm:px-8 sm:py-8 lg:col-span-4 lg:border-b-0 lg:border-r">
                                             <CvBlock title={t('recruiter.profiles.sections.summary')}>
                                                 <div className="space-y-2 text-sm text-[#1a1f1e]/70">
                                                     {profile.formation_juridique && (

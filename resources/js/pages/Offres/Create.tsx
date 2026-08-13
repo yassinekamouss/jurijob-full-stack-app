@@ -138,7 +138,7 @@ export default function Create({ taxonomies }: Props) {
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6 lg:gap-2.5">
+                                <div className="flex overflow-x-auto pb-2 scrollbar-none gap-2 sm:grid sm:grid-cols-3 lg:grid-cols-6 lg:gap-2.5 sm:overflow-visible">
                                     {steps.map((item) => {
                                         const state = step === item.id ? 'active' : step > item.id ? 'done' : 'todo';
 
@@ -146,7 +146,7 @@ export default function Create({ taxonomies }: Props) {
                                             <div
                                                 key={item.id}
                                                 className={cn(
-                                                    'rounded-2xl border px-3 py-3 transition-colors sm:px-3.5 sm:py-3.5',
+                                                    'rounded-2xl border px-3 py-2.5 transition-colors sm:px-3.5 sm:py-3.5 shrink-0 sm:shrink min-w-[120px] sm:min-w-0',
                                                     state === 'active'
                                                         ? 'border-[#C06041]/30 bg-[#C06041]/7'
                                                         : state === 'done'
@@ -154,10 +154,10 @@ export default function Create({ taxonomies }: Props) {
                                                             : 'border-slate-200/80 bg-white'
                                                 )}
                                             >
-                                                <div className="flex items-center gap-2.5">
+                                                <div className="flex items-center gap-2">
                                                     <div
                                                         className={cn(
-                                                            'flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-[11px] font-black',
+                                                            'flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-xl text-[11px] font-black',
                                                             state === 'active'
                                                                 ? 'bg-[#C06041] text-white'
                                                                 : state === 'done'
@@ -165,13 +165,13 @@ export default function Create({ taxonomies }: Props) {
                                                                     : 'bg-slate-100 text-slate-500'
                                                         )}
                                                     >
-                                                        {state === 'done' ? <CheckCircle2 className="h-4 w-4" /> : item.id}
+                                                        {state === 'done' ? <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : item.id}
                                                     </div>
-                                                    <p className="truncate text-[11px] font-black uppercase tracking-wider text-slate-700 sm:text-xs">
+                                                    <p className="truncate text-[10px] font-black uppercase tracking-wider text-slate-700 sm:text-xs">
                                                         {item.title}
                                                     </p>
                                                 </div>
-                                                <p className="mt-2 hidden text-[11px] leading-relaxed text-slate-500 sm:block">
+                                                <p className="mt-1.5 hidden text-[11px] leading-relaxed text-slate-500 sm:block">
                                                     {item.subtitle}
                                                 </p>
                                             </div>

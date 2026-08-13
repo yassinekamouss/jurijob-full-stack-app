@@ -1,6 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { Briefcase, Plus, Search, CheckCircle2 } from 'lucide-react';
+import { Briefcase, Plus, Search, CheckCircle2, Sparkles } from 'lucide-react';
 import { useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
@@ -68,29 +68,30 @@ export default function Index({ offres }: Props) {
 
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-12 sm:px-6 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-7xl px-4 pt-24 pb-12 sm:px-6 sm:pt-28 lg:px-8">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
+                    className="mb-8 flex flex-col gap-6 sm:mb-12 md:flex-row md:items-end md:justify-between"
                 >
                     <div className="space-y-4">
                         <div className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-4 py-1.5 text-[10px] font-black tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
+                            <Sparkles className="h-3 w-3 text-[#1a1f1e]/60" />
                             {t('recruiter_offers.index.badge')}
                         </div>
-                        <h1 className="font-serif text-4xl font-bold tracking-tight italic md:text-5xl">
+                        <h1 className="font-serif text-3xl font-bold tracking-tight italic sm:text-5xl">
                             {t('recruiter_offers.index.title')}
                         </h1>
-                        <p className="max-w-xl text-lg font-medium text-[#1a1f1e]/50">
+                        <p className="max-w-xl text-base sm:text-lg font-medium text-[#1a1f1e]/50">
                             {t('recruiter_offers.index.description')}
                         </p>
                     </div>
 
                     <Link
                         href={offresCreate().url}
-                        className="inline-flex h-14 items-center justify-center rounded-full bg-[#1a1f1e] px-10 text-base font-bold text-white transition-all hover:scale-105 hover:bg-[#1a1f1e]/90 active:scale-95 shadow-xl shadow-[#1a1f1e]/10"
+                        className="inline-flex h-12 sm:h-14 w-full sm:w-auto items-center justify-center rounded-full bg-[#1a1f1e] px-8 sm:px-10 text-sm sm:text-base font-bold text-white transition-all hover:scale-105 hover:bg-[#1a1f1e]/90 active:scale-95 shadow-xl shadow-[#1a1f1e]/10 shrink-0"
                     >
-                        <Plus className="mr-2 h-5 w-5" />
+                        <Plus className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                         {t('recruiter_offers.index.publish_btn')}
                     </Link>
                 </motion.div>
@@ -99,23 +100,23 @@ export default function Index({ offres }: Props) {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="flex flex-col items-center justify-center py-24 bg-white rounded-[40px] border border-[#1a1f1e]/5 shadow-sm"
+                        className="flex flex-col items-center justify-center py-16 sm:py-24 bg-white rounded-[28px] sm:rounded-[40px] border border-[#1a1f1e]/5 p-6 shadow-sm"
                     >
-                        <div className="bg-[#1a1f1e]/5 p-8 rounded-3xl mb-8">
-                            <Briefcase className="h-14 w-14 text-[#1a1f1e]/20" />
+                        <div className="bg-[#1a1f1e]/5 p-6 sm:p-8 rounded-3xl mb-6 sm:mb-8">
+                            <Briefcase className="h-10 w-10 sm:h-14 sm:w-14 text-[#1a1f1e]/20" />
                         </div>
-                        <h3 className="text-2xl font-bold text-[#1a1f1e] mb-3">{t('recruiter_offers.index.empty_title')}</h3>
-                        <p className="text-lg font-medium text-[#1a1f1e]/40 max-w-sm text-center mb-10">
+                        <h3 className="text-xl sm:text-2xl font-bold text-[#1a1f1e] mb-3 text-center">{t('recruiter_offers.index.empty_title')}</h3>
+                        <p className="text-sm sm:text-lg font-medium text-[#1a1f1e]/40 max-w-sm text-center mb-8 sm:mb-10">
                             {t('recruiter_offers.index.empty_desc')}
                         </p>
                         <Link
                             href={offresCreate().url}
-                            className="text-[#1a1f1e] font-black text-sm tracking-widest uppercase border-b-2 border-[#1a1f1e] pb-1 hover:opacity-70 transition-opacity"
+                            className="text-[#1a1f1e] font-black text-xs sm:text-sm tracking-widest uppercase border-b-2 border-[#1a1f1e] pb-1 hover:opacity-70 transition-opacity"
                             dangerouslySetInnerHTML={{ __html: t('recruiter_offers.index.create_first') }}
                         />
                     </motion.div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {offres.map((offre, idx) => {
                             return (
                                 <motion.div
@@ -123,12 +124,12 @@ export default function Index({ offres }: Props) {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.1 }}
-                                    className="group relative bg-white rounded-[32px] border border-[#1a1f1e]/5 p-8 shadow-sm hover:shadow-2xl hover:shadow-[#1a1f1e]/5 transition-all duration-500 overflow-hidden"
+                                    className="group relative bg-white rounded-[24px] sm:rounded-[32px] border border-[#1a1f1e]/5 p-5 sm:p-8 shadow-sm hover:shadow-2xl hover:shadow-[#1a1f1e]/5 transition-all duration-500 overflow-hidden"
                                 >
                                     <div className="absolute top-0 right-0 -mr-4 -mt-4 h-24 w-24 rounded-full bg-[#1a1f1e]/[0.02] transition-transform group-hover:scale-150" />
 
-                                    <div className="justify-between flex items-center mb-6">
-                                        <div className="flex gap-2 items-center">
+                                    <div className="justify-between flex items-center mb-5 sm:mb-6 gap-2">
+                                        <div className="flex flex-wrap gap-1.5 sm:gap-2 items-center">
                                             <Badge className="bg-[#1a1f1e]/5 text-[#1a1f1e] border-none text-[10px] uppercase font-black tracking-wider">
                                                 {offre.poste?.nom || t('recruiter_offers.index.position_fallback')}
                                             </Badge>
@@ -145,12 +146,12 @@ export default function Index({ offres }: Props) {
                                                                 t('recruiter_offers.index.status.archived')}
                                             </Badge>
                                         </div>
-                                        <span className="text-xs font-bold text-[#1a1f1e]/30">
+                                        <span className="text-xs font-bold text-[#1a1f1e]/30 shrink-0">
                                             {new Date(offre.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}
                                         </span>
                                     </div>
 
-                                    <h3 className="font-serif text-2xl font-bold text-[#1a1f1e] group-hover:italic transition-all mb-4 line-clamp-2">
+                                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#1a1f1e] group-hover:italic transition-all mb-4 line-clamp-2">
                                         {offre.titre}
                                     </h3>
 

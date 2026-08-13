@@ -93,9 +93,9 @@ export default function Show({ offre }: Props) {
 
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-7xl px-4 pt-32 pb-24 sm:px-6 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-24 lg:px-8">
                 {/* Navigation & Header */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 sm:mb-12">
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -108,7 +108,7 @@ export default function Show({ offre }: Props) {
                             <ArrowLeft className="mr-2 h-4 w-4 transform group-hover:-translate-x-1 transition-transform" />
                             {t('recruiter_offers.show.back_to_dashboard')}
                         </Link>
-                        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-black italic tracking-tight leading-tight">
+                        <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black italic tracking-tight leading-tight">
                             {offre.titre}
                         </h1>
                         <div className="flex flex-wrap gap-2 items-center">
@@ -137,7 +137,7 @@ export default function Show({ offre }: Props) {
 
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     {/* Main Content Area */}
                     <div className="lg:col-span-8 space-y-12">
                         {/* Description Section */}

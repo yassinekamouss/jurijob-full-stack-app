@@ -8,6 +8,7 @@ import {
     Globe,
     MapPin,
     Users,
+    User,
     ShieldCheck,
     ShieldAlert,
     Building,
