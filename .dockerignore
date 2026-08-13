@@ -1,0 +1,39 @@
+# VCS
+.git
+.gitignore
+.gitattributes
+
+# Dependencies (installed fresh inside the image)
+node_modules
+vendor
+
+# Build artifacts (regenerated during the image build)
+public/build
+public/hot
+public/storage
+bootstrap/ssr
+bootstrap/cache/*
+!bootstrap/cache/.gitignore
+
+# Secrets & environment
+.env
+.env.*
+!.env.example
+
+# Local runtime data
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+storage/app/*
+!/storage/**/.gitignore
+
+# Tooling / misc
+tests
+build_output.log
+tables.json
+docker-compose.yml
+GEMINI.md
+AGENTS.md
+*.log
