@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '@/components/signup/FormularIcons';
+import { PhoneInput } from '@/components/ui/phone-input';
 
-import { UserFormData } from '@/types';
+import type { UserFormData } from '@/types';
 
 type CommonFieldsProps = {
     formData: UserFormData;
@@ -24,17 +25,34 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [dragActive, setDragActive] = useState(false);
     const [localImgError, setLocalImgError] = useState<string | null>(null);
-    const [localPhoneError, setLocalPhoneError] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
 
     const getPasswordStrength = (password: string) => {
-        if (!password) return { strength: 0, label: '', color: '', bg: 'bg-slate-200' };
+        if (!password) {
+return { strength: 0, label: '', color: '', bg: 'bg-slate-200' };
+}
+
         let strength = 0;
-        if (password.length >= 8) strength++;
-        if (/[A-Z]/.test(password)) strength++;
-        if (/[a-z]/.test(password)) strength++;
-        if (/[0-9]/.test(password)) strength++;
-        if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+        if (password.length >= 8) {
+strength++;
+}
+
+        if (/[A-Z]/.test(password)) {
+strength++;
+}
+
+        if (/[a-z]/.test(password)) {
+strength++;
+}
+
+        if (/[0-9]/.test(password)) {
+strength++;
+}
+
+        if (/[^A-Za-z0-9]/.test(password)) {
+strength++;
+}
 
         const levels = [
             { strength: 0, label: '', color: '', bg: 'bg-slate-200' },
@@ -44,15 +62,20 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
             { strength: 4, label: t('auth.forms.common.strength.strong'), color: 'text-green-500', bg: 'bg-green-500' },
             { strength: 5, label: t('auth.forms.common.strength.very_strong'), color: 'text-green-600', bg: 'bg-green-600' },
         ];
+
         return levels[strength];
     };
 
     const passwordStrength = getPasswordStrength(formData.password || '');
 
     const formatBytes = (bytes: number) => {
-        if (!bytes) return '0 B';
+        if (!bytes) {
+return '0 B';
+}
+
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
         return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${sizes[i]}`;
     };
 
@@ -92,24 +115,18 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
             {/* --- TELEPHONE --- */}
             <div>
                 <label className={labelClasses}>{t('auth.forms.common.phone_label')}</label>
-                <input
-                    type="tel"
-                    placeholder={t('auth.forms.common.phone_placeholder')}
+                <PhoneInput
                     value={formData.telephone || ''}
-                    onChange={(e) => {
-                        const val = e.target.value;
-                        onFieldChange('telephone', val);
-                        if (val && !/^\+?[0-9]*$/.test(val)) {
-                            setLocalPhoneError(t('auth.forms.common.phone_format_error'));
-                        } else {
-                            setLocalPhoneError(null);
-                        }
-                    }}
-                    className={`${inputClasses} ${localPhoneError ? 'border-red-300 ring-red-50' : ''}`}
+                    onChange={(value) => onFieldChange('telephone', value || '')}
+                    placeholder={t('auth.forms.common.phone_placeholder')}
+                    containerClassName="border-slate-200 bg-white rounded-lg focus-within:ring-2 focus-within:ring-slate-900"
+                    inputClassName="h-12 text-slate-900 placeholder:text-slate-400"
+                    searchPlaceholder={t('common.phone_country_search')}
+                    aria-invalid={!!errors.telephone}
                 />
-                {(errors.telephone || localPhoneError) && (
+                {errors.telephone && (
                     <p className="text-xs text-red-500 mt-1.5 font-medium">
-                        {localPhoneError || errors.telephone}
+                        {errors.telephone}
                     </p>
                 )}
             </div>

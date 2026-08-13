@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Models\User;
+use App\Rules\ValidPhoneNumber;
 use App\Services\RegistrationService;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -47,7 +48,7 @@ class CreateNewUser implements CreatesNewUsers
             // User rules
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
-            'telephone' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9]*$/'],
+            'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
 
             // Candidat rules
             'nom' => ['required', 'string', 'max:255'],
@@ -89,7 +90,6 @@ class CreateNewUser implements CreatesNewUsers
             'formations.*.specialisation_id' => ['required_with:formations', 'integer'],
             'formations.*.ecole_id' => ['required_with:formations', 'integer'],
         ], [
-            'telephone.regex' => 'Le numéro de téléphone doit contenir uniquement des chiffres et éventuellement un + au début.',
             'experiences.*.fin.after_or_equal' => 'La date de fin de l\'expérience doit être postérieure ou égale à la date de début.',
             'formations.*.annee_fin.gte' => 'L\'année de fin de la formation doit être postérieure ou égale à l\'année de début.',
         ])->validate();
@@ -106,7 +106,7 @@ class CreateNewUser implements CreatesNewUsers
             // User rules
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
-            'telephone' => ['nullable', 'string', 'max:20', 'regex:/^\+?[0-9]*$/'],
+            'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
 
             // Recruteur rules
             'nom_entreprise' => ['required', 'string', 'max:255'],
@@ -115,8 +115,6 @@ class CreateNewUser implements CreatesNewUsers
             'ville_id' => ['required', 'integer'],
             'site_web' => ['nullable', 'string', 'max:255', 'url'],
             'poste' => ['nullable', 'string', 'max:255'],
-        ], [
-            'telephone.regex' => 'Le numéro de téléphone doit contenir uniquement des chiffres et éventuellement un + au début.',
         ])->validate();
 
         return $this->registrationService->registerRecruteur($input);

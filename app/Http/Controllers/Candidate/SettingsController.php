@@ -58,7 +58,10 @@ class SettingsController extends Controller
         try {
             $candidat->update($dto->toArray());
 
-            $user->update(['is_active' => $dto->is_active]);
+            $user->update([
+                'is_active' => $dto->is_active,
+                'telephone' => $dto->telephone,
+            ]);
 
             return back()->with('success', 'Profil mis à jour avec succès.');
         } catch (\Exception $e) {

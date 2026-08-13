@@ -14,6 +14,7 @@ readonly class ProfileData
         public int $formation_juridique_id,
         public int $salaire_id,
         public int $urgence_id,
+        public ?string $telephone = null,
         public bool $is_active = true,
     ) {}
 
@@ -32,6 +33,7 @@ readonly class ProfileData
             formation_juridique_id: (int) $data['formation_juridique_id'],
             salaire_id: (int) $data['salaire_id'],
             urgence_id: (int) $data['urgence_id'],
+            telephone: $data['telephone'] ?? null,
             is_active: (bool) ($data['is_active'] ?? true),
         );
     }

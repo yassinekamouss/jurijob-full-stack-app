@@ -1,6 +1,5 @@
 import { Head, useForm, usePage, Deferred, router } from '@inertiajs/react';
-import { useTranslation } from 'react-i18next';
-import DashboardHeader from '@/components/candidate/DashboardHeader';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     User,
     Mail,
@@ -15,23 +14,24 @@ import {
     Languages,
     MapPin,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import DashboardHeader from '@/components/candidate/DashboardHeader';
+import PendingVerificationBanner from '@/components/candidate/PendingVerificationBanner';
+import type {ProfileCompletion} from '@/components/candidate/PendingVerificationBanner';
+import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
+import FormationSection from '@/components/candidate/settings/FormationSection';
+import LanguageSection from '@/components/candidate/settings/LanguageSection';
+import PreferencesSection from '@/components/candidate/settings/PreferencesSection';
+import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
+import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
+import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
+import { PhoneInput } from '@/components/ui/phone-input';
+import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
+import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import {
     updateProfile as updateProfileRoute,
 } from '@/routes/candidate/settings';
-import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
-import ExperienceSection from '@/components/candidate/settings/ExperienceSection';
-import FormationSection from '@/components/candidate/settings/FormationSection';
-import SpecialisationSection from '@/components/candidate/settings/SpecialisationSection';
-import LanguageSection from '@/components/candidate/settings/LanguageSection';
-import PreferencesSection from '@/components/candidate/settings/PreferencesSection';
-import PendingVerificationBanner, {
-    type ProfileCompletion,
-} from '@/components/candidate/PendingVerificationBanner';
-import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
-import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
-import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 
 interface Props {
     candidat: any;
@@ -126,6 +126,7 @@ export default function Settings({
             const timer = setTimeout(() => {
                 setVisibleFlash(null);
             }, 5000);
+
             return () => clearTimeout(timer);
         }
     }, [flash]);
@@ -133,6 +134,7 @@ export default function Settings({
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const tab = params.get('tab') as TabType;
+
         if (
             tab &&
             [
@@ -185,6 +187,7 @@ export default function Settings({
         formation_juridique_id: candidat?.formation_juridique_id || '',
         salaire_id: candidat?.salaire_id || '',
         urgence_id: candidat?.urgence_id || '',
+        telephone: user.telephone || '',
         is_active: user.is_active,
     });
 
@@ -409,6 +412,28 @@ export default function Settings({
                                                 <p className="ml-1 text-xs font-medium text-[#1a1f1e]/40">
                                                     {t('candidate_settings.form.email_help')}
                                                 </p>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                    {t('candidate_settings.form.phone')}
+                                                </label>
+                                                <PhoneInput
+                                                    value={profileForm.data.telephone || ''}
+                                                    onChange={(value) =>
+                                                        profileForm.setData('telephone', value || '')
+                                                    }
+                                                    placeholder={t('candidate_settings.form.phone_placeholder')}
+                                                    containerClassName="rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] focus-within:border-[#C06041]"
+                                                    inputClassName="h-[50px] px-0 text-sm font-bold text-[#1a1f1e] placeholder:text-[#1a1f1e]/40"
+                                                    searchPlaceholder={t('common.phone_country_search')}
+                                                    aria-invalid={!!profileForm.errors.telephone}
+                                                />
+                                                {profileForm.errors.telephone && (
+                                                    <p className="ml-1 text-xs font-bold text-red-500">
+                                                        {profileForm.errors.telephone}
+                                                    </p>
+                                                )}
                                             </div>
 
                                             <div className="space-y-2">
