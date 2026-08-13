@@ -42,6 +42,7 @@ class Offre extends Model
         'notes_complementaires',
         'nombre_cv',
         'statut',
+        'payment_reference',
     ];
 
     public function recruteur(): BelongsTo
@@ -95,5 +96,13 @@ class Offre extends Model
     public function criteresMultiples(): HasMany
     {
         return $this->hasMany(OffreCritereMultiple::class);
+    }
+
+    /**
+     * Candidates shortlisted and sent for this offer.
+     */
+    public function matches(): HasMany
+    {
+        return $this->hasMany(OffreMatch::class);
     }
 }

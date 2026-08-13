@@ -1,73 +1,146 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Building2, MapPin, Briefcase, Clock, CheckCircle2, FileText, Users } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Search, Building2, MapPin, Briefcase, Clock, CheckCircle2, FileText, Users, Archive } from 'lucide-react';
 
 type OffreStatut = 'EN_TRAITEMENT' | 'ATTENTE_PAIEMENT' | 'VERIFICATION_PAIEMENT' | 'CV_ENVOYES' | 'ARCHIVE';
 
-const breadcrumbs = (t: any) => [
+type OffreItem = {
+    id: number;
+    titre: string;
+    statut: OffreStatut;
+    nombre_cv: number;
+    created_at: string;
+    recruteur?: { nom_entreprise?: string };
+    poste?: { nom?: string };
+    ville?: { nom?: string };
+    type_travail?: { nom?: string };
+    mode_travail?: { nom?: string };
+    niveau_experience?: { nom?: string };
+};
+
+const breadcrumbs = [
     { title: 'Admin', href: '/admin/dashboard' },
-    { title: t('admin_offers.breadcrumb'), href: '/admin/offres' },
+    { title: 'Offres', href: '/admin/offres' },
 ];
 
-const statutTabs = (t: any): { value: OffreStatut; label: string }[] => [
-    { value: 'EN_TRAITEMENT', label: t('admin_offers.tabs.processing') },
-    { value: 'ATTENTE_PAIEMENT', label: t('admin_offers.tabs.awaiting_payment') },
-    { value: 'VERIFICATION_PAIEMENT', label: t('admin_offers.tabs.payment_verification') },
-    { value: 'CV_ENVOYES', label: t('admin_offers.tabs.cv_sent') },
-    { value: 'ARCHIVE', label: t('admin_offers.tabs.archived') },
+const statutTabs: { value: OffreStatut; label: string }[] = [
+    { value: 'EN_TRAITEMENT', label: 'En traitement' },
+    { value: 'ATTENTE_PAIEMENT', label: 'Attente paiement' },
+    { value: 'VERIFICATION_PAIEMENT', label: 'Vérif. paiement' },
+    { value: 'CV_ENVOYES', label: 'CV envoyés' },
+    { value: 'ARCHIVE', label: 'Archivées' },
 ];
 
-const getStatutStyles = (t: any): Record<OffreStatut, { dot: string; badge: string; label: string }> => ({
-    EN_TRAITEMENT: { dot: 'bg-amber-400', badge: 'bg-amber-50 text-amber-700 border-amber-200', label: t('admin_offers.tabs.processing') },
-    ATTENTE_PAIEMENT: { dot: 'bg-orange-400', badge: 'bg-orange-50 text-orange-700 border-orange-200', label: t('admin_offers.tabs.awaiting_payment') },
-    VERIFICATION_PAIEMENT: { dot: 'bg-blue-400', badge: 'bg-blue-50 text-blue-700 border-blue-200', label: t('admin_offers.tabs.payment_verification') },
-    CV_ENVOYES: { dot: 'bg-emerald-400', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', label: t('admin_offers.tabs.cv_sent') },
-    ARCHIVE: { dot: 'bg-slate-300', badge: 'bg-slate-50 text-slate-600 border-slate-200', label: t('admin_offers.tabs.archived') },
-});
+const statutStyles: Record<OffreStatut, { dot: string; badge: string; label: string }> = {
+    EN_TRAITEMENT: { dot: 'bg-amber-400', badge: 'bg-amber-50 text-amber-700 border-amber-200', label: 'En traitement' },
+    ATTENTE_PAIEMENT: { dot: 'bg-orange-400', badge: 'bg-orange-50 text-orange-700 border-orange-200', label: 'Attente paiement' },
+    VERIFICATION_PAIEMENT: { dot: 'bg-blue-400', badge: 'bg-blue-50 text-blue-700 border-blue-200', label: 'Vérif. paiement' },
+    CV_ENVOYES: { dot: 'bg-emerald-400', badge: 'bg-emerald-50 text-emerald-700 border-emerald-200', label: 'CV envoyés' },
+    ARCHIVE: { dot: 'bg-slate-300', badge: 'bg-slate-50 text-slate-600 border-slate-200', label: 'Archivée' },
+};
 
 export default function Offres({ offres, currentStatut, filters }: any) {
-    const { t, i18n } = useTranslation();
     const [search, setSearch] = useState(filters?.search || '');
-    
-    const statutStyles = getStatutStyles(t);
+    const [confirmOffre, setConfirmOffre] = useState<OffreItem | null>(null);
+    const [isConfirming, setIsConfirming] = useState(false);
+    const [archiveOffre, setArchiveOffre] = useState<OffreItem | null>(null);
+    const [isArchiving, setIsArchiving] = useState(false);
+    const [backToTraitementOffre, setBackToTraitementOffre] = useState<OffreItem | null>(null);
+    const [isReverting, setIsReverting] = useState(false);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         router.get('/admin/offres', { statut: currentStatut, search }, { preserveState: true, preserveScroll: true });
     };
 
-    const handleConfirmPayment = (id: number) => {
-        router.post(`/admin/offres/${id}/confirm-payment`, {}, { preserveScroll: true });
+    const handleConfirmPayment = () => {
+        if (!confirmOffre || isConfirming) {
+            return;
+        }
+
+        setIsConfirming(true);
+        router.post(
+            `/admin/offres/${confirmOffre.id}/confirm-payment`,
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    setIsConfirming(false);
+                    setConfirmOffre(null);
+                },
+            },
+        );
+    };
+
+    const handleArchive = () => {
+        if (!archiveOffre || isArchiving) {
+            return;
+        }
+
+        setIsArchiving(true);
+        router.post(
+            `/admin/offres/${archiveOffre.id}/archive`,
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    setIsArchiving(false);
+                    setArchiveOffre(null);
+                },
+            },
+        );
     };
 
     const searchQuery = search ? `&search=${encodeURIComponent(search)}` : '';
 
+    const handleBackToTraitement = () => {
+        if (!backToTraitementOffre || isReverting) {
+            return;
+        }
+        setIsReverting(true);
+        router.post(
+            `/admin/offres/${backToTraitementOffre.id}/revert-to-traitement`,
+            {},
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    setIsReverting(false);
+                    setBackToTraitementOffre(null);
+                },
+            }
+        );
+    };
+
     return (
-        <AdminLayout breadcrumbs={breadcrumbs(t)}>
-            <Head title={t('admin_offers.page_title')} />
+        <AdminLayout breadcrumbs={breadcrumbs}>
+            <Head title="Gestion des Offres" />
 
             <div className="flex flex-col gap-8" style={{ fontFamily: 'Outfit, sans-serif' }}>
                 {/* Header */}
                 <div className="border-b border-[#1a1f1e]/10 pb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                     <div>
                         <p className="text-xs uppercase tracking-[0.2em] text-[#C06041] font-medium mb-2">
-                            {t('admin_offers.admin_label')}
+                            Administration
                         </p>
                         <h1
                             className="text-4xl md:text-5xl text-[#1a1f1e] font-light leading-tight"
                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                         >
-                            {t('admin_offers.title_part1')} <span className="italic">{t('admin_offers.title_part2')}</span>
+                            Offres <span className="italic">recruteurs</span>
                         </h1>
                         <p className="text-[#1a1f1e]/40 mt-2 text-sm">
-                            {offres.total > 1
-                                ? t('admin_offers.total_count_plural', { count: offres.total })
-                                : t('admin_offers.total_count', { count: offres.total })}
+                            {offres.total} offre{offres.total > 1 ? 's' : ''} au total
                         </p>
                     </div>
 
@@ -76,7 +149,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1a1f1e]/30" />
                             <Input
                                 type="text"
-                                placeholder={t('admin_offers.search_placeholder')}
+                                placeholder="Titre, entreprise..."
                                 className="pl-9 border-[#1a1f1e]/20 bg-white rounded-none h-10 text-sm focus-visible:ring-[#C06041] focus-visible:border-[#C06041]"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
@@ -86,14 +159,14 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                             type="submit"
                             className="bg-[#1a1f1e] text-white hover:bg-[#1a1f1e]/80 rounded-none h-10 px-4 text-xs uppercase tracking-wider"
                         >
-                            {t('admin_offers.search_btn')}
+                            Chercher
                         </Button>
                     </form>
                 </div>
 
                 {/* Status tabs */}
                 <div className="flex overflow-x-auto border-b border-[#1a1f1e]/10 -mt-4 gap-0">
-                    {statutTabs(t).map((tab) => (
+                    {statutTabs.map((tab) => (
                         <Link
                             key={tab.value}
                             href={`/admin/offres?statut=${tab.value}${searchQuery}`}
@@ -112,7 +185,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                 <div className="flex flex-col gap-3">
                     {offres.data.length === 0 ? (
                         <div className="bg-white border border-[#1a1f1e]/8 py-16 text-center">
-                            <p className="text-[#1a1f1e]/30 text-sm uppercase tracking-wider">{t('admin_offers.empty_state')}</p>
+                            <p className="text-[#1a1f1e]/30 text-sm uppercase tracking-wider">Aucune offre pour ce statut</p>
                         </div>
                     ) : (
                         offres.data.map((offre: any) => {
@@ -139,7 +212,7 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-[#1a1f1e]/50">
                                                 <span className="inline-flex items-center gap-1.5">
                                                     <Building2 className="h-3.5 w-3.5" />
-                                                    {offre.recruteur?.nom_entreprise || t('admin_offers.company_na')}
+                                                    {offre.recruteur?.nom_entreprise || 'Entreprise N/A'}
                                                 </span>
                                                 {offre.poste?.nom && (
                                                     <span className="inline-flex items-center gap-1.5">
@@ -155,11 +228,11 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                                 )}
                                                 <span className="inline-flex items-center gap-1.5">
                                                     <FileText className="h-3.5 w-3.5" />
-                                                    {t('admin_offers.cv_count', { count: offre.nombre_cv || 0 })}
+                                                    {offre.nombre_cv} CV
                                                 </span>
                                                 <span className="inline-flex items-center gap-1.5">
                                                     <Clock className="h-3.5 w-3.5" />
-                                                    {new Date(offre.created_at).toLocaleDateString(i18n.language || 'fr-FR')}
+                                                    {new Date(offre.created_at).toLocaleDateString('fr-FR')}
                                                 </span>
                                             </div>
 
@@ -191,16 +264,38 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                                                     className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider border border-[#1a1f1e]/20 text-[#1a1f1e] px-4 py-2 hover:bg-[#1a1f1e] hover:text-white transition-colors"
                                                 >
                                                     <Users className="h-3.5 w-3.5" />
-                                                    {t('admin_offers.actions.matching')}
+                                                    Matching
                                                 </Link>
                                             )}
                                             {currentStatut === 'VERIFICATION_PAIEMENT' && (
                                                 <button
-                                                    onClick={() => handleConfirmPayment(offre.id)}
+                                                    type="button"
+                                                    onClick={() => setConfirmOffre(offre)}
                                                     className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider border border-emerald-600 text-emerald-700 px-4 py-2 hover:bg-emerald-600 hover:text-white transition-colors"
                                                 >
                                                     <CheckCircle2 className="h-3.5 w-3.5" />
-                                                    {t('admin_offers.actions.confirm_payment')}
+                                                    Confirmer paiement
+                                                </button>
+                                            )}
+                                            {offre.statut === 'ATTENTE_PAIEMENT' && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setBackToTraitementOffre(offre)}
+                                                    className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider border border-orange-600 text-orange-700 px-4 py-2 hover:bg-orange-600 hover:text-white transition-colors"
+                                                >
+                                                    <Clock className="h-3.5 w-3.5" />
+                                                    Repasser en traitement
+                                                </button>
+                                            )}
+
+                                            {currentStatut !== 'ARCHIVE' && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setArchiveOffre(offre)}
+                                                    className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider border border-[#1a1f1e]/20 text-[#1a1f1e]/60 px-4 py-2 hover:bg-[#1a1f1e] hover:text-white transition-colors"
+                                                >
+                                                    <Archive className="h-3.5 w-3.5" />
+                                                    Archiver
                                                 </button>
                                             )}
                                         </div>
@@ -210,6 +305,137 @@ export default function Offres({ offres, currentStatut, filters }: any) {
                         })
                     )}
                 </div>
+
+                <Dialog
+                    open={confirmOffre !== null}
+                    onOpenChange={(open) => {
+                        if (!open && !isConfirming) {
+                            setConfirmOffre(null);
+                        }
+                    }}
+                >
+                    <DialogContent className="rounded-none border-[#1a1f1e]/10 sm:max-w-md">
+                        <DialogHeader>
+                            <DialogTitle
+                                className="text-xl font-light text-[#1a1f1e]"
+                                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                            >
+                                Confirmer le paiement
+                            </DialogTitle>
+                            <DialogDescription className="text-sm text-[#1a1f1e]/60">
+                                Confirmez-vous avoir reçu le paiement pour « {confirmOffre?.titre} » ?
+                                L’offre passera en <strong>CV envoyés</strong> et les profils
+                                complets seront débloqués pour le recruteur.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="gap-2 sm:gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setConfirmOffre(null)}
+                                disabled={isConfirming}
+                                className="border border-[#1a1f1e]/15 px-4 py-2 text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/60 transition-colors hover:border-[#1a1f1e]/40 hover:text-[#1a1f1e]"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleConfirmPayment}
+                                disabled={isConfirming}
+                                className="inline-flex items-center justify-center gap-2 bg-emerald-700 px-4 py-2 text-xs font-medium uppercase tracking-wider text-white transition-opacity disabled:opacity-40"
+                            >
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                {isConfirming ? 'Confirmation…' : 'Oui, confirmer'}
+                            </button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+
+                <Dialog
+                    open={archiveOffre !== null}
+                    onOpenChange={(open) => {
+                        if (!open && !isArchiving) {
+                            setArchiveOffre(null);
+                        }
+                    }}
+                >
+                    <DialogContent className="rounded-none border-[#1a1f1e]/10 sm:max-w-md">
+                        <DialogHeader>
+                            <DialogTitle
+                                className="text-xl font-light text-[#1a1f1e]"
+                                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                            >
+                                Archiver l'offre
+                            </DialogTitle>
+                            <DialogDescription className="text-sm text-[#1a1f1e]/60">
+                                Voulez-vous archiver « {archiveOffre?.titre} » ? L'offre sera
+                                déplacée dans l'onglet <strong>Archivées</strong> et ne sera
+                                plus active.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="gap-2 sm:gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setArchiveOffre(null)}
+                                disabled={isArchiving}
+                                className="border border-[#1a1f1e]/15 px-4 py-2 text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/60 transition-colors hover:border-[#1a1f1e]/40 hover:text-[#1a1f1e]"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleArchive}
+                                disabled={isArchiving}
+                                className="inline-flex items-center justify-center gap-2 bg-[#1a1f1e] px-4 py-2 text-xs font-medium uppercase tracking-wider text-white transition-opacity disabled:opacity-40"
+                            >
+                                <Archive className="h-3.5 w-3.5" />
+                                {isArchiving ? 'Archivage…' : 'Oui, archiver'}
+                            </button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+
+                {/* Back to traitement modal */}
+                <Dialog
+                    open={backToTraitementOffre !== null}
+                    onOpenChange={(open) => {
+                        if (!open && !isReverting) {
+                            setBackToTraitementOffre(null);
+                        }
+                    }}
+                >
+                    <DialogContent className="rounded-none border-[#1a1f1e]/10 sm:max-w-md">
+                        <DialogHeader>
+                            <DialogTitle
+                                className="text-xl font-light text-[#1a1f1e]"
+                                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                            >
+                                Repasser en traitement
+                            </DialogTitle>
+                            <DialogDescription className="text-sm text-[#1a1f1e]/60">
+                                Êtes-vous sûr(e) ? Les profils choisis pour cette offre seront <b>supprimés</b> immédiatement.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="gap-2 sm:gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setBackToTraitementOffre(null)}
+                                disabled={isReverting}
+                                className="border border-[#1a1f1e]/15 px-4 py-2 text-xs font-medium uppercase tracking-wider text-[#1a1f1e]/60 transition-colors hover:border-[#1a1f1e]/40 hover:text-[#1a1f1e]"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleBackToTraitement}
+                                disabled={isReverting}
+                                className="inline-flex items-center justify-center gap-2 bg-orange-700 px-4 py-2 text-xs font-medium uppercase tracking-wider text-white transition-opacity disabled:opacity-40"
+                            >
+                                <Clock className="h-3.5 w-3.5" />
+                                {isReverting ? 'Retour…' : 'Oui, repasser'}
+                            </button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
 
                 {/* Pagination */}
                 {offres.links?.length > 3 && (

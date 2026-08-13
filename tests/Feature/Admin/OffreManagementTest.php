@@ -63,7 +63,7 @@ test('admin cannot confirm payment for offre not in verification', function () {
         ->from(route('admin.offres.index', ['statut' => 'EN_TRAITEMENT']))
         ->post(route('admin.offres.confirm-payment', $offre))
         ->assertRedirect(route('admin.offres.index', ['statut' => 'EN_TRAITEMENT']))
-        ->assertSessionHas('error');
+        ->assertSessionHasErrors('offre');
 
     expect($offre->fresh()->statut)->toBe('EN_TRAITEMENT');
 });

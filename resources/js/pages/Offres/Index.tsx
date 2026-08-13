@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import DashboardHeader from '@/components/recruiter/DashboardHeader';
-import { create as offresCreate, show as offresShow } from '@/routes/offres';
+import { create as offresCreate, payment as offresPayment, profiles as offresProfiles, show as offresShow } from '@/routes/offres';
 import type { Offre } from '@/types/offre';
 
 interface Props {
@@ -167,10 +167,20 @@ export default function Index({ offres }: Props) {
 
                                     <div className="pt-6 border-t border-[#1a1f1e]/5">
                                         <Link
-                                            href={offresShow({ offre: offre.id }).url}
+                                            href={
+                                                offre.statut === 'ATTENTE_PAIEMENT'
+                                                    ? offresPayment(offre.id).url
+                                                    : offre.statut === 'CV_ENVOYES'
+                                                        ? offresProfiles(offre.id).url
+                                                        : offresShow({ offre: offre.id }).url
+                                            }
                                             className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[#1a1f1e]/5 text-xs font-black text-[#1a1f1e] uppercase tracking-widest hover:bg-[#1a1f1e] hover:text-white transition-all"
                                         >
-                                            {t('recruiter_offers.index.view_details')}
+                                           {offre.statut === 'ATTENTE_PAIEMENT'
+                                                ? t('recruiter_offers.index.paiment')
+                                                : offre.statut === 'CV_ENVOYES'
+                                                    ? t('recruiter_offers.index.view_profiles')
+                                                    : t('recruiter_offers.index.view_details')}
                                         </Link>
                                     </div>
                                 </motion.div>
