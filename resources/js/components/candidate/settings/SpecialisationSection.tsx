@@ -86,7 +86,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
                 onSubmit={submit}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="space-y-8 rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm"
+                className="space-y-8 rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6 sm:p-8"
             >
                 {useLoadingTaxonomy(specialisationOptions) ? (
                     <p className="py-8 text-center text-sm text-[#1a1f1e]/40">
@@ -129,7 +129,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
                                                     className={`inline-flex max-w-full items-center rounded-2xl border px-3.5 py-2.5 text-left text-sm font-semibold transition-all ${
                                                         isSelected
                                                             ? 'border-[#1a1f1e] bg-[#1a1f1e] text-white shadow-sm'
-                                                            : 'border-[#1a1f1e]/10 bg-[#FDFCF8] text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
+                                                            : 'border-[#1a1f1e]/10 bg-white text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
                                                     }`}
                                                 >
                                                     <span className="leading-snug break-words">
@@ -161,7 +161,7 @@ export default function SpecialisationSection({ specialisations }: Props) {
                     <button
                         type="submit"
                         disabled={form.processing || !isDirty}
-                        className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
+                        className="rounded-full bg-[#1a1f1e] px-8 py-3 text-xs font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                         {t('candidate_settings.specializations.save_button')}
                     </button>

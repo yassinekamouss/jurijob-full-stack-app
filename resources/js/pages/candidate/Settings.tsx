@@ -223,7 +223,7 @@ export default function Settings({
     const profileFieldClass = (field: keyof typeof profileForm.data) =>
         profileForm.errors[field]
             ? 'border-red-300 bg-red-50/40 focus:border-red-400'
-            : 'border-[#1a1f1e]/10 bg-[#FDFCF8] focus:border-[#C06041]';
+            : 'border border-[#1a1f1e]/10 bg-white focus:border-[#C06041]';
 
     return (
         <div className="relative min-h-screen overflow-x-hidden bg-[#FDFCF8] text-[#1a1f1e]">
@@ -338,7 +338,7 @@ export default function Settings({
                                     className="space-y-10"
                                 >
                                     {/* Info Form */}
-                                    <section className="rounded-[32px] border border-[#1a1f1e]/10 bg-white p-8 shadow-sm">
+                                    <section className="rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6 sm:p-8">
                                         <form
                                             onSubmit={handleProfileSubmit}
                                             className="space-y-6"
@@ -403,7 +403,7 @@ export default function Settings({
                                                         type="email"
                                                         value={user.email || ''}
                                                         readOnly
-                                                        className="w-full cursor-not-allowed rounded-2xl border-[#1a1f1e]/10 bg-[#1a1f1e]/5 py-4 pr-5 pl-12 text-sm font-bold text-[#1a1f1e]/60 outline-none"
+                                                        className="w-full cursor-not-allowed rounded-2xl border border-[#1a1f1e]/10 bg-[#1a1f1e]/5 py-4 pr-5 pl-12 text-sm font-bold text-[#1a1f1e]/60 outline-none"
                                                     />
                                                 </div>
                                                 <p className="ml-1 text-xs font-medium text-[#1a1f1e]/40">
@@ -610,7 +610,7 @@ export default function Settings({
                                                                     className={`inline-flex items-center rounded-2xl border px-3.5 py-2.5 text-sm font-semibold transition-all ${
                                                                         isSelected
                                                                             ? 'border-[#1a1f1e] bg-[#1a1f1e] text-white shadow-sm'
-                                                                            : 'border-[#1a1f1e]/10 bg-[#FDFCF8] text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
+                                                                            : 'border-[#1a1f1e]/10 bg-white text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
                                                                     }`}
                                                                 >
                                                                     {option.nom}
@@ -654,7 +654,7 @@ export default function Settings({
                                                 <button
                                                     type="submit"
                                                     disabled={profileForm.processing}
-                                                    className="rounded-xl bg-[#1a1f1e] px-8 py-3 text-sm font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:opacity-50"
+                                                    className="rounded-full bg-[#1a1f1e] px-8 py-3 text-xs font-black tracking-widest text-white uppercase transition-all hover:bg-[#343a38] disabled:cursor-not-allowed disabled:opacity-40"
                                                 >
                                                     {t('candidate_settings.form.save')}
                                                 </button>

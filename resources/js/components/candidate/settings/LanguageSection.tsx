@@ -84,7 +84,7 @@ export default function LanguageSection({ langues }: Props) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="p-8 bg-[#1a1f1e]/[0.03] rounded-[32px] border border-[#1a1f1e]/5"
+            className="rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6 sm:p-8"
           >
             <form onSubmit={submit} className="flex flex-col sm:flex-row gap-6 items-end">
               <div className="flex-[2] space-y-2 w-full">
@@ -93,7 +93,7 @@ export default function LanguageSection({ langues }: Props) {
                   <select
                     value={form.data.langue_id}
                     onChange={e => form.setData('langue_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
                     <option value="">{t('candidate_settings.languages.placeholders.language')}</option>
@@ -116,7 +116,7 @@ export default function LanguageSection({ langues }: Props) {
                   <select
                     value={form.data.niveau_langue_id}
                     onChange={e => form.setData('niveau_langue_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer pr-12 group-hover:border-[#1a1f1e]/20"
                     required
                   >
                     <option value="">{t('candidate_settings.languages.placeholders.level')}</option>
@@ -135,7 +135,7 @@ export default function LanguageSection({ langues }: Props) {
                 <button
                   type="submit"
                   disabled={form.processing || !form.isDirty}
-                  className="flex-1 sm:flex-none bg-[#1a1f1e] text-white p-4 px-6 rounded-2xl flex items-center justify-center hover:bg-[#343a38] transition-all disabled:opacity-50 shadow-xl shadow-[#1a1f1e]/10 active:scale-95"
+                  className="flex-1 sm:flex-none bg-[#1a1f1e] text-white p-4 px-6 rounded-2xl flex items-center justify-center hover:bg-[#343a38] transition-all disabled:cursor-not-allowed disabled:opacity-40 shadow-xl shadow-[#1a1f1e]/10 active:scale-95"
                   title={editingId ? t('candidate_settings.languages.update_button') : t('candidate_settings.languages.add_button')}
                 >
                   {editingId ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}

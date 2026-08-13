@@ -347,6 +347,20 @@
       "errors": {
         "specialization_required": "Veuillez sélectionner au moins une spécialisation."
       }
+    },
+    "specializations": {
+      "title": "Spécialisations",
+      "description": "Sélectionnez une ou plusieurs expertises juridiques par catégorie.",
+      "loading": "Chargement des spécialisations...",
+      "save_button": "Enregistrer",
+      "chosen": "choisie",
+      "chosen_plural": "choisies",
+      "selected": "spécialisation sélectionnée",
+      "selected_plural": "spécialisations sélectionnées",
+      "none_selected": "Aucune spécialisation sélectionnée",
+      "errors": {
+        "specialization_required": "Veuillez sélectionner au moins une spécialisation."
+      }
     }
   },
   "candidate_pending_banner": {

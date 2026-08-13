@@ -91,7 +91,7 @@ export default function ExperienceSection({ experiences }: Props) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm"
+            className="space-y-4 rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6 sm:p-8"
           >
             <form onSubmit={submit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -100,7 +100,7 @@ export default function ExperienceSection({ experiences }: Props) {
                   <select
                     value={form.data.poste_id}
                     onChange={e => form.setData('poste_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
                     <option value="">{t('candidate_settings.experience.placeholders.job')}</option>
@@ -118,7 +118,7 @@ export default function ExperienceSection({ experiences }: Props) {
                     type="text"
                     value={form.data.entreprise}
                     onChange={e => form.setData('entreprise', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
                     placeholder={t('candidate_settings.experience.placeholders.company')}
                     required
                   />
@@ -132,7 +132,7 @@ export default function ExperienceSection({ experiences }: Props) {
                   <select
                     value={form.data.type_travail_id}
                     onChange={e => form.setData('type_travail_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
                     <option value="">{t('candidate_settings.experience.placeholders.contract_type')}</option>
@@ -157,7 +157,7 @@ export default function ExperienceSection({ experiences }: Props) {
                       value={form.data.debut}
                       onChange={e => form.setData('debut', e.target.value)}
                       onClick={(e) => e.currentTarget.showPicker()}
-                      className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
+                      className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
                       required
                     />
                   </div>
@@ -172,7 +172,7 @@ export default function ExperienceSection({ experiences }: Props) {
                       value={form.data.fin}
                       onChange={e => form.setData('fin', e.target.value)}
                       onClick={(e) => e.currentTarget.showPicker()}
-                      className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
+                      className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
                     />
                   </div>
                   {form.errors.fin && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.fin}</p>}
@@ -190,7 +190,7 @@ export default function ExperienceSection({ experiences }: Props) {
                 <button
                   type="submit"
                   disabled={form.processing || !form.isDirty}
-                  className="bg-[#1a1f1e] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-[#343a38] transition-all disabled:opacity-50 flex items-center gap-2"
+                  className="bg-[#1a1f1e] text-white px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest hover:bg-[#343a38] transition-all disabled:cursor-not-allowed disabled:opacity-40 flex items-center gap-2"
                 >
                   <CheckCircle2 className="h-4 w-4" />
                   {editingId ? t('candidate_settings.experience.update_button') : t('candidate_settings.experience.add_button')}

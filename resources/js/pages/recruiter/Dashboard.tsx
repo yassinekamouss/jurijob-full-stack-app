@@ -236,10 +236,13 @@ export default function Dashboard({ recruteur, user }: Props) {
                                     {t('recruiter_dashboard.attract_desc')}
                                 </p>
 
-                                <div className="mt-6 flex items-center gap-2 text-xs font-black tracking-widest text-blue-700 uppercase">
+                                <Link 
+                                    href="/recruteur/settings"
+                                    className="group mt-6 flex items-center gap-2 text-xs font-black tracking-widest text-blue-700 uppercase"
+                                >
                                     {t('recruiter_dashboard.update')}
                                     <ExternalLink className="h-3 w-3 transition-transform group-hover:translate-x-1" />
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     </div>

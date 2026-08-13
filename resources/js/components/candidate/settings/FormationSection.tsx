@@ -91,7 +91,7 @@ export default function FormationSection({ formations }: Props) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="bg-white rounded-[32px] border border-[#1a1f1e]/10 p-8 shadow-sm"
+            className="space-y-4 rounded-[28px] border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-6 sm:p-8"
           >
             <form onSubmit={submit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -100,7 +100,7 @@ export default function FormationSection({ formations }: Props) {
                   <select
                     value={form.data.formation_juridique_id}
                     onChange={e => form.setData('formation_juridique_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
                     <option value="">{t('candidate_settings.education.placeholders.level')}</option>
@@ -117,7 +117,7 @@ export default function FormationSection({ formations }: Props) {
                   <select
                     value={form.data.specialisation_id}
                     onChange={e => form.setData('specialisation_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
                     <option value="">{t('candidate_settings.education.placeholders.field')}</option>
@@ -136,7 +136,7 @@ export default function FormationSection({ formations }: Props) {
                   <select
                     value={form.data.ecole_id}
                     onChange={e => form.setData('ecole_id', e.target.value)}
-                    className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
                     required
                   >
                     <option value="">{t('candidate_settings.education.placeholders.school')}</option>
@@ -159,7 +159,7 @@ export default function FormationSection({ formations }: Props) {
                       value={form.data.annee_debut || ''}
                       onChange={e => form.setData('annee_debut', e.target.value)}
                       onClick={(e) => e.currentTarget.showPicker()}
-                      className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
+                      className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
                       required
                     />
                   </div>
@@ -174,7 +174,7 @@ export default function FormationSection({ formations }: Props) {
                       value={form.data.annee_fin || ''}
                       onChange={e => form.setData('annee_fin', e.target.value)}
                       onClick={(e) => e.currentTarget.showPicker()}
-                      className="w-full rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
+                      className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white pl-12 pr-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none cursor-pointer"
                     />
                   </div>
                   {form.errors.annee_fin && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.annee_fin}</p>}
@@ -183,7 +183,7 @@ export default function FormationSection({ formations }: Props) {
 
               <div className="flex items-center justify-end gap-4 pt-4 border-t border-[#1a1f1e]/5">
                 <button type="button" onClick={resetForm} className="px-6 py-3 text-sm font-bold text-[#1a1f1e]/40 hover:text-[#1a1f1e]">{t('candidate_settings.education.cancel_button')}</button>
-                <button type="submit" disabled={form.processing || !form.isDirty} className="bg-[#1a1f1e] text-white px-8 py-3 rounded-xl text-sm font-black uppercase tracking-widest flex items-center gap-2 disabled:opacity-50">
+                <button type="submit" disabled={form.processing || !form.isDirty} className="bg-[#1a1f1e] text-white px-8 py-3 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:bg-[#343a38] disabled:cursor-not-allowed disabled:opacity-40">
                   <Icon name="CheckCircle2" size={16} />
                   {editingId ? t('candidate_settings.education.update_button') : t('candidate_settings.education.add_button')}
                 </button>

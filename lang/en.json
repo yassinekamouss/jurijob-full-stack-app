@@ -347,6 +347,20 @@
       "errors": {
         "specialization_required": "Please select at least one specialization."
       }
+    },
+    "specialisations": {
+      "title": "Specializations",
+      "description": "Select one or more legal expertise per category.",
+      "loading": "Loading specializations...",
+      "save_button": "Save",
+      "chosen": "chosen",
+      "chosen_plural": "chosen",
+      "selected": "specialization selected",
+      "selected_plural": "specializations selected",
+      "none_selected": "No specialization selected",
+      "errors": {
+        "specialization_required": "Please select at least one specialization."
+      }
     }
   },
   "candidate_pending_banner": {
