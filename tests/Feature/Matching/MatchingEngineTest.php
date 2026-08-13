@@ -2,7 +2,10 @@
 
 use App\Models\Candidat\Candidat;
 use App\Models\Candidat\CandidatLangue;
+use App\Models\Candidat\CandidatModeTravail;
 use App\Models\Candidat\CandidatSpecialisation;
+use App\Models\Candidat\CandidatTypeTravail;
+use App\Models\Candidat\CandidatVilleTravail;
 use App\Models\Offre\Offre;
 use App\Models\Offre\OffreCritereMultiple;
 use App\Models\Taxonomy\FormationJuridique;
@@ -84,9 +87,9 @@ beforeEach(function () {
     $this->engine = app(MatchingEngine::class);
 });
 
-function makeAcceptedCandidate(array $attributes = []): Candidat
+function makeAcceptedCandidate(Offre $offre, array $attributes = []): Candidat
 {
-    return Candidat::factory()->create(array_merge([
+    $candidat = Candidat::factory()->create(array_merge([
         'status' => 'accepte',
         'poste_id' => test()->poste->id,
         'niveau_experience_id' => test()->experience->id,
@@ -97,6 +100,25 @@ function makeAcceptedCandidate(array $attributes = []): Candidat
             'is_active' => true,
         ])->id,
     ], $attributes));
+
+    CandidatTypeTravail::query()->create([
+        'candidat_id' => $candidat->id,
+        'type_travail_id' => $offre->type_travail_id,
+    ]);
+
+    CandidatModeTravail::query()->create([
+        'candidat_id' => $candidat->id,
+        'mode_travail_id' => $offre->mode_travail_id,
+    ]);
+
+    if ($offre->ville_id !== null) {
+        CandidatVilleTravail::query()->create([
+            'candidat_id' => $candidat->id,
+            'ville_id' => $offre->ville_id,
+        ]);
+    }
+
+    return $candidat;
 }
 
 function attachLanguage(Candidat $candidat, int $langueId, int $niveauId): void
@@ -147,9 +169,9 @@ test('only accepted and active candidates are matched', function () {
         'salaire_id' => null,
     ]);
 
-    $eligible = makeAcceptedCandidate();
-    makeAcceptedCandidate(['status' => 'en_attente']);
-    makeAcceptedCandidate([
+    $eligible = makeAcceptedCandidate($offre);
+    makeAcceptedCandidate($offre, ['status' => 'en_attente']);
+    makeAcceptedCandidate($offre, [
         'user_id' => User::factory()->create([
             'role' => 'candidat',
             'is_active' => false,
@@ -173,11 +195,11 @@ test('indispensable languages eliminate candidates missing any required language
     attachLanguageCriterion($offre, $this->francais->id, 'indispensable', $this->b2->id);
     attachLanguageCriterion($offre, $this->anglais->id, 'indispensable', $this->b2->id);
 
-    $complete = makeAcceptedCandidate();
+    $complete = makeAcceptedCandidate($offre);
     attachLanguage($complete, $this->francais->id, $this->b2->id);
     attachLanguage($complete, $this->anglais->id, $this->b2->id);
 
-    $partial = makeAcceptedCandidate();
+    $partial = makeAcceptedCandidate($offre);
     attachLanguage($partial, $this->francais->id, $this->b2->id);
 
     $matches = $this->engine->getMatches($offre);
@@ -193,8 +215,8 @@ test('formation filter keeps candidates with equal or higher formation id', func
         'salaire_id' => null,
     ]);
 
-    $masterCandidate = makeAcceptedCandidate(['formation_juridique_id' => $this->master->id]);
-    makeAcceptedCandidate(['formation_juridique_id' => $this->licence->id]);
+    $masterCandidate = makeAcceptedCandidate($offre, ['formation_juridique_id' => $this->master->id]);
+    makeAcceptedCandidate($offre, ['formation_juridique_id' => $this->licence->id]);
 
     // Guarantee licence id is lower than master for this assertion.
     expect($this->licence->id)->toBeLessThan($this->master->id);
@@ -218,7 +240,7 @@ test('null offre salaire skips salaire comparison and urgence is ignored', funct
         ['nom_en' => '12,000 – 16,000 MAD/month']
     );
 
-    $candidate = makeAcceptedCandidate(['salaire_id' => $otherSalaire->id]);
+    $candidate = makeAcceptedCandidate($offre, ['salaire_id' => $otherSalaire->id]);
 
     $matches = $this->engine->getMatches($offre);
 
@@ -235,10 +257,10 @@ test('important language miss applies a soft penalty of 5', function () {
 
     attachLanguageCriterion($offre, $this->anglais->id, 'important', $this->b2->id);
 
-    $withLanguage = makeAcceptedCandidate();
+    $withLanguage = makeAcceptedCandidate($offre);
     attachLanguage($withLanguage, $this->anglais->id, $this->b2->id);
 
-    $withoutLanguage = makeAcceptedCandidate();
+    $withoutLanguage = makeAcceptedCandidate($offre);
 
     $matches = $this->engine->getMatches($offre);
 
@@ -261,11 +283,11 @@ test('specialisation misses apply a soft penalty of 5 each', function () {
     attachSpecialisationCriterion($offre, $this->droitAffaires->id);
     attachSpecialisationCriterion($offre, $this->droitSocial->id);
 
-    $complete = makeAcceptedCandidate();
+    $complete = makeAcceptedCandidate($offre);
     attachSpecialisation($complete, $this->droitAffaires->id);
     attachSpecialisation($complete, $this->droitSocial->id);
 
-    $partial = makeAcceptedCandidate();
+    $partial = makeAcceptedCandidate($offre);
     attachSpecialisation($partial, $this->droitAffaires->id);
 
     $matches = $this->engine->getMatches($offre);
@@ -287,10 +309,10 @@ test('higher language level ranks above equal profiles', function () {
 
     attachLanguageCriterion($offre, $this->anglais->id, 'important', $this->b2->id);
 
-    $advanced = makeAcceptedCandidate();
+    $advanced = makeAcceptedCandidate($offre);
     attachLanguage($advanced, $this->anglais->id, $this->c1->id);
 
-    $minimum = makeAcceptedCandidate();
+    $minimum = makeAcceptedCandidate($offre);
     attachLanguage($minimum, $this->anglais->id, $this->b2->id);
 
     // Ensure C1 id is higher than B2 for level bonus ordering.

@@ -16,7 +16,6 @@ use App\Http\Controllers\Candidate\PreferenceController;
 use App\Http\Controllers\Candidate\SettingsController;
 use App\Http\Controllers\Candidate\SpecialisationController;
 use App\Http\Controllers\LocaleController;
-use App\Http\Controllers\Offre\MatchingController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
@@ -79,7 +78,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/recruteur/settings', [RecruiterSettingsController::class, 'index'])->name('recruteur.settings');
         Route::put('/recruteur/settings/profile', [RecruiterSettingsController::class, 'updateProfile'])->name('recruteur.settings.update-profile');
 
-        Route::get('/recruteur/offres/{offre}/matching', [MatchingController::class, 'index'])->name('offres.matching');
+        Route::get('/recruteur/offres/{offre}/paiement', [OffreController::class, 'payment'])->name('offres.payment');
+        Route::post('/recruteur/offres/{offre}/confirm-transfer', [OffreController::class, 'confirmTransfer'])->name('offres.confirm-transfer');
+        Route::get('/recruteur/offres/{offre}/profils', [OffreController::class, 'profiles'])->name('offres.profiles');
         Route::resource('/recruteur/offres', OffreController::class)->except(['edit', 'update']);
     });
 });
@@ -87,7 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // admin login Route
 Route::middleware('guest:admin')->group(function () {
     Route::get('/admin/login', fn () => Inertia::render('admin/auth/Login'))->name('admin.login');
-    Route::post('/admin/login', [AdminAuthController::class, 'login']);
+    Route::post('/admin/login', [AdminAuthController::class, 'login'])->middleware('throttle:5,1');
 });
 
 // Admin Protected Routes
@@ -104,7 +105,10 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/recruteurs/{recruteur}/offres', [AdminOffreController::class, 'indexByRecruteur'])->name('admin.recruteurs.offres');
     Route::get('/admin/offres', [AdminOffreController::class, 'index'])->name('admin.offres.index');
     Route::get('/admin/offres/{offre}/matching', [AdminOffreController::class, 'matching'])->name('admin.offres.matching');
+    Route::post('/admin/offres/{offre}/matching', [AdminOffreController::class, 'sendMatches'])->name('admin.offres.matching.send');
     Route::post('/admin/offres/{offre}/confirm-payment', [AdminOffreController::class, 'confirmPayment'])->name('admin.offres.confirm-payment');
+    Route::post('/admin/offres/{offre}/archive', [AdminOffreController::class, 'archive'])->name('admin.offres.archive');
+    Route::post('/admin/offres/{offre}/revert-to-traitement', [AdminOffreController::class, 'revertToTraitement'])->name('admin.offres.revert-to-traitement');
     Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 });
 

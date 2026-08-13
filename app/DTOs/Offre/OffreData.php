@@ -2,6 +2,7 @@
 
 namespace App\DTOs\Offre;
 
+use App\Enums\OffreStatut;
 use App\Http\Requests\Offre\StoreOffreRequest;
 
 readonly class OffreData
@@ -22,7 +23,7 @@ readonly class OffreData
         public ?int $urgence_id,
         public ?string $notes_complementaires,
         public int $nombre_cv,
-        public string $statut = 'EN_TRAITEMENT',
+        public string $statut = OffreStatut::EnTraitement->value,
         public array $requirements = []
     ) {}
 
@@ -49,7 +50,7 @@ readonly class OffreData
             urgence_id: isset($data['urgence_id']) && $data['urgence_id'] !== '' ? (int) $data['urgence_id'] : null,
             notes_complementaires: $data['notes_complementaires'] ?? null,
             nombre_cv: (int) ($data['nombre_cv'] ?? 1),
-            statut: $data['statut'] ?? 'EN_TRAITEMENT',
+            statut: OffreStatut::EnTraitement->value,
             requirements: collect($data['requirements'] ?? [])->map(fn ($req) => RequirementData::fromArray($req))->toArray(),
         );
     }
@@ -72,7 +73,7 @@ readonly class OffreData
             'urgence_id' => $this->urgence_id,
             'notes_complementaires' => $this->notes_complementaires,
             'nombre_cv' => $this->nombre_cv,
-            'statut' => $this->statut,
+            'statut' => OffreStatut::EnTraitement->value,
         ];
     }
 }

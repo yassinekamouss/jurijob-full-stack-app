@@ -2,36 +2,44 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\OffreStatut;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ArchiveOffreRequest;
+use App\Http\Requests\Admin\ConfirmPaymentRequest;
+use App\Http\Requests\Admin\SendOffreMatchesRequest;
 use App\Models\Offre\Offre;
+use App\Models\Offre\OffreMatch;
 use App\Models\Recruteur\Recruteur;
+use App\Models\Taxonomy\Langue;
+use App\Models\Taxonomy\NiveauLangue;
+use App\Models\Taxonomy\Specialisation;
 use App\Services\CandidateMatching\MatchingEngine;
+use App\Services\Offre\OffreStatusTransition;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use InvalidArgumentException;
 
 class OffreController extends Controller
 {
-    public function __construct(private MatchingEngine $matchingEngine) {}
+    public function __construct(
+        private MatchingEngine $matchingEngine,
+        private OffreStatusTransition $statusTransition,
+    ) {}
 
     /**
      * Affiche les offres filtrées par statut pour l'admin.
      */
     public function index(): Response
     {
-        $statut = request()->query('statut', 'VERIFICATION_PAIEMENT');
+        $statut = request()->query('statut', OffreStatut::VerificationPaiement->value);
         $search = request()->query('search');
 
-        $allowedStatuts = [
-            'EN_TRAITEMENT',
-            'ATTENTE_PAIEMENT',
-            'VERIFICATION_PAIEMENT',
-            'CV_ENVOYES',
-            'ARCHIVE',
-        ];
+        $allowedStatuts = OffreStatut::values();
 
         if (! in_array($statut, $allowedStatuts, true)) {
-            $statut = 'VERIFICATION_PAIEMENT';
+            $statut = OffreStatut::VerificationPaiement->value;
         }
 
         $query = Offre::query()
@@ -101,26 +109,188 @@ class OffreController extends Controller
             'modeTravail',
             'niveauExperience',
             'formationJuridique',
+            'salaire',
+            'urgence',
             'criteresMultiples',
+            'matches',
         ]);
+
+        $offre->setAttribute(
+            'requirements',
+            $this->transformCriteresMultiplesToRequirements($offre)
+        );
 
         return Inertia::render('admin/OffreMatching', [
             'offre' => $offre,
             'candidates' => $this->matchingEngine->getMatches($offre),
+            'alreadySent' => $offre->matches()->exists() || $offre->statut !== OffreStatut::EnTraitement->value,
         ]);
+    }
+
+    /**
+     * Enregistre la short-list et passe l'offre en attente de paiement.
+     */
+    public function sendMatches(SendOffreMatchesRequest $request, Offre $offre): RedirectResponse
+    {
+        $candidatIds = collect($request->validated('candidat_ids'))
+            ->map(fn ($id) => (int) $id)
+            ->values();
+
+        $stale = false;
+
+        try {
+            DB::transaction(function () use ($offre, $candidatIds, &$stale): void {
+                $matches = $this->matchingEngine->getMatches($offre)
+                    ->keyBy('id');
+
+                $missing = $candidatIds->reject(fn (int $id) => $matches->has($id));
+
+                if ($missing->isNotEmpty()) {
+                    $stale = true;
+
+                    return;
+                }
+
+                $offre->matches()->delete();
+
+                foreach ($candidatIds as $candidatId) {
+                    OffreMatch::query()->create([
+                        'offre_id' => $offre->id,
+                        'candidat_id' => $candidatId,
+                        'score' => (int) $matches->get($candidatId)->matching_score,
+                    ]);
+                }
+
+                $this->statusTransition->transition(
+                    $offre,
+                    OffreStatut::AttentePaiement,
+                    OffreStatusTransition::ACTOR_ADMIN,
+                    [
+                        'payment_reference' => $offre->payment_reference ?: $this->generatePaymentReference($offre),
+                    ]
+                );
+            });
+        } catch (\RuntimeException|InvalidArgumentException) {
+            return redirect()->back()->with('error', 'Impossible de traiter cette offre : statut invalide.');
+        }
+
+        if ($stale) {
+            return redirect()->back()
+                ->with('error', 'Certains candidats sélectionnés ne correspondent plus à cette offre.');
+        }
+
+        return redirect()
+            ->route('admin.offres.index', ['statut' => OffreStatut::AttentePaiement->value])
+            ->with('success', 'Candidats envoyés au recruteur. L\'offre est passée en attente de paiement.');
     }
 
     /**
      * Confirme le paiement et passe l'offre à CV_ENVOYES.
      */
-    public function confirmPayment(Offre $offre): RedirectResponse
+    public function confirmPayment(ConfirmPaymentRequest $request, Offre $offre): RedirectResponse
     {
-        if ($offre->statut !== 'VERIFICATION_PAIEMENT') {
-            return redirect()->back()->with('error', 'Seules les offres en vérification de paiement peuvent être confirmées.');
+        $this->statusTransition->transition(
+            $offre,
+            OffreStatut::CvEnvoyes,
+            OffreStatusTransition::ACTOR_ADMIN,
+        );
+
+        return redirect()
+            ->route('admin.offres.index', ['statut' => OffreStatut::CvEnvoyes->value])
+            ->with('success', 'Paiement confirmé. Les profils sont maintenant débloqués pour le recruteur.');
+    }
+
+    /**
+     * Repasser à EN_TRAITEMENT (uniquement depuis ATTENTE_PAIEMENT), supprime les matches.
+     */
+    public function revertToTraitement(Offre $offre): RedirectResponse
+    {
+        if ($offre->statut !== OffreStatut::AttentePaiement->value) {
+            return redirect()->back()->with('error', "L'offre n'est pas en attente de paiement.");
         }
 
-        $offre->update(['statut' => 'CV_ENVOYES']);
+        \DB::transaction(function () use ($offre) {
+            // Delete related matches
+            $offre->matches()->delete();
 
-        return redirect()->back()->with('success', 'Paiement confirmé. L\'offre est passée à CV envoyés.');
+            // Transition back to EN_TRAITEMENT
+            $this->statusTransition->transition(
+                $offre,
+                OffreStatut::EnTraitement,
+                OffreStatusTransition::ACTOR_ADMIN
+            );
+        });
+
+        return redirect()
+            ->route('admin.offres.index', ['statut' => OffreStatut::EnTraitement->value])
+            ->with('success', "L'offre a été repassée en traitement et les profils associés supprimés.");
+    }
+
+    /**
+     * Archive l'offre depuis n'importe quel statut.
+     */
+    public function archive(ArchiveOffreRequest $request, Offre $offre): RedirectResponse
+    {
+        try {
+            $this->statusTransition->transition(
+                $offre,
+                OffreStatut::Archive,
+                OffreStatusTransition::ACTOR_ADMIN,
+            );
+        } catch (InvalidArgumentException) {
+            return redirect()->back()->with('error', 'Impossible d\'archiver cette offre.');
+        }
+
+        return redirect()
+            ->route('admin.offres.index', ['statut' => OffreStatut::Archive->value])
+            ->with('success', 'L\'offre a été archivée avec succès.');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function transformCriteresMultiplesToRequirements(Offre $offre): array
+    {
+        $requirements = [];
+
+        $langueIds = $offre->criteresMultiples->where('type_critere', 'LANGUE')->pluck('critere_id');
+        $specialisationIds = $offre->criteresMultiples->where('type_critere', 'SPECIALISATION')->pluck('critere_id');
+
+        $langues = Langue::query()->whereIn('id', $langueIds)->get()->keyBy('id');
+        $specialisations = Specialisation::query()->whereIn('id', $specialisationIds)->get()->keyBy('id');
+        $niveauLangues = NiveauLangue::query()->get()->keyBy('id');
+
+        foreach ($offre->criteresMultiples as $critere) {
+            $label = match ($critere->type_critere) {
+                'LANGUE' => $langues[$critere->critere_id]?->nom ?? 'Inconnu',
+                'SPECIALISATION' => $specialisations[$critere->critere_id]?->nom ?? 'Inconnu',
+                default => 'Inconnu',
+            };
+
+            $metadata = $critere->metadata ?? [];
+
+            if ($critere->type_critere === 'LANGUE' && isset($metadata['niveau_langue_id'])) {
+                $metadata['niveau_nom'] = $niveauLangues[$metadata['niveau_langue_id']]?->nom ?? null;
+            }
+
+            $requirements[] = [
+                'taxonomy_id' => $critere->critere_id,
+                'taxonomy_type' => $critere->type_critere,
+                'label' => $label,
+                'metadata' => $metadata,
+            ];
+        }
+
+        return $requirements;
+    }
+
+    private function generatePaymentReference(Offre $offre): string
+    {
+        return sprintf(
+            'JJ-%s-%s%s',
+            now()->format('Y'),
+            str_pad((string) $offre->id, 5, '0', STR_PAD_LEFT),
+            strtoupper(substr(str_shuffle('ABCDEFGHJKLMNPQRSTUVWXYZ'), 0, 1))
+        );
     }
 }

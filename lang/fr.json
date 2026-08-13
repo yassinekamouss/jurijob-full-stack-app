@@ -1713,7 +1713,9 @@
         "archived": "Archivé"
       },
       "criteria": "{{count}} critères",
-      "view_details": "Voir les détails"
+      "view_details": "Voir les détails",
+      "paiment" : "Procéder au paiement",
+      "view_profiles": "Voir les profils débloqués"
     },
     "show": {
       "page_title_suffix": "Détails de l'offre",
@@ -1780,5 +1782,67 @@
         "6":{ "title": "Récapitulatif", "subtitle": "Validation finale" }
       }
     }
+  },
+  "recruiter": {
+    "payment": {
+      "seo_title": "Paiement",
+      "back": "Retour aux offres",
+      "eyebrow": "Attente de paiement",
+      "profiles_selected_one": "{{count}} profil sélectionné pour vous",
+      "profiles_selected_other": "{{count}} profils sélectionnés pour vous",
+      "tax_note": "HT · Paiement par virement bancaire",
+      "bank_details": "Coordonnées bancaires",
+      "bank": {
+        "beneficiary": "Bénéficiaire",
+        "bank_name": "Banque",
+        "agency": "Agence",
+        "rib": "RIB",
+        "swift": "SWIFT",
+        "reference": "Référence à indiquer"
+      },
+      "instructions": "Effectuez le virement avec la référence ci-dessus, puis cliquez pour nous prévenir. Vos profils seront débloqués sous 24h ouvrées après confirmation.",
+      "confirm_transfer": "J'ai effectué le virement",
+      "submitting": "Envoi…",
+      "question": "Une question ?",
+      "copy": "Copier",
+      "confirm_dialog": {
+        "title": "Confirmer votre virement",
+        "description": "Confirmez-vous avoir effectué le virement de {{amount}} avec la référence {{reference}} ? Nos équipes vérifieront le paiement sous 24h ouvrées.",
+        "cancel": "Annuler",
+        "confirm": "Oui, j'ai payé"
+      }
+    },
+    "profiles": {
+      "seo_title": "Profils débloqués",
+      "back": "Retour aux offres",
+      "eyebrow": "Short-list livrée",
+      "subtitle_one": "{{count}} profil professionnel débloqué pour votre demande.",
+      "subtitle_other": "{{count}} profils professionnels débloqués pour votre demande.",
+      "empty": "Aucun profil disponible pour cette offre.",
+      "profile_label": "Profil {{number}}",
+      "match_score": "Score",
+      "matched": "Correspond à l'offre",
+      "present": "Présent",
+      "no_experience": "Aucune expérience renseignée.",
+      "no_education": "Aucune formation renseignée.",
+      "sections": {
+        "summary": "Synthèse",
+        "specialisations": "Spécialisations",
+        "languages": "Langues",
+        "cities": "Villes",
+        "preferences": "Préférences",
+        "work_preferences": "Type & mode de travail",
+        "experience": "Expérience professionnelle",
+        "education": "Formation"
+      },
+      "fields": {
+        "education": "Formation",
+        "salary": "Prétentions",
+        "availability": "Disponibilité",
+        "role": "Poste",
+        "work_type": "Type de travail",
+        "work_mode": "Mode de travail"
+      }
+    }
   }
-}
+ }

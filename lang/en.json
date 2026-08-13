@@ -1713,7 +1713,9 @@
         "archived": "Archived"
       },
       "criteria": "{{count}} criteria",
-      "view_details": "View details"
+      "view_details": "View details",
+      "paiment" : "Proceed to payment",
+      "view_profiles": "View unlocked profiles"
     },
     "show": {
       "page_title_suffix": "Offer details",
@@ -1778,6 +1780,68 @@
         "4":{ "title": "Expertise", "subtitle": "Specializations" },
         "5":{ "title": "Languages", "subtitle": "Level and importance" },
         "6":{ "title": "Summary", "subtitle": "Final validation" }
+      }
+    }
+  },
+    "recruiter": {
+    "payment": {
+      "seo_title": "Payment",
+      "back": "Back to offers",
+      "eyebrow": "Awaiting payment",
+      "profiles_selected_one": "{{count}} profile selected for you",
+      "profiles_selected_other": "{{count}} profiles selected for you",
+      "tax_note": "Excl. VAT · Payment by bank transfer",
+      "bank_details": "Bank details",
+      "bank": {
+        "beneficiary": "Beneficiary",
+        "bank_name": "Bank",
+        "agency": "Branch",
+        "rib": "RIB",
+        "swift": "SWIFT",
+        "reference": "Reference to include"
+      },
+      "instructions": "Make the transfer with the reference above, then click to notify us. Your profiles will be unlocked within 24 business hours after confirmation.",
+      "confirm_transfer": "I have made the transfer",
+      "submitting": "Submitting…",
+      "question": "Have a question?",
+      "copy": "Copy",
+      "confirm_dialog": {
+        "title": "Confirm your transfer",
+        "description": "Do you confirm that you have transferred {{amount}} with reference {{reference}}? Our team will verify the payment within 24 business hours.",
+        "cancel": "Cancel",
+        "confirm": "Yes, I have paid"
+      }
+    },
+    "profiles": {
+      "seo_title": "Unlocked profiles",
+      "back": "Back to offers",
+      "eyebrow": "Shortlist delivered",
+      "subtitle_one": "{{count}} professional profile unlocked for your request.",
+      "subtitle_other": "{{count}} professional profiles unlocked for your request.",
+      "empty": "No profiles available for this offer.",
+      "profile_label": "Profile {{number}}",
+      "match_score": "Score",
+      "matched": "Matches the offer",
+      "present": "Present",
+      "no_experience": "No experience provided.",
+      "no_education": "No education provided.",
+      "sections": {
+        "summary": "Summary",
+        "specialisations": "Specialisations",
+        "languages": "Languages",
+        "cities": "Cities",
+        "preferences": "Preferences",
+        "work_preferences": "Work type & mode",
+        "experience": "Professional experience",
+        "education": "Education"
+      },
+      "fields": {
+        "education": "Education",
+        "salary": "Salary expectations",
+        "availability": "Availability",
+        "role": "Role",
+        "work_type": "Work type",
+        "work_mode": "Work mode"
       }
     }
   }

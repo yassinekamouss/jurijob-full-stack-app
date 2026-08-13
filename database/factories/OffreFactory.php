@@ -61,28 +61,28 @@ class OffreFactory extends Factory
     public function enTraitement(): static
     {
         return $this->state(fn (array $attributes) => [
-            'statut' => 'EN_TRAITEMENT',
+            'statut' => 'OffreStatut::EnTraitement->value',
         ]);
     }
 
     public function attentePaiement(): static
     {
         return $this->state(fn (array $attributes) => [
-            'statut' => 'ATTENTE_PAIEMENT',
+            'statut' => 'OffreStatut::AttentePaiement->value',
         ]);
     }
 
     public function verificationPaiement(): static
     {
         return $this->state(fn (array $attributes) => [
-            'statut' => 'VERIFICATION_PAIEMENT',
+            'statut' => 'OffreStatut::VerificationPaiement->value',
         ]);
     }
 
     public function cvEnvoyes(): static
     {
         return $this->state(fn (array $attributes) => [
-            'statut' => 'CV_ENVOYES',
+            'statut' => 'OffreStatut::CvEnvoyes->value',
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\OffreStatut;
 use App\Models\Offre\Offre;
 use App\Models\User;
 
@@ -44,6 +45,13 @@ class OffrePolicy
      */
     public function delete(User $user, Offre $offre): bool
     {
-        return $user->recruteur()->exists() && $user->recruteur->id === $offre->recruteur_id;
+        if (! $user->recruteur()->exists() || $user->recruteur->id !== $offre->recruteur_id) {
+            return false;
+        }
+
+        $statut = OffreStatut::tryFrom((string) $offre->statut);
+
+        return $statut?->allowsRecruiterDeletion() === true
+            && ! $offre->matches()->exists();
     }
 }

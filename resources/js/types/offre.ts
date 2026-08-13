@@ -23,6 +23,7 @@ export interface Offre {
     notes_complementaires: string | null;
     nombre_cv: number;
     statut: 'EN_TRAITEMENT' | 'ATTENTE_PAIEMENT' | 'VERIFICATION_PAIEMENT' | 'CV_ENVOYES' | 'ARCHIVE';
+    payment_reference?: string | null;
     created_at: string;
     updated_at: string;
 
