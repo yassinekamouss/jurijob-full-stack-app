@@ -34,9 +34,12 @@ class OffreController extends Controller
      */
     public function index(): Response
     {
-        auth()->user()->loadMissing('recruteur');
+        $user = auth()->user();
+        $user->loadMissing('recruteur.ville.pays');
 
-        $offres = auth()->user()->recruteur->offres()
+        $recruteur = $user->recruteur;
+
+        $offres = $recruteur->offres()
             ->with(['poste', 'typeTravail', 'modeTravail', 'niveauExperience', 'criteresMultiples'])
             ->latest()
             ->get()
@@ -59,6 +62,9 @@ class OffreController extends Controller
 
         return Inertia::render('Offres/Index', [
             'offres' => $offres,
+            'recruteur' => $recruteur,
+            'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
+            'profileCompletion' => $recruteur?->profileCompletion(),
         ]);
     }
 

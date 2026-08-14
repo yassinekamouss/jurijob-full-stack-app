@@ -386,6 +386,23 @@
       "type_travails": "Type de travail"
     }
   },
+  "recruiter_pending_banner": {
+    "status_incomplete": "Profil incomplet",
+    "title": "Complétez le profil de votre entreprise",
+    "description": "Pour maximiser vos chances et valoriser votre marque employeur auprès des juristes, renseignez toutes les informations de votre entreprise. Votre profil reste accessible tant que ces informations ne sont pas complétées.",
+    "complete_profile": "Compléter mon profil",
+    "sections_to_fill_one": "{{count}} information à renseigner",
+    "sections_to_fill_other": "{{count}} informations à renseigner",
+    "sections": {
+      "company_name": "Nom de l'entreprise",
+      "position": "Votre poste",
+      "org_type": "Type d'organisation",
+      "company_size": "Taille de l'entreprise",
+      "country": "Pays",
+      "city": "Ville",
+      "phone": "Téléphone"
+    }
+  },
   "candidate_profile_grid": {
     "see_more": "Voir plus",
     "experiences_title": "Expériences",
@@ -449,7 +466,9 @@
     },
     "form": {
       "company_name": "Nom de l'entreprise *",
+      "company_name_placeholder": "Ex : Cabinet Alpha, Direction Juridique...",
       "job_title": "Votre Poste *",
+      "job_title_placeholder": "Ressource humaine, Directeur général...",
       "org_type": "Type d'organisation *",
       "select_type": "Sélectionner le type",
       "loading": "Chargement...",
@@ -463,6 +482,8 @@
       "website": "Site Web (Optionnel)",
       "phone": "Téléphone",
       "phone_placeholder": "+212612345678",
+      "email": "Email professionnel",
+      "email_help": "L'adresse email ne peut pas être modifiée.",
       "save": "Enregistrer les modifications",
       "saving": "Enregistrement en cours...",
       "saved": "Modifications enregistrées !"

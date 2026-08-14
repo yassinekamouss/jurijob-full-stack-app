@@ -386,6 +386,23 @@
       "type_travails": "Work type"
     }
   },
+  "recruiter_pending_banner": {
+    "status_incomplete": "Incomplete profile",
+    "title": "Complete your company profile",
+    "description": "To maximize your chances and strengthen your employer brand with legal professionals, fill in all your company information. Your profile remains visible until this information is completed.",
+    "complete_profile": "Complete my profile",
+    "sections_to_fill_one": "{{count}} detail to fill in",
+    "sections_to_fill_other": "{{count}} details to fill in",
+    "sections": {
+      "company_name": "Company name",
+      "position": "Your position",
+      "org_type": "Organization type",
+      "company_size": "Company size",
+      "country": "Country",
+      "city": "City",
+      "phone": "Phone number"
+    }
+  },
   "candidate_profile_grid": {
     "see_more": "See more",
     "experiences_title": "Experiences",
@@ -449,7 +466,9 @@
     },
     "form": {
       "company_name": "Company Name *",
+      "company_name_placeholder": "e.g. Alpha Law Firm, Legal Department...",
       "job_title": "Your Position *",
+      "job_title_placeholder": "Human Resources, General Manager...",
       "org_type": "Organization Type *",
       "select_type": "Select type",
       "loading": "Loading...",
@@ -463,6 +482,8 @@
       "website": "Website (Optional)",
       "phone": "Phone Number",
       "phone_placeholder": "+212612345678",
+      "email": "Professional email",
+      "email_help": "The email address cannot be modified.",
       "save": "Save changes",
       "saving": "Saving changes...",
       "saved": "Changes saved!"

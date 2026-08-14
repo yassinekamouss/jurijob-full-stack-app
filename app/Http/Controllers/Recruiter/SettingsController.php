@@ -16,12 +16,13 @@ class SettingsController extends Controller
     public function index(Request $request): Response
     {
         $user = $request->user();
-        $recruteur = $user->recruteur()->first();
+        $recruteur = $user->recruteur()->with('ville.pays')->first();
 
         return Inertia::render('recruiter/Settings', [
             'recruteur' => $recruteur,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active', 'two_factor_confirmed_at']),
             'taxonomies' => TaxonomyRepository::getAll(),
+            'profileCompletion' => $recruteur?->profileCompletion(),
         ]);
     }
 

@@ -57,4 +57,44 @@ class Recruteur extends Model
     {
         return $this->hasMany(Offre::class);
     }
+
+    /**
+     * @return array{
+     *     company_name: bool,
+     *     position: bool,
+     *     org_type: bool,
+     *     company_size: bool,
+     *     country: bool,
+     *     city: bool,
+     *     phone: bool,
+     *     is_complete: bool
+     * }
+     */
+    public function profileCompletion(): array
+    {
+        $companyName = filled($this->nom_entreprise);
+        $position = filled($this->poste);
+        $orgType = filled($this->type_organisation_id);
+        $companySize = filled($this->taille_entreprise_id);
+        $country = filled($this->ville?->pays_id);
+        $city = filled($this->ville_id);
+        $phone = filled($this->user?->telephone);
+
+        return [
+            'company_name' => $companyName,
+            'position' => $position,
+            'org_type' => $orgType,
+            'company_size' => $companySize,
+            'country' => $country,
+            'city' => $city,
+            'phone' => $phone,
+            'is_complete' => $companyName
+                && $position
+                && $orgType
+                && $companySize
+                && $country
+                && $city
+                && $phone,
+        ];
+    }
 }
