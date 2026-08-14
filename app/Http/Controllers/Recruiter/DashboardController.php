@@ -13,12 +13,13 @@ class DashboardController extends Controller
     public function index(Request $request): Response
     {
         $user = $request->user();
-        $recruteur = $user->recruteur()->first();
+        $recruteur = $user->recruteur()->with('ville.pays')->first();
 
         return Inertia::render('recruiter/Dashboard', [
             'recruteur' => $recruteur,
             'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active']),
             'taxonomies' => TaxonomyRepository::getAll(),
+            'profileCompletion' => $recruteur?->profileCompletion(),
         ]);
     }
 }
