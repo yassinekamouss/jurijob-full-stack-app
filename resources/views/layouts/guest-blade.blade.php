@@ -179,7 +179,7 @@
             <div class="mx-auto max-w-7xl px-8 md:px-16">
                 <div class="grid gap-12 md:grid-cols-4">
                     <div class="md:col-span-2">
-                        <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="{{ __t('navigation.brand_alt') }}">
+                        <a href="/" class="inline-flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="{{ __t('navigation.brand_alt') }}">
                             <img src="/images/logo_jurijob.png" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
                         </a>
                         <p class="my-6 max-w-sm text-sm leading-relaxed font-light text-[#1a1f1e]/70">

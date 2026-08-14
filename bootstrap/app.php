@@ -7,11 +7,11 @@ use App\Http\Middleware\SetAppLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -60,8 +60,10 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('admin/offres/*/matching/custom')) {
                 $offreId = $request->route('offre') ?? null;
                 $url = $offreId ? route('admin.offres.matching', $offreId) : route('admin.offres.index');
+
                 return redirect($url)->with('error', "La méthode utilisée n'est pas autorisée ici. Veuillez passer par le formulaire adapté.");
             }
+
             return response()->view('errors.405', [], 405);
         });
     })->create();

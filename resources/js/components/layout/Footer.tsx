@@ -7,7 +7,7 @@ const Brand = () => {
     return (
         <Link
             href="/"
-            className="flex items-center tracking-tight hover:opacity-90 transition-opacity"
+            className="inline-flex items-center tracking-tight hover:opacity-90 transition-opacity"
             aria-label={t('navigation.home')}
         >
             <img
@@ -43,7 +43,7 @@ export default function Footer() {
                         </div>
 
                         {/* Colonne 3 : Navigation Principale */}
-                        <div className="mt-4 sm:mt-0">
+                        <div className="mt-2 sm:mt-12">
                             <h4 className="mb-4 lg:mb-6 text-xs sm:text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">
                                 {t('footer.navigation_heading')}
                             </h4>
@@ -84,7 +84,7 @@ export default function Footer() {
                         </div>
 
                         {/* Colonne 4 : Informations Légales */}
-                        <div className="mt-4 sm:mt-0">
+                        <div className="mt-2 sm:mt-12">
                             <h4 className="mb-4 lg:mb-6 text-xs sm:text-sm font-medium tracking-widest text-[#1a1f1e] uppercase">
                                 {t('footer.legal_heading')}
                             </h4>
