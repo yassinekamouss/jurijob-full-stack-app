@@ -8,6 +8,8 @@ use App\Http\Requests\Admin\ArchiveOffreRequest;
 use App\Http\Requests\Admin\ConfirmPaymentRequest;
 use App\Http\Requests\Admin\CustomMatchingRequest;
 use App\Http\Requests\Admin\SendOffreMatchesRequest;
+use App\Mail\Recruiter\RecruiterShortlistReadyMail;
+use App\Mail\Recruiter\RecruiterShortlistUnlockedMail;
 use App\Models\Offre\Offre;
 use App\Models\Offre\OffreMatch;
 use App\Models\Recruteur\Recruteur;
@@ -18,6 +20,7 @@ use App\Services\Offre\OffreRequirementsPresenter;
 use App\Services\Offre\OffreStatusTransition;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
 use InvalidArgumentException;
@@ -207,6 +210,20 @@ class OffreController extends Controller
             return redirect()->back()->with('error', 'Impossible de traiter cette offre : statut invalide.');
         }
 
+        $offre->load(['recruteur.user', 'poste', 'ville', 'typeTravail']);
+        $recruteur = $offre->recruteur;
+
+        if ($recruteur?->user?->email) {
+            Mail::to($recruteur->user->email)->send(
+                new RecruiterShortlistReadyMail(
+                    recruteur: $recruteur,
+                    offre: $offre,
+                    shortlistCount: $candidates->count(),
+                    paymentUrl: route('offres.payment', $offre),
+                )
+            );
+        }
+
         return redirect()
             ->route('admin.offres.index', ['statut' => OffreStatut::AttentePaiement->value])
             ->with('success', 'Candidats envoyés au recruteur. L\'offre est passée en attente de paiement.');
@@ -222,6 +239,21 @@ class OffreController extends Controller
             OffreStatut::CvEnvoyes,
             OffreStatusTransition::ACTOR_ADMIN,
         );
+
+        $offre->load(['recruteur.user', 'poste', 'ville', 'typeTravail']);
+        $recruteur = $offre->recruteur;
+
+        if ($recruteur?->user?->email) {
+            Mail::to($recruteur->user->email)->send(
+                new RecruiterShortlistUnlockedMail(
+                    recruteur: $recruteur,
+                    offre: $offre,
+                    shortlistCount: $offre->matches()->count(),
+                    shortlistUrl: route('offres.profiles', $offre),
+                    accessExpiryDate: now()->addDays(30)->format('d/m/Y'),
+                )
+            );
+        }
 
         return redirect()
             ->route('admin.offres.index', ['statut' => OffreStatut::CvEnvoyes->value])

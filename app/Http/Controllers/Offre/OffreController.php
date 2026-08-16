@@ -8,6 +8,7 @@ use App\Enums\OffreStatut;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Offre\ConfirmTransferRequest;
 use App\Http\Requests\Offre\StoreOffreRequest;
+use App\Mail\Recruiter\RecruiterRequestConfirmedMail;
 use App\Models\Offre\Offre;
 use App\Models\Taxonomy\Langue;
 use App\Models\Taxonomy\Specialisation;
@@ -17,6 +18,7 @@ use App\Services\Offre\OffreStatusTransition;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -94,6 +96,18 @@ class OffreController extends Controller
             $this->syncCriteresMultiples($offre, $offreData->requirements);
 
             DB::commit();
+
+            $offre->load(['recruteur.user', 'poste', 'ville', 'typeTravail']);
+
+            if ($request->user()?->email) {
+                Mail::to($request->user()->email)->send(
+                    new RecruiterRequestConfirmedMail(
+                        recruteur: $recruteur,
+                        offre: $offre,
+                        dashboardUrl: route('offres.index'),
+                    )
+                );
+            }
 
             $nomEntreprise = $recruteur->nom_entreprise;
             $nombreCv = $offreData->nombre_cv;
