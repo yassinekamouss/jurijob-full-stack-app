@@ -1982,6 +1982,34 @@
         "role": "Poste",
         "work_type": "Type de travail",
         "work_mode": "Mode de travail"
+      },
+      "advisory": {
+        "badge": "Sentissi Legal Advisory",
+        "title": "Besoin d'un accompagnement sur-mesure ?",
+        "subtitle": "Le cabinet Sentissi Legal Advisory vous accompagne dans la sécurisation, l'évaluation technique et l'intégration de vos talents juridiques.",
+        "services": {
+          "interviews": {
+            "title": "Entretiens & Évaluation Technique",
+            "desc": "Conduite d'entretiens techniques par des experts juridiques seniors (+20 ans d'expérience) pour valider l'excellence métier."
+          },
+          "contracts": {
+            "title": "Rédaction & Audit Contractuel",
+            "desc": "Sécurisation sur mesure des promesses d'embauche, contrats de travail et clauses de non-concurrence."
+          },
+          "international": {
+            "title": "Sourcing International & Mobilité",
+            "desc": "Chasse de têtes dédiée pour l'identification de profils rares à l'international et la mobilité transfrontalière."
+          },
+          "job_desc": {
+            "title": "Calibrage des Fiches de Poste",
+            "desc": "Audit stratégique de vos besoins, cadrage des responsabilités et étude de rémunération du marché."
+          }
+        },
+        "cta": {
+          "button": "Échanger avec un Associé Conseil",
+          "email": "recrutement@sentissilegal.com",
+          "response_time": "Échange confidentiel sous 24h ouvrées"
+        }
       }
     }
   }

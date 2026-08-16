@@ -12,6 +12,11 @@ import {
     MapPin,
     Phone,
     Award,
+    ShieldCheck,
+    FileText,
+    Sparkles,
+    ArrowRight,
+    UserCheck,
     type LucideIcon,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
@@ -135,7 +140,7 @@ export default function Profiles({ offre, profiles }: Props) {
             <Head title={`${t('recruiter.profiles.seo_title')} — ${offre.titre}`} />
             <DashboardHeader />
 
-            <main className="relative z-10 mx-auto max-w-5xl px-4 pb-16 pt-24 sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
+            <main className="relative z-10 mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 sm:pb-24 sm:pt-32 lg:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -160,14 +165,16 @@ export default function Profiles({ offre, profiles }: Props) {
                     </p>
                 </motion.div>
 
-                {profiles.length === 0 ? (
-                    <div className="border border-[#1a1f1e]/8 bg-white px-6 py-12 text-center sm:px-8 sm:py-16">
-                        <p className="text-sm uppercase tracking-widest text-[#1a1f1e]/35">
-                            {t('recruiter.profiles.empty')}
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 sm:space-y-10">
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
+                    <div className="lg:col-span-7 xl:col-span-8">
+                        {profiles.length === 0 ? (
+                            <div className="border border-[#1a1f1e]/8 bg-white px-6 py-12 text-center sm:px-8 sm:py-16">
+                                <p className="text-sm uppercase tracking-widest text-[#1a1f1e]/35">
+                                    {t('recruiter.profiles.empty')}
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="space-y-6 sm:space-y-10">
                         {profiles.map((profile, index) => {
                             const specialisations = uniqueLabels(profile.specialisations);
                             const villes = uniqueLabels(profile.villes);
@@ -467,8 +474,14 @@ export default function Profiles({ offre, profiles }: Props) {
                                 </motion.article>
                             );
                         })}
+                            </div>
+                        )}
                     </div>
-                )}
+
+                    <div className="lg:col-span-5 xl:col-span-4">
+                        <AdvisorySidebar />
+                    </div>
+                </div>
             </main>
         </div>
     );
@@ -521,5 +534,107 @@ function CvBlock({
             </div>
             {children}
         </section>
+    );
+}
+
+function AdvisorySidebar() {
+    const { t } = useTranslation();
+
+    return (
+        <aside className="space-y-6 lg:sticky lg:top-28">
+            <div className="relative overflow-hidden border border-[#1a1f1e]/10 bg-[#FDFCF8] p-6 shadow-sm sm:p-8">
+                <div className="absolute left-0 right-0 top-0 h-1 bg-gradient-to-r from-[#C06041] via-[#1a1f1e] to-[#C06041]" />
+
+                <div className="space-y-6">
+                    <div className="space-y-3">
+                        <div className="inline-flex items-center gap-2 border border-[#C06041]/20 bg-[#C06041]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#C06041]">
+                            <Sparkles className="h-3 w-3" />
+                            {t('recruiter.profiles.advisory.badge')}
+                        </div>
+                        <h2 className="font-serif text-2xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-3xl">
+                            {t('recruiter.profiles.advisory.title')}
+                        </h2>
+                        <p className="text-xs font-normal leading-relaxed text-[#1a1f1e]/70 sm:text-sm">
+                            {t('recruiter.profiles.advisory.subtitle')}
+                        </p>
+                    </div>
+
+                    <div className="space-y-4 border-t border-[#1a1f1e]/8 pt-5">
+                        <div className="flex items-start gap-3">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C06041]/10 text-[#C06041]">
+                                <ShieldCheck className="h-4 w-4" />
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1a1f1e]">
+                                    {t('recruiter.profiles.advisory.services.interviews.title')}
+                                </h4>
+                                <p className="text-xs leading-relaxed text-[#1a1f1e]/65">
+                                    {t('recruiter.profiles.advisory.services.interviews.desc')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C06041]/10 text-[#C06041]">
+                                <FileText className="h-4 w-4" />
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1a1f1e]">
+                                    {t('recruiter.profiles.advisory.services.contracts.title')}
+                                </h4>
+                                <p className="text-xs leading-relaxed text-[#1a1f1e]/65">
+                                    {t('recruiter.profiles.advisory.services.contracts.desc')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C06041]/10 text-[#C06041]">
+                                <Globe className="h-4 w-4" />
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1a1f1e]">
+                                    {t('recruiter.profiles.advisory.services.international.title')}
+                                </h4>
+                                <p className="text-xs leading-relaxed text-[#1a1f1e]/65">
+                                    {t('recruiter.profiles.advisory.services.international.desc')}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C06041]/10 text-[#C06041]">
+                                <UserCheck className="h-4 w-4" />
+                            </div>
+                            <div className="space-y-1">
+                                <h4 className="text-xs font-bold uppercase tracking-wider text-[#1a1f1e]">
+                                    {t('recruiter.profiles.advisory.services.job_desc.title')}
+                                </h4>
+                                <p className="text-xs leading-relaxed text-[#1a1f1e]/65">
+                                    {t('recruiter.profiles.advisory.services.job_desc.desc')}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3 rounded-none border border-[#1a1f1e]/10 bg-[#1a1f1e] p-5 text-white">
+                        <div className="flex items-center gap-2 text-xs font-medium text-[#C06041]">
+                            <Mail className="h-4 w-4" />
+                            <span>{t('recruiter.profiles.advisory.cta.email')}</span>
+                        </div>
+                        <a
+                            href="mailto:recrutement@sentissilegal.com?subject=Demande%20d%27accompagnement%20recrutement%20sur-mesure"
+                            className="group flex w-full items-center justify-center gap-2 bg-[#C06041] px-4 py-3 text-xs font-bold uppercase tracking-wider text-white transition-colors hover:bg-[#a84f33]"
+                        >
+                            <span>{t('recruiter.profiles.advisory.cta.button')}</span>
+                            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                        </a>
+                        <p className="text-center text-[10px] uppercase tracking-widest text-white/50">
+                            {t('recruiter.profiles.advisory.cta.response_time')}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </aside>
     );
 }

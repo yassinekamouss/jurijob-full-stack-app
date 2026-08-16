@@ -1981,6 +1981,34 @@
         "role": "Role",
         "work_type": "Work type",
         "work_mode": "Work mode"
+      },
+      "advisory": {
+        "badge": "Sentissi Legal Advisory",
+        "title": "Need bespoke recruitment advisory?",
+        "subtitle": "Sentissi Legal Advisory supports you at every key stage of securing, evaluating, and onboarding your legal talents.",
+        "services": {
+          "interviews": {
+            "title": "Technical Assessment & Interviews",
+            "desc": "Technical interviews conducted by senior legal experts (+20 years exp.) to audit and validate professional excellence."
+          },
+          "contracts": {
+            "title": "Contractual Drafting & Legal Audit",
+            "desc": "Bespoke drafting and validation of job offers, employment contracts, and non-compete clauses."
+          },
+          "international": {
+            "title": "International Sourcing & Mobility",
+            "desc": "Dedicated headhunting for top international legal profiles and cross-border mobility management."
+          },
+          "job_desc": {
+            "title": "Job Specification & Positioning",
+            "desc": "Strategic audit of your hiring needs, responsibilities framing, and market compensation benchmarking."
+          }
+        },
+        "cta": {
+          "button": "Consult with a Senior Partner",
+          "email": "recrutement@sentissilegal.com",
+          "response_time": "Confidential consultation within 24 business hours"
+        }
       }
     }
   }
