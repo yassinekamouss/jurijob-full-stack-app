@@ -42,7 +42,7 @@ type ProfileFormation = {
 
 type Profile = {
     id: number;
-    match_score: number;
+    match_score?: number;
     nom: string;
     prenom: string;
     email?: string | null;
@@ -120,9 +120,6 @@ function formatPeriod(start?: string | number | null, end?: string | number | nu
     return `${startLabel} — ${endLabel}`;
 }
 
-function displayScore(score: number): number {
-    return Math.min(Math.max(score, 0), 100);
-}
 
 export default function Profiles({ offre, profiles }: Props) {
     const { t } = useTranslation();
@@ -172,7 +169,6 @@ export default function Profiles({ offre, profiles }: Props) {
                 ) : (
                     <div className="space-y-6 sm:space-y-10">
                         {profiles.map((profile, index) => {
-                            const score = displayScore(profile.match_score);
                             const specialisations = uniqueLabels(profile.specialisations);
                             const villes = uniqueLabels(profile.villes);
                             const typesTravail = uniqueLabels(profile.types_travail);
@@ -239,8 +235,6 @@ export default function Profiles({ offre, profiles }: Props) {
                                                         </a>
                                                     )}
                                                 </div>
-
-                                                <MatchScoreRing score={score} label={t('recruiter.profiles.match_score')} />
                                             </div>
                                         </div>
                                     </div>
@@ -480,44 +474,6 @@ export default function Profiles({ offre, profiles }: Props) {
     );
 }
 
-function MatchScoreRing({ score, label }: { score: number; label: string }) {
-    const radius = 34;
-    const circumference = 2 * Math.PI * radius;
-    const progress = circumference * (1 - score / 100);
-
-    return (
-        <div className="relative flex h-24 w-24 shrink-0 items-center justify-center">
-            <svg className="-rotate-90" width="96" height="96" viewBox="0 0 96 96" aria-hidden>
-                <circle
-                    cx="48"
-                    cy="48"
-                    r={radius}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.12)"
-                    strokeWidth="5"
-                />
-                <circle
-                    cx="48"
-                    cy="48"
-                    r={radius}
-                    fill="none"
-                    stroke="#C06041"
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={progress}
-                    className="transition-[stroke-dashoffset] duration-700 ease-out"
-                />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span className="font-serif text-2xl font-semibold tracking-tight text-white">{score}</span>
-                <span className="text-[9px] font-black uppercase tracking-[0.18em] text-white/45">
-                    {label}
-                </span>
-            </div>
-        </div>
-    );
-}
 
 function CriterionTag({
     label,
