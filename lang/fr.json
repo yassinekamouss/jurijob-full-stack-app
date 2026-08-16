@@ -112,7 +112,7 @@
     "pricing": {
       "title_part1": "Tarifs transparents pour votre ",
       "title_part2": "recrutement juridique d'entreprise",
-      "subtitle": "Choisissez l'offre qui correspond à votre profil d'expertise et vos ambitions.",
+      "subtitle": "Choisissez la formule qui correspond à votre profil d'expertise et vos ambitions.",
       "graduates": {
         "badge": "Diplômés & Talents",
         "price": "Gratuit",
@@ -437,7 +437,7 @@
     "interface_label": "Interface Recruteur",
     "welcome": "Bienvenue, {{name}}",
     "default_name": "Recruteur",
-    "description": "Trouvez les meilleurs talents juridiques pour votre entreprise. Gérez vos offres et découvrez les profils qui correspondent à vos besoins.",
+    "description": "Trouvez les meilleurs talents juridiques pour votre entreprise. Gérez vos demandes de profils et découvrez les profils qui correspondent à vos besoins.",
     "account_active": "Compte Actif",
     "account_pending": "Compte en attente",
     "active_desc": "Votre compte est validé. Vous pouvez dès à présent consulter les profils.",
@@ -501,8 +501,8 @@
   "recruiter_dashboard_header": {
     "home": "Accueil JuriJob",
     "dashboard": "Tableau de bord",
-    "my_offers": "Mes Offres",
-    "publish": "Publier",
+    "my_offers": "Mes Demandes",
+    "publish": "Créer une demande",
     "notifications": "Notifications",
     "settings": "Paramètres",
     "logout": "Déconnexion",
@@ -609,7 +609,7 @@
       "type_size": "Type / Taille",
       "website": "Site web",
       "joined": "Inscrit le",
-      "offers": "Offres"
+      "offers": "Demandes"
     },
     "empty_state": "Aucun recruteur trouvé",
     "actions": {
@@ -618,16 +618,16 @@
     }
   },
   "admin_offers": {
-    "page_title": "Gestion des Offres",
-    "breadcrumb": "Offres",
+    "page_title": "Gestion des Demandes",
+    "breadcrumb": "Demandes",
     "admin_label": "Administration",
-    "title_part1": "Offres",
+    "title_part1": "Demandes",
     "title_part2": "recruteurs",
-    "total_count": "{{count}} offre au total",
-    "total_count_plural": "{{count}} offres au total",
+    "total_count": "{{count}} demande au total",
+    "total_count_plural": "{{count}} demandes au total",
     "search_placeholder": "Titre, entreprise...",
-    "search_btn": "Chercher",
-    "empty_state": "Aucune offre pour ce statut",
+    "search_btn": "Rechercher",
+    "empty_state": "Aucune demande pour ce statut",
     "company_na": "Entreprise N/A",
     "cv_count": "{{count}} CV",
     "tabs": {
@@ -653,7 +653,7 @@
     },
     "custom_matching": {
       "modal_title": "Lancer un matching",
-      "modal_description": "Ajustez les critères de recherche pour cette offre. Ces modifications ne sont pas enregistrées sur l’offre : elles servent uniquement à lancer cette recherche.",
+      "modal_description": "Ajustez les critères de recherche pour cette demande. Ces modifications ne sont pas enregistrées sur la demande : elles servent uniquement à lancer cette recherche.",
       "filters_title": "Critères de sélection",
       "filters_hint": "Décochez un critère pour l’ignorer lors de la recherche, ou changez sa valeur.",
       "filters": {
@@ -688,21 +688,21 @@
     },
     "confirm_payment_modal": {
       "title": "Confirmer le paiement",
-      "description": "Confirmez-vous avoir reçu le paiement pour « {{title}} » ? L’offre passera en CV envoyés et les profils complets seront débloqués pour le recruteur.",
+      "description": "Confirmez-vous avoir reçu le paiement pour « {{title}} » ? La demande passera en CV envoyés et les profils complets seront débloqués pour le recruteur.",
       "cancel": "Annuler",
       "confirm": "Oui, confirmer",
       "confirming": "Confirmation…"
     },
     "archive_modal": {
-      "title": "Archiver l'offre",
-      "description": "Voulez-vous archiver « {{title}} » ? L'offre sera déplacée dans l'onglet Archivées et ne sera plus active.",
+      "title": "Archiver la demande",
+      "description": "Voulez-vous archiver « {{title}} » ? La demande sera déplacée dans l'onglet Archivées et ne sera plus active.",
       "cancel": "Annuler",
       "confirm": "Oui, archiver",
       "archiving": "Archivage…"
     },
     "revert_modal": {
       "title": "Repasser en traitement",
-      "description": "Êtes-vous sûr(e) ? Les profils choisis pour cette offre seront supprimés immédiatement.",
+      "description": "Êtes-vous sûr(e) ? Les profils choisis pour cette demande seront supprimés immédiatement.",
       "cancel": "Annuler",
       "confirm": "Oui, repasser",
       "reverting": "Retour…"
@@ -711,13 +711,14 @@
   "admin_matching": {
     "page_title": "Matching — {{title}}",
     "breadcrumb": "Matching",
-    "back_to_offers": "Retour aux offres",
-    "matching_results": "Résultats de matching",
-    "cv_requested": "{{count}} CV demandés",
-    "profiles_matched": "profil(s) matchés",
+    "back_to_offers": "Retour aux demandes",
+    "matching_results": "Résultats du matching",
+    "cv_requested": "{{count}} CV demandé",
+    "cv_requested_plural": "{{count}} CV demandés",
+    "profiles_matched": "profil(s) correspondant(s)",
     "in_shortlist": "en short-list",
     "empty_state": "Aucun résultat",
-    "empty_desc": "Aucun candidat ne correspond aux critères de cette offre.",
+    "empty_desc": "Aucun candidat ne correspond aux critères de cette demande.",
     "shortlist_title": "Short-list — {{count}} profil",
     "shortlist_title_plural": "Short-list — {{count}} profils",
     "other_candidates": "Autres candidats — {{count}}",
@@ -727,7 +728,7 @@
     "penalty_specialities": "−{{count}} malus spécialités",
     "applied_criteria": {
       "title": "Critères appliqués au matching",
-      "description": "Ce matching a été lancé avec des critères personnalisés. Les modifications ne sont pas enregistrées sur l’offre.",
+      "description": "Ce matching a été lancé avec des critères personnalisés. Les modifications ne sont pas enregistrées sur la demande.",
       "fields": {
         "poste": "Poste",
         "niveau_experience": "Expérience",
@@ -746,8 +747,8 @@
     "breadcrumb_recruiters": "Recruteurs",
     "back_to_recruiters": "Retour aux recruteurs",
     "recruiter_requests": "Demandes du recruteur",
-    "offers_submitted": "{{count}} offre soumise",
-    "offers_submitted_plural": "{{count}} offres soumises",
+    "offers_submitted": "{{count}} demande soumise",
+    "offers_submitted_plural": "{{count}} demandes soumises",
     "empty_state": "Aucune demande pour ce recruteur",
     "view_matching": "Voir le matching"
   },
@@ -755,8 +756,8 @@
     "dashboard": "Dashboard",
     "candidates": "Candidats",
     "recruiters": "Recruteurs",
-    "offers": "Offres",
-    "manage_offers": "Gestion des Offres",
+    "offers": "Demandes",
+    "manage_offers": "Gestion des Demandes",
     "logout": "Déconnexion",
     "repository": "Dépôt",
     "documentation": "Documentation",
@@ -765,15 +766,15 @@
   "offer_creation": {
     "identity": {
       "step_indicator": "Étape 1 · Identité",
-      "title": "Positionnez l'annonce rapidement",
-      "description": "Commencez par un titre clair, le métier visé et une description concise pour cadrer l'offre.",
-      "job_title_label": "Titre de l'annonce",
-      "job_title_placeholder": "Ex: Juriste corporate senior",
+      "title": "Positionnez votre demande rapidement",
+      "description": "Commencez par un titre clair, le métier visé et une description concise pour cadrer la demande.",
+      "job_title_label": "Titre de la demande",
+      "job_title_placeholder": "Ex : Juriste droit des affaires senior",
       "target_job_label": "Métier visé",
       "direct_choice": "Choix direct",
       "selected": "Sélectionné",
       "to_choose": "À choisir",
-      "job_desc_label": "Description de l'offre",
+      "job_desc_label": "Description du poste",
       "job_desc_placeholder": "Missions, contexte, profil attendu, environnement...",
       "next_organization": "Suivant : organisation"
     },
@@ -832,7 +833,7 @@
     },
     "review": {
       "step_indicator": "Étape 6 · Récapitulatif",
-      "title": "Relisez avant publication",
+      "title": "Relisez avant soumission",
       "description": "Vérifiez les informations essentielles dans un format clair et professionnel.",
       "unknown": "Inconnu",
       "not_specified": "Non spécifié",
@@ -866,14 +867,14 @@
       "level": "Niveau",
       "back": "Retour",
       "publishing": "Publication...",
-      "publish_offer": "Publier mon offre"
+      "publish_offer": "Soumettre ma demande"
     },
     "expert_advice": {
       "human_support": "Accompagnement Humain",
       "step_progress": "Étape {{current}} sur {{total}}",
       "expert_advice_title": "Conseil de nos Experts",
       "golden_rule": "Règle d'or",
-      "how_experts_analyze": "Comment nos experts analysent vos offres ?",
+      "how_experts_analyze": "Comment nos experts analysent vos demandes ?",
       "analysis_description": "Chaque critère renseigné sert de boussole à nos chargés de recrutement pour évaluer les CV et conduire la pré-qualification des candidats. En ciblant l'essentiel, vous bénéficiez d'une sélection sur-mesure et réactive.",
       "steps": {
         "1": {
@@ -953,16 +954,16 @@
           "golden_rule": "Calibrez l'importance des langues pour ne jamais éliminer un profil qui correspond pourtant parfaitement à votre besoin."
         },
         "6": {
-          "intro_start": "Relisez la synthèse de votre offre. Dès validation, nos chargés de recrutement ",
+          "intro_start": "Relisez la synthèse de votre demande. Dès validation, nos chargés de recrutement ",
           "intro_bold": "lanceront la recherche active",
-          "intro_end": " et la présélection des candidats.",
+          "intro_end": " et la pré-sélection de candidats.",
           "tips": [
             {
               "title": "Prise en charge rapide",
-              "body": "Nos experts vérifient votre offre sous 24h et vous contactent dès qualification des premiers profils réactifs."
+              "body": "Nos experts vérifient votre demande sous 24h et vous contactent dès qualification des premiers profils réactifs."
             }
           ],
-          "golden_rule": "Une offre complète et validée garantit un accompagnement réactif par nos consultants."
+          "golden_rule": "Une demande complète et validée garantit un accompagnement réactif par nos consultants."
         }
       }
     },
@@ -1075,7 +1076,7 @@
       "feature1_title": "Visibilité Qualifiée",
       "feature1_desc": "Connectez-vous directement avec les cabinets et entreprises correspondant à vos aspirations et à votre spécialité locale ou internationale.",
       "feature2_title": "Espace Privilégié",
-      "feature2_desc": "Profitez d'un suivi sur-mesure pour gérer vos candidatures ou vos offres d'emploi, avec un accès constant à notre base de données qualifiée."
+      "feature2_desc": "Profitez d'un suivi sur-mesure pour gérer vos candidatures ou vos demandes de profils, avec un accès constant à notre base de données qualifiée."
     },
     "register_candidate": {
       "toast_success": "Compte candidat créé avec succès !",
@@ -1107,7 +1108,7 @@
       "badge": "Inscription recruteur",
       "title": "Recrutez les meilleurs talents juridiques",
       "subtitle": "Accédez à un vivier qualifié de juristes et avocats prêts à rejoindre votre organisation.",
-      "feature1": "Diffusion d'offres ciblées",
+      "feature1": "Demandes de profils ciblées",
       "feature2": "Matching intelligent",
       "feature3": "Gestion simplifiée des candidatures",
       "pro_title": "Professionnel",
@@ -1835,14 +1836,14 @@
   },
   "recruiter_offers": {
     "index": {
-      "page_title": "Mes Offres - Jurijob",
-      "badge": "Gestion des Annonces",
-      "title": "Mes Offres d'Emploi",
-      "description": "Gérez vos publications, suivez les candidatures et trouvez les meilleurs profils juridiques.",
-      "publish_btn": "Publier une nouvelle offre",
-      "empty_title": "Aucune offre publiée",
-      "empty_desc": "Votre tableau de bord est vide. Commencez à recruter dès maintenant.",
-      "create_first": "Créer ma première offre &rarr;",
+      "page_title": "Mes Demandes - Jurijob",
+      "badge": "Gestion des Demandes",
+      "title": "Mes Demandes de Profils",
+      "description": "Gérez vos demandes, suivez leur traitement et recevez les meilleurs profils juridiques.",
+      "publish_btn": "Soumettre une nouvelle demande",
+      "empty_title": "Aucune demande créée",
+      "empty_desc": "Votre tableau de bord est vide. Soumettez une demande de profils dès maintenant.",
+      "create_first": "Créer ma première demande &rarr;",
       "position_fallback": "Poste",
       "status": {
         "processing": "Traitement",
@@ -1857,21 +1858,21 @@
       "view_profiles": "Voir les profils débloqués"
     },
     "show": {
-      "page_title_suffix": "Détails de l'offre",
+      "page_title_suffix": "Détails de la demande",
       "back_to_dashboard": "Retour au tableau de bord",
       "status_badge": {
         "processing": "En traitement",
         "payment": "En attente de paiement",
         "verification": "Vérification de paiement",
         "sent": "CV Envoyés",
-        "archived": "Offre Archivée"
+        "archived": "Demande Archivée"
       },
       "posted_on": "Posté le {{date}}",
       "about_role": "À propos du rôle",
-      "offer_criteria": "Critères de l'offre",
+      "offer_criteria": "Critères de la demande",
       "unified_view": "Vue unifiée des critères",
       "structuring_criteria": "Critères structurants",
-      "structuring_desc": "Les informations structurantes de l'offre.",
+      "structuring_desc": "Les informations structurantes de la demande.",
       "criteria_count": "{{count}} critères",
       "base_criteria": {
         "position": "Poste",
@@ -1886,7 +1887,7 @@
       "not_provided": "Non renseigné",
       "information": "Informations",
       "criteria_summary": "Synthèse des critères",
-      "summary_desc": "Cette vue regroupe les critères structurants de l'offre et les critères complémentaires configurés lors de la publication.",
+      "summary_desc": "Cette vue regroupe les critères structurants de la demande et les critères complémentaires configurés lors de la création.",
       "published_on": "Publié le",
       "categories": {
         "specializations": "Spécialisations",
@@ -1905,10 +1906,10 @@
       "collapse_list": "Réduire la liste"
     },
     "create": {
-      "page_title": "Publier une offre - Jurijob",
-      "badge": "Nouvelle publication",
-      "title": "Une offre claire, élégante et facile à parcourir.",
-      "description": "Construisez une annonce structurée et professionnelle en six étapes guidées.",
+      "page_title": "Créer une demande - Jurijob",
+      "badge": "Nouvelle demande",
+      "title": "Une demande claire, élégante et facile à parcourir.",
+      "description": "Construisez une demande de profils structurée et professionnelle en six étapes guidées.",
       "step": "Étape",
       "on": "sur",
       "need_help": "Besoin d'aide ?",
@@ -1925,7 +1926,7 @@
   "recruiter": {
     "payment": {
       "seo_title": "Paiement",
-      "back": "Retour aux offres",
+      "back": "Retour aux demandes",
       "eyebrow": "Attente de paiement",
       "profiles_selected_one": "{{count}} profil sélectionné pour vous",
       "profiles_selected_other": "{{count}} profils sélectionnés pour vous",
@@ -1953,14 +1954,14 @@
     },
     "profiles": {
       "seo_title": "Profils débloqués",
-      "back": "Retour aux offres",
+      "back": "Retour aux demandes",
       "eyebrow": "Short-list livrée",
       "subtitle_one": "{{count}} profil professionnel débloqué pour votre demande.",
       "subtitle_other": "{{count}} profils professionnels débloqués pour votre demande.",
-      "empty": "Aucun profil disponible pour cette offre.",
+      "empty": "Aucun profil disponible pour cette demande.",
       "profile_label": "Profil {{number}}",
       "match_score": "Score",
-      "matched": "Correspond à l'offre",
+      "matched": "Correspond à la demande",
       "present": "Présent",
       "no_experience": "Aucune expérience renseignée.",
       "no_education": "Aucune formation renseignée.",

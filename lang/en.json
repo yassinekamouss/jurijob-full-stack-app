@@ -437,7 +437,7 @@
     "interface_label": "Recruiter Interface",
     "welcome": "Welcome, {{name}}",
     "default_name": "Recruiter",
-    "description": "Find the best legal talents for your company. Manage your job offers and discover profiles that match your needs.",
+    "description": "Find the best legal talents for your company. Manage your profile requests and discover profiles that match your needs.",
     "account_active": "Active Account",
     "account_pending": "Pending Account",
     "active_desc": "Your account is validated. You can now consult profiles.",
@@ -501,8 +501,8 @@
   "recruiter_dashboard_header": {
     "home": "JuriJob Home",
     "dashboard": "Dashboard",
-    "my_offers": "My Offers",
-    "publish": "Publish",
+    "my_offers": "My Requests",
+    "publish": "Create Request",
     "notifications": "Notifications",
     "settings": "Settings",
     "logout": "Logout",
@@ -609,7 +609,7 @@
       "type_size": "Type / Size",
       "website": "Website",
       "joined": "Joined",
-      "offers": "Offers"
+      "offers": "Requests"
     },
     "empty_state": "No recruiters found",
     "actions": {
@@ -618,16 +618,16 @@
     }
   },
   "admin_offers": {
-    "page_title": "Offer Management",
-    "breadcrumb": "Offers",
+    "page_title": "Request Management",
+    "breadcrumb": "Requests",
     "admin_label": "Administration",
     "title_part1": "Recruiter",
-    "title_part2": "offers",
-    "total_count": "{{count}} offer in total",
-    "total_count_plural": "{{count}} offers in total",
+    "title_part2": "requests",
+    "total_count": "{{count}} request in total",
+    "total_count_plural": "{{count}} requests in total",
     "search_placeholder": "Title, company...",
     "search_btn": "Search",
-    "empty_state": "No offers for this status",
+    "empty_state": "No requests for this status",
     "company_na": "Company N/A",
     "cv_count": "{{count}} CV",
     "tabs": {
@@ -653,7 +653,7 @@
     },
     "custom_matching": {
       "modal_title": "Run Matching",
-      "modal_description": "Adjust the search criteria for this offer. These changes are not saved on the offer: they are only used to launch this search.",
+      "modal_description": "Adjust the search criteria for this request. These changes are not saved on the request: they are only used to launch this search.",
       "filters_title": "Selection Criteria",
       "filters_hint": "Uncheck a criterion to ignore it during the search, or change its value.",
       "filters": {
@@ -688,21 +688,21 @@
     },
     "confirm_payment_modal": {
       "title": "Confirm Payment",
-      "description": "Do you confirm receiving payment for \"{{title}}\"? The offer will transition to CV Sent and complete profiles will be unlocked for the recruiter.",
+      "description": "Do you confirm receiving payment for \"{{title}}\"? The request will transition to CV Sent and complete profiles will be unlocked for the recruiter.",
       "cancel": "Cancel",
       "confirm": "Yes, confirm",
       "confirming": "Confirming…"
     },
     "archive_modal": {
-      "title": "Archive Offer",
-      "description": "Do you want to archive \"{{title}}\"? The offer will be moved to the Archived tab and will no longer be active.",
+      "title": "Archive Request",
+      "description": "Do you want to archive \"{{title}}\"? The request will be moved to the Archived tab and will no longer be active.",
       "cancel": "Cancel",
       "confirm": "Yes, archive",
       "archiving": "Archiving…"
     },
     "revert_modal": {
       "title": "Revert to Processing",
-      "description": "Are you sure? Profiles selected for this offer will be deleted immediately.",
+      "description": "Are you sure? Profiles selected for this request will be deleted immediately.",
       "cancel": "Cancel",
       "confirm": "Yes, revert",
       "reverting": "Reverting…"
@@ -711,13 +711,13 @@
   "admin_matching": {
     "page_title": "Matching — {{title}}",
     "breadcrumb": "Matching",
-    "back_to_offers": "Back to offers",
+    "back_to_offers": "Back to requests",
     "matching_results": "Matching results",
     "cv_requested": "{{count}} CV requested",
     "profiles_matched": "profile(s) matched",
     "in_shortlist": "in short-list",
     "empty_state": "No results",
-    "empty_desc": "No candidates match the criteria for this offer.",
+    "empty_desc": "No candidates match the criteria for this request.",
     "shortlist_title": "Short-list — {{count}} profile",
     "shortlist_title_plural": "Short-list — {{count}} profiles",
     "other_candidates": "Other candidates — {{count}}",
@@ -727,7 +727,7 @@
     "penalty_specialities": "−{{count}} specialities penalty",
     "applied_criteria": {
       "title": "Criteria applied to the matching",
-      "description": "This matching was run with custom criteria. The changes are not saved on the offer.",
+      "description": "This matching was run with custom criteria. The changes are not saved on the request.",
       "fields": {
         "poste": "Position",
         "niveau_experience": "Experience",
@@ -746,8 +746,8 @@
     "breadcrumb_recruiters": "Recruiters",
     "back_to_recruiters": "Back to recruiters",
     "recruiter_requests": "Recruiter requests",
-    "offers_submitted": "{{count}} offer submitted",
-    "offers_submitted_plural": "{{count}} offers submitted",
+    "offers_submitted": "{{count}} request submitted",
+    "offers_submitted_plural": "{{count}} requests submitted",
     "empty_state": "No requests for this recruiter",
     "view_matching": "View matching"
   },
@@ -755,8 +755,8 @@
     "dashboard": "Dashboard",
     "candidates": "Candidates",
     "recruiters": "Recruiters",
-    "offers": "Offers",
-    "manage_offers": "Manage Offers",
+    "offers": "Requests",
+    "manage_offers": "Manage Requests",
     "logout": "Logout",
     "repository": "Repository",
     "documentation": "Documentation",
@@ -765,15 +765,15 @@
   "offer_creation": {
     "identity": {
       "step_indicator": "Step 1 · Identity",
-      "title": "Position the ad quickly",
-      "description": "Start with a clear title, the target profession, and a concise description to frame the offer.",
-      "job_title_label": "Ad title",
+      "title": "Position your request quickly",
+      "description": "Start with a clear title, the target profession, and a concise description to frame the request.",
+      "job_title_label": "Request title",
       "job_title_placeholder": "Ex: Senior corporate lawyer",
       "target_job_label": "Target profession",
       "direct_choice": "Direct choice",
       "selected": "Selected",
       "to_choose": "To choose",
-      "job_desc_label": "Offer description",
+      "job_desc_label": "Job description",
       "job_desc_placeholder": "Missions, context, expected profile, environment...",
       "next_organization": "Next: organization"
     },
@@ -832,7 +832,7 @@
     },
     "review": {
       "step_indicator": "Step 6 · Review",
-      "title": "Review before publishing",
+      "title": "Review before submission",
       "description": "Check the essential information in a clear and professional format.",
       "unknown": "Unknown",
       "not_specified": "Not specified",
@@ -866,14 +866,14 @@
       "level": "Level",
       "back": "Back",
       "publishing": "Publishing...",
-      "publish_offer": "Publish my offer"
+      "publish_offer": "Submit my request"
     },
     "expert_advice": {
       "human_support": "Human Support",
       "step_progress": "Step {{current}} of {{total}}",
       "expert_advice_title": "Advice from our Experts",
       "golden_rule": "Golden rule",
-      "how_experts_analyze": "How do our experts analyze your offers?",
+      "how_experts_analyze": "How do our experts analyze your requests?",
       "analysis_description": "Each defined criterion serves as a compass for our recruiters to evaluate CVs and conduct the pre-qualification of candidates. By targeting the essentials, you benefit from a tailor-made and responsive selection.",
       "steps": {
         "1": {
@@ -953,16 +953,16 @@
           "golden_rule": "Calibrate the importance of languages so as never to eliminate a profile that nevertheless perfectly matches your need."
         },
         "6": {
-          "intro_start": "Review the summary of your offer. Upon validation, our recruiters ",
+          "intro_start": "Review the summary of your request. Upon validation, our recruiters ",
           "intro_bold": "will launch the active search",
           "intro_end": " and the pre-selection of candidates.",
           "tips": [
             {
               "title": "Fast handling",
-              "body": "Our experts check your offer within 24 hours and contact you as soon as the first responsive profiles are qualified."
+              "body": "Our experts check your request within 24 hours and contact you as soon as the first responsive profiles are qualified."
             }
           ],
-          "golden_rule": "A complete and validated offer guarantees responsive support from our consultants."
+          "golden_rule": "A complete and validated request guarantees responsive support from our consultants."
         }
       }
     },
@@ -1075,7 +1075,7 @@
       "feature1_title": "Qualified Visibility",
       "feature1_desc": "Connect directly with law firms and corporate companies matching your aspirations and local or international specialization.",
       "feature2_title": "Privileged Space",
-      "feature2_desc": "Benefit from customized tracking to manage your applications or job openings, with constant access to our qualified database."
+      "feature2_desc": "Benefit from customized tracking to manage your applications or profile requests, with constant access to our qualified database."
     },
     "register_candidate": {
       "toast_success": "Candidate account successfully created!",
@@ -1107,7 +1107,7 @@
       "badge": "Recruiter registration",
       "title": "Hire top legal talent",
       "subtitle": "Access a qualified pool of legal counsels and lawyers ready to join your organization.",
-      "feature1": "Targeted job postings",
+      "feature1": "Targeted profile requests",
       "feature2": "Smart matching",
       "feature3": "Streamlined application management",
       "pro_title": "Professional",
@@ -1835,14 +1835,14 @@
   },
   "recruiter_offers": {
     "index": {
-      "page_title": "My Offers - Jurijob",
-      "badge": "Ad Management",
-      "title": "My Job Offers",
-      "description": "Manage your publications, track applications, and find the best legal profiles.",
-      "publish_btn": "Publish a new offer",
-      "empty_title": "No published offer",
-      "empty_desc": "Your dashboard is empty. Start recruiting now.",
-      "create_first": "Create my first offer &rarr;",
+      "page_title": "My Requests - Jurijob",
+      "badge": "Request Management",
+      "title": "My Profile Requests",
+      "description": "Manage your requests, track processing, and receive the best legal profiles.",
+      "publish_btn": "Submit a new request",
+      "empty_title": "No requests created",
+      "empty_desc": "Your dashboard is empty. Submit a profile request now.",
+      "create_first": "Create my first request &rarr;",
       "position_fallback": "Position",
       "status": {
         "processing": "Processing",
@@ -1857,21 +1857,21 @@
       "view_profiles": "View unlocked profiles"
     },
     "show": {
-      "page_title_suffix": "Offer details",
+      "page_title_suffix": "Request details",
       "back_to_dashboard": "Back to dashboard",
       "status_badge": {
         "processing": "Processing",
         "payment": "Awaiting payment",
         "verification": "Payment verification",
         "sent": "CVs Sent",
-        "archived": "Archived Offer"
+        "archived": "Archived Request"
       },
       "posted_on": "Posted on {{date}}",
       "about_role": "About the role",
-      "offer_criteria": "Offer criteria",
+      "offer_criteria": "Request criteria",
       "unified_view": "Unified criteria view",
       "structuring_criteria": "Structuring criteria",
-      "structuring_desc": "The structuring information of the offer.",
+      "structuring_desc": "The structuring information of the request.",
       "criteria_count": "{{count}} criteria",
       "base_criteria": {
         "position": "Position",
@@ -1886,7 +1886,7 @@
       "not_provided": "Not provided",
       "information": "Information",
       "criteria_summary": "Criteria summary",
-      "summary_desc": "This view groups the structuring criteria of the offer and the additional criteria configured during publication.",
+      "summary_desc": "This view groups the structuring criteria of the request and the additional criteria configured during creation.",
       "published_on": "Published on",
       "categories": {
         "specializations": "Specializations",
@@ -1905,10 +1905,10 @@
       "collapse_list": "Collapse list"
     },
     "create": {
-      "page_title": "Publish an offer - Jurijob",
-      "badge": "New publication",
-      "title": "A clear, elegant, and easy to browse offer.",
-      "description": "Build a structured and professional ad in six guided steps.",
+      "page_title": "Create a request - Jurijob",
+      "badge": "New request",
+      "title": "A clear, elegant, and easy to browse request.",
+      "description": "Build a structured and professional request in six guided steps.",
       "step": "Step",
       "on": "of",
       "need_help": "Need help?",
@@ -1925,7 +1925,7 @@
     "recruiter": {
     "payment": {
       "seo_title": "Payment",
-      "back": "Back to offers",
+      "back": "Back to requests",
       "eyebrow": "Awaiting payment",
       "profiles_selected_one": "{{count}} profile selected for you",
       "profiles_selected_other": "{{count}} profiles selected for you",
@@ -1953,14 +1953,14 @@
     },
     "profiles": {
       "seo_title": "Unlocked profiles",
-      "back": "Back to offers",
+      "back": "Back to requests",
       "eyebrow": "Shortlist delivered",
       "subtitle_one": "{{count}} professional profile unlocked for your request.",
       "subtitle_other": "{{count}} professional profiles unlocked for your request.",
-      "empty": "No profiles available for this offer.",
+      "empty": "No profiles available for this request.",
       "profile_label": "Profile {{number}}",
       "match_score": "Score",
-      "matched": "Matches the offer",
+      "matched": "Matches the request",
       "present": "Present",
       "no_experience": "No experience provided.",
       "no_education": "No education provided.",
