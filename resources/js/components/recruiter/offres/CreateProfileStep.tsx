@@ -1,8 +1,15 @@
+import {
+    AlertTriangle,
+    ArrowLeft,
+    GraduationCap,
+    Minus,
+    NotebookText,
+    Plus,
+} from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { AlertTriangle, ArrowLeft, GraduationCap, Minus, NotebookText, Plus } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
     data: any;
@@ -24,10 +31,19 @@ const formatMad = (amount: number) =>
         maximumFractionDigits: 0,
     }).format(amount);
 
-export default function CreateProfileStep({ data, setData, errors, onNext, onPrev, taxonomies }: Props) {
+export default function CreateProfileStep({
+    data,
+    setData,
+    errors,
+    onNext,
+    onPrev,
+    taxonomies,
+}: Props) {
     const { t } = useTranslation();
     const parsedCv = Number.parseInt(String(data.nombre_cv), 10);
-    const cvCount = Number.isNaN(parsedCv) ? CV_MIN : Math.min(CV_MAX, Math.max(CV_MIN, parsedCv));
+    const cvCount = Number.isNaN(parsedCv)
+        ? CV_MIN
+        : Math.min(CV_MAX, Math.max(CV_MIN, parsedCv));
     const totalPrice = cvCount * CV_UNIT_PRICE_MAD;
 
     const updateCvCount = (next: number) => {
@@ -58,7 +74,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                             'min-h-[56px] rounded-2xl border px-4 py-3.5 text-left text-sm font-semibold transition-all sm:text-[15px]',
                             active
                                 ? 'border-[#C06041]/35 bg-[#C06041]/8 text-[#1a1f1e] shadow-[0_10px_28px_rgba(192,96,65,0.12)]'
-                                : 'border-slate-200 bg-white text-slate-700 hover:border-[#C06041]/25 hover:bg-[#FCFCFB]'
+                                : 'border-slate-200 bg-white text-slate-700 hover:border-[#C06041]/25 hover:bg-[#FCFCFB]',
                         )}
                     >
                         {item.nom}
@@ -71,11 +87,11 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
     return (
         <div className="space-y-8">
             <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[#1a1f1e]/55">
+                <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f1e]/5 px-3.5 py-1.5 text-[10px] font-black tracking-[0.2em] text-[#1a1f1e]/55 uppercase">
                     {t('offer_creation.profile.step_indicator')}
                 </div>
                 <div>
-                    <h2 className="font-serif text-3xl font-bold italic tracking-tight text-[#1a1f1e] sm:text-4xl">
+                    <h2 className="font-serif text-3xl font-bold tracking-tight text-[#1a1f1e] italic sm:text-4xl">
                         {t('offer_creation.profile.title')}
                     </h2>
                     <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#1a1f1e]/55 sm:text-base">
@@ -92,17 +108,27 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <GraduationCap className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.experience')}</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.experience_level')}</h3>
+                                <p className="text-[10px] font-black tracking-[0.2em] text-[#C06041] uppercase">
+                                    {t('offer_creation.profile.experience')}
+                                </p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">
+                                    {t(
+                                        'offer_creation.profile.experience_level',
+                                    )}
+                                </h3>
                             </div>
                         </div>
                         <PillGrid
                             items={taxonomies.niveauExperiences || []}
                             value={String(data.niveau_experience_id || '')}
-                            onSelect={(id) => setData('niveau_experience_id', id)}
+                            onSelect={(id) =>
+                                setData('niveau_experience_id', id)
+                            }
                         />
                         {errors.niveau_experience_id && (
-                            <p className="text-sm text-red-500">{errors.niveau_experience_id}</p>
+                            <p className="text-sm text-red-500">
+                                {errors.niveau_experience_id}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -114,17 +140,27 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <GraduationCap className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.education')}</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.legal_education')}</h3>
+                                <p className="text-[10px] font-black tracking-[0.2em] text-[#C06041] uppercase">
+                                    {t('offer_creation.profile.education')}
+                                </p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">
+                                    {t(
+                                        'offer_creation.profile.legal_education',
+                                    )}
+                                </h3>
                             </div>
                         </div>
                         <PillGrid
                             items={taxonomies.formationJuridiques || []}
                             value={String(data.formation_juridique_id || '')}
-                            onSelect={(id) => setData('formation_juridique_id', id)}
+                            onSelect={(id) =>
+                                setData('formation_juridique_id', id)
+                            }
                         />
                         {errors.formation_juridique_id && (
-                            <p className="text-sm text-red-500">{errors.formation_juridique_id}</p>
+                            <p className="text-sm text-red-500">
+                                {errors.formation_juridique_id}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -138,26 +174,38 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <AlertTriangle className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.priority')}</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.urgency_volume')}</h3>
+                                <p className="text-[10px] font-black tracking-[0.2em] text-[#C06041] uppercase">
+                                    {t('offer_creation.profile.priority')}
+                                </p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">
+                                    {t('offer_creation.profile.urgency_volume')}
+                                </h3>
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <Label className="text-sm font-semibold text-slate-900">{t('offer_creation.profile.urgency_level')}</Label>
+                            <Label className="text-sm font-semibold text-slate-900">
+                                {t('offer_creation.profile.urgency_level')}
+                            </Label>
                             <PillGrid
                                 items={taxonomies.urgences || []}
                                 value={String(data.urgence_id || '')}
                                 onSelect={(id) => setData('urgence_id', id)}
                                 columns="grid-cols-1"
                             />
-                            {errors.urgence_id && <p className="text-sm text-red-500">{errors.urgence_id}</p>}
+                            {errors.urgence_id && (
+                                <p className="text-sm text-red-500">
+                                    {errors.urgence_id}
+                                </p>
+                            )}
                         </div>
 
                         <div className="space-y-4 border-t border-slate-100 pt-5">
                             <div>
                                 <Label className="text-sm font-semibold text-slate-900">
-                                    {t('offer_creation.profile.desired_cv_count')}
+                                    {t(
+                                        'offer_creation.profile.desired_cv_count',
+                                    )}
                                 </Label>
                                 <p className="mt-1 text-xs text-slate-500">
                                     1 CV = {formatMad(CV_UNIT_PRICE_MAD)} HT
@@ -174,7 +222,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                         'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border transition-all',
                                         cvCount <= CV_MIN
                                             ? 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300'
-                                            : 'border-slate-200 bg-white text-slate-700 hover:border-[#C06041]/30 hover:bg-[#C06041]/5'
+                                            : 'border-slate-200 bg-white text-slate-700 hover:border-[#C06041]/30 hover:bg-[#C06041]/5',
                                     )}
                                 >
                                     <Minus className="h-4 w-4" />
@@ -186,26 +234,46 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                         type="number"
                                         min={CV_MIN}
                                         max={CV_MAX}
-                                        value={data.nombre_cv === '' || data.nombre_cv === null ? '' : data.nombre_cv}
+                                        value={
+                                            data.nombre_cv === '' ||
+                                            data.nombre_cv === null
+                                                ? ''
+                                                : data.nombre_cv
+                                        }
                                         onChange={(e) => {
                                             const raw = e.target.value;
+
                                             if (raw === '') {
                                                 setData('nombre_cv', '');
+
                                                 return;
                                             }
-                                            const parsed = Number.parseInt(raw, 10);
+
+                                            const parsed = Number.parseInt(
+                                                raw,
+                                                10,
+                                            );
+
                                             if (Number.isNaN(parsed)) {
                                                 return;
                                             }
+
                                             setData('nombre_cv', parsed);
                                         }}
                                         onBlur={() => {
-                                            const parsed = Number.parseInt(String(data.nombre_cv), 10);
-                                            updateCvCount(Number.isNaN(parsed) ? CV_MIN : parsed);
+                                            const parsed = Number.parseInt(
+                                                String(data.nombre_cv),
+                                                10,
+                                            );
+                                            updateCvCount(
+                                                Number.isNaN(parsed)
+                                                    ? CV_MIN
+                                                    : parsed,
+                                            );
                                         }}
-                                        className="w-16 border-0 bg-transparent text-center text-xl font-black tabular-nums text-slate-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                        className="w-16 [appearance:textfield] border-0 bg-transparent text-center text-xl font-black text-slate-900 tabular-nums outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                     />
-                                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                    <span className="text-xs font-semibold tracking-wider text-slate-400 uppercase">
                                         {t('offer_creation.profile.cv')}
                                     </span>
                                 </div>
@@ -219,7 +287,7 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                         'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border transition-all',
                                         cvCount >= CV_MAX
                                             ? 'cursor-not-allowed border-slate-100 bg-slate-50 text-slate-300'
-                                            : 'border-slate-200 bg-white text-slate-700 hover:border-[#C06041]/30 hover:bg-[#C06041]/5'
+                                            : 'border-slate-200 bg-white text-slate-700 hover:border-[#C06041]/30 hover:bg-[#C06041]/5',
                                     )}
                                 >
                                     <Plus className="h-4 w-4" />
@@ -229,20 +297,28 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                             <div className="rounded-2xl border border-[#C06041]/20 bg-[#C06041]/5 px-4 py-3.5">
                                 <div className="flex items-end justify-between gap-3">
                                     <div>
-                                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#C06041]">
-                                            {t('offer_creation.profile.estimated_total')}
+                                        <p className="text-[10px] font-black tracking-[0.18em] text-[#C06041] uppercase">
+                                            {t(
+                                                'offer_creation.profile.estimated_total',
+                                            )}
                                         </p>
                                         <p className="mt-1 text-xs text-slate-500">
-                                            {cvCount} {t('offer_creation.profile.cv')} × {formatMad(CV_UNIT_PRICE_MAD)}
+                                            {cvCount}{' '}
+                                            {t('offer_creation.profile.cv')} ×{' '}
+                                            {formatMad(CV_UNIT_PRICE_MAD)} HT
                                         </p>
                                     </div>
-                                    <p className="text-xl font-black tabular-nums text-[#1a1f1e]">
-                                        {formatMad(totalPrice)}
+                                    <p className="text-xl font-black text-[#1a1f1e] tabular-nums">
+                                        {formatMad(totalPrice)} HT
                                     </p>
                                 </div>
                             </div>
 
-                            {errors.nombre_cv && <p className="text-sm text-red-500">{errors.nombre_cv}</p>}
+                            {errors.nombre_cv && (
+                                <p className="text-sm text-red-500">
+                                    {errors.nombre_cv}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -254,20 +330,32 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                                 <NotebookText className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C06041]">{t('offer_creation.profile.context')}</p>
-                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">{t('offer_creation.profile.additional_notes')}</h3>
+                                <p className="text-[10px] font-black tracking-[0.2em] text-[#C06041] uppercase">
+                                    {t('offer_creation.profile.context')}
+                                </p>
+                                <h3 className="mt-1 text-lg font-bold text-slate-900 sm:text-xl">
+                                    {t(
+                                        'offer_creation.profile.additional_notes',
+                                    )}
+                                </h3>
                             </div>
                         </div>
                         <textarea
                             id="notes_complementaires"
                             value={data.notes_complementaires || ''}
-                            onChange={(e) => setData('notes_complementaires', e.target.value)}
+                            onChange={(e) =>
+                                setData('notes_complementaires', e.target.value)
+                            }
                             rows={10}
-                            placeholder={t('offer_creation.profile.notes_placeholder')}
-                            className="min-h-[220px] flex-1 w-full rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm leading-7 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C06041]/20 sm:text-[15px]"
+                            placeholder={t(
+                                'offer_creation.profile.notes_placeholder',
+                            )}
+                            className="min-h-[220px] w-full flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm leading-7 placeholder:text-slate-400 focus-visible:ring-2 focus-visible:ring-[#C06041]/20 focus-visible:outline-none sm:text-[15px]"
                         />
                         {errors.notes_complementaires && (
-                            <p className="text-sm text-red-500">{errors.notes_complementaires}</p>
+                            <p className="text-sm text-red-500">
+                                {errors.notes_complementaires}
+                            </p>
                         )}
                     </div>
                 </div>
@@ -280,7 +368,8 @@ export default function CreateProfileStep({ data, setData, errors, onNext, onPre
                     onClick={onPrev}
                     className="h-12 px-6 text-sm font-medium text-slate-500 hover:text-slate-900"
                 >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> {t('offer_creation.profile.back')}
+                    <ArrowLeft className="mr-2 h-4 w-4" />{' '}
+                    {t('offer_creation.profile.back')}
                 </Button>
                 <Button
                     type="button"
