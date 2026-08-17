@@ -62,7 +62,9 @@ export default function ProfileGrid({ candidat }: Props) {
                       specialisation: getTaxonomyLabel(form.specialisation_id, specialisations)
                     })}
                   </h4>
-                  <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">{getTaxonomyLabel(form.ecole, ecoles)}</p>
+                  <p className="text-sm font-medium text-[#1a1f1e]/60 uppercase tracking-wide">
+                    {form.ecole_id ? getTaxonomyLabel(form.ecole, ecoles) : form.autre_ecole}
+                  </p>
                   <p className="mt-1 text-xs font-bold text-[#1a1f1e]/40">{form.annee_debut} — {form.annee_fin || 'N/A'}</p>
                 </div>
               ))

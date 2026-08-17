@@ -20,6 +20,7 @@ const createEmptyFormation = (): Formation => ({
     formation_juridique_id: '',
     specialisation_id: '',
     ecole_id: '',
+    autre_ecole: '',
 });
 
 const createEmptyExperience = (): Experience => ({
@@ -161,13 +162,34 @@ export default function CandidatDetails({
                                                         {useLoadingTaxonomy(ecoles) ? (
                                                             <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
-                                                            ecoles.map((ecole) => (
-                                                                <option key={ecole.id} value={ecole.id}>
-                                                                    {getTaxonomyLabel(ecole)}
-                                                                </option>
-                                                            ))
+                                                            <>
+                                                                {ecoles.map((ecole) => (
+                                                                    <option key={ecole.id} value={ecole.id}>
+                                                                        {getTaxonomyLabel(ecole)}
+                                                                    </option>
+                                                                ))}
+                                                                <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
+                                                            </>
                                                         )}
                                                     </select>
+                                                    {formation.ecole_id === 'other' && (
+                                                        <motion.div
+                                                            initial={{ opacity: 0, height: 0 }}
+                                                            animate={{ opacity: 1, height: 'auto' }}
+                                                            exit={{ opacity: 0, height: 0 }}
+                                                            className="mt-3"
+                                                        >
+                                                            <input
+                                                                type="text"
+                                                                placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
+                                                                value={formation.autre_ecole || ''}
+                                                                onChange={(event) =>
+                                                                    updateFormation(formation.id, 'autre_ecole', event.target.value)
+                                                                }
+                                                                className={inputClasses}
+                                                            />
+                                                        </motion.div>
+                                                    )}
                                                 </div>
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>

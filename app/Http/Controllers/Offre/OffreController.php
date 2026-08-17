@@ -274,7 +274,7 @@ class OffreController extends Controller
                         ->sortByDesc('annee_fin')
                         ->values()
                         ->map(fn ($formation) => [
-                            'ecole' => $formation->ecole?->nom,
+                            'ecole' => $formation->ecole?->nom ?? $formation->autre_ecole,
                             'formation_juridique' => $formation->formationJuridique?->nom,
                             'specialisation' => $formation->specialisation?->nom,
                             'annee_debut' => $formation->annee_debut,

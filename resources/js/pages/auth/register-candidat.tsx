@@ -41,6 +41,7 @@ const createEmptyFormation = (): Formation => ({
     formation_juridique_id: '',
     specialisation_id: '',
     ecole_id: '',
+    autre_ecole: '',
 });
 
 export default function RegisterCandidat() {
@@ -149,7 +150,12 @@ export default function RegisterCandidat() {
             payload.append(`formations[${i}][annee_fin]`, f.annee_fin);
             payload.append(`formations[${i}][formation_juridique_id]`, String(f.formation_juridique_id));
             payload.append(`formations[${i}][specialisation_id]`, String(f.specialisation_id));
-            payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
+            if (f.ecole_id === 'other') {
+                payload.append(`formations[${i}][ecole_id]`, 'other');
+                payload.append(`formations[${i}][autre_ecole]`, f.autre_ecole || '');
+            } else {
+                payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
+            }
         });
 
         candidat.experiences.forEach((e: Experience, i: number) => {
@@ -347,7 +353,8 @@ export default function RegisterCandidat() {
                         !f.annee_fin ||
                         !f.formation_juridique_id ||
                         !f.specialisation_id ||
-                        !f.ecole_id,
+                        !f.ecole_id ||
+                        (f.ecole_id === 'other' && (!f.autre_ecole || f.autre_ecole.trim() === '')),
                 )
             ) {
                 newErrors.formations =

@@ -21,6 +21,7 @@ export default function FormationSection({ formations }: Props) {
     formation_juridique_id: '',
     specialisation_id: '',
     ecole_id: '',
+    autre_ecole: '',
     annee_debut: '',
     annee_fin: '',
   });
@@ -35,7 +36,8 @@ export default function FormationSection({ formations }: Props) {
     form.setData({
       formation_juridique_id: formItem.formation_juridique_id,
       specialisation_id: formItem.specialisation_id,
-      ecole_id: formItem.ecole_id,
+      ecole_id: formItem.ecole_id || (formItem.autre_ecole ? 'other' : ''),
+      autre_ecole: formItem.autre_ecole || '',
       annee_debut: formItem.annee_debut,
       annee_fin: formItem.annee_fin || '',
     });
@@ -49,6 +51,11 @@ export default function FormationSection({ formations }: Props) {
       form.setError('annee_fin', t('candidate_settings.education.date_error'));
       return;
     }
+
+    form.transform((data) => ({
+      ...data,
+      ecole_id: data.ecole_id === 'other' ? null : data.ecole_id,
+    }));
 
     if (editingId) {
       form.put(update(editingId).url, {
@@ -143,10 +150,32 @@ export default function FormationSection({ formations }: Props) {
                     {useLoadingTaxonomy(ecoles) ? (
                       <option disabled>{t('candidate_settings.education.loading')}</option>
                     ) : (
-                      ecoles.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)
+                      <>
+                        {ecoles.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)}
+                        <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
+                      </>
                     )}
                   </select>
                   {form.errors.ecole_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.ecole_id}</p>}
+                  
+                  {form.data.ecole_id === 'other' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="mt-3"
+                    >
+                      <input
+                        type="text"
+                        placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
+                        value={form.data.autre_ecole}
+                        onChange={e => form.setData('autre_ecole', e.target.value)}
+                        className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                        required
+                      />
+                      {form.errors.autre_ecole && <p className="text-xs text-red-500 font-bold ml-1 mt-1">{form.errors.autre_ecole}</p>}
+                    </motion.div>
+                  )}
                 </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -205,7 +234,7 @@ export default function FormationSection({ formations }: Props) {
                     </div>
                     <div>
                       <h4 className="font-bold text-base sm:text-lg">{getTaxonomyLabel(f.formation_juridique_id, formationJuridiques)} {t('candidate_settings.education.in')} {getTaxonomyLabel(f.specialisation_id, specialisations)}</h4>
-                      <p className="text-xs sm:text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{getTaxonomyLabel(f.ecole_id, ecoles)}</p>
+                      <p className="text-xs sm:text-sm font-medium text-[#1a1f1e]/40 uppercase tracking-widest">{f.ecole_id ? getTaxonomyLabel(f.ecole_id, ecoles) : f.autre_ecole}</p>
                       <p className="text-xs font-bold text-[#1a1f1e]/30 mt-1">{f.annee_debut} — {f.annee_fin || t('candidate_settings.education.not_applicable')}</p>
                     </div>
                   </div>

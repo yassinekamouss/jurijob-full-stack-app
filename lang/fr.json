@@ -24,7 +24,9 @@
     "error": "Une erreur est survenue",
     "save": "Enregistrer",
     "cancel": "Annuler",
-    "phone_country_search": "Rechercher un pays..."
+    "phone_country_search": "Rechercher un pays...",
+    "other_specify": "Autre (préciser...)",
+    "other_school_placeholder": "Nom de l'école/université"
   },
   "home": {
     "seo": {

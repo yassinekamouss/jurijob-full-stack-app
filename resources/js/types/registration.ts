@@ -19,6 +19,7 @@ export type Formation = {
     formation_juridique_id: string | number;
     specialisation_id: string | number;
     ecole_id: string | number;
+    autre_ecole?: string;
 };
 
 export type Experience = {

@@ -26,6 +26,7 @@ class CandidatFormation extends Model
         'specialisation_id',
         'formation_juridique_id',
         'ecole_id',
+        'autre_ecole',
     ];
 
     public function candidat(): BelongsTo

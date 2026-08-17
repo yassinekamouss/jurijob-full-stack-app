@@ -54,8 +54,8 @@ class DashboardController extends Controller
         $ecartSpecialisation = [];
 
         $candidatsSpecCounts = CandidatSpecialisation::whereHas('candidat', function ($q) {
-                $q->where('status', 'accepte');
-            })
+            $q->where('status', 'accepte');
+        })
             ->selectRaw('specialisation_id, count(*) as count')
             ->groupBy('specialisation_id')
             ->pluck('count', 'specialisation_id');
