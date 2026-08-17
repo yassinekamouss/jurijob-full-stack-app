@@ -229,6 +229,7 @@ class OffreController extends Controller
                     'telephone' => $candidat->user?->telephone,
                     'poste' => $candidat->poste?->nom,
                     'niveau_experience' => $candidat->niveauExperience?->nom,
+                    'exact_experience_months' => $candidat->calculateTotalExperienceMonths(),
                     'formation_juridique' => $candidat->formationJuridique?->nom,
                     'salaire' => $candidat->salaire?->nom,
                     'urgence' => $candidat->urgence?->nom,

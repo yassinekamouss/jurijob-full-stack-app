@@ -11,9 +11,10 @@ import {
     Mail,
     MapPin,
     Phone,
-    Award,
-    type LucideIcon,
+    Award
+    
 } from 'lucide-react';
+import type {LucideIcon} from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import AdvisorySidebar from '@/components/recruiter/AdvisorySidebar';
@@ -50,6 +51,7 @@ type Profile = {
     telephone?: string | null;
     poste?: string | null;
     niveau_experience?: string | null;
+    exact_experience_months?: number | null;
     formation_juridique?: string | null;
     urgence?: string | null;
     specialisations: string[];
@@ -121,6 +123,22 @@ function formatPeriod(start?: string | number | null, end?: string | number | nu
     return `${startLabel} — ${endLabel}`;
 }
 
+function formatExactExperience(months: number, t: any): string {
+    if (months === 0) return t('recruiter.profiles.exact_experience.no_experience');
+    
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+
+    const parts = [];
+    if (years > 0) {
+        parts.push(t('recruiter.profiles.exact_experience.years', { count: years }));
+    }
+    if (remainingMonths > 0) {
+        parts.push(t('recruiter.profiles.exact_experience.months', { count: remainingMonths }));
+    }
+    
+    return parts.join(t('recruiter.profiles.exact_experience.and')) + t('recruiter.profiles.exact_experience.of_experience');
+}
 
 export default function Profiles({ offre, profiles }: Props) {
     const { t } = useTranslation();
@@ -171,305 +189,312 @@ export default function Profiles({ offre, profiles }: Props) {
                             </div>
                         ) : (
                             <div className="space-y-6 sm:space-y-10">
-                        {profiles.map((profile, index) => {
-                            const specialisations = uniqueLabels(profile.specialisations);
-                            const villes = uniqueLabels(profile.villes);
-                            const typesTravail = uniqueLabels(profile.types_travail);
-                            const modesTravail = uniqueLabels(profile.modes_travail);
-                            const langues = profile.langues.filter(
-                                (langue, langueIndex, list) =>
-                                    normalizeLabel(langue.nom)
-                                    && list.findIndex(
-                                        (item) => normalizeLabel(item.nom) === normalizeLabel(langue.nom),
-                                    ) === langueIndex,
-                            );
+                                {profiles.map((profile, index) => {
+                                    const specialisations = uniqueLabels(profile.specialisations);
+                                    const villes = uniqueLabels(profile.villes);
+                                    const typesTravail = uniqueLabels(profile.types_travail);
+                                    const modesTravail = uniqueLabels(profile.modes_travail);
+                                    const langues = profile.langues.filter(
+                                        (langue, langueIndex, list) =>
+                                            normalizeLabel(langue.nom)
+                                            && list.findIndex(
+                                                (item) => normalizeLabel(item.nom) === normalizeLabel(langue.nom),
+                                            ) === langueIndex,
+                                    );
 
-                            return (
-                                <motion.article
-                                    key={profile.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.08 }}
-                                    className="overflow-hidden border border-[#1a1f1e]/8 bg-white shadow-sm shadow-[#1a1f1e]/5"
-                                >
-                                    <div className="border-b border-[#1a1f1e]/8 bg-[#1a1f1e] px-5 py-6 sm:px-8 sm:py-8 text-white">
-                                        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                                            <div className="space-y-3">
-                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
-                                                    {t('recruiter.profiles.profile_label', { number: index + 1 })}
-                                                </p>
-                                                <h2 className="font-serif text-2xl font-bold italic tracking-tight sm:text-3xl md:text-4xl">
-                                                    {profile.prenom} {profile.nom}
-                                                </h2>
-                                                <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-white/70">
-                                                    {profile.poste && (
+                                    return (
+                                        <motion.article
+                                            key={profile.id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: index * 0.08 }}
+                                            className="overflow-hidden border border-[#1a1f1e]/8 bg-white shadow-sm shadow-[#1a1f1e]/5"
+                                        >
+                                            <div className="border-b border-[#1a1f1e]/8 bg-[#1a1f1e] px-5 py-6 sm:px-8 sm:py-8 text-white">
+                                                <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                                                    <div className="space-y-3">
+                                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+                                                            {t('recruiter.profiles.profile_label', { number: index + 1 })}
+                                                        </p>
+                                                        <h2 className="font-serif text-2xl font-bold italic tracking-tight sm:text-3xl md:text-4xl">
+                                                            {profile.prenom} {profile.nom}
+                                                        </h2>
+                                                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-white/70">
+                                                            {profile.poste && (
+                                                                <span className="inline-flex items-center gap-1.5">
+                                                                    <Briefcase className="h-3.5 w-3.5" />
+                                                                    {profile.poste}
+                                                                </span>
+                                                            )}
+                                                            {(profile.exact_experience_months !== undefined && profile.exact_experience_months !== null) ? (
                                                         <span className="inline-flex items-center gap-1.5">
-                                                            <Briefcase className="h-3.5 w-3.5" />
-                                                            {profile.poste}
+                                                            <Award className="h-3.5 w-3.5" />
+                                                            {profile.niveau_experience 
+                                                                ? `${profile.niveau_experience.split('(')[0].trim()} (${formatExactExperience(profile.exact_experience_months, t)})`
+                                                                : formatExactExperience(profile.exact_experience_months, t)
+                                                            }
                                                         </span>
-                                                    )}
-                                                    {profile.niveau_experience && (
+                                                    ) : profile.niveau_experience && (
                                                         <span className="inline-flex items-center gap-1.5">
                                                             <Award className="h-3.5 w-3.5" />
                                                             {profile.niveau_experience}
                                                         </span>
                                                     )}
-                                                </div>
-                                            </div>
-
-                                            <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center lg:items-end lg:gap-8">
-                                                <div className="space-y-2 text-sm">
-                                                    {profile.email && (
-                                                        <a
-                                                            href={`mailto:${profile.email}`}
-                                                            className="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
-                                                        >
-                                                            <Mail className="h-3.5 w-3.5" />
-                                                            {profile.email}
-                                                        </a>
-                                                    )}
-                                                    {profile.telephone && (
-                                                        <a
-                                                            href={`tel:${profile.telephone}`}
-                                                            className="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
-                                                        >
-                                                            <Phone className="h-3.5 w-3.5" />
-                                                            {profile.telephone}
-                                                        </a>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid gap-0 lg:grid-cols-12">
-                                        <aside className="space-y-8 border-b border-[#1a1f1e]/8 bg-[#FDFCF8] px-5 py-6 sm:px-8 sm:py-8 lg:col-span-4 lg:border-b-0 lg:border-r">
-                                            <CvBlock title={t('recruiter.profiles.sections.summary')}>
-                                                <div className="space-y-2 text-sm text-[#1a1f1e]/70">
-                                                    {profile.formation_juridique && (
-                                                        <p>
-                                                            <span className="font-semibold text-[#1a1f1e]">
-                                                                {t('recruiter.profiles.fields.education')}:
-                                                            </span>{' '}
-                                                            {profile.formation_juridique}
-                                                        </p>
-                                                    )}
-                                                    {profile.urgence && (
-                                                        <p>
-                                                            <span className="font-semibold text-[#1a1f1e]">
-                                                                {t('recruiter.profiles.fields.availability')}:
-                                                            </span>{' '}
-                                                            {profile.urgence}
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            </CvBlock>
-
-                                            {specialisations.length > 0 && (
-                                                <CvBlock title={t('recruiter.profiles.sections.specialisations')}>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {specialisations.map((item) => (
-                                                            <CriterionTag
-                                                                key={item}
-                                                                label={item}
-                                                                matched={isMatchedValue(item, offreSpecialisations)}
-                                                                matchedLabel={t('recruiter.profiles.matched')}
-                                                            />
-                                                        ))}
+                                                        </div>
                                                     </div>
-                                                </CvBlock>
-                                            )}
 
-                                            {langues.length > 0 && (
-                                                <CvBlock title={t('recruiter.profiles.sections.languages')}>
-                                                    <ul className="space-y-2">
-                                                        {langues.map((langue) => {
-                                                            const matched = isMatchedValue(langue.nom, offreLangues);
-
-                                                            return (
-                                                                <li
-                                                                    key={`${langue.nom}-${langue.niveau}`}
-                                                                    className={`flex items-center justify-between gap-3 text-sm ${
-                                                                        matched
-                                                                            ? 'rounded-full border border-[#C06041] bg-[#C06041]/8 px-3 py-1.5 text-[#1a1f1e]'
-                                                                            : 'text-[#1a1f1e]/75'
-                                                                    }`}
+                                                    <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center lg:items-end lg:gap-8">
+                                                        <div className="space-y-2 text-sm">
+                                                            {profile.email && (
+                                                                <a
+                                                                    href={`mailto:${profile.email}`}
+                                                                    className="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
                                                                 >
-                                                                    <span className="inline-flex items-center gap-1.5">
-                                                                        <Globe className="h-3.5 w-3.5 text-[#C06041]" />
-                                                                        {langue.nom}
-                                                                        {matched && (
-                                                                            <span className="sr-only">
-                                                                                {t('recruiter.profiles.matched')}
+                                                                    <Mail className="h-3.5 w-3.5" />
+                                                                    {profile.email}
+                                                                </a>
+                                                            )}
+                                                            {profile.telephone && (
+                                                                <a
+                                                                    href={`tel:${profile.telephone}`}
+                                                                    className="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
+                                                                >
+                                                                    <Phone className="h-3.5 w-3.5" />
+                                                                    {profile.telephone}
+                                                                </a>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid gap-0 lg:grid-cols-12">
+                                                <aside className="space-y-8 border-b border-[#1a1f1e]/8 bg-[#FDFCF8] px-5 py-6 sm:px-8 sm:py-8 lg:col-span-4 lg:border-b-0 lg:border-r">
+                                                    <CvBlock title={t('recruiter.profiles.sections.summary')}>
+                                                        <div className="space-y-2 text-sm text-[#1a1f1e]/70">
+                                                            {profile.formation_juridique && (
+                                                                <p>
+                                                                    <span className="font-semibold text-[#1a1f1e]">
+                                                                        {t('recruiter.profiles.fields.education')}:
+                                                                    </span>{' '}
+                                                                    {profile.formation_juridique}
+                                                                </p>
+                                                            )}
+                                                            {profile.urgence && (
+                                                                <p>
+                                                                    <span className="font-semibold text-[#1a1f1e]">
+                                                                        {t('recruiter.profiles.fields.availability')}:
+                                                                    </span>{' '}
+                                                                    {profile.urgence}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </CvBlock>
+
+                                                    {specialisations.length > 0 && (
+                                                        <CvBlock title={t('recruiter.profiles.sections.specialisations')}>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {specialisations.map((item) => (
+                                                                    <CriterionTag
+                                                                        key={item}
+                                                                        label={item}
+                                                                        matched={isMatchedValue(item, offreSpecialisations)}
+                                                                        matchedLabel={t('recruiter.profiles.matched')}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                        </CvBlock>
+                                                    )}
+
+                                                    {langues.length > 0 && (
+                                                        <CvBlock title={t('recruiter.profiles.sections.languages')}>
+                                                            <ul className="space-y-2">
+                                                                {langues.map((langue) => {
+                                                                    const matched = isMatchedValue(langue.nom, offreLangues);
+
+                                                                    return (
+                                                                        <li
+                                                                            key={`${langue.nom}-${langue.niveau}`}
+                                                                            className={`flex items-center justify-between gap-3 text-sm ${matched
+                                                                                    ? 'rounded-full border border-[#C06041] bg-[#C06041]/8 px-3 py-1.5 text-[#1a1f1e]'
+                                                                                    : 'text-[#1a1f1e]/75'
+                                                                                }`}
+                                                                        >
+                                                                            <span className="inline-flex items-center gap-1.5">
+                                                                                <Globe className="h-3.5 w-3.5 text-[#C06041]" />
+                                                                                {langue.nom}
+                                                                                {matched && (
+                                                                                    <span className="sr-only">
+                                                                                        {t('recruiter.profiles.matched')}
+                                                                                    </span>
+                                                                                )}
                                                                             </span>
-                                                                        )}
-                                                                    </span>
-                                                                    {langue.niveau && (
-                                                                        <span className="text-[10px] uppercase tracking-wider text-[#1a1f1e]/40">
-                                                                            {langue.niveau}
-                                                                        </span>
-                                                                    )}
-                                                                </li>
-                                                            );
-                                                        })}
-                                                    </ul>
-                                                </CvBlock>
-                                            )}
+                                                                            {langue.niveau && (
+                                                                                <span className="text-[10px] uppercase tracking-wider text-[#1a1f1e]/40">
+                                                                                    {langue.niveau}
+                                                                                </span>
+                                                                            )}
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                            </ul>
+                                                        </CvBlock>
+                                                    )}
 
-                                            {villes.length > 0 && (
-                                                <CvBlock title={t('recruiter.profiles.sections.cities')}>
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {villes.map((item) => (
-                                                            <CriterionTag
-                                                                key={item}
-                                                                label={item}
-                                                                matched={isMatchedValue(item, offreVilles)}
-                                                                matchedLabel={t('recruiter.profiles.matched')}
-                                                                icon={MapPin}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                </CvBlock>
-                                            )}
-                                        </aside>
+                                                    {villes.length > 0 && (
+                                                        <CvBlock title={t('recruiter.profiles.sections.cities')}>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {villes.map((item) => (
+                                                                    <CriterionTag
+                                                                        key={item}
+                                                                        label={item}
+                                                                        matched={isMatchedValue(item, offreVilles)}
+                                                                        matchedLabel={t('recruiter.profiles.matched')}
+                                                                        icon={MapPin}
+                                                                    />
+                                                                ))}
+                                                            </div>
+                                                        </CvBlock>
+                                                    )}
+                                                </aside>
 
-                                        <div className="space-y-10 px-8 py-8 lg:col-span-8">
-                                            <CvBlock
-                                                title={t('recruiter.profiles.sections.experience')}
-                                                icon={Briefcase}
-                                            >
-                                                {profile.experiences.length === 0 ? (
-                                                    <p className="text-sm text-[#1a1f1e]/40">
-                                                        {t('recruiter.profiles.no_experience')}
-                                                    </p>
-                                                ) : (
-                                                    <ol className="relative space-y-6 border-l border-[#1a1f1e]/10 pl-6">
-                                                        {profile.experiences.map((experience, expIndex) => (
-                                                            <li key={`${profile.id}-exp-${expIndex}`} className="relative">
-                                                                <span className="absolute -left-[1.91rem] top-1.5 h-2.5 w-2.5 rounded-full bg-[#C06041]" />
-                                                                <div className="space-y-1">
-                                                                    <h3 className="text-base font-semibold text-[#1a1f1e]">
-                                                                        {experience.poste || t('recruiter.profiles.fields.role')}
-                                                                    </h3>
-                                                                    <p className="inline-flex items-center gap-1.5 text-sm text-[#1a1f1e]/60">
-                                                                        <Building2 className="h-3.5 w-3.5" />
-                                                                        {experience.entreprise || '—'}
-                                                                        {experience.type_travail
-                                                                            ? ` · ${experience.type_travail}`
-                                                                            : ''}
-                                                                    </p>
-                                                                    <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-[#1a1f1e]/40">
-                                                                        <Calendar className="h-3 w-3" />
-                                                                        {formatPeriod(
-                                                                            experience.debut,
-                                                                            experience.fin,
-                                                                            t('recruiter.profiles.present'),
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-                                                            </li>
-                                                        ))}
-                                                    </ol>
-                                                )}
-                                            </CvBlock>
-
-                                            <CvBlock
-                                                title={t('recruiter.profiles.sections.education')}
-                                                icon={GraduationCap}
-                                            >
-                                                {profile.formations.length === 0 ? (
-                                                    <p className="text-sm text-[#1a1f1e]/40">
-                                                        {t('recruiter.profiles.no_education')}
-                                                    </p>
-                                                ) : (
-                                                    <ol className="relative space-y-6 border-l border-[#1a1f1e]/10 pl-6">
-                                                        {profile.formations.map((formation, formationIndex) => (
-                                                            <li
-                                                                key={`${profile.id}-edu-${formationIndex}`}
-                                                                className="relative"
-                                                            >
-                                                                <span className="absolute -left-[1.91rem] top-1.5 h-2.5 w-2.5 rounded-full bg-[#1a1f1e]" />
-                                                                <div className="space-y-1">
-                                                                    <h3 className="text-base font-semibold text-[#1a1f1e]">
-                                                                        {formation.formation_juridique
-                                                                            || formation.specialisation
-                                                                            || t('recruiter.profiles.fields.education')}
-                                                                    </h3>
-                                                                    {formation.ecole && (
-                                                                        <p className="text-sm text-[#1a1f1e]/60">
-                                                                            {formation.ecole}
-                                                                        </p>
-                                                                    )}
-                                                                    {formation.specialisation
-                                                                        && formation.formation_juridique && (
-                                                                            <p className="text-sm text-[#1a1f1e]/50">
-                                                                                {formation.specialisation}
+                                                <div className="space-y-10 px-8 py-8 lg:col-span-8">
+                                                    <CvBlock
+                                                        title={t('recruiter.profiles.sections.experience')}
+                                                        icon={Briefcase}
+                                                    >
+                                                        {profile.experiences.length === 0 ? (
+                                                            <p className="text-sm text-[#1a1f1e]/40">
+                                                                {t('recruiter.profiles.no_experience')}
+                                                            </p>
+                                                        ) : (
+                                                            <ol className="relative space-y-6 border-l border-[#1a1f1e]/10 pl-6">
+                                                                {profile.experiences.map((experience, expIndex) => (
+                                                                    <li key={`${profile.id}-exp-${expIndex}`} className="relative">
+                                                                        <span className="absolute -left-[1.91rem] top-1.5 h-2.5 w-2.5 rounded-full bg-[#C06041]" />
+                                                                        <div className="space-y-1">
+                                                                            <h3 className="text-base font-semibold text-[#1a1f1e]">
+                                                                                {experience.poste || t('recruiter.profiles.fields.role')}
+                                                                            </h3>
+                                                                            <p className="inline-flex items-center gap-1.5 text-sm text-[#1a1f1e]/60">
+                                                                                <Building2 className="h-3.5 w-3.5" />
+                                                                                {experience.entreprise || '—'}
+                                                                                {experience.type_travail
+                                                                                    ? ` · ${experience.type_travail}`
+                                                                                    : ''}
                                                                             </p>
-                                                                        )}
-                                                                    <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-[#1a1f1e]/40">
-                                                                        <Calendar className="h-3 w-3" />
-                                                                        {formatPeriod(
-                                                                            formation.annee_debut,
-                                                                            formation.annee_fin,
-                                                                            t('recruiter.profiles.present'),
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-                                                            </li>
-                                                        ))}
-                                                    </ol>
-                                                )}
-                                            </CvBlock>
-
-                                            {(typesTravail.length > 0 || modesTravail.length > 0) && (
-                                                <CvBlock
-                                                    title={t('recruiter.profiles.sections.work_preferences')}
-                                                    icon={Laptop}
-                                                >
-                                                    <div className="space-y-5">
-                                                        {typesTravail.length > 0 && (
-                                                            <div className="space-y-2">
-                                                                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1a1f1e]/40">
-                                                                    {t('recruiter.profiles.fields.work_type')}
-                                                                </p>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {typesTravail.map((item) => (
-                                                                        <CriterionTag
-                                                                            key={item}
-                                                                            label={item}
-                                                                            matched={isMatchedValue(item, offreTypesTravail)}
-                                                                            matchedLabel={t('recruiter.profiles.matched')}
-                                                                        />
-                                                                    ))}
-                                                                </div>
-                                                            </div>
+                                                                            <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-[#1a1f1e]/40">
+                                                                                <Calendar className="h-3 w-3" />
+                                                                                {formatPeriod(
+                                                                                    experience.debut,
+                                                                                    experience.fin,
+                                                                                    t('recruiter.profiles.present'),
+                                                                                )}
+                                                                            </p>
+                                                                        </div>
+                                                                    </li>
+                                                                ))}
+                                                            </ol>
                                                         )}
+                                                    </CvBlock>
 
-                                                        {modesTravail.length > 0 && (
-                                                            <div className="space-y-2">
-                                                                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1a1f1e]/40">
-                                                                    {t('recruiter.profiles.fields.work_mode')}
-                                                                </p>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {modesTravail.map((item) => (
-                                                                        <CriterionTag
-                                                                            key={item}
-                                                                            label={item}
-                                                                            matched={isMatchedValue(item, offreModesTravail)}
-                                                                            matchedLabel={t('recruiter.profiles.matched')}
-                                                                        />
-                                                                    ))}
-                                                                </div>
-                                                            </div>
+                                                    <CvBlock
+                                                        title={t('recruiter.profiles.sections.education')}
+                                                        icon={GraduationCap}
+                                                    >
+                                                        {profile.formations.length === 0 ? (
+                                                            <p className="text-sm text-[#1a1f1e]/40">
+                                                                {t('recruiter.profiles.no_education')}
+                                                            </p>
+                                                        ) : (
+                                                            <ol className="relative space-y-6 border-l border-[#1a1f1e]/10 pl-6">
+                                                                {profile.formations.map((formation, formationIndex) => (
+                                                                    <li
+                                                                        key={`${profile.id}-edu-${formationIndex}`}
+                                                                        className="relative"
+                                                                    >
+                                                                        <span className="absolute -left-[1.91rem] top-1.5 h-2.5 w-2.5 rounded-full bg-[#1a1f1e]" />
+                                                                        <div className="space-y-1">
+                                                                            <h3 className="text-base font-semibold text-[#1a1f1e]">
+                                                                                {formation.formation_juridique
+                                                                                    || formation.specialisation
+                                                                                    || t('recruiter.profiles.fields.education')}
+                                                                            </h3>
+                                                                            {formation.ecole && (
+                                                                                <p className="text-sm text-[#1a1f1e]/60">
+                                                                                    {formation.ecole}
+                                                                                </p>
+                                                                            )}
+                                                                            {formation.specialisation
+                                                                                && formation.formation_juridique && (
+                                                                                    <p className="text-sm text-[#1a1f1e]/50">
+                                                                                        {formation.specialisation}
+                                                                                    </p>
+                                                                                )}
+                                                                            <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider text-[#1a1f1e]/40">
+                                                                                <Calendar className="h-3 w-3" />
+                                                                                {formatPeriod(
+                                                                                    formation.annee_debut,
+                                                                                    formation.annee_fin,
+                                                                                    t('recruiter.profiles.present'),
+                                                                                )}
+                                                                            </p>
+                                                                        </div>
+                                                                    </li>
+                                                                ))}
+                                                            </ol>
                                                         )}
-                                                    </div>
-                                                </CvBlock>
-                                            )}
-                                        </div>
-                                    </div>
-                                </motion.article>
-                            );
-                        })}
+                                                    </CvBlock>
+
+                                                    {(typesTravail.length > 0 || modesTravail.length > 0) && (
+                                                        <CvBlock
+                                                            title={t('recruiter.profiles.sections.work_preferences')}
+                                                            icon={Laptop}
+                                                        >
+                                                            <div className="space-y-5">
+                                                                {typesTravail.length > 0 && (
+                                                                    <div className="space-y-2">
+                                                                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1a1f1e]/40">
+                                                                            {t('recruiter.profiles.fields.work_type')}
+                                                                        </p>
+                                                                        <div className="flex flex-wrap gap-2">
+                                                                            {typesTravail.map((item) => (
+                                                                                <CriterionTag
+                                                                                    key={item}
+                                                                                    label={item}
+                                                                                    matched={isMatchedValue(item, offreTypesTravail)}
+                                                                                    matchedLabel={t('recruiter.profiles.matched')}
+                                                                                />
+                                                                            ))}
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
+                                                                {modesTravail.length > 0 && (
+                                                                    <div className="space-y-2">
+                                                                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#1a1f1e]/40">
+                                                                            {t('recruiter.profiles.fields.work_mode')}
+                                                                        </p>
+                                                                        <div className="flex flex-wrap gap-2">
+                                                                            {modesTravail.map((item) => (
+                                                                                <CriterionTag
+                                                                                    key={item}
+                                                                                    label={item}
+                                                                                    matched={isMatchedValue(item, offreModesTravail)}
+                                                                                    matchedLabel={t('recruiter.profiles.matched')}
+                                                                                />
+                                                                            ))}
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </CvBlock>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </motion.article>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
