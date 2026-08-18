@@ -88,11 +88,12 @@ class CreateNewUser implements CreatesNewUsers
             'formations.*.annee_fin' => ['nullable', 'date_format:Y-m', 'after_or_equal:formations.*.annee_debut'],
             'formations.*.formation_juridique_id' => ['required_with:formations', 'integer'],
             'formations.*.specialisation_id' => ['required_with:formations', 'integer'],
-            'formations.*.ecole_id' => ['nullable', 'integer'],
-            'formations.*.autre_ecole' => ['required_without:formations.*.ecole_id', 'nullable', 'string', 'max:255'],
+            'formations.*.ecole_id' => ['nullable', 'string'],
+            'formations.*.autre_ecole' => ['required_if:formations.*.ecole_id,other', 'required_if:formations.*.ecole_id,', 'nullable', 'string', 'max:255'],
         ], [
             'experiences.*.fin.after_or_equal' => 'La date de fin de l\'expérience doit être postérieure ou égale à la date de début.',
             'formations.*.annee_fin.gte' => 'L\'année de fin de la formation doit être postérieure ou égale à l\'année de début.',
+            'formations.*.autre_ecole.required_if' => 'Veuillez préciser le nom de votre école.',
         ])->validate();
 
         return $this->registrationService->registerCandidat($input);

@@ -8,10 +8,12 @@ test('sitemap xml route returns valid xml content with correct public urls', fun
     $response->assertSee('https://jurijob.ma/');
     $response->assertSee('https://jurijob.ma/services');
     $response->assertSee('https://jurijob.ma/faq');
+    $response->assertSee('https://jurijob.ma/register/candidat');
+    $response->assertSee('https://jurijob.ma/register/recruteur');
+    $response->assertSee('https://jurijob.ma/login');
     $response->assertSee('https://jurijob.ma/cgv');
     $response->assertSee('https://jurijob.ma/cgu');
     $response->assertSee('https://jurijob.ma/mentions-legales');
-    $response->assertDontSee('/register/candidat');
     $response->assertDontSee('/candidate/');
     $response->assertDontSee('/admin/');
 });
@@ -23,6 +25,8 @@ test('robots txt exists and has secure configuration', function () {
     $content = file_get_contents($robotsPath);
     expect($content)->toContain('Disallow: /candidate/')
         ->toContain('Disallow: /admin/')
-        ->toContain('Disallow: /register/')
+        ->toContain('Allow: /register/candidat')
+        ->toContain('Allow: /register/recruteur')
+        ->toContain('Allow: /login')
         ->toContain('Sitemap: https://jurijob.ma/sitemap.xml');
 });

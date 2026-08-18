@@ -16,7 +16,7 @@ export default function SEO({
     title,
     description,
     canonical,
-    ogImage = 'https://jurijob.ma/images/logo-512x512.png',
+    ogImage = 'https://jurijob.ma/logo-512x512.png',
     ogType = 'website',
     ogLocale,
     jsonLd,
@@ -45,6 +45,10 @@ export default function SEO({
             <meta property="og:type" content={ogType} />
             <meta property="og:url" content={currentCanonical} />
             <meta property="og:image" content={ogImage} />
+            <meta property="og:image:secure_url" content={ogImage} />
+            <meta property="og:image:width" content="512" />
+            <meta property="og:image:height" content="512" />
+            <meta property="og:image:alt" content="JuriJob - Smart Recrutement Juridique" />
             <meta property="og:locale" content={computedOgLocale} />
 
             {/* Twitter Cards */}
@@ -52,6 +56,7 @@ export default function SEO({
             <meta name="twitter:title" content={fullTitle} />
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={ogImage} />
+            <meta name="twitter:image:alt" content="JuriJob - Smart Recrutement Juridique" />
 
             {/* Structured Data (JSON-LD) */}
             {jsonLd && (

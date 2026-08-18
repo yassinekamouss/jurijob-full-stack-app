@@ -55,6 +55,7 @@ export default function FormationSection({ formations }: Props) {
     form.transform((data) => ({
       ...data,
       ecole_id: data.ecole_id === 'other' ? null : data.ecole_id,
+      autre_ecole: data.ecole_id === 'other' ? data.autre_ecole : null,
     }));
 
     if (editingId) {

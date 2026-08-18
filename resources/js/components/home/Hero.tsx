@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/home/Reveal';
 
-export default function Hero() {
+export default function Hero({ activeCandidats }: { activeCandidats: number }) {
     const { t } = useTranslation();
 
     return (
@@ -118,7 +118,7 @@ export default function Hero() {
                                                 'Cormorant Garamond, serif',
                                         }}
                                     >
-                                        {t('home.hero.stat1_value')}
+                                        {activeCandidats.toLocaleString()}
                                     </div>
                                     <div className="text-[10px] sm:text-xs uppercase tracking-wider text-[#1a1f1e]/60 mt-0.5 sm:mt-1">
                                         {t('home.hero.stat1_label')}

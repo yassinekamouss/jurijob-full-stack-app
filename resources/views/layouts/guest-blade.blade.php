@@ -17,14 +17,18 @@
     <meta property="og:description" content="@yield('og_description', View::yieldContent('meta_description', 'Plateforme de recrutement spécialisée dans le secteur juridique au Maroc.'))">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="@yield('canonical', url()->current())">
-    <meta property="og:image" content="@yield('og_image', asset('images/logo_jurijob.png'))">
+    <meta property="og:image" content="@yield('og_image', asset('logo-512x512.png'))">
+    <meta property="og:image:secure_url" content="@yield('og_image', asset('logo-512x512.png'))">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="JuriJob - Smart Recrutement Juridique">
     <meta property="og:locale" content="{{ app()->getLocale() === 'en' ? 'en_US' : 'fr_FR' }}">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('og_title', View::yieldContent('title', 'JuriJob - Smart Recrutement Juridique'))">
     <meta name="twitter:description" content="@yield('og_description', View::yieldContent('meta_description', 'Plateforme de recrutement spécialisée dans le secteur juridique au Maroc.'))">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/logo_jurijob.png'))">
+    <meta name="twitter:image" content="@yield('og_image', asset('logo-512x512.png'))">
 
     @yield('json_ld')
 
@@ -37,6 +41,8 @@
 
     <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('web-app-manifest-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('web-app-manifest-512x512.png') }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">

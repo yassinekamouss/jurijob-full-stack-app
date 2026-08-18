@@ -51,7 +51,7 @@ return [
     | the application so that it's available within Artisan commands.
     |
     */
-    'email_asset_url' => env('EMAIL_ASSET_URL', 'http://localhost'),
+    'email_asset_url' => env('APP_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------

@@ -19,6 +19,24 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://jurijob.ma/register/candidat</loc>
+        <lastmod>{{ now()->toIso8601String() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://jurijob.ma/register/recruteur</loc>
+        <lastmod>{{ now()->toIso8601String() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://jurijob.ma/login</loc>
+        <lastmod>{{ now()->toIso8601String() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://jurijob.ma/cgv</loc>
         <lastmod>{{ now()->toIso8601String() }}</lastmod>
         <changefreq>yearly</changefreq>
