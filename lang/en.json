@@ -205,7 +205,7 @@
             "formations": "Education",
             "specialisations": "Specializations",
             "languages": "Languages",
-            "security": "2FA (Coming Soon)"
+            "security": "2FA"
         },
         "form": {
             "firstname": "First Name",

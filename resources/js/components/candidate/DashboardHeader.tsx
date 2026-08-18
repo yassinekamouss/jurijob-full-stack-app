@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LogOut, LayoutDashboard, Bell, Settings } from 'lucide-react';
+import { LogOut, LayoutDashboard, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { logout } from '@/routes';
 import { dashboard as candidateDashboard, settings as candidateSettings } from '@/routes/candidate';
@@ -72,11 +72,6 @@ export default function DashboardHeader() {
                         >
                             <LayoutDashboard className="h-4 w-4 sm:h-5 sm:w-5" />
                         </Link>
-
-                        <button className="relative p-1.5 sm:p-2 text-[#1a1f1e]/60 transition-colors hover:text-[#1a1f1e] hover:bg-[#1a1f1e]/5 rounded-lg" title={t('candidate_dashboard_header.notifications')}>
-                            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-                            <span className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2.5 h-2 w-2 rounded-full bg-red-500 border-2 border-[#FDFCF8]"></span>
-                        </button>
 
                         <Link
                             href={candidateSettings.url()}
