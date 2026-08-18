@@ -25,7 +25,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 <div className="flex flex-col items-center text-center">
                     <Link href={home()} className="inline-flex items-center justify-center">
                         <img
-                            src="/images/logo_jurijob.png"
+                            src="/images/logo_jurijob.webp"
                             alt="JuriJob - Logo"
                             width={100}
                             height={100}

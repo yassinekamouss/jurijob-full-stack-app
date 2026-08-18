@@ -59,7 +59,7 @@
                 <div class="flex h-20 items-center justify-between">
                     <!-- Logo -->
                     <a href="/" class="flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="{{ __t('navigation.brand_alt') }}">
-                        <img src="/images/logo_jurijob.png" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
+                        <img src="/images/logo_jurijob.webp" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
                     </a>
 
                     <!-- Navigation Desktop -->
@@ -186,7 +186,7 @@
                 <div class="grid gap-12 md:grid-cols-4">
                     <div class="md:col-span-2">
                         <a href="/" class="inline-flex items-center tracking-tight hover:opacity-90 transition-opacity" aria-label="{{ __t('navigation.brand_alt') }}">
-                            <img src="/images/logo_jurijob.png" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
+                            <img src="/images/logo_jurijob.webp" alt="{{ __t('navigation.brand_alt') }}" width="100" height="100" class="w-auto h-32" />
                         </a>
                         <p class="my-6 max-w-sm text-sm leading-relaxed font-light text-[#1a1f1e]/70">
                             {{ __t('footer.description') }}

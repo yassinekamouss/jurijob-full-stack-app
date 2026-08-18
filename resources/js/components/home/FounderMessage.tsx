@@ -27,7 +27,7 @@ export default function FounderMessage() {
                         <div className="relative border border-[#1a1f1e]/10 bg-[#FDFCF8] p-2 shadow-[0_25px_60px_-30px_rgba(26,31,30,0.35)]">
                             <div className="relative aspect-[4/5] w-full overflow-hidden">
                                 <img
-                                    src="/images/1777241420351.jpeg"
+                                    src="/images/1777241420351.webp"
                                     alt={t('home.founder.image_alt')}
                                     className="h-full w-full object-cover object-center grayscale transition-all duration-700 hover:grayscale-0"
                                 />

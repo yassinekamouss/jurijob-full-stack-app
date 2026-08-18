@@ -55,7 +55,7 @@ export default function About() {
                             <div className="absolute top-4 left-4 lg:top-6 lg:left-6 z-0 h-full w-full border border-[#C06041]/60"></div>
 
                             <img
-                                src="/images/_.jpeg"
+                                src="/images/_.webp"
                                 alt={t('home.about.image_alt')}
                                 className="relative z-10 h-[350px] sm:h-[450px] lg:h-[600px] w-full object-cover mix-blend-luminosity brightness-110 grayscale transition-all duration-700 group-hover:mix-blend-normal group-hover:grayscale-0"
                             />

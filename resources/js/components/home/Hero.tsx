@@ -100,7 +100,7 @@ export default function Hero({ activeCandidats }: { activeCandidats: number }) {
                             <div className="hidden sm:block absolute top-6 -left-6 lg:top-8 lg:-left-8 w-full h-full bg-[#1a1f1e] z-0" />
                             <div className="relative h-full z-10 overflow-hidden bg-zinc-200 border border-[#1a1f1e]/10">
                                 <img
-                                    src="/images/fallback.png"
+                                    src="/images/fallback.webp"
                                     alt={t('home.hero.image_alt')}
                                     className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 contrast-125"
                                     loading="eager"

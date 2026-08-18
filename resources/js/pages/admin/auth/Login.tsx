@@ -34,7 +34,7 @@ export default function Login() {
             <header className="relative z-10 flex items-center justify-between px-6 py-2 sm:px-12">
                 <div className="flex items-center gap-3">
                     <img
-                        src="/images/logo_jurijob.png"
+                        src="/images/logo_jurijob.webp"
                         alt="JuriJob Administration"
                         className="h-30 w-auto object-contain transition-transform duration-300 hover:scale-105"
                     />

@@ -36,7 +36,7 @@ body, p { font-family: 'Inter', sans-serif; }
              <header class="relative z-10 w-full border-b border-[#1a1f1e]/[0.08] bg-[#FDFCF8]/85 backdrop-blur-[8px]">
                 <div class="max-w-7xl mx-auto h-20 flex items-center justify-center px-6">
                     <a href="/" aria-label="JuriJob Accueil">
-                        <img src="/images/logo_jurijob.png" alt="JuriJob Logo" class="h-[150px] w-auto object-contain transition-opacity duration-200 hover:opacity-85">
+                        <img src="/images/logo_jurijob.webp" alt="JuriJob Logo" class="h-[150px] w-auto object-contain transition-opacity duration-200 hover:opacity-85">
                     </a>
                 </div>
             </header>

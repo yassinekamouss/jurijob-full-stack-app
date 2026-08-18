@@ -11,7 +11,7 @@ const Brand = () => {
             aria-label={t('navigation.home')}
         >
             <img
-                src="/images/logo_jurijob.png"
+                src="/images/logo_jurijob.webp"
                 alt={t('navigation.brand_alt')}
                 width={100}
                 height={100}

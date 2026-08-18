@@ -57,7 +57,7 @@ export function AdminSidebar() {
                             "
                         >
                             <img
-                                src="/images/logo_jurijob.png"
+                                src="/images/logo_jurijob.webp"
                                 alt="JuriJob"
                                 className="
                                     block

@@ -15,7 +15,7 @@ const Brand = () => {
             aria-label={t('candidate_dashboard_header.dashboard')}
         >
             <img
-                src="/images/logo_jurijob.png"
+                src="/images/logo_jurijob.webp"
                 alt="JuriJob - Logo"
                 width={100}
                 height={100}
