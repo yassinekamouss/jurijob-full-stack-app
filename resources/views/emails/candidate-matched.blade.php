@@ -112,12 +112,12 @@
                 <td align="center">
                   <!--[if mso]>
                   <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
-                    href="{{ $dashboardUrl }}"
+                    href="{{ route('login') }}"
                     style="height:50px;v-text-anchor:middle;width:280px;"
                     arcsize="8%" strokecolor="#C06041" fillcolor="#C06041">
                     <w:anchorlock/>
                     <center style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;">
-                      METTRE À JOUR MON PROFIL
+                      SE CONNECTER
                     </center>
                   </v:roundrect>
                   <![endif]-->
@@ -126,11 +126,11 @@
                     <tr>
                       <td align="center" bgcolor="#C06041" class="btn-cell"
                           style="border-radius:6px;padding:15px 36px;background-color:#C06041;">
-                        <a href="{{ $dashboardUrl }}" target="_blank"
+                        <a href="{{ route('login') }}" target="_blank"
                            style="display:inline-block;color:#FFFFFF;text-decoration:none;font-weight:700;
                                   font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
                                   font-family:'Plus Jakarta Sans',Arial,sans-serif;">
-                          Mettre à jour mon profil
+                          Se connecter
                         </a>
                       </td>
                     </tr>

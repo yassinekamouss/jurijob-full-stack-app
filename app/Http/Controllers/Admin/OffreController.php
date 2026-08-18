@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\ArchiveOffreRequest;
 use App\Http\Requests\Admin\ConfirmPaymentRequest;
 use App\Http\Requests\Admin\CustomMatchingRequest;
 use App\Http\Requests\Admin\SendOffreMatchesRequest;
+use App\Mail\Candidate\CandidateMatchedMail;
 use App\Mail\Recruiter\RecruiterShortlistReadyMail;
 use App\Mail\Recruiter\RecruiterShortlistUnlockedMail;
 use App\Models\Offre\Offre;
@@ -214,7 +215,7 @@ class OffreController extends Controller
         $recruteur = $offre->recruteur;
 
         if ($recruteur?->user?->email) {
-            Mail::to($recruteur->user->email)->send(
+            Mail::to($recruteur->user->email)->queue(
                 new RecruiterShortlistReadyMail(
                     recruteur: $recruteur,
                     offre: $offre,
@@ -222,6 +223,21 @@ class OffreController extends Controller
                     paymentUrl: route('offres.payment', $offre),
                 )
             );
+        }
+
+        $candidatIds = $candidates->pluck('id');
+        $candidats = \App\Models\Candidat\Candidat::with('user')->whereIn('id', $candidatIds)->get();
+
+        foreach ($candidats as $candidat) {
+            if ($candidat->user?->email) {
+                Mail::to($candidat->user->email)->queue(
+                    new CandidateMatchedMail(
+                        candidat: $candidat,
+                        offre: $offre,
+                        dashboardUrl: route('offres.index'),
+                    )
+                );
+            }
         }
 
         return redirect()
@@ -244,7 +260,7 @@ class OffreController extends Controller
         $recruteur = $offre->recruteur;
 
         if ($recruteur?->user?->email) {
-            Mail::to($recruteur->user->email)->send(
+            Mail::to($recruteur->user->email)->queue(
                 new RecruiterShortlistUnlockedMail(
                     recruteur: $recruteur,
                     offre: $offre,

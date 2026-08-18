@@ -2040,5 +2040,10 @@
                 "of_experience": " of experience"
             }
         }
+    },
+    "flash": {
+        "offre_submitted": "Thank you, :entreprise!\nYour request has been submitted to the JURIJOB team.\n\nYour short-list of :count CVs will be shared within 48 business hours. You can track its status from your dashboard.",
+        "payment_reported": "Your bank transfer has been reported. Our team will verify the payment within 24 business hours.",
+        "offre_deleted": "Offer deleted successfully."
     }
 }

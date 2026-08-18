@@ -11,7 +11,11 @@ import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import SEO from '@/components/SEO';
 
-export default function Home() {
+type Props = {
+    activeCandidats: number;
+};
+
+export default function Home({ activeCandidats }: Props) {
     const { t, i18n } = useTranslation();
 
     const homeJsonLd = {
@@ -81,7 +85,7 @@ export default function Home() {
             <Header />
 
             <main className="w-full flex-1 pt-12">
-                <Hero />
+                <Hero activeCandidats={activeCandidats} />
                 <WhyChooseUs />
                 <HowItWorks />
                 <Testimonials />

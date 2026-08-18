@@ -2041,5 +2041,10 @@
                 "of_experience": " d'expérience"
             }
         }
+    },
+    "flash": {
+        "offre_submitted": "Merci, :entreprise !\nVotre demande a été transmise à l'équipe JURIJOB.\n\nVotre short-list de :count CV vous sera communiquée sous 48h ouvrées. Vous pouvez suivre son statut depuis votre tableau de bord.",
+        "payment_reported": "Votre virement a été signalé. Nos équipes vérifieront le paiement sous 24h ouvrées.",
+        "offre_deleted": "Offre supprimée avec succès."
     }
 }

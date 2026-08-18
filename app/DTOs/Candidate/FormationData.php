@@ -44,6 +44,6 @@ readonly class FormationData
             'autre_ecole' => $this->autre_ecole,
             'annee_debut' => $this->annee_debut,
             'annee_fin' => $this->annee_fin,
-        ], fn ($value) => $value !== null);
+        ], fn ($value, $key) => $value !== null || in_array($key, ['ecole_id', 'autre_ecole']), ARRAY_FILTER_USE_BOTH);
     }
 }
