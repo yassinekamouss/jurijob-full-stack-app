@@ -29,7 +29,8 @@ class OffreController extends Controller
     public function __construct(
         private OffreStatusTransition $statusTransition,
         private OffreRequirementsPresenter $requirementsPresenter,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -100,7 +101,7 @@ class OffreController extends Controller
             $offre->load(['recruteur.user', 'poste', 'ville', 'typeTravail']);
 
             if ($request->user()?->email) {
-                Mail::to($request->user()->email)->send(
+                Mail::to($request->user()->email)->queue(
                     new RecruiterRequestConfirmedMail(
                         recruteur: $recruteur,
                         offre: $offre,
@@ -112,11 +113,11 @@ class OffreController extends Controller
             $nomEntreprise = $recruteur->nom_entreprise;
             $nombreCv = $offreData->nombre_cv;
 
-            return to_route('offres.index')->with('success', "Merci, {$nomEntreprise} !\nVotre demande a été transmise à l'équipe JURIJOB.\n\nVotre short-list de {$nombreCv} CV vous sera communiquée sous 48h ouvrées. Vous pouvez suivre son statut depuis votre tableau de bord.");
+            return to_route('offres.index')->with('success', __t('flash.offre_submitted', ['entreprise' => $nomEntreprise, 'count' => $nombreCv]));
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', "Erreur lors de la publication de l'offre : ".$e->getMessage());
+            return back()->with('error', "Erreur lors de la publication de l'offre : " . $e->getMessage());
         }
     }
 
@@ -176,7 +177,7 @@ class OffreController extends Controller
             'modeTravail',
             'ville',
             'criteresMultiples',
-            'matches' => fn ($query) => $query->orderByDesc('score'),
+            'matches' => fn($query) => $query->orderByDesc('score'),
             'matches.candidat.user:id,email,telephone',
             'matches.candidat.poste',
             'matches.candidat.niveauExperience',
@@ -202,7 +203,7 @@ class OffreController extends Controller
         $requiredLangues = Langue::query()
             ->whereIn('id', $langueIds)
             ->get()
-            ->map(fn (Langue $langue) => $langue->nom)
+            ->map(fn(Langue $langue) => $langue->nom)
             ->filter()
             ->unique()
             ->values();
@@ -210,13 +211,13 @@ class OffreController extends Controller
         $requiredSpecialisations = Specialisation::query()
             ->whereIn('id', $specialisationIds)
             ->get()
-            ->map(fn (Specialisation $specialisation) => $specialisation->nom)
+            ->map(fn(Specialisation $specialisation) => $specialisation->nom)
             ->filter()
             ->unique()
             ->values();
 
         $profiles = $offre->matches
-            ->filter(fn ($match) => $match->candidat !== null)
+            ->filter(fn($match) => $match->candidat !== null)
             ->map(function ($match) {
                 $candidat = $match->candidat;
 
@@ -229,41 +230,42 @@ class OffreController extends Controller
                     'telephone' => $candidat->user?->telephone,
                     'poste' => $candidat->poste?->nom,
                     'niveau_experience' => $candidat->niveauExperience?->nom,
+                    'exact_experience_months' => $candidat->calculateTotalExperienceMonths(),
                     'formation_juridique' => $candidat->formationJuridique?->nom,
                     'salaire' => $candidat->salaire?->nom,
                     'urgence' => $candidat->urgence?->nom,
                     'specialisations' => $candidat->specialisations
-                        ->map(fn ($item) => $item->specialisation?->nom)
+                        ->map(fn($item) => $item->specialisation?->nom)
                         ->filter()
                         ->unique()
                         ->values(),
                     'langues' => $candidat->langues
-                        ->map(fn ($item) => [
+                        ->map(fn($item) => [
                             'nom' => $item->langue?->nom,
                             'niveau' => $item->niveauLangue?->nom,
                         ])
-                        ->filter(fn ($item) => filled($item['nom']))
-                        ->unique(fn ($item) => mb_strtolower(trim((string) $item['nom'])))
+                        ->filter(fn($item) => filled($item['nom']))
+                        ->unique(fn($item) => mb_strtolower(trim((string) $item['nom'])))
                         ->values(),
                     'villes' => $candidat->villeTravails
-                        ->map(fn ($item) => $item->ville?->nom)
+                        ->map(fn($item) => $item->ville?->nom)
                         ->filter()
                         ->unique()
                         ->values(),
                     'modes_travail' => $candidat->modeTravails
-                        ->map(fn ($item) => $item->modeTravail?->nom)
+                        ->map(fn($item) => $item->modeTravail?->nom)
                         ->filter()
                         ->unique()
                         ->values(),
                     'types_travail' => $candidat->typeTravails
-                        ->map(fn ($item) => $item->typeTravail?->nom)
+                        ->map(fn($item) => $item->typeTravail?->nom)
                         ->filter()
                         ->unique()
                         ->values(),
                     'experiences' => $candidat->experiences
                         ->sortByDesc('debut')
                         ->values()
-                        ->map(fn ($experience) => [
+                        ->map(fn($experience) => [
                             'entreprise' => $experience->entreprise,
                             'poste' => $experience->poste?->nom,
                             'type_travail' => $experience->typeTravail?->nom,
@@ -273,8 +275,8 @@ class OffreController extends Controller
                     'formations' => $candidat->formations
                         ->sortByDesc('annee_fin')
                         ->values()
-                        ->map(fn ($formation) => [
-                            'ecole' => $formation->ecole?->nom,
+                        ->map(fn($formation) => [
+                            'ecole' => $formation->ecole?->nom ?? $formation->autre_ecole,
                             'formation_juridique' => $formation->formationJuridique?->nom,
                             'specialisation' => $formation->specialisation?->nom,
                             'annee_debut' => $formation->annee_debut,
@@ -313,7 +315,7 @@ class OffreController extends Controller
         $profilesCount = $offre->matches()->count();
         $unitPrice = (int) config('jurijob.cv_unit_price_mad');
 
-        if (! $offre->payment_reference) {
+        if (!$offre->payment_reference) {
             $offre->update([
                 'payment_reference' => sprintf(
                     'JJ-%s-%s%s',
@@ -354,7 +356,7 @@ class OffreController extends Controller
         );
 
         return to_route('offres.index')
-            ->with('success', 'Votre virement a été signalé. Nos équipes vérifieront le paiement sous 24h ouvrées.');
+            ->with('success', __t('flash.payment_reported'));
     }
 
     /**
@@ -367,7 +369,7 @@ class OffreController extends Controller
         try {
             $offre->delete();
 
-            return to_route('offres.index')->with('success', 'Offre supprimée avec succès.');
+            return to_route('offres.index')->with('success', __t('flash.offre_deleted'));
         } catch (\Exception $e) {
             return back()->with('error', "Erreur lors de la suppression de l'offre.");
         }

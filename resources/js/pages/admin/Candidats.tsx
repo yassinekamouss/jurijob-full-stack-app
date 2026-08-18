@@ -237,7 +237,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                             {candidat.formations.map((form: any) => (
                                                 <p key={form.id} className="text-xs text-[#1a1f1e]/60">
                                                     {form.formation_juridique?.nom}
-                                                    {form.ecole?.nom ? ` — ${form.ecole.nom}` : ''}
+                                                    {form.ecole?.nom ? ` — ${form.ecole.nom}` : (form.autre_ecole ? ` — ${form.autre_ecole}` : '')}
                                                     {form.annee_fin ? ` (${form.annee_fin})` : ''}
                                                 </p>
                                             ))}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { router, Head, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
@@ -62,6 +62,7 @@ export default function RegisterRecruteur() {
         user?: UserErrors;
         recruteur?: RecruteurErrors;
     }>({});
+    const cardRef = useRef<HTMLDivElement>(null);
 
     const onFieldChange = (
         section: 'user' | 'recruteur',
@@ -333,9 +334,9 @@ export default function RegisterRecruteur() {
 
             <Header />
 
-            <main className="relative flex-1 py-12">
-                <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-                    <div className="grid items-start gap-10 lg:grid-cols-3 lg:gap-16">
+            <main className="relative flex-1 pt-2 pb-6 lg:pt-4 lg:pb-10">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid items-start gap-8 lg:grid-cols-3 lg:gap-12">
                         {/* Left sidebar */}
                         <aside className="hidden lg:col-span-1 lg:block">
                             <div className="sticky top-28 space-y-8">
@@ -445,13 +446,14 @@ export default function RegisterRecruteur() {
                                 />
                             )}
 
-                            <div className="relative z-10 mx-auto w-full max-w-2xl  border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-4 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
+                            <div ref={cardRef} className="relative z-10 mx-auto w-full max-w-2xl  border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-4 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
                                 {auth.user ? (
                                     <AlreadyAuthenticatedCard user={auth.user} />
                                 ) : (
                                     <FormNavigator
                                         onNextStep={handleNextStepValidation}
                                         steps={recruiterSteps}
+                                        scrollTargetRef={cardRef}
                                     >
                                         {renderStep}
                                     </FormNavigator>

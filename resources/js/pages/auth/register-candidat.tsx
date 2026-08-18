@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/purity */
-import { router, Head, usePage } from '@inertiajs/react';
-import { useState, useEffect, useRef } from 'react';
+import { router, usePage } from '@inertiajs/react';
+import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Toaster, toast } from 'react-hot-toast';
 import Footer from '@/components/layout/Footer';
@@ -23,7 +23,6 @@ import FormCandidatSpecialisations from '@/components/signup/FormCandidatSpecial
 import FormCommunFields from '@/components/signup/FormCommunFields';
 import FormConfirmation from '@/components/signup/FormConfirmation';
 import FormNavigator from '@/components/signup/FormNavigator';
-import Icon from '@/components/signup/FormularIcons';
 
 const candidatStepDefinitions = [
     { id: 1, labelKey: 'auth.steps.infos', icon: 'FileText' },
@@ -41,6 +40,7 @@ const createEmptyFormation = (): Formation => ({
     formation_juridique_id: '',
     specialisation_id: '',
     ecole_id: '',
+    autre_ecole: '',
 });
 
 export default function RegisterCandidat() {
@@ -52,8 +52,6 @@ export default function RegisterCandidat() {
         ...step,
         label: t(step.labelKey),
     }));
-
-
 
     const [formData, setFormData] = useState<FullCandidatFormData>({
         user: {
@@ -149,7 +147,12 @@ export default function RegisterCandidat() {
             payload.append(`formations[${i}][annee_fin]`, f.annee_fin);
             payload.append(`formations[${i}][formation_juridique_id]`, String(f.formation_juridique_id));
             payload.append(`formations[${i}][specialisation_id]`, String(f.specialisation_id));
-            payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
+            if (f.ecole_id === 'other') {
+                payload.append(`formations[${i}][ecole_id]`, 'other');
+                payload.append(`formations[${i}][autre_ecole]`, f.autre_ecole || '');
+            } else {
+                payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
+            }
         });
 
         candidat.experiences.forEach((e: Experience, i: number) => {
@@ -347,7 +350,7 @@ export default function RegisterCandidat() {
                         !f.annee_fin ||
                         !f.formation_juridique_id ||
                         !f.specialisation_id ||
-                        !f.ecole_id,
+                        (!f.ecole_id || f.ecole_id === 'other') && (!f.autre_ecole || f.autre_ecole.trim() === ''),
                 )
             ) {
                 newErrors.formations =
@@ -503,86 +506,53 @@ export default function RegisterCandidat() {
 
             <Header />
 
-            <main className="relative flex-1 py-12">
-                <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-                    <div className="grid items-start gap-10 lg:grid-cols-3 lg:gap-16">
+            <main className="relative flex-1 pt-2 pb-6 lg:pt-4 lg:pb-10">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid items-start gap-8 lg:grid-cols-5 lg:gap-12">
                         {/* Left sidebar */}
-                        <aside className="hidden lg:col-span-1 lg:block">
+                        <aside className="hidden lg:col-span-2 lg:block">
                             <div className="sticky top-28 space-y-8">
-                                <div>
-                                    <span className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-4 py-1.5 text-xs font-bold tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
-                                        <Icon
-                                            name="Sparkles"
-                                            size={14}
-                                            className="text-[#C06041]"
-                                        />
-                                        {t('auth.register_candidate.badge')}
-                                    </span>
+                                {/* Decorative background */}
+                                <div className="relative overflow-hidden rounded-3xl border border-[#1a1f1e]/5 bg-white/40 p-8 shadow-sm backdrop-blur-sm">
+                                    <div className="pointer-events-none absolute -top-20 -right-20 h-40 w-40 rounded-full bg-[#C06041]/10 blur-3xl" />
+                                    <div className="pointer-events-none absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-[#E5D5C5]/40 blur-3xl" />
 
-                                    <h1
-                                        className="mt-8 text-4xl leading-[1.1] font-bold tracking-tight text-[#1a1f1e]"
-                                        style={{
-                                            fontFamily:
-                                                'Cormorant Garamond, serif',
-                                        }}
-                                    >
-                                        {t('auth.register_candidate.title')}
-                                    </h1>
-
-                                    <p className="mt-4 text-lg font-medium text-[#1a1f1e]/70">
-                                        {t('auth.register_candidate.subtitle')}
-                                    </p>
-                                </div>
-
-                                <ul className="space-y-4">
-                                    {[
-                                        t('auth.register_candidate.feature1'),
-                                        t('auth.register_candidate.feature2'),
-                                        t('auth.register_candidate.feature3'),
-                                    ].map((text) => (
-                                        <li
-                                            key={text}
-                                            className="flex items-center gap-3"
+                                    <div className="relative space-y-6">
+                                        <h2
+                                            className="text-2xl leading-tight font-light tracking-tight text-[#1a1f1e]"
+                                            style={{ fontFamily: "'Cormorant Garamond', serif" }}
                                         >
-                                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1a1f1e] text-[#FDFCF8] shadow-sm">
-                                                <Icon name="Check" size={14} />
-                                            </div>
-                                            <span className="text-sm font-bold text-[#1a1f1e]">
-                                                {text}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
+                                            {t('auth.register_candidate.badge')}
+                                        </h2>
 
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm">
-                                        <div className="mb-2 flex items-center gap-2 font-bold text-[#1a1f1e]">
-                                            <Icon
-                                                name="Shield"
-                                                size={18}
-                                                className="text-[#C06041]"
-                                            />{' '}
-                                            {t('auth.register_candidate.secure_title')}
-                                        </div>
-                                        <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
-                                            {t('auth.register_candidate.secure_desc')}
+                                        <p className="text-sm leading-relaxed text-[#1a1f1e]/60">
+                                            {t('auth.register_candidate.subtitle')}
                                         </p>
-                                    </div>
-                                    <div className="rounded-2xl border border-[#1a1f1e]/10 bg-white/50 p-5 shadow-sm backdrop-blur-sm">
-                                        <div className="mb-2 flex items-center gap-2 font-bold text-[#1a1f1e]">
-                                            <Icon
-                                                name="Clock"
-                                                size={18}
-                                                className="text-[#C06041]"
-                                            />{' '}
-                                            {t('auth.register_candidate.fast_title')}
+
+                                        {/* How it works */}
+                                        <div className="space-y-0">
+                                            {candidatSteps.map((step, i) => (
+                                                <div key={step.id} className="flex gap-3">
+                                                    <div className="flex flex-col items-center">
+                                                        <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#1a1f1e]/10 bg-[#FDFCF8] text-[10px] font-bold text-[#1a1f1e]/40">
+                                                            {step.id}
+                                                        </div>
+                                                        {i < candidatSteps.length - 1 && (
+                                                            <div className="w-px flex-1 bg-[#1a1f1e]/8" />
+                                                        )}
+                                                    </div>
+                                                    <div className="pb-5 pt-1">
+                                                        <span className="text-xs font-semibold tracking-wide text-[#1a1f1e]/70">
+                                                            {step.label}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
                                         </div>
-                                        <p className="text-xs leading-relaxed font-medium text-[#1a1f1e]/60">
-                                            {t('auth.register_candidate.fast_desc')}
-                                        </p>
                                     </div>
                                 </div>
 
+                                {/* Social auth */}
                                 {!auth.user && (
                                     <RegisterSocialPrompt role="candidat" />
                                 )}
@@ -590,24 +560,7 @@ export default function RegisterCandidat() {
                         </aside>
 
                         {/* Right: form wizard */}
-                        <section className="lg:col-span-2">
-                            {/* Mobile title banner */}
-                            <div className="mb-6 text-center lg:hidden">
-                                <span className="inline-flex items-center gap-2 rounded-full border border-[#1a1f1e]/10 bg-white/50 px-3.5 py-1 text-[11px] font-bold tracking-widest text-[#1a1f1e] uppercase shadow-sm backdrop-blur-sm">
-                                    <Icon name="Sparkles" size={12} className="text-[#C06041]" />
-                                    {t('auth.register_candidate.badge')}
-                                </span>
-                                <h1
-                                    className="mt-3 text-2xl font-bold tracking-tight text-[#1a1f1e] sm:text-3xl"
-                                    style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                                >
-                                    {t('auth.register_candidate.title')}
-                                </h1>
-                                <p className="mt-1 text-sm font-medium text-[#1a1f1e]/70">
-                                    {t('auth.register_candidate.subtitle')}
-                                </p>
-                            </div>
-
+                        <section className="lg:col-span-3">
                             {!auth.user && (
                                 <RegisterSocialPrompt
                                     role="candidat"

@@ -8,6 +8,7 @@ use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\Urgence;
 use App\Models\User;
+use Carbon\Carbon;
 use Database\Factories\CandidatFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -174,6 +175,55 @@ class Candidat extends Model
                 && $modeTravails
                 && $typeTravails,
         ];
+    }
+
+    public function calculateTotalExperienceMonths(): int
+    {
+        $experiences = $this->experiences()->whereNotNull('debut')->get();
+        if ($experiences->isEmpty()) {
+            return 0;
+        }
+
+        $periods = [];
+        foreach ($experiences as $exp) {
+            try {
+                $start = Carbon::createFromFormat('Y-m', $exp->debut)->startOfMonth();
+                $end = $exp->fin ? Carbon::createFromFormat('Y-m', $exp->fin)->endOfMonth() : now();
+                if ($start->lessThanOrEqualTo($end)) {
+                    $periods[] = ['start' => $start, 'end' => $end];
+                }
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        if (empty($periods)) {
+            return 0;
+        }
+
+        usort($periods, fn ($a, $b) => $a['start']->eq($b['start']) ? 0 : ($a['start']->lessThan($b['start']) ? -1 : 1));
+
+        $merged = [];
+        $current = $periods[0];
+
+        for ($i = 1; $i < count($periods); $i++) {
+            if ($periods[$i]['start']->lessThanOrEqualTo($current['end'])) {
+                if ($periods[$i]['end']->greaterThan($current['end'])) {
+                    $current['end'] = $periods[$i]['end'];
+                }
+            } else {
+                $merged[] = $current;
+                $current = $periods[$i];
+            }
+        }
+        $merged[] = $current;
+
+        $totalMonths = 0;
+        foreach ($merged as $period) {
+            $totalMonths += $period['start']->diffInMonths($period['end']) + 1;
+        }
+
+        return $totalMonths;
     }
 
     /**

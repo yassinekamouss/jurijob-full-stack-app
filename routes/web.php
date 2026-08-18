@@ -25,7 +25,22 @@ use Inertia\Inertia;
 
 Route::post('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 
-Route::inertia('/', 'Home')->name('home');
+Route::get('/', function () {
+    $activeCandidats = \App\Models\User::where('is_active', true)
+        ->where('is_archived', false)
+        ->where(function ($q) {
+            $q->where('role', 'recruteur')
+              ->orWhere(function ($q) {
+                  $q->where('role', 'candidat')
+                    ->whereHas('candidat', fn ($q) => $q->where('status', 'accepte'));
+              });
+        })
+        ->count();
+
+    return Inertia::render('Home', [
+        'activeCandidats' => $activeCandidats,
+    ]);
+})->name('home');
 Route::view('/services', 'pages.services')->name('services');
 Route::view('/faq', 'pages.faq')->name('faq');
 Route::view('/mentions-legales', 'pages.mentions-legales')->name('mentions-legales');

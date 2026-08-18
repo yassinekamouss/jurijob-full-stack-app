@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\VerifyEmailFrench;
 use App\Models\Candidat\Candidat;
 use App\Models\Recruteur\Recruteur;
 use Database\Factories\UserFactory;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -59,5 +62,21 @@ class User extends Authenticatable implements MustVerifyEmail
     public function socialAccounts(): HasMany
     {
         return $this->hasMany(SocialAccount::class);
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        Mail::to($this)->queue(
+            new VerifyEmailFrench($this, $this->getEmailVerificationUrl())
+        );
+    }
+
+    protected function getEmailVerificationUrl(): string
+    {
+        return URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(config('auth.verification.expire', 60)),
+            ['id' => $this->getKey(), 'hash' => sha1($this->getEmailForVerification())]
+        );
     }
 }
