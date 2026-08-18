@@ -39,7 +39,7 @@ export default function CandidatDetails({
     className = '',
 }: CandidatDetailsProps) {
     const { t } = useTranslation();
-    const { ecoles, formationJuridiques, specialisations, typeTravails, postes } = useTaxonomies();
+    const { ecoles, formationJuridiques, specialisations, typeTravails, postes, pays } = useTaxonomies();
 
     const formations = formData.formations || [];
     const experiences = formData.experiences || [];
@@ -159,15 +159,23 @@ export default function CandidatDetails({
                                                         className={inputClasses}
                                                     >
                                                         <option value="">{t('auth.forms.candidate.school_placeholder')}</option>
-                                                        {useLoadingTaxonomy(ecoles) ? (
+                                                        {useLoadingTaxonomy(ecoles) || useLoadingTaxonomy(pays) ? (
                                                             <option disabled>{t('auth.forms.loading_options')}</option>
                                                         ) : (
                                                             <>
-                                                                {ecoles.map((ecole) => (
-                                                                    <option key={ecole.id} value={ecole.id}>
-                                                                        {getTaxonomyLabel(ecole)}
-                                                                    </option>
-                                                                ))}
+                                                                {pays.map((p) => {
+                                                                    const ecolesParPays = ecoles.filter((e) => e.pays_id === p.id);
+                                                                    if (ecolesParPays.length === 0) return null;
+                                                                    return (
+                                                                        <optgroup key={p.id} label={p.nom}>
+                                                                            {ecolesParPays.map((ecole) => (
+                                                                                <option key={ecole.id} value={ecole.id}>
+                                                                                    {getTaxonomyLabel(ecole)}
+                                                                                </option>
+                                                                            ))}
+                                                                        </optgroup>
+                                                                    );
+                                                                })}
                                                                 <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
                                                             </>
                                                         )}

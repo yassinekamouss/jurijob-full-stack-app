@@ -14,5 +14,11 @@ class Ecole extends Model
     protected $fillable = [
         'nom_fr',
         'nom_en',
+        'pays_id',
     ];
+
+    public function pays()
+    {
+        return $this->belongsTo(Pays::class);
+    }
 }

@@ -13,7 +13,7 @@ interface Props {
 
 export default function FormationSection({ formations }: Props) {
   const { t } = useTranslation();
-  const { ecoles, formationJuridiques, specialisations } = useTaxonomies();
+  const { ecoles, formationJuridiques, specialisations, pays } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -147,11 +147,19 @@ export default function FormationSection({ formations }: Props) {
                     required
                   >
                     <option value="">{t('candidate_settings.education.placeholders.school')}</option>
-                    {useLoadingTaxonomy(ecoles) ? (
+                    {useLoadingTaxonomy(ecoles) || useLoadingTaxonomy(pays) ? (
                       <option disabled>{t('candidate_settings.education.loading')}</option>
                     ) : (
                       <>
-                        {ecoles.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)}
+                        {pays.map(p => {
+                          const ecolesParPays = ecoles.filter(e => e.pays_id === p.id);
+                          if (ecolesParPays.length === 0) return null;
+                          return (
+                            <optgroup key={p.id} label={p.nom}>
+                              {ecolesParPays.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)}
+                            </optgroup>
+                          );
+                        })}
                         <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
                       </>
                     )}

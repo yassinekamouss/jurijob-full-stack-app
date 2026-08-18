@@ -32,7 +32,7 @@ class TaxonomyRepository
 
         return Cache::rememberForever("app_taxonomies_{$locale}", function () use ($locale) {
             return [
-                'ecoles' => self::localizedList(Ecole::query(), $locale, orderByNom: true),
+                'ecoles' => self::localizedList(Ecole::query(), $locale, orderByNom: true, extraColumns: ['pays_id']),
                 'formationJuridiques' => self::localizedList(FormationJuridique::query(), $locale),
                 'langues' => self::localizedList(Langue::query(), $locale),
                 'modeTravails' => self::localizedList(ModeTravail::query(), $locale),
