@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php
 
 namespace App\Http\Controllers\Admin;
@@ -358,4 +356,3 @@ class OffreController extends Controller
         );
     }
 }
->>>>>>> ce3f8cdbfe8335df70bf5921f1ca6f7d2c3e11c5
