@@ -1,9 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LogOut, LayoutDashboard, Plus, Settings } from 'lucide-react';
+import { LogOut, LayoutDashboard, Briefcase, Plus, Settings } from 'lucide-react';
 import { logout } from '@/routes';
 import { dashboard as recruiterDashboard, settings as recruiterSettings } from '@/routes/recruteur';
 import { index as offresIndex, create as offresCreate } from '@/routes/offres';
-import { Briefcase, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
