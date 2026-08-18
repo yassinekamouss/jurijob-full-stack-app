@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/home/Reveal';
@@ -6,6 +6,7 @@ import InputError from '@/components/input-error';
 import SocialAuthButtons from '@/components/auth/SocialAuthButtons';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
+import SEO from '@/components/SEO';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -30,14 +31,16 @@ export default function Login({
 }: Props) {
     const { t } = useTranslation();
 
-
-
     return (
         <div
             className="relative flex min-h-screen flex-col overflow-clip bg-[#FDFCF8] text-[#1a1f1e]"
             style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-            <Head title={t('auth.login.seo_title')} />
+            <SEO
+                title={t('auth.login.seo_title')}
+                description={t('auth.login.hero_desc')}
+                canonical="https://jurijob.ma/login"
+            />
 
             <Header />
 
