@@ -11,11 +11,19 @@ interface Props {
   formations: any[];
 }
 
+const COUNTRY_FLAGS: Record<string, string> = {
+  MA: '🇲🇦', FR: '🇫🇷', BE: '🇧🇪', SN: '🇸🇳', CI: '🇨🇮', CM: '🇨🇲',
+  ML: '🇲🇱', BF: '🇧🇫', BJ: '🇧🇯', TG: '🇹🇬', NE: '🇳🇪', GA: '🇬🇦',
+  CG: '🇨🇬', CD: '🇨🇩', GN: '🇬🇳', MR: '🇲🇷', MG: '🇲🇬', TN: '🇹🇳',
+  DZ: '🇩🇿', RW: '🇷🇼', KE: '🇰🇪', ZA: '🇿🇦',
+};
+
 export default function FormationSection({ formations }: Props) {
   const { t } = useTranslation();
   const { ecoles, formationJuridiques, specialisations, pays } = useTaxonomies();
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedPaysId, setSelectedPaysId] = useState<number | string>('');
 
   const form = useForm({
     formation_juridique_id: '',
@@ -30,9 +38,18 @@ export default function FormationSection({ formations }: Props) {
     form.reset();
     setIsAdding(false);
     setEditingId(null);
+    setSelectedPaysId('');
   };
 
   const handleEdit = (formItem: any) => {
+    let currentPaysId: string | number = '';
+    if (formItem.ecole_id) {
+      const ecole = ecoles.find((e: any) => e.id === formItem.ecole_id);
+      if (ecole) currentPaysId = ecole.pays_id;
+    } else if (formItem.autre_ecole) {
+      currentPaysId = 'other_country';
+    }
+
     form.setData({
       formation_juridique_id: formItem.formation_juridique_id,
       specialisation_id: formItem.specialisation_id,
@@ -42,6 +59,7 @@ export default function FormationSection({ formations }: Props) {
       annee_fin: formItem.annee_fin || '',
     });
     setEditingId(formItem.id);
+    setSelectedPaysId(currentPaysId);
     setIsAdding(false);
   };
 
@@ -139,41 +157,92 @@ export default function FormationSection({ formations }: Props) {
                 </div>
               </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.education.labels.school')}</label>
-                  <select
-                    value={form.data.ecole_id}
-                    onChange={e => form.setData('ecole_id', e.target.value)}
-                    className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
-                    required
-                  >
-                    <option value="">{t('candidate_settings.education.placeholders.school')}</option>
-                    {useLoadingTaxonomy(ecoles) || useLoadingTaxonomy(pays) ? (
-                      <option disabled>{t('candidate_settings.education.loading')}</option>
-                    ) : (
-                      <>
-                        {pays.map(p => {
-                          const ecolesParPays = ecoles.filter(e => e.pays_id === p.id);
-                          if (ecolesParPays.length === 0) return null;
-                          return (
-                            <optgroup key={p.id} label={p.nom}>
-                              {ecolesParPays.map(opt => <option key={opt.id} value={opt.id}>{opt.nom}</option>)}
-                            </optgroup>
-                          );
-                        })}
-                        <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
-                      </>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.education.labels.country', 'Pays')}</label>
+                    <select
+                      value={selectedPaysId}
+                      onChange={e => {
+                        setSelectedPaysId(e.target.value);
+                        form.setData('ecole_id', '');
+                      }}
+                      className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                      required
+                    >
+                      <option value="">{t('candidate_settings.education.placeholders.country', 'Sélectionnez un pays')}</option>
+                      {useLoadingTaxonomy(pays) ? (
+                        <option disabled>{t('candidate_settings.education.loading')}</option>
+                      ) : (
+                        <>
+                          {pays.map(p => (
+                            <option key={p.id} value={p.id}>
+                              {COUNTRY_FLAGS[p.code] || '🌍'} {p.nom}
+                            </option>
+                          ))}
+                          <option value="other_country">{t('common.other_specify') || 'Autre (préciser...)'}</option>
+                        </>
+                      )}
+                    </select>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {selectedPaysId && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className="space-y-2"
+                      >
+                        <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.education.labels.school')}</label>
+                        {selectedPaysId === 'other_country' ? (
+                          <input
+                            type="text"
+                            placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
+                            value={form.data.autre_ecole}
+                            onChange={e => {
+                              form.setData(data => ({ ...data, ecole_id: 'other', autre_ecole: e.target.value }));
+                            }}
+                            className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none"
+                            required
+                          />
+                        ) : (
+                          <select
+                            value={form.data.ecole_id}
+                            onChange={e => {
+                              const val = e.target.value;
+                              form.setData(data => ({ ...data, ecole_id: val, autre_ecole: val === 'other' ? data.autre_ecole : '' }));
+                            }}
+                            className="w-full rounded-2xl border border-[#1a1f1e]/10 bg-white px-5 py-4 text-sm font-bold focus:border-[#C06041] focus:ring-0 transition-all outline-none appearance-none cursor-pointer"
+                            required
+                          >
+                            <option value="">{t('candidate_settings.education.placeholders.school')}</option>
+                            {useLoadingTaxonomy(ecoles) ? (
+                              <option disabled>{t('candidate_settings.education.loading')}</option>
+                            ) : (
+                              <>
+                                {ecoles.filter((e: any) => e.pays_id.toString() === selectedPaysId.toString()).map(opt => (
+                                  <option key={opt.id} value={opt.id}>{opt.nom}</option>
+                                ))}
+                                <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
+                              </>
+                            )}
+                          </select>
+                        )}
+                        {form.errors.ecole_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.ecole_id}</p>}
+                      </motion.div>
                     )}
-                  </select>
-                  {form.errors.ecole_id && <p className="text-xs text-red-500 font-bold ml-1">{form.errors.ecole_id}</p>}
-                  
-                  {form.data.ecole_id === 'other' && (
+                  </AnimatePresence>
+                </div>
+
+                <AnimatePresence>
+                  {selectedPaysId && selectedPaysId !== 'other_country' && form.data.ecole_id === 'other' && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="mt-3"
+                      className="space-y-2 mt-2"
                     >
+                      <label className="text-xs font-black uppercase tracking-widest text-[#1a1f1e]/40 ml-1">{t('candidate_settings.education.labels.other_school', 'Nom de l\'établissement')}</label>
                       <input
                         type="text"
                         placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
@@ -185,7 +254,7 @@ export default function FormationSection({ formations }: Props) {
                       {form.errors.autre_ecole && <p className="text-xs text-red-500 font-bold ml-1 mt-1">{form.errors.autre_ecole}</p>}
                     </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">

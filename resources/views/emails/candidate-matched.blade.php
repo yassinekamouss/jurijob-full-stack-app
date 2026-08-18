@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 {{-- resources/views/emails/candidate-matched.blade.php --}}
 <!DOCTYPE html>
 <html lang="fr">
@@ -181,4 +179,3 @@
 
 </body>
 </html>
->>>>>>> ce3f8cdbfe8335df70bf5921f1ca6f7d2c3e11c5

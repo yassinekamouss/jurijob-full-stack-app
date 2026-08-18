@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 <?php
 
 namespace App\Http\Controllers\Admin;
@@ -13,6 +11,7 @@ use App\Http\Requests\Admin\SendOffreMatchesRequest;
 use App\Mail\Candidate\CandidateMatchedMail;
 use App\Mail\Recruiter\RecruiterShortlistReadyMail;
 use App\Mail\Recruiter\RecruiterShortlistUnlockedMail;
+use App\Models\Candidat\Candidat;
 use App\Models\Offre\Offre;
 use App\Models\Offre\OffreMatch;
 use App\Models\Recruteur\Recruteur;
@@ -228,7 +227,7 @@ class OffreController extends Controller
         }
 
         $candidatIds = $candidates->pluck('id');
-        $candidats = \App\Models\Candidat\Candidat::with('user')->whereIn('id', $candidatIds)->get();
+        $candidats = Candidat::with('user')->whereIn('id', $candidatIds)->get();
 
         foreach ($candidats as $candidat) {
             if ($candidat->user?->email) {
@@ -358,4 +357,3 @@ class OffreController extends Controller
         );
     }
 }
->>>>>>> ce3f8cdbfe8335df70bf5921f1ca6f7d2c3e11c5

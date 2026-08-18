@@ -23,6 +23,13 @@ const createEmptyFormation = (): Formation => ({
     autre_ecole: '',
 });
 
+const COUNTRY_FLAGS: Record<string, string> = {
+    MA: '🇲🇦', FR: '🇫🇷', BE: '🇧🇪', SN: '🇸🇳', CI: '🇨🇮', CM: '🇨🇲',
+    ML: '🇲🇱', BF: '🇧🇫', BJ: '🇧🇯', TG: '🇹🇬', NE: '🇳🇪', GA: '🇬🇦',
+    CG: '🇨🇬', CD: '🇨🇩', GN: '🇬🇳', MR: '🇲🇷', MG: '🇲🇬', TN: '🇹🇳',
+    DZ: '🇩🇿', RW: '🇷🇼', KE: '🇰🇪', ZA: '🇿🇦',
+};
+
 const createEmptyExperience = (): Experience => ({
     id: crypto.randomUUID(),
     debut: '',
@@ -46,6 +53,7 @@ export default function CandidatDetails({
 
     const [expandedFormations, setExpandedFormations] = useState<Record<string, boolean>>({});
     const [expandedExperiences, setExpandedExperiences] = useState<Record<string, boolean>>({});
+    const [selectedPaysIds, setSelectedPaysIds] = useState<Record<string, string | number>>({});
 
     const toggleFormation = (id: string) =>
         setExpandedFormations((prev) => ({ ...prev, [id]: prev[id] === false }));
@@ -58,11 +66,32 @@ export default function CandidatDetails({
             formations.map((formation) => (formation.id === id ? { ...formation, [field]: value } : formation)),
         );
 
+    const updateFormationMultiple = (id: string, updates: Partial<Formation>) =>
+        onFieldChange(
+            'formations',
+            formations.map((formation) => (formation.id === id ? { ...formation, ...updates } : formation)),
+        );
+
     const updateExperience = (id: string, field: keyof Experience, value: string | number) =>
         onFieldChange(
             'experiences',
             experiences.map((experience) => (experience.id === id ? { ...experience, [field]: value } : experience)),
         );
+
+    const getPaysIdForFormation = (formation: Formation) => {
+        if (selectedPaysIds[formation.id] !== undefined) return selectedPaysIds[formation.id];
+        if (formation.ecole_id && formation.ecole_id !== 'other') {
+            const ecole = ecoles.find((e: any) => e.id == formation.ecole_id);
+            if (ecole) return ecole.pays_id;
+        }
+        if (formation.ecole_id === 'other' || (!formation.ecole_id && formation.autre_ecole)) return 'other_country';
+        return '';
+    };
+
+    const handlePaysChange = (formationId: string, paysId: string) => {
+        setSelectedPaysIds((prev) => ({ ...prev, [formationId]: paysId }));
+        updateFormationMultiple(formationId, { ecole_id: '', autre_ecole: '' });
+    };
 
     const inputClasses =
         'w-full rounded-xl border border-slate-200 bg-white p-2.5 text-sm text-slate-900 transition-all placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900';
@@ -147,57 +176,114 @@ export default function CandidatDetails({
                                     {expandedFormations[formation.id] !== false && (
                                         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2">
                                             <div className="space-y-5">
-                                                <div className="space-y-1.5">
-                                                    <label className={labelClasses}>
-                                                        <Building2 size={14} className="text-slate-400" /> {t('auth.forms.candidate.school_label')}
-                                                    </label>
-                                                    <select
-                                                        value={formation.ecole_id}
-                                                        onChange={(event) =>
-                                                            updateFormation(formation.id, 'ecole_id', event.target.value)
-                                                        }
-                                                        className={inputClasses}
-                                                    >
-                                                        <option value="">{t('auth.forms.candidate.school_placeholder')}</option>
-                                                        {useLoadingTaxonomy(ecoles) || useLoadingTaxonomy(pays) ? (
-                                                            <option disabled>{t('auth.forms.loading_options')}</option>
-                                                        ) : (
-                                                            <>
-                                                                {pays.map((p) => {
-                                                                    const ecolesParPays = ecoles.filter((e) => e.pays_id === p.id);
-                                                                    if (ecolesParPays.length === 0) return null;
-                                                                    return (
-                                                                        <optgroup key={p.id} label={p.nom}>
-                                                                            {ecolesParPays.map((ecole) => (
-                                                                                <option key={ecole.id} value={ecole.id}>
-                                                                                    {getTaxonomyLabel(ecole)}
-                                                                                </option>
-                                                                            ))}
-                                                                        </optgroup>
-                                                                    );
-                                                                })}
-                                                                <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
-                                                            </>
-                                                        )}
-                                                    </select>
-                                                    {formation.ecole_id === 'other' && (
-                                                        <motion.div
-                                                            initial={{ opacity: 0, height: 0 }}
-                                                            animate={{ opacity: 1, height: 'auto' }}
-                                                            exit={{ opacity: 0, height: 0 }}
-                                                            className="mt-3"
+                                                <div className="space-y-4">
+                                                    <div className="space-y-1.5">
+                                                        <label className={labelClasses}>
+                                                            <Building2 size={14} className="text-slate-400" /> {t('candidate_settings.education.labels.country', 'Pays')}
+                                                        </label>
+                                                        <select
+                                                            value={getPaysIdForFormation(formation)}
+                                                            onChange={(event) => handlePaysChange(formation.id, event.target.value)}
+                                                            className={inputClasses}
                                                         >
-                                                            <input
-                                                                type="text"
-                                                                placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
-                                                                value={formation.autre_ecole || ''}
-                                                                onChange={(event) =>
-                                                                    updateFormation(formation.id, 'autre_ecole', event.target.value)
-                                                                }
-                                                                className={inputClasses}
-                                                            />
-                                                        </motion.div>
-                                                    )}
+                                                            <option value="">{t('candidate_settings.education.placeholders.country', 'Sélectionnez un pays')}</option>
+                                                            {useLoadingTaxonomy(pays) ? (
+                                                                <option disabled>{t('auth.forms.loading_options')}</option>
+                                                            ) : (
+                                                                <>
+                                                                    {pays.map((p) => (
+                                                                        <option key={p.id} value={p.id}>
+                                                                            {COUNTRY_FLAGS[p.code] || '🌍'} {p.nom}
+                                                                        </option>
+                                                                    ))}
+                                                                    <option value="other_country">{t('common.other_specify') || 'Autre (préciser...)'}</option>
+                                                                </>
+                                                            )}
+                                                        </select>
+                                                    </div>
+
+                                                    <AnimatePresence mode="wait">
+                                                        {getPaysIdForFormation(formation) && (
+                                                            <motion.div
+                                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                                animate={{ opacity: 1, scale: 1 }}
+                                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                                className="space-y-1.5"
+                                                            >
+                                                                <label className={labelClasses}>
+                                                                    <GraduationCap size={14} className="text-slate-400" /> {t('auth.forms.candidate.school_label')}
+                                                                </label>
+                                                                {getPaysIdForFormation(formation) === 'other_country' ? (
+                                                                    <input
+                                                                        type="text"
+                                                                        placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
+                                                                        value={formation.autre_ecole || ''}
+                                                                        onChange={(event) => {
+                                                                            updateFormationMultiple(formation.id, {
+                                                                                ecole_id: 'other',
+                                                                                autre_ecole: event.target.value
+                                                                            });
+                                                                        }}
+                                                                        className={inputClasses}
+                                                                    />
+                                                                ) : (
+                                                                    <select
+                                                                        value={formation.ecole_id || (formation.autre_ecole ? 'other' : '')}
+                                                                        onChange={(event) => {
+                                                                            const val = event.target.value;
+                                                                            const currentPaysId = getPaysIdForFormation(formation);
+                                                                            
+                                                                            updateFormationMultiple(formation.id, {
+                                                                                ecole_id: val,
+                                                                                autre_ecole: val === 'other' ? formation.autre_ecole : ''
+                                                                            });
+                                                                            
+                                                                            if (val === 'other' && selectedPaysIds[formation.id] === undefined) {
+                                                                                setSelectedPaysIds(prev => ({ ...prev, [formation.id]: currentPaysId }));
+                                                                            }
+                                                                        }}
+                                                                        className={inputClasses}
+                                                                    >
+                                                                        <option value="">{t('auth.forms.candidate.school_placeholder')}</option>
+                                                                        {useLoadingTaxonomy(ecoles) ? (
+                                                                            <option disabled>{t('auth.forms.loading_options')}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                                {ecoles.filter((e: any) => e.pays_id.toString() === getPaysIdForFormation(formation).toString()).map((ecole) => (
+                                                                                    <option key={ecole.id} value={ecole.id}>
+                                                                                        {getTaxonomyLabel(ecole)}
+                                                                                    </option>
+                                                                                ))}
+                                                                                <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
+                                                                            </>
+                                                                        )}
+                                                                    </select>
+                                                                )}
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
+                                                    
+                                                    <AnimatePresence>
+                                                        {getPaysIdForFormation(formation) && getPaysIdForFormation(formation) !== 'other_country' && (formation.ecole_id === 'other' || (!formation.ecole_id && formation.autre_ecole)) && (
+                                                            <motion.div
+                                                                initial={{ opacity: 0, height: 0 }}
+                                                                animate={{ opacity: 1, height: 'auto' }}
+                                                                exit={{ opacity: 0, height: 0 }}
+                                                                className="pt-2 space-y-1.5"
+                                                            >
+                                                                <label className={labelClasses}>{t('candidate_settings.education.labels.other_school', 'Nom de l\'établissement')}</label>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
+                                                                    value={formation.autre_ecole || ''}
+                                                                    onChange={(event) =>
+                                                                        updateFormation(formation.id, 'autre_ecole', event.target.value)
+                                                                    }
+                                                                    className={inputClasses}
+                                                                />
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
                                                 </div>
                                                 <div className="space-y-1.5">
                                                     <label className={labelClasses}>
