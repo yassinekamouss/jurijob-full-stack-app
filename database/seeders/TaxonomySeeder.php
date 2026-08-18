@@ -101,11 +101,14 @@ class TaxonomySeeder extends Seeder
          * @var list<array{nom_fr: string, nom_en: string}> $formationsJuridiques
          */
         $formationsJuridiques = [
-            ['nom_fr' => 'Licence en Droit', 'nom_en' => "Bachelor's in Law"],
-            ['nom_fr' => 'Master 1 Droit', 'nom_en' => "Master's Year 1 in Law"],
-            ['nom_fr' => 'Master 2 Droit', 'nom_en' => "Master's Year 2 in Law"],
-            ['nom_fr' => "CAPA (Certificat d'Aptitude)", 'nom_en' => 'CAPA (Bar Admission Certificate)'],
-            ['nom_fr' => 'Doctorat en Droit', 'nom_en' => 'PhD in Law'],
+            ['nom_fr' => 'Baccalauréat', 'nom_en' => 'High School Diploma / Baccalaureate'],
+            ['nom_fr' => 'DEUG / Bac+2', 'nom_en' => "Associate's Degree / Bac+2"],
+            ['nom_fr' => 'Licence', 'nom_en' => "Bachelor's Degree / Licence"],
+            ['nom_fr' => 'Licence (ancien système, Bac+4)', 'nom_en' => "Bachelor's Degree (4 years) / Licence"],
+            ['nom_fr' => 'Master I', 'nom_en' => "Master's Degree (1st year)"],
+            ['nom_fr' => 'Master II / DESA / DESS / DEA', 'nom_en' => "Master's Degree (2nd year) / LLM"],
+            ['nom_fr' => 'CAPA (avocat — France)', 'nom_en' => 'Bar Exam / CAPA (France)'],
+            ['nom_fr' => 'Doctorat', 'nom_en' => 'PhD / Doctorate'],
         ];
 
         /**
@@ -506,10 +509,42 @@ class TaxonomySeeder extends Seeder
          * @var list<array{nom_fr: string, nom_en: string}> $postes
          */
         $postes = [
-            ['nom_fr' => 'Avocat', 'nom_en' => 'Lawyer'],
+            ['nom_fr' => 'Étudiant(e) en droit', 'nom_en' => 'Law Student'],
+            ['nom_fr' => 'Stagiaire juridique', 'nom_en' => 'Legal Intern'],
+            ['nom_fr' => 'Assistant(e) juridique / Paralegal', 'nom_en' => 'Legal Assistant / Paralegal'],
             ['nom_fr' => 'Juriste', 'nom_en' => 'Legal Counsel'],
-            ['nom_fr' => 'Assistant Juridique', 'nom_en' => 'Legal Assistant'],
-            ['nom_fr' => 'Conseil Juridique', 'nom_en' => 'Legal Advisor'],
+            ['nom_fr' => "Juriste d'entreprise", 'nom_en' => 'In-house Legal Counsel'],
+            ['nom_fr' => "Juriste d'affaires", 'nom_en' => 'Business Legal Counsel'],
+            ['nom_fr' => 'Juriste contentieux', 'nom_en' => 'Litigation Legal Counsel'],
+            ['nom_fr' => 'Juriste contrats / Contract Manager', 'nom_en' => 'Contract Manager / Legal Counsel'],
+            ['nom_fr' => 'Juriste corporate', 'nom_en' => 'Corporate Legal Counsel'],
+            ['nom_fr' => 'Juriste droit social / RH', 'nom_en' => 'Employment/HR Legal Counsel'],
+            ['nom_fr' => 'Juriste bancaire', 'nom_en' => 'Banking Legal Counsel'],
+            ['nom_fr' => 'Juriste assurance', 'nom_en' => 'Insurance Legal Counsel'],
+            ['nom_fr' => 'Juriste immobilier', 'nom_en' => 'Real Estate Legal Counsel'],
+            ['nom_fr' => 'Juriste propriété intellectuelle', 'nom_en' => 'IP Legal Counsel'],
+            ['nom_fr' => 'Juriste compliance', 'nom_en' => 'Compliance Legal Counsel'],
+            ['nom_fr' => 'Juriste & Gestionnaire de sinistres', 'nom_en' => 'Claims Manager / Legal Counsel'],
+            ['nom_fr' => 'Juriste transport & logistique', 'nom_en' => 'Transport & Logistics Legal Counsel'],
+            ['nom_fr' => 'Juriste recouvrement', 'nom_en' => 'Debt Collection Legal Counsel'],
+            ['nom_fr' => 'Juriste données personnelles / DPO', 'nom_en' => 'Data Protection Officer (DPO)'],
+            ['nom_fr' => 'Avocat(e)', 'nom_en' => 'Lawyer / Attorney'],
+            ['nom_fr' => 'Avocat(e) stagiaire', 'nom_en' => 'Trainee Lawyer'],
+            ['nom_fr' => 'Élève-avocat(e)', 'nom_en' => 'Student Lawyer'],
+            ['nom_fr' => 'Conseil Juridique / Consultant(e)', 'nom_en' => 'Legal Advisor / Consultant'],
+            ['nom_fr' => 'Notaire', 'nom_en' => 'Notary'],
+            ['nom_fr' => 'Notaire stagiaire', 'nom_en' => 'Trainee Notary'],
+            ['nom_fr' => 'Clerc de notaire', 'nom_en' => 'Notary Clerk'],
+            ['nom_fr' => 'Compliance Officer / Conformité', 'nom_en' => 'Compliance Officer'],
+            ['nom_fr' => 'Risk & Compliance Manager', 'nom_en' => 'Risk & Compliance Manager'],
+            ['nom_fr' => 'Fiscaliste', 'nom_en' => 'Tax Specialist'],
+            ['nom_fr' => 'Responsable juridique', 'nom_en' => 'Legal Manager'],
+            ['nom_fr' => 'Directeur(trice) juridique', 'nom_en' => 'Legal Director / General Counsel'],
+            ['nom_fr' => 'Secrétaire général(e)', 'nom_en' => 'General Secretary'],
+            ['nom_fr' => 'Arbitre / Médiateur(trice)', 'nom_en' => 'Arbitrator / Mediator'],
+            ['nom_fr' => 'Magistrat(e)', 'nom_en' => 'Magistrate / Judge'],
+            ['nom_fr' => 'Huissier de justice', 'nom_en' => 'Bailiff'],
+            ['nom_fr' => 'Enseignant(e)-chercheur(se) en droit', 'nom_en' => 'Law Professor / Researcher'],
         ];
 
         /**
