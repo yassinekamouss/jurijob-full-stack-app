@@ -4,7 +4,6 @@ namespace App\Models\Candidat;
 
 use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\NiveauExperience;
-use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\Urgence;
 use App\Models\User;
@@ -29,7 +28,6 @@ class Candidat extends Model
         'status',
         'nom',
         'prenom',
-        'poste_id',
         'niveau_experience_id',
         'formation_juridique_id',
         'salaire_id',
@@ -76,9 +74,9 @@ class Candidat extends Model
         return $this->hasMany(CandidatExperience::class);
     }
 
-    public function poste(): BelongsTo
+    public function postes(): HasMany
     {
-        return $this->belongsTo(Poste::class);
+        return $this->hasMany(CandidatPoste::class);
     }
 
     public function niveauExperience(): BelongsTo
@@ -109,6 +107,7 @@ class Candidat extends Model
     /**
      * @return array{
      *     profile: bool,
+     *     postes: bool,
      *     experiences: bool,
      *     formations: bool,
      *     specialisations: bool,
@@ -121,7 +120,11 @@ class Candidat extends Model
      */
     public function profileCompletion(): array
     {
-        $profile = filled($this->poste_id)
+        $postes = $this->relationLoaded('postes')
+            ? $this->postes->isNotEmpty()
+            : $this->postes()->exists();
+
+        $profile = $postes
             && filled($this->niveau_experience_id)
             && filled($this->formation_juridique_id)
             && filled($this->salaire_id)
@@ -159,6 +162,7 @@ class Candidat extends Model
 
         return [
             'profile' => $profile,
+            'postes' => $postes,
             'experiences' => $experiences,
             'formations' => $formations,
             'specialisations' => $specialisations,
@@ -167,6 +171,7 @@ class Candidat extends Model
             'mode_travails' => $modeTravails,
             'type_travails' => $typeTravails,
             'is_complete' => $profile
+                && $postes
                 && $experiences
                 && $formations
                 && $specialisations
@@ -188,7 +193,7 @@ class Candidat extends Model
         foreach ($experiences as $exp) {
             try {
                 $start = Carbon::createFromFormat('Y-m', $exp->debut)->startOfMonth();
-                $end = $exp->fin ? Carbon::createFromFormat('Y-m', $exp->fin)->endOfMonth() : now();
+                $end = $exp->fin ? Carbon::createFromFormat('Y-m', $exp->fin)->startOfMonth() : now()->startOfMonth();
                 if ($start->lessThanOrEqualTo($end)) {
                     $periods[] = ['start' => $start, 'end' => $end];
                 }
@@ -220,7 +225,7 @@ class Candidat extends Model
 
         $totalMonths = 0;
         foreach ($merged as $period) {
-            $totalMonths += $period['start']->diffInMonths($period['end']) + 1;
+            $totalMonths += (int) $period['start']->diffInMonths($period['end']) + 1;
         }
 
         return $totalMonths;

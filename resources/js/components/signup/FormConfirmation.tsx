@@ -94,7 +94,7 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                             <h4 className="text-sm font-bold text-slate-900 uppercase tracking-widest">{t('auth.forms.confirmation.candidate_profile')}</h4>
                         </div>
                         <div className="grid gap-3">
-                            <Item label={t('auth.forms.confirmation.target_job')} value={getTaxonomyLabel(formData.candidat.poste_id, postes)} />
+                            <Item label={t('auth.forms.confirmation.target_job')} value={getTaxonomyLabels(formData.candidat.poste_id || [], postes).join(', ')} />
                             <Item label={t('auth.forms.confirmation.experience')} value={getTaxonomyLabel(formData.candidat.niveau_experience_id, niveauExperiences)} />
                             <Item label={t('auth.forms.confirmation.education')} value={getTaxonomyLabel(formData.candidat.formation_juridique_id, formationJuridiques)} />
                             <Item label={t('auth.forms.confirmation.desired_salary')} value={getTaxonomyLabel(formData.candidat.salaire_id, salaires)} />

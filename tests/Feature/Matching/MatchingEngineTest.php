@@ -3,6 +3,7 @@
 use App\Models\Candidat\Candidat;
 use App\Models\Candidat\CandidatLangue;
 use App\Models\Candidat\CandidatModeTravail;
+use App\Models\Candidat\CandidatPoste;
 use App\Models\Candidat\CandidatSpecialisation;
 use App\Models\Candidat\CandidatTypeTravail;
 use App\Models\Candidat\CandidatVilleTravail;
@@ -91,7 +92,6 @@ function makeAcceptedCandidate(Offre $offre, array $attributes = []): Candidat
 {
     $candidat = Candidat::factory()->create(array_merge([
         'status' => 'accepte',
-        'poste_id' => test()->poste->id,
         'niveau_experience_id' => test()->experience->id,
         'formation_juridique_id' => test()->master->id,
         'salaire_id' => test()->salaire->id,
@@ -100,6 +100,11 @@ function makeAcceptedCandidate(Offre $offre, array $attributes = []): Candidat
             'is_active' => true,
         ])->id,
     ], $attributes));
+
+    CandidatPoste::query()->create([
+        'candidat_id' => $candidat->id,
+        'poste_id' => test()->poste->id,
+    ]);
 
     CandidatTypeTravail::query()->create([
         'candidat_id' => $candidat->id,
@@ -323,4 +328,50 @@ test('higher language level ranks above equal profiles', function () {
     expect($matches->first()->id)->toBe($advanced->id)
         ->and($matches->last()->id)->toBe($minimum->id)
         ->and($matches->first()->matching_score)->toBeGreaterThan($matches->last()->matching_score);
+});
+
+test('candidate with multiple postes matches an offre whose poste is among them', function () {
+    $secondPoste = Poste::query()->firstOrCreate(
+        ['nom_fr' => 'Notaire'],
+        ['nom_en' => 'Notary']
+    );
+
+    $offre = Offre::factory()->create([
+        'poste_id' => $secondPoste->id,
+        'niveau_experience_id' => $this->experience->id,
+        'formation_juridique_id' => null,
+        'salaire_id' => null,
+    ]);
+
+    $candidate = makeAcceptedCandidate($offre);
+    // Already has $this->poste attached via makeAcceptedCandidate.
+    // Add the second poste that matches the offre.
+    CandidatPoste::query()->create([
+        'candidat_id' => $candidate->id,
+        'poste_id' => $secondPoste->id,
+    ]);
+
+    $matches = $this->engine->getMatches($offre);
+
+    expect($matches->pluck('id')->all())->toContain($candidate->id);
+});
+
+test('candidate whose postes do not include the offre poste is excluded', function () {
+    $otherPoste = Poste::query()->firstOrCreate(
+        ['nom_fr' => 'Huissier'],
+        ['nom_en' => 'Bailiff']
+    );
+
+    $offre = Offre::factory()->create([
+        'poste_id' => $otherPoste->id,
+        'niveau_experience_id' => $this->experience->id,
+        'formation_juridique_id' => null,
+        'salaire_id' => null,
+    ]);
+
+    makeAcceptedCandidate($offre);
+
+    $matches = $this->engine->getMatches($offre);
+
+    expect($matches)->toHaveCount(0);
 });

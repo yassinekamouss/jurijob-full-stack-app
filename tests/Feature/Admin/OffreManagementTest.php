@@ -75,14 +75,15 @@ test('admin can view matching candidates for an offre', function () {
         'salaire_id' => null,
     ]);
 
-    Candidat::factory()->accepte()->create([
-        'poste_id' => $offre->poste_id,
+    $candidat = Candidat::factory()->accepte()->create([
         'niveau_experience_id' => $offre->niveau_experience_id,
         'user_id' => User::factory()->create([
             'role' => 'candidat',
             'is_active' => true,
         ])->id,
     ]);
+
+    $candidat->postes()->create(['poste_id' => $offre->poste_id]);
 
     $this->actingAs($admin, 'admin')
         ->get(route('admin.offres.matching', $offre))

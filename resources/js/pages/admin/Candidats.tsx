@@ -151,7 +151,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                         )}
                                     </div>
                                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[#1a1f1e]/50">
-                                        {candidat.poste?.nom && <span>{candidat.poste.nom}</span>}
+                                        {candidat.postes?.length > 0 && <span>{candidat.postes.map((p: any) => p.poste?.nom).filter(Boolean).join(', ')}</span>}
                                         {candidat.formation_juridique?.nom && (
                                             <>
                                                 <span className="text-[#1a1f1e]/20">·</span>

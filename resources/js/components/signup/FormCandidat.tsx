@@ -75,23 +75,12 @@ const FormCandidat = ({ formData, onFieldChange, errors = {}, className = '' }: 
 
             <div>
                 <label className={labelClasses}>{t('auth.forms.candidat.poste_label')}</label>
-                <select
-                    value={formData.poste_id || ''}
-                    onChange={(event) => onFieldChange('poste_id', event.target.value)}
-                    className={selectClasses}
-                >
-                    <option value="">{t('auth.forms.candidat.poste_placeholder')}</option>
-                    {useLoadingTaxonomy(postes) ? (
-                        <option disabled>{t('auth.forms.loading_options')}</option>
-                    ) : (
-                        postes.map((option) => (
-                            <option key={option.id} value={option.id}>
-                                {getTaxonomyLabel(option)}
-                            </option>
-                        ))
-                    )}
-                </select>
-                {errors.poste_id && <p className="mt-1.5 text-xs font-medium text-red-500">{errors.poste_id}</p>}
+                <ChipMultiSelect
+                    options={postes}
+                    selected={formData.poste_id || []}
+                    onChange={(value) => onFieldChange('poste_id', value)}
+                    error={errors.poste_id as string}
+                />
             </div>
 
             <div>

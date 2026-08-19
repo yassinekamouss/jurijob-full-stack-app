@@ -16,6 +16,8 @@ import {
     Clock,
     FileText,
     SlidersHorizontal,
+    ChevronUp,
+    ChevronDown,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { ComponentType } from 'react';
@@ -52,13 +54,12 @@ type MatchedCandidate = {
     id: number;
     nom: string;
     prenom: string;
-    poste_id?: number;
     niveau_experience_id?: number;
     formation_juridique_id?: number | null;
     matching_score: number;
     matching_breakdown?: MatchingBreakdown;
     user?: { email?: string; telephone?: string };
-    poste?: { id?: number; nom?: string };
+    postes?: Array<{ id: number; poste_id: number; poste?: { id?: number; nom?: string } }>;
     niveau_experience?: { id?: number; nom?: string };
     formation_juridique?: { id?: number; nom?: string };
     langues?: Array<{
@@ -842,9 +843,8 @@ function CandidateCard({
     onToggle: () => void;
 }) {
     const breakdown = candidat.matching_breakdown;
-    const posteMatches =
-        (candidat.poste_id ?? candidat.poste?.id) !== undefined &&
-        (candidat.poste_id ?? candidat.poste?.id) === offerPosteId;
+    const candidatPosteIds = (candidat.postes ?? []).map((p) => p.poste_id);
+    const posteMatches = offerPosteId !== undefined && candidatPosteIds.includes(offerPosteId);
     const experienceMatches =
         (candidat.niveau_experience_id ?? candidat.niveau_experience?.id) !==
             undefined &&
@@ -904,13 +904,17 @@ function CandidateCard({
                     </div>
 
                     <div className="flex flex-wrap gap-2 text-xs">
-                        {candidat.poste?.nom && (
+                        {(candidat.postes ?? [])
+                            .map((cp) => cp.poste?.nom)
+                            .filter((nom): nom is string => !!nom)
+                            .map((nom, i) => (
                             <CommonBadge
-                                matched={!!posteMatches}
+                                key={i}
+                                matched={nom === (candidat.postes ?? []).find((cp) => cp.poste_id === offerPosteId)?.poste?.nom}
                                 icon={Briefcase}
-                                label={candidat.poste.nom}
+                                label={nom}
                             />
-                        )}
+                        ))}
                         {candidat.niveau_experience?.nom && (
                             <CommonBadge
                                 matched={!!experienceMatches}
@@ -1028,21 +1032,43 @@ function CandidateCard({
                 </div>
 
                 <div
-                    className={`flex min-w-[80px] shrink-0 flex-col items-center justify-center border px-5 py-4 ${colors.bg}`}
+                    className={`group/score relative flex min-w-[100px] shrink-0 flex-col items-center justify-center border px-4 py-4 ${colors.bg}`}
                 >
                     {scoreEditable ? (
-                        <input
-                            type="number"
-                            min={0}
-                            max={100}
-                            value={scoreValue}
-                            onChange={(event) =>
-                                onScoreChange(event.target.value)
-                            }
-                            onClick={(event) => event.stopPropagation()}
-                            className={`w-16 bg-transparent text-center text-3xl font-medium outline-none ${colors.text}`}
-                            aria-label={`score ${candidat.prenom} ${candidat.nom}`}
-                        />
+                        <div className="flex items-center gap-1">
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onScoreChange(String(Math.min(100, scoreValue + 1)));
+                                }}
+                                className="flex h-5 w-5 items-center justify-center opacity-0 transition-opacity group-hover/score:opacity-100 hover:bg-white/15"
+                                aria-label="Increase score"
+                            >
+                                <ChevronUp className="h-4 w-4" />
+                            </button>
+                            <input
+                                type="number"
+                                min={0}
+                                max={100}
+                                value={scoreValue}
+                                onChange={(event) => onScoreChange(event.target.value)}
+                                onClick={(event) => event.stopPropagation()}
+                                className={`w-14 bg-transparent text-center text-3xl font-medium outline-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden [-moz-appearance:textfield] ${colors.text}`}
+                                aria-label={`score ${candidat.prenom} ${candidat.nom}`}
+                            />
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onScoreChange(String(Math.max(0, scoreValue - 1)));
+                                }}
+                                className="flex h-5 w-5 items-center justify-center opacity-0 transition-opacity group-hover/score:opacity-100 hover:bg-white/15"
+                                aria-label="Decrease score"
+                            >
+                                <ChevronDown className="h-4 w-4" />
+                            </button>
+                        </div>
                     ) : (
                         <span className={`text-3xl font-medium ${colors.text}`}>
                             {displayScore}

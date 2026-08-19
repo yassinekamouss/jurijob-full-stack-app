@@ -70,7 +70,7 @@ export default function RegisterCandidat() {
             type_travails: [],
             ville_travails: [],
             mode_travails: [],
-            poste_id: '',
+            poste_id: [],
             salaire_id: '',
             urgence_id: '',
             formations: [createEmptyFormation()],
@@ -115,7 +115,9 @@ export default function RegisterCandidat() {
         payload.append('role', 'candidat');
 
         // --- Candidat fields ---
-        payload.append('poste_id', String(candidat.poste_id));
+        (candidat.poste_id as (string | number)[]).forEach((id, i) =>
+            payload.append(`poste_id[${i}]`, String(id)),
+        );
         payload.append('niveau_experience_id', String(candidat.niveau_experience_id));
         payload.append('formation_juridique_id', String(candidat.formation_juridique_id));
         payload.append('salaire_id', String(candidat.salaire_id));

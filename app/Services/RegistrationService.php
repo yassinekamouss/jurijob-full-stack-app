@@ -86,6 +86,11 @@ class RegistrationService
      */
     protected function syncCandidatRelations(Candidat $candidat, array $data): void
     {
+        if (! empty($data['poste_id'])) {
+            $postes = array_map(fn ($id) => ['poste_id' => (int) $id], (array) $data['poste_id']);
+            $candidat->postes()->createMany($postes);
+        }
+
         if (! empty($data['specialisations'])) {
             $specialisations = array_map(function ($item) {
                 return SpecialisationData::fromArray($item)->toArray();

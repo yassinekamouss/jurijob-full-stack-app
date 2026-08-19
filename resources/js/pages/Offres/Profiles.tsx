@@ -112,13 +112,36 @@ function isMatchedValue(value: string | null | undefined, required: Array<string
     return required.some((item) => normalizeLabel(item) === normalized);
 }
 
+const MONTH_NAMES = [
+    'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+    'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
+];
+
+function formatMonthYear(value: string | number): string {
+    const str = String(value).trim();
+
+    const ymMatch = str.match(/^(\d{4})-(\d{1,2})$/);
+    if (ymMatch) {
+        const month = parseInt(ymMatch[2], 10);
+        if (month >= 1 && month <= 12) {
+            return `${MONTH_NAMES[month - 1]} ${ymMatch[1]}`;
+        }
+    }
+
+    if (/^\d{4}$/.test(str)) {
+        return str;
+    }
+
+    return str;
+}
+
 function formatPeriod(start?: string | number | null, end?: string | number | null, presentLabel = 'Présent'): string {
     if (!start && !end) {
         return '';
     }
 
-    const startLabel = start ? String(start) : '—';
-    const endLabel = end ? String(end) : presentLabel;
+    const startLabel = start ? formatMonthYear(start) : '—';
+    const endLabel = end ? formatMonthYear(end) : presentLabel;
 
     return `${startLabel} — ${endLabel}`;
 }
