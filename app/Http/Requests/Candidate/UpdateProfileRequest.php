@@ -26,7 +26,8 @@ class UpdateProfileRequest extends FormRequest
         return [
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'poste_id' => ['required', 'integer', 'exists:postes,id'],
+            'poste_id' => ['required', 'array', 'min:1'],
+            'poste_id.*' => ['integer', 'exists:postes,id'],
             'niveau_experience_id' => ['required', 'integer', 'exists:niveau_experiences,id'],
             'formation_juridique_id' => ['required', 'integer', 'exists:formation_juridiques,id'],
             'salaire_id' => ['required', 'integer', 'exists:salaires,id'],
@@ -44,8 +45,9 @@ class UpdateProfileRequest extends FormRequest
         return [
             'nom.required' => 'Le nom est requis.',
             'prenom.required' => 'Le prénom est requis.',
-            'poste_id.required' => 'Veuillez sélectionner un poste.',
-            'poste_id.exists' => 'Le poste sélectionné est invalide.',
+            'poste_id.required' => 'Veuillez sélectionner au moins un poste.',
+            'poste_id.min' => 'Veuillez sélectionner au moins un poste.',
+            'poste_id.*.exists' => 'Le poste sélectionné est invalide.',
             'niveau_experience_id.required' => 'Veuillez sélectionner un niveau d\'expérience.',
             'niveau_experience_id.exists' => 'Le niveau d\'expérience sélectionné est invalide.',
             'formation_juridique_id.required' => 'Veuillez sélectionner une formation.',

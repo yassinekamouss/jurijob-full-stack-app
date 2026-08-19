@@ -15,7 +15,7 @@ class CandidateController extends Controller
 
         $query = Candidat::with([
             'user',
-            'poste',
+            'postes.poste',
             'niveauExperience',
             'formationJuridique',
             'specialisations.specialisation',

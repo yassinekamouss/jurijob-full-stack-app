@@ -20,6 +20,7 @@ class SettingsController extends Controller
         $candidat = $user->candidat()->first();
 
         $candidat->load([
+            'postes.poste',
             'experiences',
             'formations',
             'specialisations',
@@ -57,6 +58,18 @@ class SettingsController extends Controller
 
         try {
             $candidat->update($dto->toArray());
+
+            $posteIds = collect((array) $request->validated('poste_id'))
+                ->filter()
+                ->map(fn ($id) => (int) $id)
+                ->all();
+
+            $candidat->postes()->delete();
+            if (! empty($posteIds)) {
+                $candidat->postes()->createMany(
+                    array_map(fn ($id) => ['poste_id' => $id], $posteIds)
+                );
+            }
 
             $user->update([
                 'is_active' => $dto->is_active,

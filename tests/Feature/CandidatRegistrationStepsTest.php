@@ -85,7 +85,7 @@ function candidatRegistrationPayload(array $overrides = []): array
                 'fin' => '2024-06',
                 'type_travail_id' => $test->typeTravail->id,
                 'entreprise' => 'Cabinet XYZ',
-                'poste_id' => $test->poste->id,
+                'poste_id' => [$test->poste->id],
             ],
         ],
         'formations' => [

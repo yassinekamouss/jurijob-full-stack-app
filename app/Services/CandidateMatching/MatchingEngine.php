@@ -39,7 +39,7 @@ class MatchingEngine
         $candidates = $query
             ->with([
                 'user:id,email,telephone,is_active',
-                'poste',
+                'postes.poste',
                 'niveauExperience',
                 'formationJuridique',
                 'langues.langue',
@@ -94,7 +94,9 @@ class MatchingEngine
     private function applyProfileHardFilters(Builder $query, MatchingCriteria $criteria): void
     {
         if ($criteria->posteId !== null) {
-            $query->where('candidats.poste_id', $criteria->posteId);
+            $query->whereHas('postes', function (Builder $posteQuery) use ($criteria) {
+                $posteQuery->where('poste_id', $criteria->posteId);
+            });
         }
 
         if ($criteria->niveauExperienceId !== null) {

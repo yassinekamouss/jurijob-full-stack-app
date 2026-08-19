@@ -34,13 +34,14 @@ test('admin matching page includes offer requirements and candidate matches', fu
     ]);
 
     $candidat = Candidat::factory()->accepte()->create([
-        'poste_id' => $offre->poste_id,
         'niveau_experience_id' => $offre->niveau_experience_id,
         'user_id' => User::factory()->create([
             'role' => 'candidat',
             'is_active' => true,
         ])->id,
     ]);
+
+    $candidat->postes()->create(['poste_id' => $offre->poste_id]);
 
     CandidatSpecialisation::query()->create([
         'candidat_id' => $candidat->id,

@@ -52,13 +52,12 @@ type MatchedCandidate = {
     id: number;
     nom: string;
     prenom: string;
-    poste_id?: number;
     niveau_experience_id?: number;
     formation_juridique_id?: number | null;
     matching_score: number;
     matching_breakdown?: MatchingBreakdown;
     user?: { email?: string; telephone?: string };
-    poste?: { id?: number; nom?: string };
+    postes?: Array<{ id: number; poste_id: number; poste?: { id?: number; nom?: string } }>;
     niveau_experience?: { id?: number; nom?: string };
     formation_juridique?: { id?: number; nom?: string };
     langues?: Array<{
@@ -842,9 +841,8 @@ function CandidateCard({
     onToggle: () => void;
 }) {
     const breakdown = candidat.matching_breakdown;
-    const posteMatches =
-        (candidat.poste_id ?? candidat.poste?.id) !== undefined &&
-        (candidat.poste_id ?? candidat.poste?.id) === offerPosteId;
+    const candidatPosteIds = (candidat.postes ?? []).map((p) => p.poste_id);
+    const posteMatches = offerPosteId !== undefined && candidatPosteIds.includes(offerPosteId);
     const experienceMatches =
         (candidat.niveau_experience_id ?? candidat.niveau_experience?.id) !==
             undefined &&
@@ -904,13 +902,17 @@ function CandidateCard({
                     </div>
 
                     <div className="flex flex-wrap gap-2 text-xs">
-                        {candidat.poste?.nom && (
+                        {(candidat.postes ?? [])
+                            .map((cp) => cp.poste?.nom)
+                            .filter((nom): nom is string => !!nom)
+                            .map((nom, i) => (
                             <CommonBadge
-                                matched={!!posteMatches}
+                                key={i}
+                                matched={nom === (candidat.postes ?? []).find((cp) => cp.poste_id === offerPosteId)?.poste?.nom}
                                 icon={Briefcase}
-                                label={candidat.poste.nom}
+                                label={nom}
                             />
-                        )}
+                        ))}
                         {candidat.niveau_experience?.nom && (
                             <CommonBadge
                                 matched={!!experienceMatches}

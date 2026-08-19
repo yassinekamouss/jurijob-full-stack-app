@@ -182,7 +182,7 @@ export default function Settings({
     const profileForm = useForm({
         nom: candidat?.nom || '',
         prenom: candidat?.prenom || '',
-        poste_id: candidat?.poste_id || '',
+        poste_id: candidat?.postes?.map((p: any) => p.poste_id) || [],
         niveau_experience_id: candidat?.niveau_experience_id || '',
         formation_juridique_id: candidat?.formation_juridique_id || '',
         salaire_id: candidat?.salaire_id || '',
@@ -208,7 +208,9 @@ export default function Settings({
         let hasErrors = false;
 
         requiredFields.forEach(({ key, message }) => {
-            if (!profileForm.data[key]) {
+            const value = profileForm.data[key];
+            const isEmpty = Array.isArray(value) ? value.length === 0 : !value;
+            if (isEmpty) {
                 profileForm.setError(key, message);
                 hasErrors = true;
             }
@@ -440,37 +442,34 @@ export default function Settings({
                                                 <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
                                                     {t('candidate_settings.form.job_title')}
                                                 </label>
-                                                <div className="relative">
-                                                    <Briefcase className="absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
-                                                    <select
-                                                        value={
-                                                            profileForm.data
-                                                                .poste_id
-                                                        }
-                                                        onChange={(e) =>
-                                                            profileForm.setData(
-                                                                'poste_id',
-                                                                e.target.value,
-                                                            )
-                                                        }
-                                                        className={`w-full cursor-pointer appearance-none rounded-2xl py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('poste_id')}`}
-                                                    >
-                                                        <option value="">
-                                                            {t('candidate_settings.form.select_job')}
-                                                        </option>
-                                                        {useLoadingTaxonomy(postes) ? (
-                                                            <option disabled>{t('candidate_settings.form.loading')}</option>
-                                                        ) : (
-                                                            postes.map((opt) => (
-                                                                <option
+                                                <div className="flex flex-wrap gap-2">
+                                                    {useLoadingTaxonomy(postes) ? (
+                                                        <p className="text-sm text-[#1a1f1e]/40">{t('candidate_settings.form.loading')}</p>
+                                                    ) : (
+                                                        postes.map((opt) => {
+                                                            const isSelected = Array.isArray(profileForm.data.poste_id) && profileForm.data.poste_id.includes(opt.id);
+                                                            return (
+                                                                <button
                                                                     key={opt.id}
-                                                                    value={opt.id}
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                        const current = Array.isArray(profileForm.data.poste_id) ? profileForm.data.poste_id : [];
+                                                                        profileForm.setData(
+                                                                            'poste_id',
+                                                                            isSelected ? current.filter((id: number) => id !== opt.id) : [...current, opt.id],
+                                                                        );
+                                                                    }}
+                                                                    className={`inline-flex items-center rounded-2xl border px-3.5 py-2.5 text-sm font-semibold transition-all ${
+                                                                        isSelected
+                                                                            ? 'border-[#1a1f1e] bg-[#1a1f1e] text-white shadow-sm'
+                                                                            : 'border-[#1a1f1e]/10 bg-white text-[#1a1f1e]/70 hover:border-[#1a1f1e]/30'
+                                                                    }`}
                                                                 >
-                                                                    {opt.nom}
-                                                                </option>
-                                                            ))
-                                                        )}
-                                                    </select>
+                                                                    {getTaxonomyLabel(opt)}
+                                                                </button>
+                                                            );
+                                                        })
+                                                    )}
                                                 </div>
                                                 {profileForm.errors.poste_id && (
                                                     <p className="ml-1 text-xs font-bold text-red-500">

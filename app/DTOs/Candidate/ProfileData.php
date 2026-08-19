@@ -9,7 +9,6 @@ readonly class ProfileData
     public function __construct(
         public string $nom,
         public string $prenom,
-        public int $poste_id,
         public int $niveau_experience_id,
         public int $formation_juridique_id,
         public int $salaire_id,
@@ -28,7 +27,6 @@ readonly class ProfileData
         return new self(
             nom: $data['nom'],
             prenom: $data['prenom'],
-            poste_id: (int) $data['poste_id'],
             niveau_experience_id: (int) $data['niveau_experience_id'],
             formation_juridique_id: (int) $data['formation_juridique_id'],
             salaire_id: (int) $data['salaire_id'],
@@ -43,7 +41,6 @@ readonly class ProfileData
         return [
             'nom' => $this->nom,
             'prenom' => $this->prenom,
-            'poste_id' => $this->poste_id,
             'niveau_experience_id' => $this->niveau_experience_id,
             'formation_juridique_id' => $this->formation_juridique_id,
             'salaire_id' => $this->salaire_id,

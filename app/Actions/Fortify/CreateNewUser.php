@@ -53,7 +53,8 @@ class CreateNewUser implements CreatesNewUsers
             // Candidat rules
             'nom' => ['required', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
-            'poste_id' => ['required', 'integer'],
+            'poste_id' => ['required', 'array', 'min:1'],
+            'poste_id.*' => ['integer', 'exists:postes,id'],
             'niveau_experience_id' => ['required', 'integer'],
             'formation_juridique_id' => ['required', 'integer'],
             'salaire_id' => ['required', 'integer', 'exists:salaires,id'],

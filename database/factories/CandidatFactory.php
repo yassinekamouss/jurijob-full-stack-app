@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Candidat\Candidat;
 use App\Models\Taxonomy\FormationJuridique;
 use App\Models\Taxonomy\NiveauExperience;
-use App\Models\Taxonomy\Poste;
 use App\Models\Taxonomy\Salaire;
 use App\Models\Taxonomy\Urgence;
 use App\Models\User;
@@ -22,10 +21,6 @@ class CandidatFactory extends Factory
             'status' => 'en_attente',
             'nom' => $this->faker->lastName(),
             'prenom' => $this->faker->firstName(),
-            'poste_id' => Poste::firstOrCreate(
-                ['nom_fr' => 'Avocat'],
-                ['nom_en' => 'Lawyer']
-            )->id,
             'niveau_experience_id' => NiveauExperience::firstOrCreate(
                 ['nom_fr' => 'Junior'],
                 ['nom_en' => 'Junior']
@@ -43,6 +38,13 @@ class CandidatFactory extends Factory
                 ['nom_fr' => 'Normal (2–4 sem.)', 'nom_en' => 'Normal (2–4 weeks)']
             )->id,
         ];
+    }
+
+    public function withPoste(int $posteId): static
+    {
+        return $this->afterCreating(function (Candidat $candidat) use ($posteId) {
+            $candidat->postes()->create(['poste_id' => $posteId]);
+        });
     }
 
     public function enAttente(): static

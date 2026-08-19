@@ -136,7 +136,7 @@ class DashboardController extends Controller
         // 8. Qualite des profils
         $profilsComplets = $candidats->filter(function ($candidat) {
             return $candidat->status === 'accepte'
-                && filled($candidat->poste_id)
+                && $candidat->postes()->exists()
                 && filled($candidat->niveau_experience_id)
                 && filled($candidat->formation_juridique_id)
                 && filled($candidat->salaire_id)
