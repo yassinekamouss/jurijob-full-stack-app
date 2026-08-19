@@ -14,11 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+          /*
         $this->call([
             TaxonomySeeder::class,
         ]);
 
-        /*
+      
         DB::table('admins')->updateOrInsert(
             ['email' => 'admin@jurijob.ma'],
             [
