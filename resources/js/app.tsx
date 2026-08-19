@@ -11,7 +11,12 @@ import i18n, { updateI18nLocale } from '@/i18n';
 const appName = import.meta.env.VITE_APP_NAME || 'JuriJob';
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: (title) => {
+        if (!title) return appName;
+        return title.toLowerCase().includes(appName.toLowerCase())
+            ? title
+            : `${title} - ${appName}`;
+    },
     resolve: (name) =>
         resolvePageComponent(
             `./pages/${name}.tsx`,

@@ -6,13 +6,18 @@ import { I18nextProvider } from 'react-i18next';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import i18n, { updateI18nLocale } from '@/i18n';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'JuriJob';
 
 createServer((page) =>
     createInertiaApp({
         page,
         render: ReactDOMServer.renderToString,
-        title: (title) => (title ? `${title} - ${appName}` : appName),
+        title: (title) => {
+            if (!title) return appName;
+            return title.toLowerCase().includes(appName.toLowerCase())
+                ? title
+                : `${title} - ${appName}`;
+        },
         resolve: (name) =>
             resolvePageComponent(
                 `./pages/${name}.tsx`,
