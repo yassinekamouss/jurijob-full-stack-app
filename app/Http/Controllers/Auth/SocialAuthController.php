@@ -71,6 +71,14 @@ class SocialAuthController extends Controller
 
             $linkedUser = $socialAccount->user;
 
+            if ($linkedUser->role === 'candidat' && $linkedUser->candidat) {
+                if (in_array($linkedUser->candidat->status, ['archive', 'refuse'])) {
+                    $statusKey = $linkedUser->candidat->status === 'archive' ? 'account_archived' : 'account_refused';
+
+                    return redirect()->route('login')->withErrors(['email' => __($statusKey)]);
+                }
+            }
+
             // Mark email as verified since the provider guarantees it
             if (is_null($linkedUser->email_verified_at)) {
                 $linkedUser->forceFill(['email_verified_at' => now()])->save();
@@ -91,6 +99,14 @@ class SocialAuthController extends Controller
         $user = User::where('email', $email)->first();
 
         if ($user) {
+            if ($user->role === 'candidat' && $user->candidat) {
+                if (in_array($user->candidat->status, ['archive', 'refuse'])) {
+                    $statusKey = $user->candidat->status === 'archive' ? 'account_archived' : 'account_refused';
+
+                    return redirect()->route('login')->withErrors(['email' => __($statusKey)]);
+                }
+            }
+
             // Secure Account Link (Google and LinkedIn both verify emails by default)
             $user->socialAccounts()->create([
                 'provider' => $provider,
@@ -207,6 +223,14 @@ class SocialAuthController extends Controller
         // Check if user already exists
         $user = User::where('email', $email)->first();
         if ($user) {
+            if ($user->role === 'candidat' && $user->candidat) {
+                if (in_array($user->candidat->status, ['archive', 'refuse'])) {
+                    $statusKey = $user->candidat->status === 'archive' ? 'account_archived' : 'account_refused';
+
+                    return redirect()->route('login')->withErrors(['email' => __($statusKey)]);
+                }
+            }
+
             // Link if not linked
             if (! $user->socialAccounts()->where('provider', $provider)->exists()) {
                 $user->socialAccounts()->create([

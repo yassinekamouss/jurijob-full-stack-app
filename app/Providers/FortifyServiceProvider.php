@@ -4,11 +4,14 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\LogoutResponse;
@@ -47,6 +50,27 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email)->first();
+
+            if ($user && Hash::check($request->password, $user->password)) {
+                if ($user->role === 'candidat' && $user->candidat) {
+                    if ($user->candidat->status === 'archive') {
+                        throw ValidationException::withMessages([
+                            Fortify::username() => __('account_archived'),
+                        ]);
+                    }
+                    if ($user->candidat->status === 'refuse') {
+                        throw ValidationException::withMessages([
+                            Fortify::username() => __('account_refused'),
+                        ]);
+                    }
+                }
+
+                return $user;
+            }
+        });
     }
 
     /**

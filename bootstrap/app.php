@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureCandidateIsActive;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RoleMiddleware;
@@ -33,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            EnsureCandidateIsActive::class,
         ]);
         // 1. Where to send GUESTS (Not logged in)
         $middleware->redirectTo(

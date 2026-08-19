@@ -26,7 +26,7 @@
         "cancel": "Annuler",
         "phone_country_search": "Rechercher un pays...",
         "other_specify": "Autre (préciser...)",
-        "other_school_placeholder": "Nom de l'école/université"
+        "other_school_placeholder": "Nom de l'école\/université"
     },
     "home": {
         "seo": {
@@ -81,17 +81,17 @@
             "title_part2": "sélection et présélection de talents juridiques",
             "subtitle": "Un processus simple et supervisé.",
             "step1": {
-                "number": "01 //",
+                "number": "01 \/\/",
                 "title": "Vous déposez votre demande",
                 "description": "Critères précis : spécialisation, niveau, langues, diplôme. Quelques minutes suffisent."
             },
             "step2": {
-                "number": "02 //",
+                "number": "02 \/\/",
                 "title": "Notre équipe sélectionne",
                 "description": "Recherche dans la CVthèque et le réseau professionnel. Évaluation manuelle de chaque profil."
             },
             "step3": {
-                "number": "03 //",
+                "number": "03 \/\/",
                 "title": "Vous recevez votre short-list",
                 "description": "Sous 48 heures ouvrées. Profils qualifiés et coordonnées complètes après confirmation du paiement."
             }
@@ -118,7 +118,7 @@
             "graduates": {
                 "badge": "Diplômés & Talents",
                 "price": "Gratuit",
-                "period": "/ à vie",
+                "period": "\/ à vie",
                 "description": "L'accès à l'excellence professionnelle ne devrait jamais être tarifé pour les talents de demain.",
                 "feature1": "Création de profil détaillé",
                 "feature2": "Validation de CV prioritaire",
@@ -131,7 +131,7 @@
                 "plan_name": "Élite",
                 "price_from": "À partir de",
                 "price": "1 490 MAD HT",
-                "period": "/ profil",
+                "period": "\/ profil",
                 "tax_inclusive": "(soit 1 788 MAD TTC)",
                 "description": "Une tarification transparente et ajustée selon vos volumes de recrutement, garantie par l'œil de nos experts.",
                 "feature1": "Sélection rigoureuse par nos experts juridiques (+20 ans d'expérience)",
@@ -154,7 +154,7 @@
             "pillar1_title": "Évaluation Juridique Métier",
             "pillar1_desc": "Chaque juriste est qualifié selon sa spécialisation (Droit des affaires, Compliance, Fiscalité, M&A) et son niveau d’expertise réel.",
             "pillar2_title": "Confidentialité Maximale",
-            "pillar2_desc": "Protection absolue des recherches de cabinets/entreprises et des données des juristes (Conformité Loi 09-08).",
+            "pillar2_desc": "Protection absolue des recherches de cabinets\/entreprises et des données des juristes (Conformité Loi 09-08).",
             "pillar3_title": "Short-List Sous 48 Hours",
             "pillar3_desc": "Accélérez vos recrutements avec une sélection ciblée et directement opérationnelle, sans pollution de candidatures inappropriées.",
             "stat1_value": "48h",
@@ -259,7 +259,7 @@
             "date_error": "La date de fin doit être postérieure ou égale à la date de début.",
             "labels": {
                 "job": "Poste occupé",
-                "company": "Entreprise / Cabinet",
+                "company": "Entreprise \/ Cabinet",
                 "contract_type": "Type de contrat",
                 "start_date": "Date de début",
                 "end_date": "Date de fin"
@@ -277,7 +277,7 @@
             "update_button": "Mettre à jour",
             "cancel_button": "Annuler",
             "loading": "Chargement...",
-            "not_applicable": "N/A",
+            "not_applicable": "N\/A",
             "in": "en",
             "no_education": "Aucune formation enregistrée.",
             "delete_confirm": "Supprimer cette formation ?",
@@ -285,7 +285,7 @@
             "labels": {
                 "level": "Niveau",
                 "field": "Domaine d'études",
-                "school": "École / Université",
+                "school": "École \/ Université",
                 "start_year": "Année de début",
                 "end_year": "Année de fin"
             },
@@ -538,7 +538,7 @@
         "alertes_actives": "ALERTES ACTIVES",
         "alertes_sub_zero": "tout est à jour",
         "alertes_sub": "{{count}} alerte(s) à traiter",
-        "ecart_specialisation": "Écart offre / demande par spécialisation",
+        "ecart_specialisation": "Écart offre \/ demande par spécialisation",
         "excedent_de": "Excédent de {{count}}",
         "deficit_de": "Déficit de {{count}}",
         "demande": "Demande",
@@ -608,7 +608,7 @@
             "contact": "Contact",
             "position": "Poste occupé",
             "city": "Ville",
-            "type_size": "Type / Taille",
+            "type_size": "Type \/ Taille",
             "website": "Site web",
             "joined": "Inscrit le",
             "offers": "Demandes"
@@ -630,7 +630,7 @@
         "search_placeholder": "Titre, entreprise...",
         "search_btn": "Rechercher",
         "empty_state": "Aucune demande pour ce statut",
-        "company_na": "Entreprise N/A",
+        "company_na": "Entreprise N\/A",
         "cv_count": "{{count}} CV",
         "tabs": {
             "processing": "En traitement",
@@ -1205,7 +1205,7 @@
                 "formations_title": "Formations",
                 "add_button": "Ajouter",
                 "new_formation": "Nouvelle Formation",
-                "school_label": "École / Université",
+                "school_label": "École \/ Université",
                 "school_placeholder": "Sélectionner une institution",
                 "study_level_label": "Niveau d'études",
                 "study_level_placeholder": "Sélectionner un niveau",
@@ -1246,7 +1246,7 @@
                 "company_size_label": "Taille de l'entreprise *",
                 "company_size_placeholder": "Nombre d'employés",
                 "website_label": "Site web de l'entreprise",
-                "website_placeholder": "https://www.votre-entreprise.com",
+                "website_placeholder": "https:\/\/www.votre-entreprise.com",
                 "website_help": "Optionnel - Aide à valider votre profil",
                 "city_label": "Ville *",
                 "city_placeholder": "Sélectionnez une ville",
@@ -1294,10 +1294,10 @@
                 "title": "Déclaration sur l'honneur & véracité",
                 "legal_requirement": "Exigence Légale",
                 "alert_text_bold": "certifiez sur l'honneur",
-                "alert_text": "En validant votre profil, vous <bold>certifiez sur l'honneur</bold> l'exactitude stricte de toutes les informations communiquées (parcours académique, diplômes et expériences).",
+                "alert_text": "En validant votre profil, vous <bold>certifiez sur l'honneur<\/bold> l'exactitude stricte de toutes les informations communiquées (parcours académique, diplômes et expériences).",
                 "alert_subtext": "La falsification de données est strictement interdite. Toute fausse déclaration expose le candidat à des sanctions juridiques et à la suppression immédiate de son compte.",
                 "checkbox_text_bold": "certifie sur l'honneur",
-                "checkbox_text": "Je <bold>certifie sur l'honneur</bold> que toutes les informations saisies (formations, diplômes, expériences) sont exactes et conformes.",
+                "checkbox_text": "Je <bold>certifie sur l'honneur<\/bold> que toutes les informations saisies (formations, diplômes, expériences) sont exactes et conformes.",
                 "checkbox_subtext": "Je reconnais que toute falsification ou fausse déclaration est strictement interdite et m'expose à la suppression immédiate de mon profil ainsi qu'à des conséquences juridiques."
             },
             "navigator": {
@@ -1330,7 +1330,7 @@
                 "add": "Ajouter",
                 "new_formation": "Nouvelle Formation",
                 "new_experience": "Nouvelle Expérience",
-                "school_label": "École / Université",
+                "school_label": "École \/ Université",
                 "school_placeholder": "Sélectionner une institution",
                 "degree_level_label": "Niveau d'études",
                 "degree_level_placeholder": "Sélectionner un niveau",
@@ -1413,7 +1413,7 @@
     },
     "faq_page": {
         "seo_title": "Foire Aux Questions (FAQ) & Tarifs Recrutement | JuriJob",
-        "seo_description": "Toutes les réponses à vos questions sur JuriJob : tarifs (1 490 MAD HT/profil), délais de 48h, sélection par des experts juridiques et confidentialité.",
+        "seo_description": "Toutes les réponses à vos questions sur JuriJob : tarifs (1 490 MAD HT\/profil), délais de 48h, sélection par des experts juridiques et confidentialité.",
         "hero": {
             "title_part1": "Foire aux ",
             "title_part2": "questions",
@@ -1530,7 +1530,7 @@
                 "title": "Prix et Tarification",
                 "badge": "Tarif unitaire réglementé",
                 "price": "1 490 MAD",
-                "unit": "HT / profil",
+                "unit": "HT \/ profil",
                 "tax": "Soit 1 788 MAD TTC (TVA 20%)",
                 "p1": "Le montant total dû correspond au prix unitaire multiplié par le nombre de profils effectivement composant la short-list livrée. Ce montant est affiché au recruteur avant tout engagement de paiement.",
                 "p2": "Des conditions tarifaires spécifiques peuvent être consenties pour les besoins récurrents ou les volumes importants.",
@@ -1787,7 +1787,7 @@
                 "title": "Hébergement & Infrastructure",
                 "intro": "L'infrastructure technique de la plateforme s'appuie sur des partenaires internationaux garantissant haute disponibilité, sécurité et conformité :",
                 "vercel_badge": "Hébergement Web",
-                "vercel_desc": "Société de droit américain.<br />340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.",
+                "vercel_desc": "Société de droit américain.<br \/>340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.",
                 "supabase_badge": "Base de Données",
                 "supabase_desc": "Infrastructure sécurisée pour le stockage et la gestion des données de la plateforme.",
                 "resend_badge": "E-mails Transactionnels",
@@ -2046,5 +2046,7 @@
         "offre_submitted": "Merci, :entreprise !\nVotre demande a été transmise à l'équipe JURIJOB.\n\nVotre short-list de :count CV vous sera communiquée sous 48h ouvrées. Vous pouvez suivre son statut depuis votre tableau de bord.",
         "payment_reported": "Votre virement a été signalé. Nos équipes vérifieront le paiement sous 24h ouvrées.",
         "offre_deleted": "Offre supprimée avec succès."
-    }
+    },
+    "account_archived": "Votre compte est archivé, veuillez contacter le support.",
+    "account_refused": "Votre compte a été refusé, veuillez contacter le support."
 }

@@ -1,4 +1,4 @@
-import { Form } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Reveal from '@/components/home/Reveal';
@@ -30,6 +30,8 @@ export default function Login({
     canRegister,
 }: Props) {
     const { t } = useTranslation();
+    const { errors: pageErrors, flash } = usePage().props as any;
+    const globalError = pageErrors?.email || flash?.error;
 
     return (
         <div
@@ -89,6 +91,13 @@ export default function Login({
                                         <span className="mr-2">⚠️</span>
                                     )}
                                     {status}
+                                </div>
+                            )}
+
+                            {globalError && (
+                                <div className="mb-6 border border-red-200 bg-red-50 p-4 text-center text-sm font-medium text-red-800">
+                                    <span className="mr-2">⚠️</span>
+                                    {globalError}
                                 </div>
                             )}
 

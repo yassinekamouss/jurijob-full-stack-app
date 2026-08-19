@@ -26,7 +26,7 @@
         "cancel": "Cancel",
         "phone_country_search": "Search country...",
         "other_specify": "Other (please specify...)",
-        "other_school_placeholder": "School/university name"
+        "other_school_placeholder": "School\/university name"
     },
     "home": {
         "seo": {
@@ -81,17 +81,17 @@
             "title_part2": "selecting and preselecting legal talent",
             "subtitle": "A simple, supervised process.",
             "step1": {
-                "number": "01 //",
+                "number": "01 \/\/",
                 "title": "Submit your request",
                 "description": "Precise criteria: specialization, level, languages, degree. Takes only a few minutes."
             },
             "step2": {
-                "number": "02 //",
+                "number": "02 \/\/",
                 "title": "Our team selects",
                 "description": "Searching the resume database and professional network. Manual evaluation of each candidate profile."
             },
             "step3": {
-                "number": "03 //",
+                "number": "03 \/\/",
                 "title": "Receive your shortlist",
                 "description": "Within 48 business hours. Qualified profiles and full contact details upon payment confirmation."
             }
@@ -118,7 +118,7 @@
             "graduates": {
                 "badge": "Graduates & Talent",
                 "price": "Free",
-                "period": "/ lifetime",
+                "period": "\/ lifetime",
                 "description": "Access to professional excellence should never be priced for tomorrow's talent.",
                 "feature1": "Detailed profile creation",
                 "feature2": "Priority resume validation",
@@ -131,7 +131,7 @@
                 "plan_name": "Elite",
                 "price_from": "Starting from",
                 "price": "1 490 MAD excl. tax",
-                "period": "/ profile",
+                "period": "\/ profile",
                 "tax_inclusive": "(or 1 788 MAD incl. tax)",
                 "description": "Transparent pricing adjusted to your recruitment volume, guaranteed by expert review.",
                 "feature1": "Rigorous selection by legal experts (+20 years experience)",
@@ -154,7 +154,7 @@
             "pillar1_title": "Domain Legal Evaluation",
             "pillar1_desc": "Every lawyer is qualified based on their specialization (Corporate Law, Compliance, Tax, M&A) and actual expertise level.",
             "pillar2_title": "Maximum Confidentiality",
-            "pillar2_desc": "Absolute protection of firm/company searches and candidates' data (Compliant with Law 09-08).",
+            "pillar2_desc": "Absolute protection of firm\/company searches and candidates' data (Compliant with Law 09-08).",
             "pillar3_title": "Shortlist Within 48 Hours",
             "pillar3_desc": "Accelerate your hiring with a targeted, operational selection without inappropriate applicant noise.",
             "stat1_value": "48h",
@@ -259,7 +259,7 @@
             "date_error": "The end date must be after or equal to the start date.",
             "labels": {
                 "job": "Job Title",
-                "company": "Company / Firm",
+                "company": "Company \/ Firm",
                 "contract_type": "Contract Type",
                 "start_date": "Start Date",
                 "end_date": "End Date"
@@ -277,7 +277,7 @@
             "update_button": "Update",
             "cancel_button": "Cancel",
             "loading": "Loading...",
-            "not_applicable": "N/A",
+            "not_applicable": "N\/A",
             "in": "in",
             "no_education": "No education recorded.",
             "delete_confirm": "Delete this education?",
@@ -285,7 +285,7 @@
             "labels": {
                 "level": "Level",
                 "field": "Field of Study",
-                "school": "School / University",
+                "school": "School \/ University",
                 "start_year": "Start Year",
                 "end_year": "End Year"
             },
@@ -538,7 +538,7 @@
         "alertes_actives": "ACTIVE ALERTS",
         "alertes_sub_zero": "all up to date",
         "alertes_sub": "{{count}} alert(s) to process",
-        "ecart_specialisation": "Supply / demand gap by specialization",
+        "ecart_specialisation": "Supply \/ demand gap by specialization",
         "excedent_de": "Surplus of {{count}}",
         "deficit_de": "Deficit of {{count}}",
         "demande": "Demand",
@@ -608,7 +608,7 @@
             "contact": "Contact",
             "position": "Position",
             "city": "City",
-            "type_size": "Type / Size",
+            "type_size": "Type \/ Size",
             "website": "Website",
             "joined": "Joined",
             "offers": "Requests"
@@ -630,7 +630,7 @@
         "search_placeholder": "Title, company...",
         "search_btn": "Search",
         "empty_state": "No requests for this status",
-        "company_na": "Company N/A",
+        "company_na": "Company N\/A",
         "cv_count": "{{count}} CV",
         "tabs": {
             "processing": "Processing",
@@ -1204,7 +1204,7 @@
                 "formations_title": "Education",
                 "add_button": "Add",
                 "new_formation": "New Education",
-                "school_label": "School / University",
+                "school_label": "School \/ University",
                 "school_placeholder": "Select an institution",
                 "study_level_label": "Degree Level",
                 "study_level_placeholder": "Select a level",
@@ -1245,7 +1245,7 @@
                 "company_size_label": "Company Size *",
                 "company_size_placeholder": "Number of employees",
                 "website_label": "Company Website",
-                "website_placeholder": "https://www.your-company.com",
+                "website_placeholder": "https:\/\/www.your-company.com",
                 "website_help": "Optional - Helps validate your profile",
                 "city_label": "City *",
                 "city_placeholder": "Select a city",
@@ -1293,10 +1293,10 @@
                 "title": "Honor Declaration & Accuracy",
                 "legal_requirement": "Legal Requirement",
                 "alert_text_bold": "certify upon honor",
-                "alert_text": "By submitting your profile, you <bold>certify upon honor</bold> the strict accuracy of all provided information (academic background, diplomas, and experience).",
+                "alert_text": "By submitting your profile, you <bold>certify upon honor<\/bold> the strict accuracy of all provided information (academic background, diplomas, and experience).",
                 "alert_subtext": "Data falsification is strictly prohibited. Any false declaration exposes the candidate to legal sanctions and immediate account termination.",
                 "checkbox_text_bold": "certify upon honor",
-                "checkbox_text": "I <bold>certify upon honor</bold> that all entered information (education, diplomas, experience) is accurate and truthful.",
+                "checkbox_text": "I <bold>certify upon honor<\/bold> that all entered information (education, diplomas, experience) is accurate and truthful.",
                 "checkbox_subtext": "I acknowledge that any falsification or false declaration is strictly prohibited and exposes me to immediate profile removal as well as legal consequences."
             },
             "navigator": {
@@ -1329,7 +1329,7 @@
                 "add": "Add",
                 "new_formation": "New Education",
                 "new_experience": "New Experience",
-                "school_label": "School / University",
+                "school_label": "School \/ University",
                 "school_placeholder": "Select an institution",
                 "degree_level_label": "Degree Level",
                 "degree_level_placeholder": "Select a level",
@@ -1412,7 +1412,7 @@
     },
     "faq_page": {
         "seo_title": "Frequently Asked Questions (FAQ) & Recruitment Pricing | JuriJob",
-        "seo_description": "All answers to your questions about JuriJob: pricing (1,490 MAD excl. VAT/profile), 48h delivery, selection by legal experts, and confidentiality.",
+        "seo_description": "All answers to your questions about JuriJob: pricing (1,490 MAD excl. VAT\/profile), 48h delivery, selection by legal experts, and confidentiality.",
         "hero": {
             "title_part1": "Frequently Asked ",
             "title_part2": "Questions",
@@ -1529,7 +1529,7 @@
                 "title": "Pricing & Rates",
                 "badge": "Standard Unit Rate",
                 "price": "1,490 MAD",
-                "unit": "excl. tax / profile",
+                "unit": "excl. tax \/ profile",
                 "tax": "I.e. 1,788 MAD incl. tax (20% VAT)",
                 "p1": "The total amount due corresponds to the unit price multiplied by the number of profiles effectively making up the delivered shortlist. This amount is displayed to the recruiter prior to any payment commitment.",
                 "p2": "Specific pricing terms may be granted for recurring needs or large volumes.",
@@ -1786,7 +1786,7 @@
                 "title": "Hosting & Infrastructure",
                 "intro": "The technical infrastructure of the platform relies on international partners ensuring high availability, security, and compliance:",
                 "vercel_badge": "Web Hosting",
-                "vercel_desc": "US corporation.<br />340 S Lemon Ave #4133, Walnut, CA 91789, United States.",
+                "vercel_desc": "US corporation.<br \/>340 S Lemon Ave #4133, Walnut, CA 91789, United States.",
                 "supabase_badge": "Database",
                 "supabase_desc": "Secure infrastructure for platform data storage and management.",
                 "resend_badge": "Transactional Emails",
@@ -2045,5 +2045,7 @@
         "offre_submitted": "Thank you, :entreprise!\nYour request has been submitted to the JURIJOB team.\n\nYour short-list of :count CVs will be shared within 48 business hours. You can track its status from your dashboard.",
         "payment_reported": "Your bank transfer has been reported. Our team will verify the payment within 24 business hours.",
         "offre_deleted": "Offer deleted successfully."
-    }
+    },
+    "account_archived": "Your account is archived, please contact support.",
+    "account_refused": "Your account has been refused, please contact support."
 }

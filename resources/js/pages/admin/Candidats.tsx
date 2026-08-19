@@ -178,7 +178,7 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
 
                                 {/* Actions */}
                                 <div className="flex gap-2 flex-wrap shrink-0">
-                                    {currentStatus === 'en_attente' && (
+                                    {(currentStatus === 'en_attente' || currentStatus === 'archive') && (
                                         <>
                                             <button
                                                 onClick={() => handleApprove(candidat.id)}
