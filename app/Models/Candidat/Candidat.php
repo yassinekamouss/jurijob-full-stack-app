@@ -193,7 +193,7 @@ class Candidat extends Model
         foreach ($experiences as $exp) {
             try {
                 $start = Carbon::createFromFormat('Y-m', $exp->debut)->startOfMonth();
-                $end = $exp->fin ? Carbon::createFromFormat('Y-m', $exp->fin)->endOfMonth() : now();
+                $end = $exp->fin ? Carbon::createFromFormat('Y-m', $exp->fin)->startOfMonth() : now()->startOfMonth();
                 if ($start->lessThanOrEqualTo($end)) {
                     $periods[] = ['start' => $start, 'end' => $end];
                 }
@@ -225,7 +225,7 @@ class Candidat extends Model
 
         $totalMonths = 0;
         foreach ($merged as $period) {
-            $totalMonths += $period['start']->diffInMonths($period['end']) + 1;
+            $totalMonths += (int) $period['start']->diffInMonths($period['end']) + 1;
         }
 
         return $totalMonths;

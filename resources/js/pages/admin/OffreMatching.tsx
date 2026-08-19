@@ -16,6 +16,8 @@ import {
     Clock,
     FileText,
     SlidersHorizontal,
+    ChevronUp,
+    ChevronDown,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { ComponentType } from 'react';
@@ -1030,21 +1032,43 @@ function CandidateCard({
                 </div>
 
                 <div
-                    className={`flex min-w-[80px] shrink-0 flex-col items-center justify-center border px-5 py-4 ${colors.bg}`}
+                    className={`group/score relative flex min-w-[100px] shrink-0 flex-col items-center justify-center border px-4 py-4 ${colors.bg}`}
                 >
                     {scoreEditable ? (
-                        <input
-                            type="number"
-                            min={0}
-                            max={100}
-                            value={scoreValue}
-                            onChange={(event) =>
-                                onScoreChange(event.target.value)
-                            }
-                            onClick={(event) => event.stopPropagation()}
-                            className={`w-16 bg-transparent text-center text-3xl font-medium outline-none ${colors.text}`}
-                            aria-label={`score ${candidat.prenom} ${candidat.nom}`}
-                        />
+                        <div className="flex items-center gap-1">
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onScoreChange(String(Math.min(100, scoreValue + 1)));
+                                }}
+                                className="flex h-5 w-5 items-center justify-center opacity-0 transition-opacity group-hover/score:opacity-100 hover:bg-white/15"
+                                aria-label="Increase score"
+                            >
+                                <ChevronUp className="h-4 w-4" />
+                            </button>
+                            <input
+                                type="number"
+                                min={0}
+                                max={100}
+                                value={scoreValue}
+                                onChange={(event) => onScoreChange(event.target.value)}
+                                onClick={(event) => event.stopPropagation()}
+                                className={`w-14 bg-transparent text-center text-3xl font-medium outline-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden [-moz-appearance:textfield] ${colors.text}`}
+                                aria-label={`score ${candidat.prenom} ${candidat.nom}`}
+                            />
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onScoreChange(String(Math.max(0, scoreValue - 1)));
+                                }}
+                                className="flex h-5 w-5 items-center justify-center opacity-0 transition-opacity group-hover/score:opacity-100 hover:bg-white/15"
+                                aria-label="Decrease score"
+                            >
+                                <ChevronDown className="h-4 w-4" />
+                            </button>
+                        </div>
                     ) : (
                         <span className={`text-3xl font-medium ${colors.text}`}>
                             {displayScore}
