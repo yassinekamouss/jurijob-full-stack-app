@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TaxonomySeeder::class,
         ]);
 
+        /*
         DB::table('admins')->updateOrInsert(
             ['email' => 'admin@jurijob.ma'],
             [
@@ -81,5 +82,6 @@ class DatabaseSeeder extends Seeder
             OffreTestDataSeeder::class,
             LargeCandidatSeeder::class,
         ]);
+        */
     }
 }
