@@ -120,9 +120,4 @@ return [
         'name' => env('MAIL_SUPPORT_NAME'),
     ],
 
-    'notifications' => [
-        'address' => env('MAIL_NOTIFICATION_ADDRESS'),
-        'name' => env('MAIL_NOTIFICATION_NAME'),
-    ],
-
 ];

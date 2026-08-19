@@ -30,7 +30,7 @@
             <table role="presentation" cellpadding="0" cellspacing="0" align="center">
               <tr>
                 <td align="center" style="padding-bottom:18px;">
-                  <img src="{{ config('app.email_asset_url') }}/images/logo_jurijob.png" width="52" height="52" alt="JuriJob"
+                  <img src="{{ config('app.email_asset_url') }}/images/logo_jurijob.webp" width="52" height="52" alt="JuriJob"
                        style="display:block;border-radius:8px;border:0;-ms-interpolation-mode:bicubic;" />
                 </td>
               </tr>
