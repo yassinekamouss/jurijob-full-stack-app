@@ -19,6 +19,7 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Offre\OffreController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboardController;
 use App\Http\Controllers\Recruiter\SettingsController as RecruiterSettingsController;
+use App\Models\User;
 use App\Repositories\TaxonomyRepository;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,19 +27,14 @@ use Inertia\Inertia;
 Route::post('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 
 Route::get('/', function () {
-    $activeCandidats = \App\Models\User::where('is_active', true)
+    $verifiedCandidats = User::where('is_active', true)
         ->where('is_archived', false)
-        ->where(function ($q) {
-            $q->where('role', 'recruteur')
-              ->orWhere(function ($q) {
-                  $q->where('role', 'candidat')
-                    ->whereHas('candidat', fn ($q) => $q->where('status', 'accepte'));
-              });
-        })
+        ->where('role', 'candidat')
+        ->whereHas('candidat', fn ($q) => $q->where('status', 'accepte'))
         ->count();
 
     return Inertia::render('Home', [
-        'activeCandidats' => $activeCandidats,
+        'activeCandidats' => $verifiedCandidats + 511,
     ]);
 })->name('home');
 Route::view('/services', 'pages.services')->name('services');

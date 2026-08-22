@@ -20,9 +20,9 @@ interface Props {
     taxonomies: any;
 }
 
-const CV_UNIT_PRICE_MAD = 1490;
+const CV_UNIT_PRICE_MAD = 1500;
 const CV_MIN = 1;
-const CV_MAX = 20;
+const CV_MAX = 200;
 
 const formatMad = (amount: number) =>
     new Intl.NumberFormat('fr-MA', {

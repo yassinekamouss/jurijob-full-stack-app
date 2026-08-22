@@ -21,7 +21,7 @@
         'description' => __t('services_page.seo_description'),
         'offers' => [
             '@type' => 'Offer',
-            'price' => '1490',
+            'price' => '1500',
             'priceCurrency' => 'MAD',
             'description' => __t('services_page.json_ld.offer_description')
         ]

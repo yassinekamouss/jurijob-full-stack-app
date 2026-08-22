@@ -97,7 +97,7 @@ describe('RecruiterPaymentReceivedMail', function () {
         $offre = Offre::factory()->create(['recruteur_id' => $recruteur->id]);
         $mailable = new RecruiterPaymentReceivedMail(
             $recruteur, $offre,
-            '1 490,00 MAD', '16/08/2026', 'REF-20260816-001',
+            '1 500,00 MAD', '16/08/2026', 'REF-20260816-001',
             'https://jurijob.ma/dashboard'
         );
 
@@ -109,12 +109,12 @@ describe('RecruiterPaymentReceivedMail', function () {
         $offre = Offre::factory()->create(['recruteur_id' => $recruteur->id]);
         $mailable = new RecruiterPaymentReceivedMail(
             $recruteur, $offre,
-            '1 490,00 MAD', '16/08/2026', 'REF-20260816-001',
+            '1 500,00 MAD', '16/08/2026', 'REF-20260816-001',
             'https://jurijob.ma/dashboard'
         );
 
         $mailable->assertSeeInHtml('REF-20260816-001');
-        $mailable->assertSeeInHtml('1 490,00 MAD');
+        $mailable->assertSeeInHtml('1 500,00 MAD');
         $mailable->assertSeeInHtml('24 heures maximum');
     });
 });

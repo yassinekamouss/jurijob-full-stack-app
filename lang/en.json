@@ -49,7 +49,7 @@
             "cta_recruiter_action": "Submit a request",
             "image_alt": "Legal workspace",
             "stat1_value": "1,250+",
-            "stat1_label": "Active users",
+            "stat1_label": "Verified profiles",
             "stat2_value": "98%",
             "stat2_label": "Match rate"
         },
@@ -130,9 +130,9 @@
                 "badge": "Firms & Recruiters",
                 "plan_name": "Elite",
                 "price_from": "Starting from",
-                "price": "1 490 MAD excl. tax",
+                "price": "1 500 MAD excl. tax",
                 "period": "\/ profile",
-                "tax_inclusive": "(or 1 788 MAD incl. tax)",
+                "tax_inclusive": "(or 1 800 MAD incl. tax)",
                 "description": "Transparent pricing adjusted to your recruitment volume, guaranteed by expert review.",
                 "feature1": "Rigorous selection by legal experts (+20 years experience)",
                 "feature2": "Guaranteed 100% custom shortlist",
@@ -1384,8 +1384,8 @@
         "pricing": {
             "badge": "Transparent Pricing",
             "sub_badge": "Payment upon delivery",
-            "price_ht": "1,490 MAD excl. VAT",
-            "price_details": "per delivered profile · i.e. 1,788 MAD incl. VAT",
+            "price_ht": "1,500 MAD excl. VAT",
+            "price_details": "per delivered profile · i.e. 1,800 MAD incl. VAT",
             "note1": "• The total amount is communicated before any payment. If no profile in our CV database matches your criteria, no shortlist is delivered and nothing is billed.",
             "note2": "• Preferential pricing applies for five or more profiles. Contact us for a tailored quotation matching your volume.",
             "cta": "Request a tailored quote"
@@ -1412,7 +1412,7 @@
     },
     "faq_page": {
         "seo_title": "Frequently Asked Questions (FAQ) & Recruitment Pricing | JuriJob",
-        "seo_description": "All answers to your questions about JuriJob: pricing (1,490 MAD excl. VAT\/profile), 48h delivery, selection by legal experts, and confidentiality.",
+        "seo_description": "All answers to your questions about JuriJob: pricing (1,500 MAD excl. VAT\/profile), 48h delivery, selection by legal experts, and confidentiality.",
         "hero": {
             "title_part1": "Frequently Asked ",
             "title_part2": "Questions",
@@ -1429,7 +1429,7 @@
                     },
                     "q2": {
                         "question": "How does JURIJOB differ from a traditional recruitment agency?",
-                        "answer": "A traditional recruitment agency charges on a success basis, often 15% to 25% of the hired candidate's annual salary — representing tens of thousands of dirhams for a senior legal counsel. JURIJOB charges 1,490 MAD excl. VAT per delivered profile, with no subscription and no placement commission. We are not compensated based on hiring success, but on the quality of selection — allowing us to remain objective and offer a cost-controlled service, even for recurring needs."
+                        "answer": "A traditional recruitment agency charges on a success basis, often 15% to 25% of the hired candidate's annual salary — representing tens of thousands of dirhams for a senior legal counsel. JURIJOB charges 1,500 MAD excl. VAT per delivered profile, with no subscription and no placement commission. We are not compensated based on hiring success, but on the quality of selection — allowing us to remain objective and offer a cost-controlled service, even for recurring needs."
                     },
                     "q3": {
                         "question": "Who is behind JURIJOB?",
@@ -1442,7 +1442,7 @@
                 "items": {
                     "q1": {
                         "question": "How much does a shortlist cost?",
-                        "answer": "1,490 MAD excl. VAT per delivered profile (1,788 MAD incl. VAT). You choose the desired number of profiles when making your request, and the total amount is communicated before any payment — so you know exactly what you commit. No subscription, no commission on the hired candidate's salary. If no profile in our CV database matches your criteria, no shortlist is delivered and you pay nothing. Volume pricing applies for five or more profiles: email us at recrutement@sentissilegal.com for a customized quote."
+                        "answer": "1,500 MAD excl. VAT per delivered profile (1,800 MAD incl. VAT). You choose the desired number of profiles when making your request, and the total amount is communicated before any payment — so you know exactly what you commit. No subscription, no commission on the hired candidate's salary. If no profile in our CV database matches your criteria, no shortlist is delivered and you pay nothing. Volume pricing applies for five or more profiles: email us at recrutement@sentissilegal.com for a customized quote."
                     },
                     "q2": {
                         "question": "When and how is payment made?",
@@ -1528,9 +1528,9 @@
                 "num": "Article 3",
                 "title": "Pricing & Rates",
                 "badge": "Standard Unit Rate",
-                "price": "1,490 MAD",
+                "price": "1,500 MAD",
                 "unit": "excl. tax \/ profile",
-                "tax": "I.e. 1,788 MAD incl. tax (20% VAT)",
+                "tax": "I.e. 1,800 MAD incl. tax (20% VAT)",
                 "p1": "The total amount due corresponds to the unit price multiplied by the number of profiles effectively making up the delivered shortlist. This amount is displayed to the recruiter prior to any payment commitment.",
                 "p2": "Specific pricing terms may be granted for recurring needs or large volumes.",
                 "p3": "Prices are subject to change; the applicable rate is the one in force on the day the shortlist is delivered."

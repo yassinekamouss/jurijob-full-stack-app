@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'cv_unit_price_mad' => 1490,
+    'cv_unit_price_mad' => 1500,
 
     'bank' => [
         'beneficiary' => 'SENTISSI LEGAL ADVISORY',

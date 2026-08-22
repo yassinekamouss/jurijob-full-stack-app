@@ -49,7 +49,7 @@
             "cta_recruiter_action": "Déposer une demande",
             "image_alt": "Espace de travail juridique",
             "stat1_value": "1,250+",
-            "stat1_label": "Utilisateurs actifs",
+            "stat1_label": "Profils vérifiés",
             "stat2_value": "98%",
             "stat2_label": "Taux d'adéquation"
         },
@@ -130,9 +130,9 @@
                 "badge": "Cabinets & Recruteurs",
                 "plan_name": "Élite",
                 "price_from": "À partir de",
-                "price": "1 490 MAD HT",
+                "price": "1 500 MAD HT",
                 "period": "\/ profil",
-                "tax_inclusive": "(soit 1 788 MAD TTC)",
+                "tax_inclusive": "(soit 1 800 MAD TTC)",
                 "description": "Une tarification transparente et ajustée selon vos volumes de recrutement, garantie par l'œil de nos experts.",
                 "feature1": "Sélection rigoureuse par nos experts juridiques (+20 ans d'expérience)",
                 "feature2": "Garantie d'une short-list 100% sur-mesure",
@@ -1385,8 +1385,8 @@
         "pricing": {
             "badge": "Tarification Transparente",
             "sub_badge": "Paiement après livraison",
-            "price_ht": "1 490 MAD HT",
-            "price_details": "par profil livré · soit 1 788 MAD TTC",
+            "price_ht": "1 500 MAD HT",
+            "price_details": "par profil livré · soit 1 800 MAD TTC",
             "note1": "• Le montant total vous est communiqué avant tout paiement. Si aucun profil de la CVthèque ne correspond à vos critères, aucune short-list n'est livrée et rien ne vous est facturé.",
             "note2": "• Une tarification préférentielle s'applique à partir de cinq profils. Écrivez-nous pour un devis adapté à vos volumes.",
             "cta": "Demander un devis sur mesure"
@@ -1413,7 +1413,7 @@
     },
     "faq_page": {
         "seo_title": "Foire Aux Questions (FAQ) & Tarifs Recrutement | JuriJob",
-        "seo_description": "Toutes les réponses à vos questions sur JuriJob : tarifs (1 490 MAD HT\/profil), délais de 48h, sélection par des experts juridiques et confidentialité.",
+        "seo_description": "Toutes les réponses à vos questions sur JuriJob : tarifs (1 500 MAD HT\/profil), délais de 48h, sélection par des experts juridiques et confidentialité.",
         "hero": {
             "title_part1": "Foire aux ",
             "title_part2": "questions",
@@ -1430,7 +1430,7 @@
                     },
                     "q2": {
                         "question": "En quoi JURIJOB diffère d'un cabinet de recrutement classique ?",
-                        "answer": "Un cabinet de recrutement facture au succès de l'embauche, souvent 15 à 25 % du salaire annuel du candidat recruté — soit plusieurs dizaines de milliers de dirhams pour un juriste confirmé. JURIJOB facture 1 490 MAD HT par profil livré, sans abonnement et sans commission sur l'embauche. Nous ne sommes pas rémunérés au succès de votre recrutement, mais à la qualité de la sélection — cela nous permet de rester objectifs et de proposer un service à coût maîtrisé, même pour des besoins récurrents."
+                        "answer": "Un cabinet de recrutement facture au succès de l'embauche, souvent 15 à 25 % du salaire annuel du candidat recruté — soit plusieurs dizaines de milliers de dirhams pour un juriste confirmé. JURIJOB facture 1 500 MAD HT par profil livré, sans abonnement et sans commission sur l'embauche. Nous ne sommes pas rémunérés au succès de votre recrutement, mais à la qualité de la sélection — cela nous permet de rester objectifs et de proposer un service à coût maîtrisé, même pour des besoins récurrents."
                     },
                     "q3": {
                         "question": "Qui est derrière JURIJOB ?",
@@ -1443,7 +1443,7 @@
                 "items": {
                     "q1": {
                         "question": "Combien coûte une short-list ?",
-                        "answer": "1 490 MAD HT par profil livré, soit 1 788 MAD TTC. Vous choisissez le nombre de profils souhaité lors de votre demande, et le montant total vous est communiqué avant tout paiement — vous savez donc exactement ce que vous engagez. Aucun abonnement, aucune commission sur le salaire du candidat recruté. Si aucun profil de notre CVthèque ne correspond à vos critères, aucune short-list n'est livrée et rien ne vous est facturé. Une tarification préférentielle s'applique à partir de cinq profils : écrivez-nous à recrutement@sentissilegal.com pour un devis adapté."
+                        "answer": "1 500 MAD HT par profil livré, soit 1 800 MAD TTC. Vous choisissez le nombre de profils souhaité lors de votre demande, et le montant total vous est communiqué avant tout paiement — vous savez donc exactement ce que vous engagez. Aucun abonnement, aucune commission sur le salaire du candidat recruté. Si aucun profil de notre CVthèque ne correspond à vos critères, aucune short-list n'est livrée et rien ne vous est facturé. Une tarification préférentielle s'applique à partir de cinq profils : écrivez-nous à recrutement@sentissilegal.com pour un devis adapté."
                     },
                     "q2": {
                         "question": "Quand et comment s'effectue le paiement ?",
@@ -1529,9 +1529,9 @@
                 "num": "Article 3",
                 "title": "Prix et Tarification",
                 "badge": "Tarif unitaire réglementé",
-                "price": "1 490 MAD",
+                "price": "1 500 MAD",
                 "unit": "HT \/ profil",
-                "tax": "Soit 1 788 MAD TTC (TVA 20%)",
+                "tax": "Soit 1 800 MAD TTC (TVA 20%)",
                 "p1": "Le montant total dû correspond au prix unitaire multiplié par le nombre de profils effectivement composant la short-list livrée. Ce montant est affiché au recruteur avant tout engagement de paiement.",
                 "p2": "Des conditions tarifaires spécifiques peuvent être consenties pour les besoins récurrents ou les volumes importants.",
                 "p3": "Les prix sont susceptibles d'évoluer ; le tarif applicable est celui en vigueur au jour de la livraison de la short-list."

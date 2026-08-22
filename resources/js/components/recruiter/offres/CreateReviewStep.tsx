@@ -60,7 +60,7 @@ export default function CreateReviewStep({ data, processing, onSubmit, onPrev, t
 
     const hasRemoteMode = /teletravail|télétravail/i.test(getValue('modeTravails', data.mode_travail_id));
     const cvCount = Math.max(1, Number(data.nombre_cv) || 1);
-    const cvUnitPrice = 1490;
+    const cvUnitPrice = 1500;
     const cvTotalPrice = cvCount * cvUnitPrice;
     const formatMad = (amount: number) =>
         new Intl.NumberFormat('fr-MA', {
