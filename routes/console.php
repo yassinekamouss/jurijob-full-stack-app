@@ -10,6 +10,6 @@ Artisan::command('inspire', function () {
 
 // Envoi quotidien d'un rappel aux candidats (max 210) ayant un profil incomplet
 Schedule::command('app:send-profile-reminders')
-    ->dailyAt('00:25')
+    ->dailyAt('23:15')
     ->timezone('Africa/Casablanca');
 
