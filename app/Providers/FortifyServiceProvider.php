@@ -55,6 +55,12 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
+
+                if (Hash::needsRehash($user->password)) {
+                    $user->password = Hash::make($request->password);
+                    $user->save();
+                }
+
                 if ($user->role === 'candidat' && $user->candidat) {
                     if ($user->candidat->status === 'archive') {
                         throw ValidationException::withMessages([

@@ -10,9 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
@@ -155,7 +153,7 @@ class SocialAuthController extends Controller
 
         return DB::transaction(function () use ($socialUser, $provider, $email, $role) {
             // Generate a secure random password (user will login via OAuth or reset password if needed)
-            $password = Hash::make(Str::random(32));
+            $password = null;
 
             $user = User::create([
                 'email' => $email,
@@ -257,7 +255,7 @@ class SocialAuthController extends Controller
         }
 
         return DB::transaction(function () use ($socialData, $provider, $email, $role) {
-            $password = Hash::make(Str::random(32));
+            $password = null;
 
             $user = User::create([
                 'email' => $email,
