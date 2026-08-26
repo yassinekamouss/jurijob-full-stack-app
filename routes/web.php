@@ -30,11 +30,11 @@ Route::get('/', function () {
     $verifiedCandidats = User::where('is_active', true)
         ->where('is_archived', false)
         ->where('role', 'candidat')
-        ->whereHas('candidat', fn ($q) => $q->where('status', 'accepte'))
+        ->whereHas('candidat', fn($q) => $q->where('status', 'accepte'))
         ->count();
 
     return Inertia::render('Home', [
-        'activeCandidats' => $verifiedCandidats + 511,
+        'activeCandidats' => $verifiedCandidats,
     ]);
 })->name('home');
 Route::view('/services', 'pages.services')->name('services');
@@ -98,7 +98,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // admin login Route
 Route::middleware('guest:admin')->group(function () {
-    Route::get('/admin/login', fn () => Inertia::render('admin/auth/Login'))->name('admin.login');
+    Route::get('/admin/login', fn() => Inertia::render('admin/auth/Login'))->name('admin.login');
     Route::post('/admin/login', [AdminAuthController::class, 'login'])->middleware('throttle:5,1');
 });
 
@@ -126,12 +126,12 @@ Route::middleware('auth:admin')->group(function () {
 
 // Candidat & Recruteur Registration Routes
 // ... registration routes ...
-Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat', [
-    'taxonomies' => fn () => TaxonomyRepository::getAll(),
+Route::get('/register/candidat', fn() => Inertia::render('auth/register-candidat', [
+    'taxonomies' => fn() => TaxonomyRepository::getAll(),
 ]))->name('register.candidat.form');
 
-Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur', [
-    'taxonomies' => fn () => TaxonomyRepository::getAll(),
+Route::get('/register/recruteur', fn() => Inertia::render('auth/register-recruteur', [
+    'taxonomies' => fn() => TaxonomyRepository::getAll(),
 ]))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
 
