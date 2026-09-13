@@ -31,6 +31,9 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import AdminLayout from '@/layouts/admin-layout';
+import CandidateDiplomaAction, {
+    type FormationDiplomaItem,
+} from '@/components/admin/CandidateDiplomaAction';
 
 type MatchingBreakdown = {
     score: number;
@@ -58,6 +61,7 @@ type MatchedCandidate = {
     formation_juridique_id?: number | null;
     matching_score: number;
     matching_breakdown?: MatchingBreakdown;
+    exact_experience_months?: number | null;
     user?: { email?: string; telephone?: string };
     postes?: Array<{ id: number; poste_id: number; poste?: { id?: number; nom?: string } }>;
     niveau_experience?: { id?: number; nom?: string };
@@ -73,6 +77,7 @@ type MatchedCandidate = {
         specialisation_id?: number;
         specialisation?: { id?: number; nom?: string };
     }>;
+    formations?: FormationDiplomaItem[];
 };
 
 type OffreProps = {
@@ -158,8 +163,40 @@ const breadcrumbs = [
     { title: 'Matching', href: '#' },
 ];
 
+const clampScore = (score: number): number =>
+    Math.max(0, Math.min(100, Math.round(score)));
+
+function formatExactExperience(months: number, t: any): string {
+    if (months === 0) {
+        return t('recruiter.profiles.exact_experience.no_experience');
+    }
+
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+
+    const parts: string[] = [];
+    if (years > 0) {
+        parts.push(
+            t('recruiter.profiles.exact_experience.years', { count: years }),
+        );
+    }
+    if (remainingMonths > 0) {
+        parts.push(
+            t('recruiter.profiles.exact_experience.months', {
+                count: remainingMonths,
+            }),
+        );
+    }
+
+    return (
+        parts.join(t('recruiter.profiles.exact_experience.and')) +
+        t('recruiter.profiles.exact_experience.of_experience')
+    );
+}
+
 function scoreColor(score: number): { bar: string; text: string; bg: string } {
-    if (score >= 100) {
+    const clamped = clampScore(score);
+    if (clamped >= 100) {
         return {
             bar: 'bg-emerald-500',
             text: 'text-emerald-700',
@@ -229,7 +266,7 @@ export default function OffreMatching({
         Object.fromEntries(
             candidates.map((candidate) => [
                 candidate.id,
-                candidate.matching_score,
+                clampScore(candidate.matching_score),
             ]),
         ),
     );
@@ -263,9 +300,6 @@ export default function OffreMatching({
             ),
         [appliedCriteria],
     );
-
-    const clampScore = (score: number): number =>
-        Math.max(0, Math.min(100, Math.round(score)));
 
     const updateScore = (candidateId: number, value: string) => {
         const parsed = Number(value);
@@ -676,9 +710,9 @@ export default function OffreMatching({
                                     </span>
                                     <span className="text-[10px] tracking-wider text-[#1a1f1e]/35 uppercase">
                                         score{' '}
-                                        {Math.min(
-                                            candidate.matching_score,
-                                            100,
+                                        {clampScore(
+                                            scores[candidate.id] ??
+                                                candidate.matching_score,
                                         )}
                                     </span>
                                 </li>
@@ -729,11 +763,10 @@ export default function OffreMatching({
                 {candidates.length > 0 && (
                     <div className="space-y-3">
                         {candidates.map((candidat, index) => {
-                            const colors = scoreColor(candidat.matching_score);
-                            const displayScore = Math.min(
-                                candidat.matching_score,
-                                100,
+                            const score = clampScore(
+                                scores[candidat.id] ?? candidat.matching_score,
                             );
+                            const colors = scoreColor(score);
                             const selected = selectedIds.includes(candidat.id);
 
                             return (
@@ -742,11 +775,8 @@ export default function OffreMatching({
                                     candidat={candidat}
                                     index={index}
                                     colors={colors}
-                                    displayScore={displayScore}
-                                    scoreValue={
-                                        scores[candidat.id] ??
-                                        candidat.matching_score
-                                    }
+                                    displayScore={score}
+                                    scoreValue={score}
                                     scoreEditable={canSelect}
                                     onScoreChange={(value) =>
                                         updateScore(candidat.id, value)
@@ -842,6 +872,7 @@ function CandidateCard({
     offerFormationId?: number | null;
     onToggle: () => void;
 }) {
+    const { t } = useTranslation();
     const breakdown = candidat.matching_breakdown;
     const candidatPosteIds = (candidat.postes ?? []).map((p) => p.poste_id);
     const posteMatches = offerPosteId !== undefined && candidatPosteIds.includes(offerPosteId);
@@ -855,9 +886,26 @@ function CandidateCard({
         (candidat.formation_juridique_id ??
             candidat.formation_juridique?.id) === offerFormationId;
 
+    const experienceLabel = useMemo(() => {
+        if (!candidat.niveau_experience?.nom) {
+            return null;
+        }
+
+        const baseTitle = candidat.niveau_experience.nom.split('(')[0].trim();
+
+        if (
+            candidat.exact_experience_months !== undefined &&
+            candidat.exact_experience_months !== null
+        ) {
+            return `${baseTitle} (${formatExactExperience(candidat.exact_experience_months, t)})`;
+        }
+
+        return candidat.niveau_experience.nom;
+    }, [candidat.niveau_experience, candidat.exact_experience_months, t]);
+
     return (
         <div
-            className={`relative overflow-hidden border bg-white p-5 transition-colors ${
+            className={`relative border bg-white p-5 transition-colors ${
                 selected
                     ? 'border-[#1a1f1e]'
                     : 'border-[#1a1f1e]/8 hover:border-[#1a1f1e]/20'
@@ -915,11 +963,11 @@ function CandidateCard({
                                 label={nom}
                             />
                         ))}
-                        {candidat.niveau_experience?.nom && (
+                        {experienceLabel && (
                             <CommonBadge
                                 matched={!!experienceMatches}
                                 icon={Award}
-                                label={candidat.niveau_experience.nom}
+                                label={experienceLabel}
                             />
                         )}
                         {candidat.formation_juridique?.nom && (
@@ -1008,26 +1056,33 @@ function CandidateCard({
                         </div>
                     )}
 
-                    <div className="flex flex-wrap gap-4 border-t border-[#1a1f1e]/6 pt-2 text-xs text-[#1a1f1e]/40">
-                        {candidat.user?.telephone && (
-                            <span
-                                className="flex items-center gap-1.5"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <Phone className="h-3 w-3" />
-                                {candidat.user.telephone}
-                            </span>
-                        )}
-                        {candidat.user?.email && (
-                            <a
-                                href={`mailto:${candidat.user.email}`}
-                                className="flex items-center gap-1.5 transition-colors hover:text-[#C06041]"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                <Mail className="h-3 w-3" />
-                                {candidat.user.email}
-                            </a>
-                        )}
+                    <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#1a1f1e]/6 pt-2 text-xs text-[#1a1f1e]/40">
+                        <div className="flex flex-wrap items-center gap-4">
+                            {candidat.user?.telephone && (
+                                <span
+                                    className="flex items-center gap-1.5"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <Phone className="h-3 w-3" />
+                                    {candidat.user.telephone}
+                                </span>
+                            )}
+                            {candidat.user?.email && (
+                                <a
+                                    href={`mailto:${candidat.user.email}`}
+                                    className="flex items-center gap-1.5 transition-colors hover:text-[#C06041]"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <Mail className="h-3 w-3" />
+                                    {candidat.user.email}
+                                </a>
+                            )}
+                        </div>
+
+                        <CandidateDiplomaAction
+                            formations={candidat.formations}
+                            stopPropagation={true}
+                        />
                     </div>
                 </div>
 
@@ -1051,7 +1106,7 @@ function CandidateCard({
                                 type="number"
                                 min={0}
                                 max={100}
-                                value={scoreValue}
+                                value={clampScore(scoreValue)}
                                 onChange={(event) => onScoreChange(event.target.value)}
                                 onClick={(event) => event.stopPropagation()}
                                 className={`w-14 bg-transparent text-center text-3xl font-medium outline-none [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden [-moz-appearance:textfield] ${colors.text}`}
@@ -1061,7 +1116,7 @@ function CandidateCard({
                                 type="button"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    onScoreChange(String(Math.max(0, scoreValue - 1)));
+                                    onScoreChange(String(clampScore(scoreValue - 1)));
                                 }}
                                 className="flex h-5 w-5 items-center justify-center opacity-0 transition-opacity group-hover/score:opacity-100 hover:bg-white/15"
                                 aria-label="Decrease score"
@@ -1071,7 +1126,7 @@ function CandidateCard({
                         </div>
                     ) : (
                         <span className={`text-3xl font-medium ${colors.text}`}>
-                            {displayScore}
+                            {clampScore(displayScore)}
                         </span>
                     )}
                     <span

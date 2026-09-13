@@ -45,6 +45,9 @@ class MatchingEngine
                 'langues.langue',
                 'langues.niveauLangue',
                 'specialisations.specialisation',
+                'formations.formationJuridique',
+                'formations.ecole',
+                'experiences',
             ])
             ->get();
 
@@ -53,6 +56,7 @@ class MatchingEngine
                 $breakdown = $this->scorer->score($candidat, $criteria);
                 $candidat->setAttribute('matching_score', $breakdown['score']);
                 $candidat->setAttribute('matching_breakdown', $breakdown);
+                $candidat->setAttribute('exact_experience_months', $candidat->calculateTotalExperienceMonths());
 
                 return $candidat;
             })

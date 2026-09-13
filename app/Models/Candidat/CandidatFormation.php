@@ -9,6 +9,8 @@ use Database\Factories\CandidatFormationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CandidatFormation extends Model
 {
@@ -27,6 +29,15 @@ class CandidatFormation extends Model
         'formation_juridique_id',
         'ecole_id',
         'autre_ecole',
+        'diploma_file',
+    ];
+
+    protected $hidden = [
+        'diploma_file',
+    ];
+
+    protected $appends = [
+        'has_diploma',
     ];
 
     public function candidat(): BelongsTo
@@ -47,5 +58,41 @@ class CandidatFormation extends Model
     public function ecole(): BelongsTo
     {
         return $this->belongsTo(Ecole::class);
+    }
+
+    public function getHasDiplomaAttribute(): bool
+    {
+        return filled($this->diploma_file);
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::saved(function (CandidatFormation $formation): void {
+            if ($formation->wasChanged('diploma_file')) {
+                static::deleteDiplomaFile((string) $formation->getOriginal('diploma_file'));
+            }
+        });
+
+        static::deleting(function (CandidatFormation $formation): void {
+            static::deleteDiplomaFile((string) $formation->diploma_file);
+        });
+    }
+
+    /**
+     * Delete a stored diploma file from the private disk.
+     *
+     * Only files within the dedicated directory are eligible, which prevents
+     * any path-traversal attempt from removing arbitrary storage files.
+     */
+    protected static function deleteDiplomaFile(string $path): void
+    {
+        if ($path === '' || ! Str::startsWith($path, 'candidat_diplomas/')) {
+            return;
+        }
+
+        Storage::disk('private')->delete($path);
     }
 }

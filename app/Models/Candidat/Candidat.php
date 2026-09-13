@@ -137,8 +137,10 @@ class Candidat extends Model
             : $this->experiences()->exists();
 
         $formations = $this->relationLoaded('formations')
-            ? $this->formations->isNotEmpty()
-            : $this->formations()->exists();
+            ? $this->formations->isNotEmpty() && $this->formations->every(fn (CandidatFormation $formation) => filled($formation->diploma_file))
+            : $this->formations()->exists() && ! $this->formations()->where(function ($query) {
+                $query->whereNull('diploma_file')->orWhere('diploma_file', '');
+            })->exists();
 
         $specialisations = $this->relationLoaded('specialisations')
             ? $this->specialisations->isNotEmpty()
@@ -184,7 +186,10 @@ class Candidat extends Model
 
     public function calculateTotalExperienceMonths(): int
     {
-        $experiences = $this->experiences()->whereNotNull('debut')->get();
+        $experiences = $this->relationLoaded('experiences')
+            ? $this->experiences->filter(fn ($exp) => ! empty($exp->debut))
+            : $this->experiences()->whereNotNull('debut')->get();
+
         if ($experiences->isEmpty()) {
             return 0;
         }

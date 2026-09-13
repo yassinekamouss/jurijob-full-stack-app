@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\CheckEmailController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Candidate\DashboardController as CandidateDashboardController;
+use App\Http\Controllers\Candidate\DiplomaController;
 use App\Http\Controllers\Candidate\ExperienceController;
 use App\Http\Controllers\Candidate\FormationController;
 use App\Http\Controllers\Candidate\LanguageController;
@@ -30,7 +31,7 @@ Route::get('/', function () {
     $verifiedCandidats = User::where('is_active', true)
         ->where('is_archived', false)
         ->where('role', 'candidat')
-        ->whereHas('candidat', fn($q) => $q->where('status', 'accepte'))
+        ->whereHas('candidat', fn ($q) => $q->where('status', 'accepte'))
         ->count();
 
     return Inertia::render('Home', [
@@ -73,11 +74,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('candidate')->name('candidate.')->group(function () {
         Route::resource('experiences', ExperienceController::class)->only(['store', 'update', 'destroy']);
         Route::resource('formations', FormationController::class)->only(['store', 'update', 'destroy']);
+        Route::post('formations/{formation}/diploma', [FormationController::class, 'uploadDiploma'])->name('formations.diploma.upload');
+        Route::delete('formations/{formation}/diploma', [FormationController::class, 'deleteDiploma'])->name('formations.diploma.destroy');
         Route::put('specialisations/sync', [SpecialisationController::class, 'sync'])->name('specialisations.sync');
         Route::resource('specialisations', SpecialisationController::class)->only(['store', 'update', 'destroy']);
         Route::resource('langues', LanguageController::class)->only(['store', 'update', 'destroy']);
         Route::put('preferences/sync', [PreferenceController::class, 'sync'])->name('preferences.sync');
     });
+
+    Route::get('/candidate/diploma/{formation}', DiplomaController::class)->name('candidate.diploma');
 
     Route::middleware('role:candidat')->group(function () {
         Route::get('/candidate/dashboard', [CandidateDashboardController::class, 'index'])->name('candidate.dashboard');
@@ -98,7 +103,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // admin login Route
 Route::middleware('guest:admin')->group(function () {
-    Route::get('/admin/login', fn() => Inertia::render('admin/auth/Login'))->name('admin.login');
+    Route::get('/admin/login', fn () => Inertia::render('admin/auth/Login'))->name('admin.login');
     Route::post('/admin/login', [AdminAuthController::class, 'login'])->middleware('throttle:5,1');
 });
 
@@ -106,6 +111,7 @@ Route::middleware('guest:admin')->group(function () {
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/candidats', [CandidateController::class, 'index'])->name('admin.candidates.index');
+    Route::get('/admin/candidats/{formation}/diploma', DiplomaController::class)->name('admin.candidates.diploma');
     Route::post('/admin/candidats/{candidate}/approve', [CandidateController::class, 'approve'])->name('admin.candidates.approve');
     Route::post('/admin/candidats/{candidate}/reject', [CandidateController::class, 'reject'])->name('admin.candidates.reject');
     Route::post('/admin/candidats/{candidate}/archive', [CandidateController::class, 'archive'])->name('admin.candidates.archive');
@@ -126,12 +132,12 @@ Route::middleware('auth:admin')->group(function () {
 
 // Candidat & Recruteur Registration Routes
 // ... registration routes ...
-Route::get('/register/candidat', fn() => Inertia::render('auth/register-candidat', [
-    'taxonomies' => fn() => TaxonomyRepository::getAll(),
+Route::get('/register/candidat', fn () => Inertia::render('auth/register-candidat', [
+    'taxonomies' => fn () => TaxonomyRepository::getAll(),
 ]))->name('register.candidat.form');
 
-Route::get('/register/recruteur', fn() => Inertia::render('auth/register-recruteur', [
-    'taxonomies' => fn() => TaxonomyRepository::getAll(),
+Route::get('/register/recruteur', fn () => Inertia::render('auth/register-recruteur', [
+    'taxonomies' => fn () => TaxonomyRepository::getAll(),
 ]))->name('register.recruteur.form');
 Route::post('/check-email', CheckEmailController::class)->name('check.email');
 

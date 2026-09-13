@@ -11,12 +11,18 @@ use App\DTOs\Recruteur\ProfileData as RecruteurProfile;
 use App\Models\Candidat\Candidat;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class RegistrationService
 {
+    public function __construct(
+        private readonly FormationDiplomaService $diplomaService,
+    ) {}
+
     /**
      * Register a new candidat and their profile.
      *
@@ -128,11 +134,36 @@ class RegistrationService
         }
 
         if (! empty($data['formations'])) {
-            $formationsData = array_map(
-                fn ($formation) => FormationData::fromArray($formation)->toArray(),
-                $data['formations']
-            );
-            $candidat->formations()->createMany($formationsData);
+            $formationsData = [];
+            $storedDiplomaPaths = [];
+
+            try {
+                foreach ($data['formations'] as $formation) {
+                    $diplomaPath = null;
+
+                    if (isset($formation['diploma_file']) && $formation['diploma_file'] instanceof UploadedFile) {
+                        $diplomaPath = $this->diplomaService->store($formation['diploma_file']);
+                        $storedDiplomaPaths[] = $diplomaPath;
+                    }
+
+                    $formationsData[] = FormationData::fromArray(
+                        array_merge($formation, ['diploma_file' => $diplomaPath])
+                    )->toArray();
+                }
+
+                $candidat->formations()->createMany($formationsData);
+            } catch (Exception $e) {
+                foreach ($storedDiplomaPaths as $path) {
+                    $this->deleteStoredDiploma($path);
+                }
+
+                throw $e;
+            }
         }
+    }
+
+    protected function deleteStoredDiploma(string $path): void
+    {
+        Storage::disk('private')->delete($path);
     }
 }

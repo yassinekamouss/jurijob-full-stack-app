@@ -281,6 +281,8 @@
             "in": "en",
             "no_education": "Aucune formation enregistrée.",
             "delete_confirm": "Supprimer cette formation ?",
+            "view_diploma": "Voir le diplôme",
+            "no_diploma": "Aucun diplôme joint",
             "date_error": "L'année de fin doit être postérieure ou égale à l'année de début.",
             "labels": {
                 "level": "Niveau",
@@ -582,12 +584,18 @@
         "actions": {
             "approve": "Accepter",
             "reject": "Refuser",
-            "archive": "Archiver"
+            "archive": "Archiver",
+            "view_diploma": "Voir le diplôme PDF",
+            "view_diplomas": "Voir les diplômes PDF ({{count}})",
+            "no_diploma": "Aucun diplôme joint",
+            "diplomas_list_title": "Diplômes & Attestations"
         },
         "details": {
             "education": "Formation",
             "experience": "Expérience",
-            "present": "Présent"
+            "present": "Présent",
+            "view_pdf": "Voir le diplôme PDF",
+            "no_pdf": "Sans diplôme joint"
         },
         "pagination": {
             "info": "Affichage de {{from}} à {{to}} sur {{total}} candidats",
@@ -1057,7 +1065,10 @@
             "fill_all_experiences": "Veuillez remplir tous les champs obligatoires de chaque expérience.",
             "end_year_invalid": "L'année de fin doit être supérieure ou égale à l'année de début.",
             "end_date_invalid": "La date de fin doit être supérieure ou égale à la date de début.",
-            "language_level_required": "Veuillez renseigner le niveau pour chaque langue sélectionnée."
+            "language_level_required": "Veuillez renseigner le niveau pour chaque langue sélectionnée.",
+            "diploma_invalid_type": "L'attestation ou le diplôme doit être un fichier PDF.",
+            "diploma_too_large": "L'attestation ou le diplôme ne doit pas dépasser 5 Mo.",
+            "diploma_file_required": "Veuillez joindre l'attestation ou le diplôme de chaque formation au format PDF."
         },
         "login": {
             "seo_title": "Connexion | JuriJob",
@@ -1349,6 +1360,10 @@
                 "countries_label": "Pays recherché *",
                 "country_placeholder": "Sélectionnez un pays",
                 "cities_country_required": "Sélectionnez d’abord un pays pour voir ses villes",
+                "diploma_label": "Attestation ou diplôme (PDF)",
+                "diploma_help": "Fichier PDF obligatoire, 5 Mo maximum. Il sera vérifié par notre équipe.",
+                "diploma_placeholder": "Choisir un fichier PDF...",
+                "diploma_remove": "Retirer le fichier",
                 "experiences_help": "Un stage est une expérience. Stage, alternance, clinique juridique ou bénévolat juridique comptent pleinement et renforcent votre positionnement auprès des recruteurs. Ne laissez pas cette étape vide si vous avez déjà exercé, même brièvement."
             }
         }

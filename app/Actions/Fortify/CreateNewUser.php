@@ -91,10 +91,16 @@ class CreateNewUser implements CreatesNewUsers
             'formations.*.specialisation_id' => ['required_with:formations', 'integer'],
             'formations.*.ecole_id' => ['nullable', 'string'],
             'formations.*.autre_ecole' => ['required_if:formations.*.ecole_id,other', 'required_if:formations.*.ecole_id,', 'nullable', 'string', 'max:255'],
+            'formations.*.diploma_file' => ['required_with:formations', 'file', 'mimes:pdf', 'mimetypes:application/pdf', 'max:5120'],
         ], [
             'experiences.*.fin.after_or_equal' => 'La date de fin de l\'expérience doit être postérieure ou égale à la date de début.',
             'formations.*.annee_fin.gte' => 'L\'année de fin de la formation doit être postérieure ou égale à l\'année de début.',
             'formations.*.autre_ecole.required_if' => 'Veuillez préciser le nom de votre école.',
+            'formations.*.diploma_file.required' => 'Veuillez joindre l\'attestation ou le diplôme de chaque formation au format PDF.',
+            'formations.*.diploma_file.mimes' => 'L\'attestation/diplôme de chaque formation doit être un fichier PDF.',
+            'formations.*.diploma_file.mimetypes' => 'L\'attestation/diplôme de chaque formation doit être un fichier PDF.',
+            'formations.*.diploma_file.max' => 'L\'attestation/diplôme de chaque formation ne doit pas dépasser 5 Mo.',
+            'formations.*.diploma_file.file' => 'Le fichier de l\'attestation/diplôme n\'a pas pu être téléversé.',
         ])->validate();
 
         return $this->registrationService->registerCandidat($input);

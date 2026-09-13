@@ -281,6 +281,8 @@
             "in": "in",
             "no_education": "No education recorded.",
             "delete_confirm": "Delete this education?",
+            "view_diploma": "View diploma",
+            "no_diploma": "No diploma attached",
             "date_error": "The end year must be after or equal to the start year.",
             "labels": {
                 "level": "Level",
@@ -582,12 +584,18 @@
         "actions": {
             "approve": "Approve",
             "reject": "Reject",
-            "archive": "Archive"
+            "archive": "Archive",
+            "view_diploma": "View PDF Diploma",
+            "view_diplomas": "View PDF Diplomas ({{count}})",
+            "no_diploma": "No diploma attached",
+            "diplomas_list_title": "Certificates & Diplomas"
         },
         "details": {
             "education": "Education",
             "experience": "Experience",
-            "present": "Present"
+            "present": "Present",
+            "view_pdf": "View PDF Diploma",
+            "no_pdf": "No diploma attached"
         },
         "pagination": {
             "info": "Showing {{from}} to {{to}} of {{total}} candidates",
@@ -1056,7 +1064,10 @@
             "fill_all_experiences": "Please fill in all required fields for each experience.",
             "end_year_invalid": "End year must be greater than or equal to start year.",
             "end_date_invalid": "End date must be greater than or equal to start date.",
-            "language_level_required": "Please specify the proficiency level for each selected language."
+            "language_level_required": "Please specify the proficiency level for each selected language.",
+            "diploma_invalid_type": "The certificate or diploma must be a PDF file.",
+            "diploma_too_large": "The certificate or diploma must not exceed 5 MB.",
+            "diploma_file_required": "Please attach the certificate or diploma for each education record as a PDF."
         },
         "login": {
             "seo_title": "Sign In | JuriJob",
@@ -1348,6 +1359,10 @@
                 "countries_label": "Target country *",
                 "country_placeholder": "Select a country",
                 "cities_country_required": "Select a country first to see its cities",
+                "diploma_label": "Certificate or diploma (PDF)",
+                "diploma_help": "PDF file required, max 5 MB. It will be verified by our team.",
+                "diploma_placeholder": "Choose a PDF file...",
+                "diploma_remove": "Remove file",
                 "experiences_help": "An internship is experience. Internships, apprenticeships, legal clinics, or legal volunteering all count fully and strengthen your profile with recruiters. Do not leave this step empty if you have already practiced, even briefly."
             }
         }

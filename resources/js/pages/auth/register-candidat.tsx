@@ -15,7 +15,7 @@ import type {
     CandidatFormData,
     Formation,
     Experience,
-    FullCandidatFormData
+    FullCandidatFormData,
 } from '@/types';
 import FormCandidat from '@/components/signup/FormCandidat';
 import FormCandidatPreferences from '@/components/signup/FormCandidatPreferences';
@@ -118,15 +118,24 @@ export default function RegisterCandidat() {
         (candidat.poste_id as (string | number)[]).forEach((id, i) =>
             payload.append(`poste_id[${i}]`, String(id)),
         );
-        payload.append('niveau_experience_id', String(candidat.niveau_experience_id));
-        payload.append('formation_juridique_id', String(candidat.formation_juridique_id));
+        payload.append(
+            'niveau_experience_id',
+            String(candidat.niveau_experience_id),
+        );
+        payload.append(
+            'formation_juridique_id',
+            String(candidat.formation_juridique_id),
+        );
         payload.append('salaire_id', String(candidat.salaire_id));
         payload.append('urgence_id', String(candidat.urgence_id));
 
         candidat.specialisations.forEach((s: string | number, i: number) =>
-            payload.append(`specialisations[${i}][specialisation_id]`, String(s)),
+            payload.append(
+                `specialisations[${i}][specialisation_id]`,
+                String(s),
+            ),
         );
-       
+
         candidat.type_travails.forEach((t: string | number, i: number) =>
             payload.append(`type_travails[${i}][type_travail_id]`, String(t)),
         );
@@ -138,29 +147,63 @@ export default function RegisterCandidat() {
         );
 
         candidat.langues.forEach(
-            (lang: { langue_id: string | number; niveau_langue_id: string | number }, i: number) => {
-                payload.append(`langues[${i}][langue_id]`, String(lang.langue_id));
-                payload.append(`langues[${i}][niveau_langue_id]`, String(lang.niveau_langue_id));
+            (
+                lang: {
+                    langue_id: string | number;
+                    niveau_langue_id: string | number;
+                },
+                i: number,
+            ) => {
+                payload.append(
+                    `langues[${i}][langue_id]`,
+                    String(lang.langue_id),
+                );
+                payload.append(
+                    `langues[${i}][niveau_langue_id]`,
+                    String(lang.niveau_langue_id),
+                );
             },
         );
 
         candidat.formations.forEach((f: Formation, i: number) => {
             payload.append(`formations[${i}][annee_debut]`, f.annee_debut);
             payload.append(`formations[${i}][annee_fin]`, f.annee_fin);
-            payload.append(`formations[${i}][formation_juridique_id]`, String(f.formation_juridique_id));
-            payload.append(`formations[${i}][specialisation_id]`, String(f.specialisation_id));
+            payload.append(
+                `formations[${i}][formation_juridique_id]`,
+                String(f.formation_juridique_id),
+            );
+            payload.append(
+                `formations[${i}][specialisation_id]`,
+                String(f.specialisation_id),
+            );
             if (f.ecole_id === 'other') {
                 payload.append(`formations[${i}][ecole_id]`, 'other');
-                payload.append(`formations[${i}][autre_ecole]`, f.autre_ecole || '');
+                payload.append(
+                    `formations[${i}][autre_ecole]`,
+                    f.autre_ecole || '',
+                );
             } else {
-                payload.append(`formations[${i}][ecole_id]`, String(f.ecole_id));
+                payload.append(
+                    `formations[${i}][ecole_id]`,
+                    String(f.ecole_id),
+                );
+            }
+
+            if (f.diploma_file) {
+                payload.append(
+                    `formations[${i}][diploma_file]`,
+                    f.diploma_file,
+                );
             }
         });
 
         candidat.experiences.forEach((e: Experience, i: number) => {
             payload.append(`experiences[${i}][debut]`, e.debut);
             payload.append(`experiences[${i}][fin]`, e.fin);
-            payload.append(`experiences[${i}][type_travail_id]`, String(e.type_travail_id));
+            payload.append(
+                `experiences[${i}][type_travail_id]`,
+                String(e.type_travail_id),
+            );
             payload.append(`experiences[${i}][entreprise]`, e.entreprise);
             payload.append(`experiences[${i}][poste_id]`, String(e.poste_id));
         });
@@ -208,7 +251,7 @@ export default function RegisterCandidat() {
                     reject(
                         new Error(
                             (firstError as string) ||
-                            t('auth.register_candidate.toast_error'),
+                                t('auth.register_candidate.toast_error'),
                         ),
                     );
                 },
@@ -243,9 +286,13 @@ export default function RegisterCandidat() {
             });
 
             if (formData.user.password && formData.user.password_confirmation) {
-                if (formData.user.password !== formData.user.password_confirmation) {
-                    newErrors.password_confirmation =
-                        t('auth.validation.password_mismatch');
+                if (
+                    formData.user.password !==
+                    formData.user.password_confirmation
+                ) {
+                    newErrors.password_confirmation = t(
+                        'auth.validation.password_mismatch',
+                    );
                     valid = false;
                 } else {
                     const p = formData.user.password;
@@ -257,8 +304,9 @@ export default function RegisterCandidat() {
                         !/[0-9]/.test(p) ||
                         !/[^A-Za-z0-9]/.test(p)
                     ) {
-                        newErrors.password =
-                            t('auth.validation.password_complexity');
+                        newErrors.password = t(
+                            'auth.validation.password_complexity',
+                        );
                         valid = false;
                     }
                 }
@@ -285,20 +333,18 @@ export default function RegisterCandidat() {
 
                         if (res.status === 409) {
                             newErrors.email = t('auth.validation.email_taken');
-                            toast.error(
-                                t('auth.validation.email_taken_toast'),
-                            );
+                            toast.error(t('auth.validation.email_taken_toast'));
                         } else if (res.status === 422) {
                             const data = await res.json();
-                            newErrors.email = data.message || t('auth.validation.invalid_email');
+                            newErrors.email =
+                                data.message ||
+                                t('auth.validation.invalid_email');
                             toast.error(
                                 data.message ||
-                                t('auth.validation.verify_email'),
+                                    t('auth.validation.verify_email'),
                             );
                         } else {
-                            toast.error(
-                                t('auth.validation.email_check_error'),
-                            );
+                            toast.error(t('auth.validation.email_check_error'));
                         }
                     }
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -326,7 +372,9 @@ export default function RegisterCandidat() {
                     (typeof value === 'string' && value.trim() === '') ||
                     (Array.isArray(value) && value.length === 0)
                 ) {
-                    (newErrors as any)[field] = t('auth.validation.required_field');
+                    (newErrors as any)[field] = t(
+                        'auth.validation.required_field',
+                    );
                     valid = false;
                 }
             });
@@ -334,7 +382,9 @@ export default function RegisterCandidat() {
             section = 'candidat';
 
             if ((formData.candidat.specialisations || []).length === 0) {
-                newErrors.specialisations = t('auth.validation.select_specialisation');
+                newErrors.specialisations = t(
+                    'auth.validation.select_specialisation',
+                );
                 valid = false;
             }
         } else if (step === 4) {
@@ -342,8 +392,7 @@ export default function RegisterCandidat() {
             const { formations = [], experiences = [] } = formData.candidat;
 
             if (formations.length === 0) {
-                newErrors.formations =
-                    t('auth.validation.add_formation');
+                newErrors.formations = t('auth.validation.add_formation');
                 valid = false;
             } else if (
                 formations.some(
@@ -352,16 +401,23 @@ export default function RegisterCandidat() {
                         !f.annee_fin ||
                         !f.formation_juridique_id ||
                         !f.specialisation_id ||
-                        (!f.ecole_id || f.ecole_id === 'other') && (!f.autre_ecole || f.autre_ecole.trim() === ''),
+                        ((!f.ecole_id || f.ecole_id === 'other') &&
+                            (!f.autre_ecole || f.autre_ecole.trim() === '')) ||
+                        !(f.diploma_file instanceof File),
                 )
             ) {
-                newErrors.formations =
-                    t('auth.validation.fill_all_formations');
+                newErrors.formations = t('auth.validation.fill_all_formations');
                 valid = false;
             } else {
                 formations.forEach((f: Formation, i: number) => {
-                    if (f.annee_debut && f.annee_fin && f.annee_fin < f.annee_debut) {
-                        (newErrors as any)[`formations.${i}.annee_fin`] = t('auth.validation.end_year_invalid');
+                    if (
+                        f.annee_debut &&
+                        f.annee_fin &&
+                        f.annee_fin < f.annee_debut
+                    ) {
+                        (newErrors as any)[`formations.${i}.annee_fin`] = t(
+                            'auth.validation.end_year_invalid',
+                        );
                         valid = false;
                     }
                 });
@@ -378,13 +434,16 @@ export default function RegisterCandidat() {
                         !e.poste_id,
                 )
             ) {
-                newErrors.experiences =
-                    t('auth.validation.fill_all_experiences');
+                newErrors.experiences = t(
+                    'auth.validation.fill_all_experiences',
+                );
                 valid = false;
             } else {
                 experiences.forEach((e: Experience, i: number) => {
                     if (e.debut && e.fin && e.fin < e.debut) {
-                        (newErrors as any)[`experiences.${i}.fin`] = t('auth.validation.end_date_invalid');
+                        (newErrors as any)[`experiences.${i}.fin`] = t(
+                            'auth.validation.end_date_invalid',
+                        );
                         valid = false;
                     }
                 });
@@ -405,7 +464,9 @@ export default function RegisterCandidat() {
                     value === null ||
                     (Array.isArray(value) && value.length === 0)
                 ) {
-                    (newErrors as any)[field] = t('auth.validation.required_field');
+                    (newErrors as any)[field] = t(
+                        'auth.validation.required_field',
+                    );
                     valid = false;
                 }
             });
@@ -415,7 +476,9 @@ export default function RegisterCandidat() {
                     (langue) => !langue.langue_id || !langue.niveau_langue_id,
                 )
             ) {
-                newErrors.langues = t('auth.validation.language_level_required');
+                newErrors.langues = t(
+                    'auth.validation.language_level_required',
+                );
                 valid = false;
             }
         }
@@ -522,28 +585,38 @@ export default function RegisterCandidat() {
                                     <div className="relative space-y-6">
                                         <h2
                                             className="text-2xl leading-tight font-light tracking-tight text-[#1a1f1e]"
-                                            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                                            style={{
+                                                fontFamily:
+                                                    "'Cormorant Garamond', serif",
+                                            }}
                                         >
                                             {t('auth.register_candidate.badge')}
                                         </h2>
 
                                         <p className="text-sm leading-relaxed text-[#1a1f1e]/60">
-                                            {t('auth.register_candidate.subtitle')}
+                                            {t(
+                                                'auth.register_candidate.subtitle',
+                                            )}
                                         </p>
 
                                         {/* How it works */}
                                         <div className="space-y-0">
                                             {candidatSteps.map((step, i) => (
-                                                <div key={step.id} className="flex gap-3">
+                                                <div
+                                                    key={step.id}
+                                                    className="flex gap-3"
+                                                >
                                                     <div className="flex flex-col items-center">
                                                         <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#1a1f1e]/10 bg-[#FDFCF8] text-[10px] font-bold text-[#1a1f1e]/40">
                                                             {step.id}
                                                         </div>
-                                                        {i < candidatSteps.length - 1 && (
+                                                        {i <
+                                                            candidatSteps.length -
+                                                                1 && (
                                                             <div className="w-px flex-1 bg-[#1a1f1e]/8" />
                                                         )}
                                                     </div>
-                                                    <div className="pb-5 pt-1">
+                                                    <div className="pt-1 pb-5">
                                                         <span className="text-xs font-semibold tracking-wide text-[#1a1f1e]/70">
                                                             {step.label}
                                                         </span>
@@ -570,9 +643,14 @@ export default function RegisterCandidat() {
                                 />
                             )}
 
-                            <div ref={signupCardRef} className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-4 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10">
+                            <div
+                                ref={signupCardRef}
+                                className="relative z-10 mx-auto w-full max-w-2xl border border-[#1a1f1e]/5 bg-[#1a1f1e]/[0.02] p-4 shadow-2xl shadow-[#1a1f1e]/5 sm:p-10"
+                            >
                                 {auth.user ? (
-                                    <AlreadyAuthenticatedCard user={auth.user} />
+                                    <AlreadyAuthenticatedCard
+                                        user={auth.user}
+                                    />
                                 ) : (
                                     <FormNavigator
                                         onNextStep={handleNextStepValidation}
@@ -585,13 +663,17 @@ export default function RegisterCandidat() {
 
                                 <div className="mt-8 flex items-center justify-center gap-2 border-t border-[#1a1f1e]/5 pt-6">
                                     <p className="text-sm font-medium text-[#1a1f1e]/50">
-                                        {t('auth.register_candidate.already_account')}
+                                        {t(
+                                            'auth.register_candidate.already_account',
+                                        )}
                                     </p>
                                     <a
                                         href="/login"
                                         className="text-sm font-bold text-[#1a1f1e] underline-offset-4 transition-colors hover:underline"
                                     >
-                                        {t('auth.register_candidate.login_link')}
+                                        {t(
+                                            'auth.register_candidate.login_link',
+                                        )}
                                     </a>
                                 </div>
                             </div>

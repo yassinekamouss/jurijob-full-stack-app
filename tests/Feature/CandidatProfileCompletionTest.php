@@ -23,21 +23,30 @@ function completeCandidateBase(): Candidat
     ]);
 }
 
-test('profile is incomplete without preferences localisation modes and types', function () {
-    $candidat = completeCandidateBase();
+function createFormationFor(Candidat $candidat, ?string $diplomaFile): void
+{
+    $ecole = Ecole::create(['nom_fr' => 'Faculté de droit', 'nom_en' => 'Law Faculty']);
+    $specialisation = Specialisation::create([
+        'nom_fr' => 'Droit fiscal',
+        'nom_en' => 'Tax Law',
+        'domaine_fr' => 'Entreprises',
+        'domaine_en' => 'Business',
+    ]);
 
     $candidat->formations()->create([
         'annee_debut' => '2018-09',
         'annee_fin' => '2022-06',
         'formation_juridique_id' => $candidat->formation_juridique_id,
-        'specialisation_id' => Specialisation::create([
-            'nom_fr' => 'Droit fiscal',
-            'nom_en' => 'Tax Law',
-            'domaine_fr' => 'Entreprises',
-            'domaine_en' => 'Business',
-        ])->id,
-        'ecole_id' => 1,
+        'specialisation_id' => $specialisation->id,
+        'ecole_id' => $ecole->id,
+        'diploma_file' => $diplomaFile,
     ]);
+}
+
+test('profile is incomplete without preferences localisation modes and types', function () {
+    $candidat = completeCandidateBase();
+
+    createFormationFor($candidat, 'candidat_diplomas/diploma.pdf');
 
     $completion = $candidat->fresh()->profileCompletion();
 
@@ -66,6 +75,7 @@ test('profile is incomplete without experiences even when other sections are fil
             'nom_fr' => 'Faculté de droit',
             'nom_en' => 'Law Faculty',
         ])->id,
+        'diploma_file' => 'candidat_diplomas/diploma.pdf',
     ]);
 
     $candidat->specialisations()->create([
@@ -104,4 +114,45 @@ test('profile is incomplete without experiences even when other sections are fil
         ->and($completion['mode_travails'])->toBeTrue()
         ->and($completion['type_travails'])->toBeTrue()
         ->and($completion['is_complete'])->toBeFalse();
+});
+
+test('formations section is incomplete when a diploma file is missing', function () {
+    $candidat = completeCandidateBase();
+
+    createFormationFor($candidat, null);
+
+    $completion = $candidat->fresh()->load(['formations'])->profileCompletion();
+
+    expect($completion['formations'])->toBeFalse()
+        ->and($completion['is_complete'])->toBeFalse();
+});
+
+test('formations section is complete when every formation has a diploma file', function () {
+    $candidat = completeCandidateBase();
+
+    createFormationFor($candidat, 'candidat_diplomas/diploma.pdf');
+
+    $completion = $candidat->fresh()->load(['formations'])->profileCompletion();
+
+    expect($completion['formations'])->toBeTrue();
+});
+
+test('formations section is incomplete when one of multiple formations lacks diploma regardless of eager loading', function () {
+    $candidat = completeCandidateBase();
+
+    createFormationFor($candidat, 'candidat_diplomas/diploma1.pdf');
+    createFormationFor($candidat, null);
+
+    expect($candidat->fresh()->profileCompletion()['formations'])->toBeFalse()
+        ->and($candidat->fresh()->load(['formations'])->profileCompletion()['formations'])->toBeFalse();
+});
+
+test('formations section is complete when all multiple formations have diplomas regardless of eager loading', function () {
+    $candidat = completeCandidateBase();
+
+    createFormationFor($candidat, 'candidat_diplomas/diploma1.pdf');
+    createFormationFor($candidat, 'candidat_diplomas/diploma2.pdf');
+
+    expect($candidat->fresh()->profileCompletion()['formations'])->toBeTrue()
+        ->and($candidat->fresh()->load(['formations'])->profileCompletion()['formations'])->toBeTrue();
 });

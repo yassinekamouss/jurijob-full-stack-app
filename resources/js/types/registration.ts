@@ -20,6 +20,7 @@ export type Formation = {
     specialisation_id: string | number;
     ecole_id: string | number;
     autre_ecole?: string;
+    diploma_file?: File | null;
 };
 
 export type Experience = {
@@ -41,7 +42,10 @@ export type CandidatFormData = {
     type_travails: (string | number)[];
     mode_travails: (string | number)[];
     ville_travails: (string | number)[];
-    langues: { langue_id: string | number; niveau_langue_id: string | number }[];
+    langues: {
+        langue_id: string | number;
+        niveau_langue_id: string | number;
+    }[];
     formations: Formation[];
     experiences: Experience[];
 };

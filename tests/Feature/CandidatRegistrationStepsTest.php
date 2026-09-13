@@ -16,10 +16,15 @@ use App\Models\Taxonomy\TypeTravail;
 use App\Models\Taxonomy\Urgence;
 use App\Models\Taxonomy\Ville;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 beforeEach(function () {
+    Storage::fake('private');
+
     $this->poste = Poste::create(['nom_fr' => 'Avocat', 'nom_en' => 'Lawyer']);
     $this->niveauExperience = NiveauExperience::create(['nom_fr' => 'Junior', 'nom_en' => 'Junior']);
     $this->formationJuridique = FormationJuridique::create(['nom_fr' => 'Master', 'nom_en' => 'Master']);
@@ -56,7 +61,7 @@ function candidatRegistrationPayload(array $overrides = []): array
         'telephone' => '+212612345678',
         'nom' => 'Doe',
         'prenom' => 'Jane',
-        'poste_id' => $test->poste->id,
+        'poste_id' => [$test->poste->id],
         'niveau_experience_id' => $test->niveauExperience->id,
         'formation_juridique_id' => $test->formationJuridique->id,
         'salaire_id' => $test->salaire->id,
@@ -85,7 +90,7 @@ function candidatRegistrationPayload(array $overrides = []): array
                 'fin' => '2024-06',
                 'type_travail_id' => $test->typeTravail->id,
                 'entreprise' => 'Cabinet XYZ',
-                'poste_id' => [$test->poste->id],
+                'poste_id' => $test->poste->id,
             ],
         ],
         'formations' => [
@@ -94,7 +99,8 @@ function candidatRegistrationPayload(array $overrides = []): array
                 'annee_fin' => '2022-06',
                 'formation_juridique_id' => $test->formationJuridique->id,
                 'specialisation_id' => $test->specialisation->id,
-                'ecole_id' => $test->ecole->id,
+                'ecole_id' => (string) $test->ecole->id,
+                'diploma_file' => UploadedFile::fake()->create('diplome.pdf', 50, 'application/pdf'),
             ],
         ],
     ], $overrides);
@@ -116,7 +122,9 @@ it('registers a candidat with formations and related profile data', function () 
 
     $formation = CandidatFormation::query()->where('candidat_id', $candidat->id)->first();
 
-    expect($formation->ecole_id)->toBe($this->ecole->id);
+    expect($formation->ecole_id)->toBe($this->ecole->id)
+        ->and(Str::startsWith($formation->diploma_file, 'candidat_diplomas/'))->toBeTrue()
+        ->and(Storage::disk('private')->exists($formation->diploma_file))->toBeTrue();
 });
 
 it('still requires core formation fields during registration', function () {
@@ -129,9 +137,21 @@ it('still requires core formation fields during registration', function () {
             'annee_debut' => '2018-09',
             'annee_fin' => '2022-06',
             'formation_juridique_id' => $this->formationJuridique->id,
-            'specialisation_id' => $this->specialisation->id,
+            'ecole_id' => (string) $this->ecole->id,
+            'diploma_file' => UploadedFile::fake()->create('diplome.pdf', 50, 'application/pdf'),
         ],
     ];
+
+    expect(fn () => app(CreatesNewUsers::class)->create($payload))
+        ->toThrow(ValidationException::class);
+});
+
+it('requires a diploma file for each formation during registration', function () {
+    $payload = candidatRegistrationPayload([
+        'email' => 'nodiploma@example.com',
+    ]);
+
+    $payload['formations'][0]['diploma_file'] = null;
 
     expect(fn () => app(CreatesNewUsers::class)->create($payload))
         ->toThrow(ValidationException::class);

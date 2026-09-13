@@ -1,10 +1,26 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Trash2, GraduationCap, Briefcase, FileText, Calendar, Building2, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
+import {
+    Plus,
+    Trash2,
+    GraduationCap,
+    Briefcase,
+    FileText,
+    Calendar,
+    Building2,
+    BookOpen,
+    ChevronDown,
+    ChevronUp,
+    Upload,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CandidatFormData, Formation, Experience } from '@/types';
 import Icon from '@/components/signup/FormularIcons';
-import { useTaxonomies, useLoadingTaxonomy, getTaxonomyLabel } from '@/hooks/use-taxonomies';
+import {
+    useTaxonomies,
+    useLoadingTaxonomy,
+    getTaxonomyLabel,
+} from '@/hooks/use-taxonomies';
 
 type CandidatDetailsProps = {
     formData: CandidatFormData;
@@ -21,13 +37,32 @@ const createEmptyFormation = (): Formation => ({
     specialisation_id: '',
     ecole_id: '',
     autre_ecole: '',
+    diploma_file: null,
 });
 
 const COUNTRY_FLAGS: Record<string, string> = {
-    MA: '🇲🇦', FR: '🇫🇷', BE: '🇧🇪', SN: '🇸🇳', CI: '🇨🇮', CM: '🇨🇲',
-    ML: '🇲🇱', BF: '🇧🇫', BJ: '🇧🇯', TG: '🇹🇬', NE: '🇳🇪', GA: '🇬🇦',
-    CG: '🇨🇬', CD: '🇨🇩', GN: '🇬🇳', MR: '🇲🇷', MG: '🇲🇬', TN: '🇹🇳',
-    DZ: '🇩🇿', RW: '🇷🇼', KE: '🇰🇪', ZA: '🇿🇦',
+    MA: '🇲🇦',
+    FR: '🇫🇷',
+    BE: '🇧🇪',
+    SN: '🇸🇳',
+    CI: '🇨🇮',
+    CM: '🇨🇲',
+    ML: '🇲🇱',
+    BF: '🇧🇫',
+    BJ: '🇧🇯',
+    TG: '🇹🇬',
+    NE: '🇳🇪',
+    GA: '🇬🇦',
+    CG: '🇨🇬',
+    CD: '🇨🇩',
+    GN: '🇬🇳',
+    MR: '🇲🇷',
+    MG: '🇲🇬',
+    TN: '🇹🇳',
+    DZ: '🇩🇿',
+    RW: '🇷🇼',
+    KE: '🇰🇪',
+    ZA: '🇿🇦',
 };
 
 const createEmptyExperience = (): Experience => ({
@@ -46,45 +81,119 @@ export default function CandidatDetails({
     className = '',
 }: CandidatDetailsProps) {
     const { t } = useTranslation();
-    const { ecoles, formationJuridiques, specialisations, typeTravails, postes, pays } = useTaxonomies();
+    const {
+        ecoles,
+        formationJuridiques,
+        specialisations,
+        typeTravails,
+        postes,
+        pays,
+    } = useTaxonomies();
 
     const formations = formData.formations || [];
     const experiences = formData.experiences || [];
 
-    const [expandedFormations, setExpandedFormations] = useState<Record<string, boolean>>({});
-    const [expandedExperiences, setExpandedExperiences] = useState<Record<string, boolean>>({});
-    const [selectedPaysIds, setSelectedPaysIds] = useState<Record<string, string | number>>({});
+    const [expandedFormations, setExpandedFormations] = useState<
+        Record<string, boolean>
+    >({});
+    const [expandedExperiences, setExpandedExperiences] = useState<
+        Record<string, boolean>
+    >({});
+    const [selectedPaysIds, setSelectedPaysIds] = useState<
+        Record<string, string | number>
+    >({});
 
     const toggleFormation = (id: string) =>
-        setExpandedFormations((prev) => ({ ...prev, [id]: prev[id] === false }));
+        setExpandedFormations((prev) => ({
+            ...prev,
+            [id]: prev[id] === false,
+        }));
     const toggleExperience = (id: string) =>
-        setExpandedExperiences((prev) => ({ ...prev, [id]: prev[id] === false }));
+        setExpandedExperiences((prev) => ({
+            ...prev,
+            [id]: prev[id] === false,
+        }));
 
-    const updateFormation = (id: string, field: keyof Formation, value: string | number) =>
+    const updateFormation = (
+        id: string,
+        field: keyof Formation,
+        value: unknown,
+    ) =>
         onFieldChange(
             'formations',
-            formations.map((formation) => (formation.id === id ? { ...formation, [field]: value } : formation)),
+            formations.map((formation) =>
+                formation.id === id
+                    ? { ...formation, [field]: value }
+                    : formation,
+            ),
         );
 
     const updateFormationMultiple = (id: string, updates: Partial<Formation>) =>
         onFieldChange(
             'formations',
-            formations.map((formation) => (formation.id === id ? { ...formation, ...updates } : formation)),
+            formations.map((formation) =>
+                formation.id === id ? { ...formation, ...updates } : formation,
+            ),
         );
 
-    const updateExperience = (id: string, field: keyof Experience, value: string | number) =>
+    const updateExperience = (
+        id: string,
+        field: keyof Experience,
+        value: string | number,
+    ) =>
         onFieldChange(
             'experiences',
-            experiences.map((experience) => (experience.id === id ? { ...experience, [field]: value } : experience)),
+            experiences.map((experience) =>
+                experience.id === id
+                    ? { ...experience, [field]: value }
+                    : experience,
+            ),
         );
 
-    const getPaysIdForFormation = (formation: Formation) => {
-        if (selectedPaysIds[formation.id] !== undefined) return selectedPaysIds[formation.id];
+    const MAX_DIPLOMA_SIZE = 5 * 1024 * 1024;
+
+    const handleDiplomaChange = (formationId: string, file: File | null) => {
+        if (!file) {
+            updateFormation(formationId, 'diploma_file', null);
+
+            return;
+        }
+
+        if (file.type !== 'application/pdf') {
+            alert(t('auth.validation.diploma_invalid_type'));
+
+            return;
+        }
+
+        if (file.size > MAX_DIPLOMA_SIZE) {
+            alert(t('auth.validation.diploma_too_large'));
+
+            return;
+        }
+
+        updateFormationMultiple(formationId, { diploma_file: file });
+    };
+
+    const getPaysIdForFormation = (formation: Formation): string | number => {
+        if (selectedPaysIds[formation.id] !== undefined) {
+            return selectedPaysIds[formation.id];
+        }
+
         if (formation.ecole_id && formation.ecole_id !== 'other') {
             const ecole = ecoles.find((e: any) => e.id == formation.ecole_id);
-            if (ecole) return ecole.pays_id;
+
+            if (ecole && ecole.pays_id !== undefined && ecole.pays_id !== null) {
+                return ecole.pays_id;
+            }
         }
-        if (formation.ecole_id === 'other' || (!formation.ecole_id && formation.autre_ecole)) return 'other_country';
+
+        if (
+            formation.ecole_id === 'other' ||
+            (!formation.ecole_id && formation.autre_ecole)
+        ) {
+            return 'other_country';
+        }
+
         return '';
     };
 
@@ -95,13 +204,18 @@ export default function CandidatDetails({
 
     const inputClasses =
         'w-full rounded-xl border border-slate-200 bg-white p-2.5 text-sm text-slate-900 transition-all placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900';
-    const labelClasses = 'flex items-center gap-2 text-xs font-bold tracking-tight text-slate-700 uppercase';
+    const labelClasses =
+        'flex items-center gap-2 text-xs font-bold tracking-tight text-slate-700 uppercase';
 
     return (
         <div className={`space-y-12 pb-10 ${className}`}>
             <div className="mb-8 text-center">
-                <h3 className="mb-2 text-xl font-bold text-slate-900">{t('auth.forms.candidate.details_title')}</h3>
-                <p className="text-sm text-slate-500">{t('auth.forms.candidate.details_subtitle')}</p>
+                <h3 className="mb-2 text-xl font-bold text-slate-900">
+                    {t('auth.forms.candidate.details_title')}
+                </h3>
+                <p className="text-sm text-slate-500">
+                    {t('auth.forms.candidate.details_subtitle')}
+                </p>
             </div>
 
             <section className="space-y-6">
@@ -110,11 +224,18 @@ export default function CandidatDetails({
                         <div className="rounded-lg bg-slate-900 p-2 text-white shadow-sm">
                             <GraduationCap size={20} />
                         </div>
-                        <h4 className="text-lg font-bold text-slate-900">{t('auth.forms.candidate.formations_header')}</h4>
+                        <h4 className="text-lg font-bold text-slate-900">
+                            {t('auth.forms.candidate.formations_header')}
+                        </h4>
                     </div>
                     <button
                         type="button"
-                        onClick={() => onFieldChange('formations', [...formations, createEmptyFormation()])}
+                        onClick={() =>
+                            onFieldChange('formations', [
+                                ...formations,
+                                createEmptyFormation(),
+                            ])
+                        }
                         className="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-bold tracking-widest text-white uppercase shadow-md transition-all hover:bg-slate-800 active:scale-95"
                     >
                         <Plus size={16} /> {t('auth.forms.candidate.add')}
@@ -130,7 +251,9 @@ export default function CandidatDetails({
                 <div className="space-y-4">
                     <AnimatePresence>
                         {formations.map((formation) => {
-                            const formationIndex = formations.findIndex((item) => item.id === formation.id);
+                            const formationIndex = formations.findIndex(
+                                (item) => item.id === formation.id,
+                            );
 
                             return (
                                 <motion.div
@@ -144,19 +267,28 @@ export default function CandidatDetails({
                                         <div className="flex items-center gap-3">
                                             <button
                                                 type="button"
-                                                onClick={() => toggleFormation(formation.id)}
+                                                onClick={() =>
+                                                    toggleFormation(
+                                                        formation.id,
+                                                    )
+                                                }
                                                 className="text-slate-400 transition-colors hover:text-slate-900"
                                             >
-                                                {expandedFormations[formation.id] !== false ? (
+                                                {expandedFormations[
+                                                    formation.id
+                                                ] !== false ? (
                                                     <ChevronUp size={20} />
                                                 ) : (
                                                     <ChevronDown size={20} />
                                                 )}
                                             </button>
                                             <h5 className="max-w-[200px] truncate font-bold text-slate-900 sm:max-w-md">
-                                                {formation.specialisation_id || formation.ecole_id
+                                                {formation.specialisation_id ||
+                                                formation.ecole_id
                                                     ? `${getTaxonomyLabel(formation.specialisation_id, specialisations)} – ${getTaxonomyLabel(formation.ecole_id, ecoles)}`
-                                                    : t('auth.forms.candidate.new_formation')}
+                                                    : t(
+                                                          'auth.forms.candidate.new_formation',
+                                                      )}
                                             </h5>
                                         </div>
                                         <button
@@ -164,7 +296,11 @@ export default function CandidatDetails({
                                             onClick={() =>
                                                 onFieldChange(
                                                     'formations',
-                                                    formations.filter((item) => item.id !== formation.id),
+                                                    formations.filter(
+                                                        (item) =>
+                                                            item.id !==
+                                                            formation.id,
+                                                    ),
                                                 )
                                             }
                                             className="p-2 text-slate-300 transition-colors hover:text-red-500"
@@ -173,227 +309,674 @@ export default function CandidatDetails({
                                         </button>
                                     </div>
 
-                                    {expandedFormations[formation.id] !== false && (
-                                        <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2">
-                                            <div className="space-y-5">
-                                                <div className="space-y-4">
+                                    {expandedFormations[formation.id] !==
+                                        false && (
+                                        <>
+                                            <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2">
+                                                <div className="space-y-5">
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-1.5">
+                                                            <label
+                                                                className={
+                                                                    labelClasses
+                                                                }
+                                                            >
+                                                                <Building2
+                                                                    size={14}
+                                                                    className="text-slate-400"
+                                                                />{' '}
+                                                                {t(
+                                                                    'candidate_settings.education.labels.country',
+                                                                    'Pays',
+                                                                )}
+                                                            </label>
+                                                            <select
+                                                                value={getPaysIdForFormation(
+                                                                    formation,
+                                                                )}
+                                                                onChange={(
+                                                                    event,
+                                                                ) =>
+                                                                    handlePaysChange(
+                                                                        formation.id,
+                                                                        event
+                                                                            .target
+                                                                            .value,
+                                                                    )
+                                                                }
+                                                                className={
+                                                                    inputClasses
+                                                                }
+                                                            >
+                                                                <option value="">
+                                                                    {t(
+                                                                        'candidate_settings.education.placeholders.country',
+                                                                        'Sélectionnez un pays',
+                                                                    )}
+                                                                </option>
+                                                                {useLoadingTaxonomy(
+                                                                    pays,
+                                                                ) ? (
+                                                                    <option
+                                                                        disabled
+                                                                    >
+                                                                        {t(
+                                                                            'auth.forms.loading_options',
+                                                                        )}
+                                                                    </option>
+                                                                ) : (
+                                                                    <>
+                                                                        {pays.map(
+                                                                            (
+                                                                                p,
+                                                                            ) => (
+                                                                                <option
+                                                                                    key={
+                                                                                        p.id
+                                                                                    }
+                                                                                    value={
+                                                                                        p.id
+                                                                                    }
+                                                                                >
+                                                                                    {(p.code &&
+                                                                                        COUNTRY_FLAGS[
+                                                                                            p.code
+                                                                                        ]) ||
+                                                                                        '🌍'}{' '}
+                                                                                    {
+                                                                                        p.nom
+                                                                                    }
+                                                                                </option>
+                                                                            ),
+                                                                        )}
+                                                                        <option value="other_country">
+                                                                            {t(
+                                                                                'common.other_specify',
+                                                                            ) ||
+                                                                                'Autre (préciser...)'}
+                                                                        </option>
+                                                                    </>
+                                                                )}
+                                                            </select>
+                                                        </div>
+
+                                                        <AnimatePresence mode="wait">
+                                                            {getPaysIdForFormation(
+                                                                formation,
+                                                            ) && (
+                                                                <motion.div
+                                                                    initial={{
+                                                                        opacity: 0,
+                                                                        scale: 0.95,
+                                                                    }}
+                                                                    animate={{
+                                                                        opacity: 1,
+                                                                        scale: 1,
+                                                                    }}
+                                                                    exit={{
+                                                                        opacity: 0,
+                                                                        scale: 0.95,
+                                                                    }}
+                                                                    className="space-y-1.5"
+                                                                >
+                                                                    <label
+                                                                        className={
+                                                                            labelClasses
+                                                                        }
+                                                                    >
+                                                                        <GraduationCap
+                                                                            size={
+                                                                                14
+                                                                            }
+                                                                            className="text-slate-400"
+                                                                        />{' '}
+                                                                        {t(
+                                                                            'auth.forms.candidate.school_label',
+                                                                        )}
+                                                                    </label>
+                                                                    {getPaysIdForFormation(
+                                                                        formation,
+                                                                    ) ===
+                                                                    'other_country' ? (
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder={
+                                                                                t(
+                                                                                    'common.other_school_placeholder',
+                                                                                ) ||
+                                                                                'Nom de votre école/université'
+                                                                            }
+                                                                            value={
+                                                                                formation.autre_ecole ||
+                                                                                ''
+                                                                            }
+                                                                            onChange={(
+                                                                                event,
+                                                                            ) => {
+                                                                                updateFormationMultiple(
+                                                                                    formation.id,
+                                                                                    {
+                                                                                        ecole_id:
+                                                                                            'other',
+                                                                                        autre_ecole:
+                                                                                            event
+                                                                                                .target
+                                                                                                .value,
+                                                                                    },
+                                                                                );
+                                                                            }}
+                                                                            className={
+                                                                                inputClasses
+                                                                            }
+                                                                        />
+                                                                    ) : (
+                                                                        <select
+                                                                            value={
+                                                                                formation.ecole_id ||
+                                                                                (formation.autre_ecole
+                                                                                    ? 'other'
+                                                                                    : '')
+                                                                            }
+                                                                            onChange={(
+                                                                                event,
+                                                                            ) => {
+                                                                                const val =
+                                                                                    event
+                                                                                        .target
+                                                                                        .value;
+                                                                                const currentPaysId =
+                                                                                    getPaysIdForFormation(
+                                                                                        formation,
+                                                                                    );
+
+                                                                                updateFormationMultiple(
+                                                                                    formation.id,
+                                                                                    {
+                                                                                        ecole_id:
+                                                                                            val,
+                                                                                        autre_ecole:
+                                                                                            val ===
+                                                                                            'other'
+                                                                                                ? formation.autre_ecole
+                                                                                                : '',
+                                                                                    },
+                                                                                );
+
+                                                                                if (
+                                                                                    val ===
+                                                                                        'other' &&
+                                                                                    selectedPaysIds[
+                                                                                        formation
+                                                                                            .id
+                                                                                    ] ===
+                                                                                        undefined
+                                                                                ) {
+                                                                                    setSelectedPaysIds(
+                                                                                        (
+                                                                                            prev,
+                                                                                        ) => ({
+                                                                                            ...prev,
+                                                                                            [formation.id]:
+                                                                                                currentPaysId ?? '',
+                                                                                        }),
+                                                                                    );
+                                                                                }
+                                                                            }}
+                                                                            className={
+                                                                                inputClasses
+                                                                            }
+                                                                        >
+                                                                            <option value="">
+                                                                                {t(
+                                                                                    'auth.forms.candidate.school_placeholder',
+                                                                                )}
+                                                                            </option>
+                                                                            {useLoadingTaxonomy(
+                                                                                ecoles,
+                                                                            ) ? (
+                                                                                <option
+                                                                                    disabled
+                                                                                >
+                                                                                    {t(
+                                                                                        'auth.forms.loading_options',
+                                                                                    )}
+                                                                                </option>
+                                                                            ) : (
+                                                                                <>
+                                                                                    {ecoles
+                                                                                        .filter(
+                                                                                            (
+                                                                                                e: any,
+                                                                                            ) =>
+                                                                                                e.pays_id.toString() ===
+                                                                                                getPaysIdForFormation(
+                                                                                                    formation,
+                                                                                                ).toString(),
+                                                                                        )
+                                                                                        .map(
+                                                                                            (
+                                                                                                ecole,
+                                                                                            ) => (
+                                                                                                <option
+                                                                                                    key={
+                                                                                                        ecole.id
+                                                                                                    }
+                                                                                                    value={
+                                                                                                        ecole.id
+                                                                                                    }
+                                                                                                >
+                                                                                                    {getTaxonomyLabel(
+                                                                                                        ecole,
+                                                                                                    )}
+                                                                                                </option>
+                                                                                            ),
+                                                                                        )}
+                                                                                    <option value="other">
+                                                                                        {t(
+                                                                                            'common.other_specify',
+                                                                                        ) ||
+                                                                                            'Autre (préciser...)'}
+                                                                                    </option>
+                                                                                </>
+                                                                            )}
+                                                                        </select>
+                                                                    )}
+                                                                </motion.div>
+                                                            )}
+                                                        </AnimatePresence>
+
+                                                        <AnimatePresence>
+                                                            {getPaysIdForFormation(
+                                                                formation,
+                                                            ) &&
+                                                                getPaysIdForFormation(
+                                                                    formation,
+                                                                ) !==
+                                                                    'other_country' &&
+                                                                (formation.ecole_id ===
+                                                                    'other' ||
+                                                                    (!formation.ecole_id &&
+                                                                        formation.autre_ecole)) && (
+                                                                    <motion.div
+                                                                        initial={{
+                                                                            opacity: 0,
+                                                                            height: 0,
+                                                                        }}
+                                                                        animate={{
+                                                                            opacity: 1,
+                                                                            height: 'auto',
+                                                                        }}
+                                                                        exit={{
+                                                                            opacity: 0,
+                                                                            height: 0,
+                                                                        }}
+                                                                        className="space-y-1.5 pt-2"
+                                                                    >
+                                                                        <label
+                                                                            className={
+                                                                                labelClasses
+                                                                            }
+                                                                        >
+                                                                            {t(
+                                                                                'candidate_settings.education.labels.other_school',
+                                                                                "Nom de l'établissement",
+                                                                            )}
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder={
+                                                                                t(
+                                                                                    'common.other_school_placeholder',
+                                                                                ) ||
+                                                                                'Nom de votre école/université'
+                                                                            }
+                                                                            value={
+                                                                                formation.autre_ecole ||
+                                                                                ''
+                                                                            }
+                                                                            onChange={(
+                                                                                event,
+                                                                            ) =>
+                                                                                updateFormation(
+                                                                                    formation.id,
+                                                                                    'autre_ecole',
+                                                                                    event
+                                                                                        .target
+                                                                                        .value,
+                                                                                )
+                                                                            }
+                                                                            className={
+                                                                                inputClasses
+                                                                            }
+                                                                        />
+                                                                    </motion.div>
+                                                                )}
+                                                        </AnimatePresence>
+                                                    </div>
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>
-                                                            <Building2 size={14} className="text-slate-400" /> {t('candidate_settings.education.labels.country', 'Pays')}
+                                                        <label
+                                                            className={
+                                                                labelClasses
+                                                            }
+                                                        >
+                                                            <BookOpen
+                                                                size={14}
+                                                                className="text-slate-400"
+                                                            />{' '}
+                                                            {t(
+                                                                'auth.forms.candidate.degree_level_label',
+                                                            )}
                                                         </label>
                                                         <select
-                                                            value={getPaysIdForFormation(formation)}
-                                                            onChange={(event) => handlePaysChange(formation.id, event.target.value)}
-                                                            className={inputClasses}
+                                                            value={
+                                                                formation.formation_juridique_id
+                                                            }
+                                                            onChange={(event) =>
+                                                                updateFormation(
+                                                                    formation.id,
+                                                                    'formation_juridique_id',
+                                                                    event.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            className={
+                                                                inputClasses
+                                                            }
                                                         >
-                                                            <option value="">{t('candidate_settings.education.placeholders.country', 'Sélectionnez un pays')}</option>
-                                                            {useLoadingTaxonomy(pays) ? (
-                                                                <option disabled>{t('auth.forms.loading_options')}</option>
+                                                            <option value="">
+                                                                {t(
+                                                                    'auth.forms.candidate.degree_level_placeholder',
+                                                                )}
+                                                            </option>
+                                                            {useLoadingTaxonomy(
+                                                                formationJuridiques,
+                                                            ) ? (
+                                                                <option
+                                                                    disabled
+                                                                >
+                                                                    {t(
+                                                                        'auth.forms.loading_options',
+                                                                    )}
+                                                                </option>
                                                             ) : (
-                                                                <>
-                                                                    {pays.map((p) => (
-                                                                        <option key={p.id} value={p.id}>
-                                                                            {COUNTRY_FLAGS[p.code] || '🌍'} {p.nom}
+                                                                formationJuridiques.map(
+                                                                    (
+                                                                        niveau,
+                                                                    ) => (
+                                                                        <option
+                                                                            key={
+                                                                                niveau.id
+                                                                            }
+                                                                            value={
+                                                                                niveau.id
+                                                                            }
+                                                                        >
+                                                                            {getTaxonomyLabel(
+                                                                                niveau,
+                                                                            )}
                                                                         </option>
-                                                                    ))}
-                                                                    <option value="other_country">{t('common.other_specify') || 'Autre (préciser...)'}</option>
-                                                                </>
+                                                                    ),
+                                                                )
                                                             )}
                                                         </select>
                                                     </div>
+                                                </div>
 
-                                                    <AnimatePresence mode="wait">
-                                                        {getPaysIdForFormation(formation) && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, scale: 0.95 }}
-                                                                animate={{ opacity: 1, scale: 1 }}
-                                                                exit={{ opacity: 0, scale: 0.95 }}
-                                                                className="space-y-1.5"
-                                                            >
-                                                                <label className={labelClasses}>
-                                                                    <GraduationCap size={14} className="text-slate-400" /> {t('auth.forms.candidate.school_label')}
-                                                                </label>
-                                                                {getPaysIdForFormation(formation) === 'other_country' ? (
-                                                                    <input
-                                                                        type="text"
-                                                                        placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
-                                                                        value={formation.autre_ecole || ''}
-                                                                        onChange={(event) => {
-                                                                            updateFormationMultiple(formation.id, {
-                                                                                ecole_id: 'other',
-                                                                                autre_ecole: event.target.value
-                                                                            });
-                                                                        }}
-                                                                        className={inputClasses}
-                                                                    />
-                                                                ) : (
-                                                                    <select
-                                                                        value={formation.ecole_id || (formation.autre_ecole ? 'other' : '')}
-                                                                        onChange={(event) => {
-                                                                            const val = event.target.value;
-                                                                            const currentPaysId = getPaysIdForFormation(formation);
-                                                                            
-                                                                            updateFormationMultiple(formation.id, {
-                                                                                ecole_id: val,
-                                                                                autre_ecole: val === 'other' ? formation.autre_ecole : ''
-                                                                            });
-                                                                            
-                                                                            if (val === 'other' && selectedPaysIds[formation.id] === undefined) {
-                                                                                setSelectedPaysIds(prev => ({ ...prev, [formation.id]: currentPaysId }));
-                                                                            }
-                                                                        }}
-                                                                        className={inputClasses}
-                                                                    >
-                                                                        <option value="">{t('auth.forms.candidate.school_placeholder')}</option>
-                                                                        {useLoadingTaxonomy(ecoles) ? (
-                                                                            <option disabled>{t('auth.forms.loading_options')}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                                {ecoles.filter((e: any) => e.pays_id.toString() === getPaysIdForFormation(formation).toString()).map((ecole) => (
-                                                                                    <option key={ecole.id} value={ecole.id}>
-                                                                                        {getTaxonomyLabel(ecole)}
-                                                                                    </option>
-                                                                                ))}
-                                                                                <option value="other">{t('common.other_specify') || 'Autre (préciser...)'}</option>
-                                                                            </>
-                                                                        )}
-                                                                    </select>
+                                                <div className="space-y-5">
+                                                    <div className="space-y-1.5">
+                                                        <label
+                                                            className={
+                                                                labelClasses
+                                                            }
+                                                        >
+                                                            <FileText
+                                                                size={14}
+                                                                className="text-slate-400"
+                                                            />{' '}
+                                                            {t(
+                                                                'auth.forms.candidate.domain_label',
+                                                            )}
+                                                        </label>
+                                                        <select
+                                                            value={
+                                                                formation.specialisation_id
+                                                            }
+                                                            onChange={(event) =>
+                                                                updateFormation(
+                                                                    formation.id,
+                                                                    'specialisation_id',
+                                                                    event.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            className={
+                                                                inputClasses
+                                                            }
+                                                        >
+                                                            <option value="">
+                                                                {t(
+                                                                    'auth.forms.candidate.domain_placeholder',
                                                                 )}
-                                                            </motion.div>
-                                                        )}
-                                                    </AnimatePresence>
-                                                    
-                                                    <AnimatePresence>
-                                                        {getPaysIdForFormation(formation) && getPaysIdForFormation(formation) !== 'other_country' && (formation.ecole_id === 'other' || (!formation.ecole_id && formation.autre_ecole)) && (
-                                                            <motion.div
-                                                                initial={{ opacity: 0, height: 0 }}
-                                                                animate={{ opacity: 1, height: 'auto' }}
-                                                                exit={{ opacity: 0, height: 0 }}
-                                                                className="pt-2 space-y-1.5"
+                                                            </option>
+                                                            {useLoadingTaxonomy(
+                                                                specialisations,
+                                                            ) ? (
+                                                                <option
+                                                                    disabled
+                                                                >
+                                                                    {t(
+                                                                        'auth.forms.loading_options',
+                                                                    )}
+                                                                </option>
+                                                            ) : (
+                                                                specialisations.map(
+                                                                    (
+                                                                        domaine,
+                                                                    ) => (
+                                                                        <option
+                                                                            key={
+                                                                                domaine.id
+                                                                            }
+                                                                            value={
+                                                                                domaine.id
+                                                                            }
+                                                                        >
+                                                                            {getTaxonomyLabel(
+                                                                                domaine,
+                                                                            )}
+                                                                        </option>
+                                                                    ),
+                                                                )
+                                                            )}
+                                                        </select>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        <div className="space-y-1.5">
+                                                            <label
+                                                                className={
+                                                                    labelClasses
+                                                                }
                                                             >
-                                                                <label className={labelClasses}>{t('candidate_settings.education.labels.other_school', 'Nom de l\'établissement')}</label>
+                                                                {t(
+                                                                    'auth.forms.candidate.start_date',
+                                                                )}
+                                                            </label>
+                                                            <div className="relative">
+                                                                <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                                 <input
-                                                                    type="text"
-                                                                    placeholder={t('common.other_school_placeholder') || 'Nom de votre école/université'}
-                                                                    value={formation.autre_ecole || ''}
-                                                                    onChange={(event) =>
-                                                                        updateFormation(formation.id, 'autre_ecole', event.target.value)
+                                                                    type="month"
+                                                                    value={
+                                                                        formation.annee_debut
                                                                     }
-                                                                    className={inputClasses}
+                                                                    onChange={(
+                                                                        event,
+                                                                    ) =>
+                                                                        updateFormation(
+                                                                            formation.id,
+                                                                            'annee_debut',
+                                                                            event
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }
+                                                                    onClick={(
+                                                                        event,
+                                                                    ) =>
+                                                                        event.currentTarget.showPicker()
+                                                                    }
+                                                                    className={`${inputClasses} cursor-pointer pl-10 ${errors[`formations.${formationIndex}.annee_debut`] ? 'border-red-500' : ''}`}
                                                                 />
-                                                            </motion.div>
-                                                        )}
-                                                    </AnimatePresence>
-                                                </div>
-                                                <div className="space-y-1.5">
-                                                    <label className={labelClasses}>
-                                                        <BookOpen size={14} className="text-slate-400" /> {t('auth.forms.candidate.degree_level_label')}
-                                                    </label>
-                                                    <select
-                                                        value={formation.formation_juridique_id}
-                                                        onChange={(event) =>
-                                                            updateFormation(
-                                                                formation.id,
-                                                                'formation_juridique_id',
-                                                                event.target.value,
-                                                            )
-                                                        }
-                                                        className={inputClasses}
-                                                    >
-                                                        <option value="">{t('auth.forms.candidate.degree_level_placeholder')}</option>
-                                                        {useLoadingTaxonomy(formationJuridiques) ? (
-                                                            <option disabled>{t('auth.forms.loading_options')}</option>
-                                                        ) : (
-                                                            formationJuridiques.map((niveau) => (
-                                                                <option key={niveau.id} value={niveau.id}>
-                                                                    {getTaxonomyLabel(niveau)}
-                                                                </option>
-                                                            ))
-                                                        )}
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-5">
-                                                <div className="space-y-1.5">
-                                                    <label className={labelClasses}>
-                                                        <FileText size={14} className="text-slate-400" /> {t('auth.forms.candidate.domain_label')}
-                                                    </label>
-                                                    <select
-                                                        value={formation.specialisation_id}
-                                                        onChange={(event) =>
-                                                            updateFormation(
-                                                                formation.id,
-                                                                'specialisation_id',
-                                                                event.target.value,
-                                                            )
-                                                        }
-                                                        className={inputClasses}
-                                                    >
-                                                        <option value="">{t('auth.forms.candidate.domain_placeholder')}</option>
-                                                        {useLoadingTaxonomy(specialisations) ? (
-                                                            <option disabled>{t('auth.forms.loading_options')}</option>
-                                                        ) : (
-                                                            specialisations.map((domaine) => (
-                                                                <option key={domaine.id} value={domaine.id}>
-                                                                    {getTaxonomyLabel(domaine)}
-                                                                </option>
-                                                            ))
-                                                        )}
-                                                    </select>
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-4">
-                                                    <div className="space-y-1.5">
-                                                        <label className={labelClasses}>{t('auth.forms.candidate.start_date')}</label>
-                                                        <div className="relative">
-                                                            <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                                                            <input
-                                                                type="month"
-                                                                value={formation.annee_debut}
-                                                                onChange={(event) =>
-                                                                    updateFormation(
-                                                                        formation.id,
-                                                                        'annee_debut',
-                                                                        event.target.value,
-                                                                    )
-                                                                }
-                                                                onClick={(event) => event.currentTarget.showPicker()}
-                                                                className={`${inputClasses} cursor-pointer pl-10 ${errors[`formations.${formationIndex}.annee_debut`] ? 'border-red-500' : ''}`}
-                                                            />
+                                                            </div>
+                                                            {errors[
+                                                                `formations.${formationIndex}.annee_debut`
+                                                            ] && (
+                                                                <p className="mt-1 text-[10px] font-bold text-red-500">
+                                                                    {
+                                                                        errors[
+                                                                            `formations.${formationIndex}.annee_debut`
+                                                                        ]
+                                                                    }
+                                                                </p>
+                                                            )}
                                                         </div>
-                                                        {errors[`formations.${formationIndex}.annee_debut`] && (
-                                                            <p className="mt-1 text-[10px] font-bold text-red-500">
-                                                                {errors[`formations.${formationIndex}.annee_debut`]}
-                                                            </p>
-                                                        )}
-                                                    </div>
-                                                    <div className="space-y-1.5">
-                                                        <label className={labelClasses}>{t('auth.forms.candidate.end_date')}</label>
-                                                        <div className="relative">
-                                                            <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                                                            <input
-                                                                type="month"
-                                                                value={formation.annee_fin}
-                                                                onChange={(event) =>
-                                                                    updateFormation(
-                                                                        formation.id,
-                                                                        'annee_fin',
-                                                                        event.target.value,
-                                                                    )
+                                                        <div className="space-y-1.5">
+                                                            <label
+                                                                className={
+                                                                    labelClasses
                                                                 }
-                                                                onClick={(event) => event.currentTarget.showPicker()}
-                                                                className={`${inputClasses} cursor-pointer pl-10 ${errors[`formations.${formationIndex}.annee_fin`] ? 'border-red-500' : ''}`}
-                                                            />
+                                                            >
+                                                                {t(
+                                                                    'auth.forms.candidate.end_date',
+                                                                )}
+                                                            </label>
+                                                            <div className="relative">
+                                                                <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                                                <input
+                                                                    type="month"
+                                                                    value={
+                                                                        formation.annee_fin
+                                                                    }
+                                                                    onChange={(
+                                                                        event,
+                                                                    ) =>
+                                                                        updateFormation(
+                                                                            formation.id,
+                                                                            'annee_fin',
+                                                                            event
+                                                                                .target
+                                                                                .value,
+                                                                        )
+                                                                    }
+                                                                    onClick={(
+                                                                        event,
+                                                                    ) =>
+                                                                        event.currentTarget.showPicker()
+                                                                    }
+                                                                    className={`${inputClasses} cursor-pointer pl-10 ${errors[`formations.${formationIndex}.annee_fin`] ? 'border-red-500' : ''}`}
+                                                                />
+                                                            </div>
+                                                            {errors[
+                                                                `formations.${formationIndex}.annee_fin`
+                                                            ] && (
+                                                                <p className="mt-1 text-[10px] font-bold text-red-500">
+                                                                    {
+                                                                        errors[
+                                                                            `formations.${formationIndex}.annee_fin`
+                                                                        ]
+                                                                    }
+                                                                </p>
+                                                            )}
                                                         </div>
-                                                        {errors[`formations.${formationIndex}.annee_fin`] && (
-                                                            <p className="mt-1 text-[10px] font-bold text-red-500">
-                                                                {errors[`formations.${formationIndex}.annee_fin`]}
-                                                            </p>
-                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div className="mt-6 border-t border-slate-100 pt-5">
+                                                <label className={labelClasses}>
+                                                    <Upload
+                                                        size={14}
+                                                        className="text-slate-400"
+                                                    />{' '}
+                                                    {t(
+                                                        'auth.forms.candidate.diploma_label',
+                                                    )}
+                                                </label>
+                                                <p className="mt-1 text-[11px] text-slate-400">
+                                                    {t(
+                                                        'auth.forms.candidate.diploma_help',
+                                                    )}
+                                                </p>
+                                                <div className="mt-3">
+                                                    <label
+                                                        className={`${inputClasses} flex cursor-pointer items-center gap-3 border-dashed hover:border-slate-300`}
+                                                    >
+                                                        <Upload
+                                                            size={18}
+                                                            className="shrink-0 text-slate-400"
+                                                        />
+                                                        {formation.diploma_file ? (
+                                                            <span className="truncate text-sm font-semibold text-slate-700">
+                                                                {
+                                                                    formation
+                                                                        .diploma_file
+                                                                        .name
+                                                                }
+                                                            </span>
+                                                        ) : (
+                                                            <span className="text-sm text-slate-400">
+                                                                {t(
+                                                                    'auth.forms.candidate.diploma_placeholder',
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                        <input
+                                                            type="file"
+                                                            accept="application/pdf,.pdf"
+                                                            className="hidden"
+                                                            onChange={(
+                                                                event,
+                                                            ) => {
+                                                                handleDiplomaChange(
+                                                                    formation.id,
+                                                                    event.target
+                                                                        .files?.[0] ??
+                                                                        null,
+                                                                );
+                                                                event.currentTarget.value =
+                                                                    '';
+                                                            }}
+                                                        />
+                                                    </label>
+                                                    {formation.diploma_file && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                handleDiplomaChange(
+                                                                    formation.id,
+                                                                    null,
+                                                                )
+                                                            }
+                                                            className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-red-500 hover:text-red-600"
+                                                        >
+                                                            <Trash2 size={12} />{' '}
+                                                            {t(
+                                                                'auth.forms.candidate.diploma_remove',
+                                                            )}
+                                                        </button>
+                                                    )}
+                                                </div>
+                                                {errors[
+                                                    `formations.${formationIndex}.diploma_file`
+                                                ] && (
+                                                    <p className="mt-1.5 text-[10px] font-bold text-red-500">
+                                                        {
+                                                            errors[
+                                                                `formations.${formationIndex}.diploma_file`
+                                                            ]
+                                                        }
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </>
                                     )}
                                 </motion.div>
                             );
@@ -401,8 +984,14 @@ export default function CandidatDetails({
                     </AnimatePresence>
                     {formations.length === 0 && (
                         <div className="rounded-[24px] border-2 border-dashed border-slate-100 bg-slate-50/50 py-10 text-center">
-                            <Icon name="GraduationCap" size={32} className="mx-auto mb-3 text-slate-200" />
-                            <p className="text-sm font-bold text-slate-400">{t('auth.forms.candidate.no_formation')}</p>
+                            <Icon
+                                name="GraduationCap"
+                                size={32}
+                                className="mx-auto mb-3 text-slate-200"
+                            />
+                            <p className="text-sm font-bold text-slate-400">
+                                {t('auth.forms.candidate.no_formation')}
+                            </p>
                         </div>
                     )}
                 </div>
@@ -414,11 +1003,18 @@ export default function CandidatDetails({
                         <div className="rounded-lg bg-slate-900 p-2 text-white shadow-sm">
                             <Briefcase size={20} />
                         </div>
-                        <h4 className="text-lg font-bold text-slate-900">{t('auth.forms.candidate.experiences_header')}</h4>
+                        <h4 className="text-lg font-bold text-slate-900">
+                            {t('auth.forms.candidate.experiences_header')}
+                        </h4>
                     </div>
                     <button
                         type="button"
-                        onClick={() => onFieldChange('experiences', [...experiences, createEmptyExperience()])}
+                        onClick={() =>
+                            onFieldChange('experiences', [
+                                ...experiences,
+                                createEmptyExperience(),
+                            ])
+                        }
                         className="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-xs font-bold tracking-widest text-white uppercase shadow-md transition-all hover:bg-slate-800 active:scale-95"
                     >
                         <Plus size={16} /> {t('auth.forms.candidate.add')}
@@ -438,7 +1034,9 @@ export default function CandidatDetails({
                 <div className="space-y-4">
                     <AnimatePresence>
                         {experiences.map((experience) => {
-                            const experienceIndex = experiences.findIndex((item) => item.id === experience.id);
+                            const experienceIndex = experiences.findIndex(
+                                (item) => item.id === experience.id,
+                            );
 
                             return (
                                 <motion.div
@@ -452,19 +1050,28 @@ export default function CandidatDetails({
                                         <div className="flex items-center gap-3">
                                             <button
                                                 type="button"
-                                                onClick={() => toggleExperience(experience.id)}
+                                                onClick={() =>
+                                                    toggleExperience(
+                                                        experience.id,
+                                                    )
+                                                }
                                                 className="text-slate-400 transition-colors hover:text-slate-900"
                                             >
-                                                {expandedExperiences[experience.id] !== false ? (
+                                                {expandedExperiences[
+                                                    experience.id
+                                                ] !== false ? (
                                                     <ChevronUp size={20} />
                                                 ) : (
                                                     <ChevronDown size={20} />
                                                 )}
                                             </button>
                                             <h5 className="max-w-[200px] truncate font-bold text-slate-900 sm:max-w-md">
-                                                {experience.poste_id || experience.entreprise
+                                                {experience.poste_id ||
+                                                experience.entreprise
                                                     ? `${getTaxonomyLabel(experience.poste_id, postes)} @ ${experience.entreprise}`
-                                                    : t('auth.forms.candidate.new_experience')}
+                                                    : t(
+                                                          'auth.forms.candidate.new_experience',
+                                                      )}
                                             </h5>
                                         </div>
                                         <button
@@ -472,7 +1079,11 @@ export default function CandidatDetails({
                                             onClick={() =>
                                                 onFieldChange(
                                                     'experiences',
-                                                    experiences.filter((item) => item.id !== experience.id),
+                                                    experiences.filter(
+                                                        (item) =>
+                                                            item.id !==
+                                                            experience.id,
+                                                    ),
                                                 )
                                             }
                                             className="p-2 text-slate-300 transition-colors hover:text-red-500"
@@ -481,129 +1092,255 @@ export default function CandidatDetails({
                                         </button>
                                     </div>
 
-                                    {expandedExperiences[experience.id] !== false && (
+                                    {expandedExperiences[experience.id] !==
+                                        false && (
                                         <div className="grid grid-cols-1 gap-6 pt-2 md:grid-cols-2">
                                             <div className="space-y-5">
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}>
-                                                        <Building2 size={14} className="text-slate-400" /> {t('auth.forms.candidate.company_label')}
+                                                    <label
+                                                        className={labelClasses}
+                                                    >
+                                                        <Building2
+                                                            size={14}
+                                                            className="text-slate-400"
+                                                        />{' '}
+                                                        {t(
+                                                            'auth.forms.candidate.company_label',
+                                                        )}
                                                     </label>
                                                     <input
                                                         type="text"
-                                                        placeholder={t('auth.forms.candidate.company_placeholder')}
-                                                        value={experience.entreprise}
+                                                        placeholder={t(
+                                                            'auth.forms.candidate.company_placeholder',
+                                                        )}
+                                                        value={
+                                                            experience.entreprise
+                                                        }
                                                         onChange={(event) =>
                                                             updateExperience(
                                                                 experience.id,
                                                                 'entreprise',
-                                                                event.target.value,
+                                                                event.target
+                                                                    .value,
                                                             )
                                                         }
                                                         className={inputClasses}
                                                     />
                                                 </div>
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}>
-                                                        <FileText size={14} className="text-slate-400" /> {t('auth.forms.candidate.exp_type_label')}
+                                                    <label
+                                                        className={labelClasses}
+                                                    >
+                                                        <FileText
+                                                            size={14}
+                                                            className="text-slate-400"
+                                                        />{' '}
+                                                        {t(
+                                                            'auth.forms.candidate.exp_type_label',
+                                                        )}
                                                     </label>
                                                     <select
-                                                        value={experience.type_travail_id}
+                                                        value={
+                                                            experience.type_travail_id
+                                                        }
                                                         onChange={(event) =>
                                                             updateExperience(
                                                                 experience.id,
                                                                 'type_travail_id',
-                                                                event.target.value,
+                                                                event.target
+                                                                    .value,
                                                             )
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">{t('auth.forms.candidate.exp_type_placeholder')}</option>
-                                                        {useLoadingTaxonomy(typeTravails) ? (
-                                                            <option disabled>{t('auth.forms.loading_options')}</option>
+                                                        <option value="">
+                                                            {t(
+                                                                'auth.forms.candidate.exp_type_placeholder',
+                                                            )}
+                                                        </option>
+                                                        {useLoadingTaxonomy(
+                                                            typeTravails,
+                                                        ) ? (
+                                                            <option disabled>
+                                                                {t(
+                                                                    'auth.forms.loading_options',
+                                                                )}
+                                                            </option>
                                                         ) : (
-                                                            typeTravails.map((type) => (
-                                                                <option key={type.id} value={type.id}>
-                                                                    {getTaxonomyLabel(type)}
-                                                                </option>
-                                                            ))
+                                                            typeTravails.map(
+                                                                (type) => (
+                                                                    <option
+                                                                        key={
+                                                                            type.id
+                                                                        }
+                                                                        value={
+                                                                            type.id
+                                                                        }
+                                                                    >
+                                                                        {getTaxonomyLabel(
+                                                                            type,
+                                                                        )}
+                                                                    </option>
+                                                                ),
+                                                            )
                                                         )}
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="space-y-5">
                                                 <div className="space-y-1.5">
-                                                    <label className={labelClasses}>
-                                                        <Briefcase size={14} className="text-slate-400" /> {t('auth.forms.candidate.position_label')}
+                                                    <label
+                                                        className={labelClasses}
+                                                    >
+                                                        <Briefcase
+                                                            size={14}
+                                                            className="text-slate-400"
+                                                        />{' '}
+                                                        {t(
+                                                            'auth.forms.candidate.position_label',
+                                                        )}
                                                     </label>
                                                     <select
-                                                        value={experience.poste_id}
+                                                        value={
+                                                            experience.poste_id
+                                                        }
                                                         onChange={(event) =>
                                                             updateExperience(
                                                                 experience.id,
                                                                 'poste_id',
-                                                                event.target.value,
+                                                                event.target
+                                                                    .value,
                                                             )
                                                         }
                                                         className={inputClasses}
                                                     >
-                                                        <option value="">{t('auth.forms.candidate.position_placeholder')}</option>
-                                                        {useLoadingTaxonomy(postes) ? (
-                                                            <option disabled>{t('auth.forms.loading_options')}</option>
+                                                        <option value="">
+                                                            {t(
+                                                                'auth.forms.candidate.position_placeholder',
+                                                            )}
+                                                        </option>
+                                                        {useLoadingTaxonomy(
+                                                            postes,
+                                                        ) ? (
+                                                            <option disabled>
+                                                                {t(
+                                                                    'auth.forms.loading_options',
+                                                                )}
+                                                            </option>
                                                         ) : (
-                                                            postes.map((poste) => (
-                                                                <option key={poste.id} value={poste.id}>
-                                                                    {getTaxonomyLabel(poste)}
-                                                                </option>
-                                                            ))
+                                                            postes.map(
+                                                                (poste) => (
+                                                                    <option
+                                                                        key={
+                                                                            poste.id
+                                                                        }
+                                                                        value={
+                                                                            poste.id
+                                                                        }
+                                                                    >
+                                                                        {getTaxonomyLabel(
+                                                                            poste,
+                                                                        )}
+                                                                    </option>
+                                                                ),
+                                                            )
                                                         )}
                                                     </select>
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>{t('auth.forms.candidate.start_date')}</label>
+                                                        <label
+                                                            className={
+                                                                labelClasses
+                                                            }
+                                                        >
+                                                            {t(
+                                                                'auth.forms.candidate.start_date',
+                                                            )}
+                                                        </label>
                                                         <div className="relative">
                                                             <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                             <input
                                                                 type="month"
-                                                                value={experience.debut}
-                                                                onChange={(event) =>
+                                                                value={
+                                                                    experience.debut
+                                                                }
+                                                                onChange={(
+                                                                    event,
+                                                                ) =>
                                                                     updateExperience(
                                                                         experience.id,
                                                                         'debut',
-                                                                        event.target.value,
+                                                                        event
+                                                                            .target
+                                                                            .value,
                                                                     )
                                                                 }
-                                                                onClick={(event) => event.currentTarget.showPicker()}
+                                                                onClick={(
+                                                                    event,
+                                                                ) =>
+                                                                    event.currentTarget.showPicker()
+                                                                }
                                                                 className={`${inputClasses} cursor-pointer pl-10 ${errors[`experiences.${experienceIndex}.debut`] ? 'border-red-500' : ''}`}
                                                             />
                                                         </div>
-                                                        {errors[`experiences.${experienceIndex}.debut`] && (
+                                                        {errors[
+                                                            `experiences.${experienceIndex}.debut`
+                                                        ] && (
                                                             <p className="mt-1 text-[10px] font-bold text-red-500">
-                                                                {errors[`experiences.${experienceIndex}.debut`]}
+                                                                {
+                                                                    errors[
+                                                                        `experiences.${experienceIndex}.debut`
+                                                                    ]
+                                                                }
                                                             </p>
                                                         )}
                                                     </div>
                                                     <div className="space-y-1.5">
-                                                        <label className={labelClasses}>{t('auth.forms.candidate.end_date')}</label>
+                                                        <label
+                                                            className={
+                                                                labelClasses
+                                                            }
+                                                        >
+                                                            {t(
+                                                                'auth.forms.candidate.end_date',
+                                                            )}
+                                                        </label>
                                                         <div className="relative">
                                                             <Calendar className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                                                             <input
                                                                 type="month"
-                                                                value={experience.fin}
-                                                                onChange={(event) =>
+                                                                value={
+                                                                    experience.fin
+                                                                }
+                                                                onChange={(
+                                                                    event,
+                                                                ) =>
                                                                     updateExperience(
                                                                         experience.id,
                                                                         'fin',
-                                                                        event.target.value,
+                                                                        event
+                                                                            .target
+                                                                            .value,
                                                                     )
                                                                 }
-                                                                onClick={(event) => event.currentTarget.showPicker()}
+                                                                onClick={(
+                                                                    event,
+                                                                ) =>
+                                                                    event.currentTarget.showPicker()
+                                                                }
                                                                 className={`${inputClasses} cursor-pointer pl-10 ${errors[`experiences.${experienceIndex}.fin`] ? 'border-red-500' : ''}`}
                                                             />
                                                         </div>
-                                                        {errors[`experiences.${experienceIndex}.fin`] && (
+                                                        {errors[
+                                                            `experiences.${experienceIndex}.fin`
+                                                        ] && (
                                                             <p className="mt-1 text-[10px] font-bold text-red-500">
-                                                                {errors[`experiences.${experienceIndex}.fin`]}
+                                                                {
+                                                                    errors[
+                                                                        `experiences.${experienceIndex}.fin`
+                                                                    ]
+                                                                }
                                                             </p>
                                                         )}
                                                     </div>
@@ -617,8 +1354,14 @@ export default function CandidatDetails({
                     </AnimatePresence>
                     {experiences.length === 0 && (
                         <div className="rounded-[24px] border-2 border-dashed border-slate-100 bg-slate-50/50 py-10 text-center">
-                            <Icon name="Briefcase" size={32} className="mx-auto mb-3 text-slate-200" />
-                            <p className="text-sm font-bold text-slate-400">{t('auth.forms.candidate.no_experience')}</p>
+                            <Icon
+                                name="Briefcase"
+                                size={32}
+                                className="mx-auto mb-3 text-slate-200"
+                            />
+                            <p className="text-sm font-bold text-slate-400">
+                                {t('auth.forms.candidate.no_experience')}
+                            </p>
                         </div>
                     )}
                 </div>
