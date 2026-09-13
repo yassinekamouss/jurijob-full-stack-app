@@ -34,6 +34,7 @@ import AdminLayout from '@/layouts/admin-layout';
 import CandidateDiplomaAction, {
     type FormationDiplomaItem,
 } from '@/components/admin/CandidateDiplomaAction';
+import { formatCandidateExperienceLabel } from '@/lib/format-experience';
 
 type MatchingBreakdown = {
     score: number;
@@ -165,34 +166,6 @@ const breadcrumbs = [
 
 const clampScore = (score: number): number =>
     Math.max(0, Math.min(100, Math.round(score)));
-
-function formatExactExperience(months: number, t: any): string {
-    if (months === 0) {
-        return t('recruiter.profiles.exact_experience.no_experience');
-    }
-
-    const years = Math.floor(months / 12);
-    const remainingMonths = months % 12;
-
-    const parts: string[] = [];
-    if (years > 0) {
-        parts.push(
-            t('recruiter.profiles.exact_experience.years', { count: years }),
-        );
-    }
-    if (remainingMonths > 0) {
-        parts.push(
-            t('recruiter.profiles.exact_experience.months', {
-                count: remainingMonths,
-            }),
-        );
-    }
-
-    return (
-        parts.join(t('recruiter.profiles.exact_experience.and')) +
-        t('recruiter.profiles.exact_experience.of_experience')
-    );
-}
 
 function scoreColor(score: number): { bar: string; text: string; bg: string } {
     const clamped = clampScore(score);
@@ -887,20 +860,11 @@ function CandidateCard({
             candidat.formation_juridique?.id) === offerFormationId;
 
     const experienceLabel = useMemo(() => {
-        if (!candidat.niveau_experience?.nom) {
-            return null;
-        }
-
-        const baseTitle = candidat.niveau_experience.nom.split('(')[0].trim();
-
-        if (
-            candidat.exact_experience_months !== undefined &&
-            candidat.exact_experience_months !== null
-        ) {
-            return `${baseTitle} (${formatExactExperience(candidat.exact_experience_months, t)})`;
-        }
-
-        return candidat.niveau_experience.nom;
+        return formatCandidateExperienceLabel(
+            candidat.niveau_experience?.nom,
+            candidat.exact_experience_months,
+            t,
+        );
     }, [candidat.niveau_experience, candidat.exact_experience_months, t]);
 
     return (

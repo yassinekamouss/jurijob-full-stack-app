@@ -33,6 +33,7 @@ const statusTabs = (t: any) => [
 ];
 
 import CandidateDiplomaAction from '@/components/admin/CandidateDiplomaAction';
+import { formatCandidateExperienceLabel } from '@/lib/format-experience';
 
 export default function Candidats({ candidates, currentStatus, filters }: any) {
     const { t } = useTranslation();
@@ -242,11 +243,13 @@ export default function Candidats({ candidates, currentStatus, filters }: any) {
                                                     ·
                                                 </span>
                                                 <span>
-                                                    {
+                                                    {formatCandidateExperienceLabel(
                                                         candidat
                                                             .niveau_experience
-                                                            .nom
-                                                    }
+                                                            .nom,
+                                                        candidat.exact_experience_months,
+                                                        t,
+                                                    )}
                                                 </span>
                                             </>
                                         )}

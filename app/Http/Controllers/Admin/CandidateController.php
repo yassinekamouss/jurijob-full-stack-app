@@ -46,6 +46,12 @@ class CandidateController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $candidates->getCollection()->transform(function (Candidat $candidat) {
+            $candidat->setAttribute('exact_experience_months', $candidat->calculateTotalExperienceMonths());
+
+            return $candidat;
+        });
+
         return Inertia::render('admin/Candidats', [
             'candidates' => $candidates,
             'currentStatus' => $status,
