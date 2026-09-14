@@ -41,6 +41,7 @@ export default function RegisterRecruteur() {
             nom: '',
             prenom: '',
             telephone: '',
+            pays_id: 1,
             email: '',
             password: '',
             password_confirmation: '',
@@ -86,6 +87,7 @@ export default function RegisterRecruteur() {
         // --- User fields ---
         payload.append('email', user.email);
         payload.append('telephone', user.telephone || '');
+        payload.append('pays_id', String(user.pays_id || '1'));
         payload.append('password', user.password);
         payload.append('password_confirmation', user.password_confirmation);
         payload.append('role', 'recruteur');
@@ -122,6 +124,7 @@ export default function RegisterRecruteur() {
                     > = {
                         email: { section: 'user', key: 'email' },
                         telephone: { section: 'user', key: 'telephone' },
+                        pays_id: { section: 'user', key: 'pays_id' },
                         password: { section: 'user', key: 'password' },
                         nom_entreprise: {
                             section: 'recruteur',
@@ -180,6 +183,7 @@ export default function RegisterRecruteur() {
             section = 'user';
             const requiredFields: (keyof UserFormData)[] = [
                 'email',
+                'pays_id',
                 'password',
                 'password_confirmation',
             ];

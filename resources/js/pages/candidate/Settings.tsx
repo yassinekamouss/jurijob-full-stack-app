@@ -13,6 +13,8 @@ import {
     Folder,
     Languages,
     MapPin,
+    Globe,
+    ChevronDown,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -70,7 +72,7 @@ export default function Settings({
     const { t } = useTranslation();
     const { flash } = usePage().props as any;
     const isPending = candidat?.status === 'en_attente';
-    const { postes, niveauExperiences, formationJuridiques, salaires, urgences } = useTaxonomies();
+    const { postes, niveauExperiences, formationJuridiques, salaires, urgences, pays } = useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
     const [visibleFlash, setVisibleFlash] = useState<{
         success?: string;
@@ -188,6 +190,7 @@ export default function Settings({
         salaire_id: candidat?.salaire_id || '',
         urgence_id: candidat?.urgence_id || '',
         telephone: user.telephone || '',
+        pays_id: user.pays_id ? String(user.pays_id) : '',
         is_active: user.is_active,
     });
 
@@ -198,6 +201,7 @@ export default function Settings({
         const requiredFields: Array<{ key: keyof typeof profileForm.data; message: string }> = [
             { key: 'prenom', message: t('candidate_settings.validation.firstname_required') },
             { key: 'nom', message: t('candidate_settings.validation.lastname_required') },
+            { key: 'pays_id', message: t('candidate_settings.validation.country_required') },
             { key: 'poste_id', message: t('candidate_settings.validation.job_required') },
             { key: 'niveau_experience_id', message: t('candidate_settings.validation.experience_required') },
             { key: 'formation_juridique_id', message: t('candidate_settings.validation.education_required') },
@@ -416,26 +420,63 @@ export default function Settings({
                                                 </p>
                                             </div>
 
-                                            <div className="space-y-2">
-                                                <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
-                                                    {t('candidate_settings.form.phone')}
-                                                </label>
-                                                <PhoneInput
-                                                    value={profileForm.data.telephone || ''}
-                                                    onChange={(value) =>
-                                                        profileForm.setData('telephone', value || '')
-                                                    }
-                                                    placeholder={t('candidate_settings.form.phone_placeholder')}
-                                                    containerClassName="rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] focus-within:border-[#C06041]"
-                                                    inputClassName="h-[50px] px-0 text-sm font-bold text-[#1a1f1e] placeholder:text-[#1a1f1e]/40"
-                                                    searchPlaceholder={t('common.phone_country_search')}
-                                                    aria-invalid={!!profileForm.errors.telephone}
-                                                />
-                                                {profileForm.errors.telephone && (
-                                                    <p className="ml-1 text-xs font-bold text-red-500">
-                                                        {profileForm.errors.telephone}
-                                                    </p>
-                                                )}
+                                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                                <div className="space-y-2">
+                                                    <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                        {t('candidate_settings.form.phone')}
+                                                    </label>
+                                                    <PhoneInput
+                                                        value={profileForm.data.telephone || ''}
+                                                        onChange={(value) =>
+                                                            profileForm.setData('telephone', value || '')
+                                                        }
+                                                        placeholder={t('candidate_settings.form.phone_placeholder')}
+                                                        containerClassName="rounded-2xl border-[#1a1f1e]/10 bg-[#FDFCF8] focus-within:border-[#C06041]"
+                                                        inputClassName="h-[50px] px-0 text-sm font-bold text-[#1a1f1e] placeholder:text-[#1a1f1e]/40"
+                                                        searchPlaceholder={t('common.phone_country_search')}
+                                                        aria-invalid={!!profileForm.errors.telephone}
+                                                    />
+                                                    {profileForm.errors.telephone && (
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {profileForm.errors.telephone}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="ml-1 text-xs font-black tracking-widest text-[#1a1f1e]/40 uppercase">
+                                                        {t('candidate_settings.form.country_residence')}
+                                                    </label>
+                                                    <div className="relative">
+                                                        <Globe className="pointer-events-none absolute top-1/2 left-5 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                        <select
+                                                            value={profileForm.data.pays_id}
+                                                            onChange={(e) =>
+                                                                profileForm.setData('pays_id', e.target.value)
+                                                            }
+                                                            className={`w-full cursor-pointer appearance-none rounded-2xl py-4 pr-10 pl-12 text-sm font-bold transition-all outline-none focus:ring-0 ${profileFieldClass('pays_id')}`}
+                                                        >
+                                                            <option value="">
+                                                                {t('candidate_settings.form.select_country')}
+                                                            </option>
+                                                            {useLoadingTaxonomy(pays) ? (
+                                                                <option disabled>{t('candidate_settings.form.loading')}</option>
+                                                            ) : (
+                                                                pays.map((opt) => (
+                                                                    <option key={opt.id} value={opt.id}>
+                                                                        {getTaxonomyLabel(opt)}
+                                                                    </option>
+                                                                ))
+                                                            )}
+                                                        </select>
+                                                        <ChevronDown className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-[#1a1f1e]/30" />
+                                                    </div>
+                                                    {profileForm.errors.pays_id && (
+                                                        <p className="ml-1 text-xs font-bold text-red-500">
+                                                            {profileForm.errors.pays_id}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
 
                                             <div className="space-y-2">

@@ -51,7 +51,9 @@ export default function Settings({
     const { typeOrganisations, tailleEntreprises, pays, villes } =
         useTaxonomies();
     const [activeTab, setActiveTab] = useState<TabType>('profile');
-    const [selectedPaysId, setSelectedPaysId] = useState<string>('');
+    const [selectedPaysId, setSelectedPaysId] = useState<string>(
+        user?.pays_id ? String(user.pays_id) : '',
+    );
 
     const { data, setData, put, processing, recentlySuccessful, errors } =
         useForm({
@@ -62,10 +64,11 @@ export default function Settings({
             site_web: recruteur?.site_web || '',
             ville_id: recruteur?.ville_id || '',
             telephone: user.telephone || '',
+            pays_id: user?.pays_id ? String(user.pays_id) : '',
         });
 
     useEffect(() => {
-        if (selectedPaysId || !data.ville_id || villes.length === 0) {
+        if (!data.ville_id || villes.length === 0) {
             return;
         }
 
@@ -73,10 +76,12 @@ export default function Settings({
             (ville) => String(ville.id) === String(data.ville_id),
         );
 
-        if (selectedCity?.pays_id) {
-            setSelectedPaysId(String(selectedCity.pays_id));
+        if (selectedCity?.pays_id && (!selectedPaysId || !data.pays_id)) {
+            const cityCountryId = String(selectedCity.pays_id);
+            setSelectedPaysId(cityCountryId);
+            setData('pays_id', cityCountryId);
         }
-    }, [data.ville_id, selectedPaysId, villes]);
+    }, [data.ville_id, selectedPaysId, data.pays_id, villes]);
 
     const citiesForCountry = useMemo(() => {
         if (!selectedPaysId) {
@@ -426,15 +431,15 @@ export default function Settings({
                                                         )}
                                                     </label>
                                                     <select
-                                                        value={selectedPaysId}
+                                                        value={data.pays_id || selectedPaysId}
                                                         onChange={(e) => {
-                                                            setSelectedPaysId(
-                                                                e.target.value,
-                                                            );
-                                                            setData(
-                                                                'ville_id',
-                                                                '',
-                                                            );
+                                                            const val = e.target.value;
+                                                            setSelectedPaysId(val);
+                                                            setData((prev) => ({
+                                                                ...prev,
+                                                                pays_id: val,
+                                                                ville_id: '',
+                                                            }));
                                                         }}
                                                         className="w-full rounded-xl border border-[#1a1f1e]/10 bg-white px-4 py-3 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
                                                         required
@@ -463,11 +468,16 @@ export default function Settings({
                                                                         opt.id
                                                                     }
                                                                 >
-                                                                    {opt.nom}
+                                                                    {getTaxonomyLabel(opt)}
                                                                 </option>
                                                             ))
                                                         )}
                                                     </select>
+                                                    {errors.pays_id && (
+                                                        <div className="text-xs text-red-500">
+                                                            {errors.pays_id}
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 <div className="space-y-2">

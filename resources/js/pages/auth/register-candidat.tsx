@@ -58,6 +58,7 @@ export default function RegisterCandidat() {
             nom: '',
             prenom: '',
             telephone: '',
+            pays_id: 1,
             email: '',
             password: '',
             password_confirmation: '',
@@ -110,6 +111,7 @@ export default function RegisterCandidat() {
         payload.append('nom', user.nom);
         payload.append('email', user.email);
         payload.append('telephone', user.telephone || '');
+        payload.append('pays_id', String(user.pays_id || '1'));
         payload.append('password', user.password);
         payload.append('password_confirmation', user.password_confirmation);
         payload.append('role', 'candidat');
@@ -227,6 +229,7 @@ export default function RegisterCandidat() {
                         'prenom',
                         'email',
                         'telephone',
+                        'pays_id',
                         'password',
                     ];
                     const userErrors: UserErrors = {};
@@ -270,6 +273,7 @@ export default function RegisterCandidat() {
                 'nom',
                 'prenom',
                 'email',
+                'pays_id',
                 'password',
                 'password_confirmation',
             ];

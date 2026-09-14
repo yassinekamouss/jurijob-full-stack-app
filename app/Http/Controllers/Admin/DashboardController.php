@@ -6,10 +6,10 @@ use App\Enums\OffreStatut;
 use App\Http\Controllers\Controller;
 use App\Models\Candidat\Candidat;
 use App\Models\Candidat\CandidatSpecialisation;
-use App\Models\Candidat\CandidatVilleTravail;
 use App\Models\Offre\Offre;
 use App\Models\Offre\OffreCritereMultiple;
 use App\Models\Taxonomy\Specialisation;
+use App\Models\User;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -83,28 +83,35 @@ class DashboardController extends Controller
         }
         usort($ecartSpecialisation, fn ($a, $b) => $b['demande'] <=> $a['demande']);
 
-        // 6. Repartition geographique
-        $repartitionGeographiqueRaw = CandidatVilleTravail::with('ville.pays')
-            ->whereHas('candidat', function ($q) {
-                $q->where('status', 'accepte');
+        // 6. Repartition geographique (calculée directement depuis la table users via pays_id)
+        $usersGeo = User::where('role', 'candidat')
+            ->whereNotNull('pays_id')
+            ->with('pays')
+            ->get();
+
+        $totalGeo = $usersGeo->count();
+
+        $repartitionGeographiqueRaw = $usersGeo
+            ->groupBy(function ($user) {
+                return $user->pays?->code ?? 'MA';
             })
-            ->get()
-            ->groupBy('ville.pays.code') // Group by country code to avoid localization issues in keys
             ->map(function ($group) {
                 return [
-                    'count' => $group->unique('candidat_id')->count(),
-                    'pays' => $group->first()->ville->pays,
+                    'count' => $group->count(),
+                    'pays' => $group->first()->pays,
                 ];
             });
 
         $repartitionGeographique = [];
         foreach ($repartitionGeographiqueRaw as $code => $data) {
+            $pays = $data['pays'];
+            $count = $data['count'];
             $repartitionGeographique[] = [
                 'country_code' => $code,
-                'country_fr' => $data['pays']->nom_fr ?? $code,
-                'country_en' => $data['pays']->nom_en ?? $code,
-                'count' => $data['count'],
-                'percentage' => $cvtheque['valides'] > 0 ? round(($data['count'] / $cvtheque['valides']) * 100) : 0,
+                'country_fr' => $pays?->nom_fr ?? ($code === 'MA' ? 'Maroc' : $code),
+                'country_en' => $pays?->nom_en ?? ($code === 'MA' ? 'Morocco' : $code),
+                'count' => $count,
+                'percentage' => $totalGeo > 0 ? round(($count / $totalGeo) * 100) : 0,
             ];
         }
         usort($repartitionGeographique, fn ($a, $b) => $b['count'] <=> $a['count']);

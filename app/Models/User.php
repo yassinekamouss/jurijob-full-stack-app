@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Mail\VerifyEmailFrench;
 use App\Models\Candidat\Candidat;
 use App\Models\Recruteur\Recruteur;
+use App\Models\Taxonomy\Pays;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = [
         'telephone',
+        'pays_id',
         'email',
         'password',
         'role',
@@ -41,12 +44,18 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
+            'pays_id' => 'integer',
             'password' => 'hashed',
             'is_active' => 'boolean',
             'is_archived' => 'boolean',
             // Optionnel : on peut ajouter le cast pour la date de confirmation si besoin
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function pays(): BelongsTo
+    {
+        return $this->belongsTo(Pays::class);
     }
 
     public function recruteur(): HasOne

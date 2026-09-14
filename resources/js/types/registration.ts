@@ -7,6 +7,7 @@ export type UserFormData = {
     nom: string;
     prenom: string;
     telephone: string;
+    pays_id?: string | number;
     email: string;
     password: string;
     password_confirmation: string;

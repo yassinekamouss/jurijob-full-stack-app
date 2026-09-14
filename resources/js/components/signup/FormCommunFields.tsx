@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '@/components/signup/FormularIcons';
 import { PhoneInput } from '@/components/ui/phone-input';
+import { useTaxonomies } from '@/hooks/use-taxonomies';
 
 import type { UserFormData } from '@/types';
 
@@ -21,6 +22,7 @@ const FormCommunFields: React.FC<CommonFieldsProps> = ({
     isRecruiter = false
 }) => {
     const { t } = useTranslation();
+    const { pays } = useTaxonomies();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [dragActive, setDragActive] = useState(false);
@@ -127,6 +129,29 @@ return '0 B';
                 {errors.telephone && (
                     <p className="text-xs text-red-500 mt-1.5 font-medium">
                         {errors.telephone}
+                    </p>
+                )}
+            </div>
+
+            {/* --- PAYS DE RESIDENCE --- */}
+            <div>
+                <label className={labelClasses}>{t('auth.forms.common.residence_country_label')}</label>
+                <select
+                    value={formData.pays_id || ''}
+                    onChange={(e) => onFieldChange('pays_id', e.target.value)}
+                    className={inputClasses}
+                    aria-invalid={!!errors.pays_id}
+                >
+                    <option value="">{t('auth.forms.common.residence_country_placeholder')}</option>
+                    {pays.map((country) => (
+                        <option key={country.id} value={country.id}>
+                            {country.nom}
+                        </option>
+                    ))}
+                </select>
+                {errors.pays_id && (
+                    <p className="text-xs text-red-500 mt-1.5 font-medium">
+                        {errors.pays_id}
                     </p>
                 )}
             </div>

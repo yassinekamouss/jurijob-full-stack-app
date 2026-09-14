@@ -20,7 +20,7 @@ class SettingsController extends Controller
 
         return Inertia::render('recruiter/Settings', [
             'recruteur' => $recruteur,
-            'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active', 'two_factor_confirmed_at']),
+            'user' => $user->only(['id', 'email', 'telephone', 'pays_id', 'role', 'is_active', 'two_factor_confirmed_at']),
             'taxonomies' => TaxonomyRepository::getAll(),
             'profileCompletion' => $recruteur?->profileCompletion(),
         ]);
@@ -36,6 +36,7 @@ class SettingsController extends Controller
             'site_web' => 'nullable|url|max:255',
             'ville_id' => 'required|integer|exists:villes,id',
             'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
+            'pays_id' => ['nullable', 'integer', 'exists:pays,id'],
         ]);
 
         $user = $request->user();
@@ -47,9 +48,14 @@ class SettingsController extends Controller
         ]);
 
         try {
-            $recruteur->update($validated);
+            $recruiterData = collect($validated)->except(['telephone', 'pays_id'])->all();
+            $recruteur->update($recruiterData);
 
-            $user->update(['telephone' => $validated['telephone'] ?? null]);
+            $userUpdates = ['telephone' => $validated['telephone'] ?? null];
+            if ($request->filled('pays_id')) {
+                $userUpdates['pays_id'] = (int) $request->input('pays_id');
+            }
+            $user->update($userUpdates);
 
             return back()->with('success', 'Profil mis à jour avec succès.');
         } catch (\Exception $e) {

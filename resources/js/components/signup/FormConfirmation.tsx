@@ -22,7 +22,7 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
     const [loading, setLoading] = useState(false);
     const [honorAccepted, setHonorAccepted] = useState(false);
     const [honorError, setHonorError] = useState('');
-    const { typeOrganisations, tailleEntreprises, villes, postes, niveauExperiences, formationJuridiques, specialisations, salaires, urgences } = useTaxonomies();
+    const { pays, typeOrganisations, tailleEntreprises, villes, postes, niveauExperiences, formationJuridiques, specialisations, salaires, urgences } = useTaxonomies();
 
     const isRecruiter = !!formData.recruteur;
 
@@ -65,9 +65,13 @@ const FormConfirmation: React.FC<FormConfirmationProps> = ({ formData, onSubmit 
                                 <span className="text-sm font-bold text-slate-900">{formData.user.prenom} {formData.user.nom}</span>
                             </div>
                         )}
-                        <div className="flex justify-between items-center py-2">
+                        <div className="flex justify-between items-center py-2 border-b border-slate-100">
                             <span className="text-xs font-bold text-slate-500 uppercase">{t('auth.forms.confirmation.phone')}</span>
                             <span className="text-sm font-bold text-slate-900">{formData.user.telephone || t('auth.forms.confirmation.not_provided')}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-2">
+                            <span className="text-xs font-bold text-slate-500 uppercase">{t('auth.forms.common.residence_country_label', 'Pays de résidence')}</span>
+                            <span className="text-sm font-bold text-slate-900">{getTaxonomyLabel(formData.user.pays_id, pays) || '-'}</span>
                         </div>
                     </div>
                 </div>

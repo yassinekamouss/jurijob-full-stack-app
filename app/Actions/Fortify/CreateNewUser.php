@@ -49,6 +49,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
             'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
+            'pays_id' => ['required', 'integer', 'exists:pays,id'],
 
             // Candidat rules
             'nom' => ['required', 'string', 'max:255'],
@@ -93,6 +94,8 @@ class CreateNewUser implements CreatesNewUsers
             'formations.*.autre_ecole' => ['required_if:formations.*.ecole_id,other', 'required_if:formations.*.ecole_id,', 'nullable', 'string', 'max:255'],
             'formations.*.diploma_file' => ['required_with:formations', 'file', 'mimes:pdf', 'mimetypes:application/pdf', 'max:5120'],
         ], [
+            'pays_id.required' => 'Veuillez sélectionner votre pays de résidence.',
+            'pays_id.exists' => 'Le pays sélectionné est invalide.',
             'experiences.*.fin.after_or_equal' => 'La date de fin de l\'expérience doit être postérieure ou égale à la date de début.',
             'formations.*.annee_fin.gte' => 'L\'année de fin de la formation doit être postérieure ou égale à l\'année de début.',
             'formations.*.autre_ecole.required_if' => 'Veuillez préciser le nom de votre école.',
@@ -116,6 +119,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => $this->passwordRules(),
             'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
+            'pays_id' => ['required', 'integer', 'exists:pays,id'],
 
             // Recruteur rules
             'nom_entreprise' => ['required', 'string', 'max:255'],
@@ -124,6 +128,9 @@ class CreateNewUser implements CreatesNewUsers
             'ville_id' => ['required', 'integer'],
             'site_web' => ['nullable', 'string', 'max:255', 'url'],
             'poste' => ['nullable', 'string', 'max:255'],
+        ], [
+            'pays_id.required' => 'Veuillez sélectionner votre pays de résidence.',
+            'pays_id.exists' => 'Le pays sélectionné est invalide.',
         ])->validate();
 
         return $this->registrationService->registerRecruteur($input);

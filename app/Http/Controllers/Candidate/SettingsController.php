@@ -32,7 +32,7 @@ class SettingsController extends Controller
 
         return Inertia::render('candidate/Settings', [
             'candidat' => $candidat,
-            'user' => $user->only(['id', 'email', 'telephone', 'role', 'is_active', 'two_factor_confirmed_at']),
+            'user' => $user->only(['id', 'email', 'telephone', 'pays_id', 'role', 'is_active', 'two_factor_confirmed_at']),
             'taxonomies' => TaxonomyRepository::getAll(),
             'experiences' => $candidat->experiences,
             'formations' => $candidat->formations,
@@ -71,10 +71,14 @@ class SettingsController extends Controller
                 );
             }
 
-            $user->update([
+            $userUpdates = [
                 'is_active' => $dto->is_active,
                 'telephone' => $dto->telephone,
-            ]);
+            ];
+            if ($request->filled('pays_id')) {
+                $userUpdates['pays_id'] = (int) $request->input('pays_id');
+            }
+            $user->update($userUpdates);
 
             return back()->with('success', 'Profil mis à jour avec succès.');
         } catch (\Exception $e) {

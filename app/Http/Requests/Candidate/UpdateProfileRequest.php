@@ -33,6 +33,7 @@ class UpdateProfileRequest extends FormRequest
             'salaire_id' => ['required', 'integer', 'exists:salaires,id'],
             'urgence_id' => ['required', 'integer', 'exists:urgences,id'],
             'telephone' => ['nullable', 'string', 'max:20', new ValidPhoneNumber],
+            'pays_id' => ['sometimes', 'required', 'integer', 'exists:pays,id'],
             'is_active' => ['required', 'boolean'],
         ];
     }
@@ -56,6 +57,8 @@ class UpdateProfileRequest extends FormRequest
             'salaire_id.exists' => 'La fourchette salariale sélectionnée est invalide.',
             'urgence_id.required' => 'Veuillez indiquer votre disponibilité.',
             'urgence_id.exists' => 'La disponibilité sélectionnée est invalide.',
+            'pays_id.required' => 'Veuillez sélectionner votre pays de résidence.',
+            'pays_id.exists' => 'Le pays sélectionné est invalide.',
         ];
     }
 }

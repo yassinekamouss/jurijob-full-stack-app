@@ -36,6 +36,7 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
     const isFr = i18n.language === 'fr';
 
     const [visibleEcartCount, setVisibleEcartCount] = useState(8);
+    const [showAllCountries, setShowAllCountries] = useState(false);
 
     const formatNumber = (num: number) => {
         return new Intl.NumberFormat(isFr ? 'fr-FR' : 'en-US').format(num);
@@ -57,6 +58,8 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
             percentage: othersPercentage,
         });
     }
+
+    const totalGeoProfiles = stats.repartition_geographique.reduce((sum, c) => sum + c.count, 0);
 
     const chartColors = ['#0a1c35', '#b39d73', '#718096', '#a0aec0', '#cbd5e1', '#e2e8f0'];
 
@@ -229,29 +232,29 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                             <div className="flex items-center justify-center gap-2 mb-6 text-slate-500">
                                 <Globe className="w-5 h-5 text-slate-400" />
                                 <h3 className="font-semibold text-center">
-                                    {t('admin_dashboard.repartition_geographique', { count: stats.cvtheque.valides })}
+                                    {t('admin_dashboard.repartition_geographique', { count: totalGeoProfiles })}
                                 </h3>
                             </div>
 
-                            <div className="flex flex-col md:flex-row items-center gap-8">
-                                <div className="w-40 h-40 relative flex-shrink-0">
+                            <div className="flex flex-col md:flex-row items-start gap-8">
+                                <div className="w-40 h-40 relative flex-shrink-0 mx-auto md:mx-0">
                                     <Doughnut data={pieData} options={pieOptions} />
                                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                                        <span className="text-2xl font-bold text-[#0b162c]">{stats.cvtheque.valides}</span>
+                                        <span className="text-2xl font-bold text-[#0b162c]">{totalGeoProfiles}</span>
                                         <span className="text-[10px] text-slate-400 uppercase">profils</span>
                                     </div>
                                 </div>
 
-                                <div className="flex-1 w-full space-y-4">
-                                    {geoDataList.map((item, idx) => (
+                                <div className="flex-1 w-full space-y-3">
+                                    {topCountries.map((item, idx) => (
                                         <div key={item.country_code} className="space-y-1">
                                             <div className="flex items-center justify-between text-xs font-medium text-slate-600">
                                                 <div className="flex items-center gap-3">
-                                                    <span className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: chartColors[idx % chartColors.length] }} />
-                                                    {isFr ? item.country_fr : item.country_en}
+                                                    <span className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ backgroundColor: chartColors[idx % chartColors.length] }} />
+                                                    <span className="font-medium text-slate-800">{isFr ? item.country_fr : item.country_en}</span>
                                                 </div>
                                                 <div className="flex gap-4">
-                                                    <span className="font-bold">{item.count}</span>
+                                                    <span className="font-bold text-slate-900">{item.count}</span>
                                                     <span className="text-slate-400 w-6 text-right">{item.percentage}%</span>
                                                 </div>
                                             </div>
@@ -263,6 +266,51 @@ export default function Dashboard({ auth, stats }: DashboardProps) {
                                             </div>
                                         </div>
                                     ))}
+
+                                    {otherCountries.length > 0 && (
+                                        <div className="pt-2 border-t border-slate-100">
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowAllCountries(!showAllCountries)}
+                                                className="flex items-center justify-between w-full py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors group cursor-pointer focus:outline-none"
+                                            >
+                                                <span className="flex items-center gap-1.5 text-[#b39d73] group-hover:text-[#96825c] transition-colors">
+                                                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showAllCountries ? 'rotate-180' : ''}`} />
+                                                    {showAllCountries
+                                                        ? t('admin_dashboard.masquer_autres_pays', 'Masquer les autres pays')
+                                                        : t('admin_dashboard.voir_autres_pays', { count: otherCountries.length })}
+                                                </span>
+                                                <span className="text-xs font-bold text-slate-400 group-hover:text-slate-600">
+                                                    {othersCount} ({othersPercentage}%)
+                                                </span>
+                                            </button>
+
+                                            {showAllCountries && (
+                                                <div className="mt-3 space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                                                    {otherCountries.map((item) => (
+                                                        <div key={item.country_code} className="space-y-1">
+                                                            <div className="flex items-center justify-between text-xs text-slate-600">
+                                                                <div className="flex items-center gap-2.5">
+                                                                    <span className="w-2 h-2 rounded-sm bg-slate-300 shrink-0" />
+                                                                    <span>{isFr ? item.country_fr : item.country_en}</span>
+                                                                </div>
+                                                                <div className="flex gap-4">
+                                                                    <span className="font-semibold text-slate-700">{item.count}</span>
+                                                                    <span className="text-slate-400 w-6 text-right">{item.percentage}%</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                                                                <div 
+                                                                    className="h-full rounded-full bg-slate-300" 
+                                                                    style={{ width: `${Math.max(item.percentage, 1)}%` }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
